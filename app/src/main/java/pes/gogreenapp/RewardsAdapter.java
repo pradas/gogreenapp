@@ -46,7 +46,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
     @Override
     public void onBindViewHolder(RewardsAdapter.ViewHolder holder, int position) {
         holder.title.setText(rewards.get(position).getTitle());
-        holder.points.setText(rewards.get(position).getPoints());
+        holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         holder.date.setText(rewards.get(position).getDate());
         holder.category.setText(rewards.get(position).getCategory());
     }

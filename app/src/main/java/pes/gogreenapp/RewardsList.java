@@ -29,9 +29,11 @@ public class RewardsList extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        initializeJSON();
-        initializeRewards();
+        //initializeJSON();
+        //initializeRewards();
 
+        rewards = new ArrayList<>();
+        rewards.add(new Reward(1, "A", 1, "A", "A"));
         adapter = new RewardsAdapter(rewards);
         recyclerView.setAdapter(adapter);
     }
