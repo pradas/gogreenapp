@@ -1,10 +1,10 @@
-package pes.gogreenapp;
+package pes.gogreenapp.Objects;
 
 /**
  * Created by Albert on 19/03/2017.
  */
 
-class Reward {
+public class Reward {
 
     private Integer id;
     private String title;

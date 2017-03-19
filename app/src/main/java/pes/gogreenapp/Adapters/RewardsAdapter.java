@@ -1,4 +1,4 @@
-package pes.gogreenapp;
+package pes.gogreenapp.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import pes.gogreenapp.R;
+import pes.gogreenapp.Objects.Reward;
 
 /**
  * Created by Albert on 19/03/2017.

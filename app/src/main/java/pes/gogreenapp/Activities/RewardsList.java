@@ -1,4 +1,4 @@
-package pes.gogreenapp;
+package pes.gogreenapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pes.gogreenapp.Adapters.RewardsAdapter;
+import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.R;
 
 public class RewardsList extends AppCompatActivity {
     RecyclerView recyclerView;
