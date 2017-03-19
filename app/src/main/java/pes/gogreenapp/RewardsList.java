@@ -17,7 +17,7 @@ public class RewardsList extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
     JSONArray jsonArray = new JSONArray();
-    private List<Reward> rewards;
+    private List<Reward> rewards = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +29,15 @@ public class RewardsList extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //initializeJSON();
-        //initializeRewards();
+        initializeJSON();
+        initializeRewards();
 
-        rewards = new ArrayList<>();
-        rewards.add(new Reward(1, "A", 1, "A", "A"));
         adapter = new RewardsAdapter(rewards);
         recyclerView.setAdapter(adapter);
     }
 
     private void initializeRewards() {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         for (int i = 0; i < jsonArray.length(); ++i) {
             try {
                 jsonObject = jsonArray.getJSONObject(i);
