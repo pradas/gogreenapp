@@ -6,12 +6,14 @@ package pes.gogreenapp;
 
 class Reward {
 
+    private Integer id;
     private String title;
-    private String points;
+    private Integer points;
     private String date;
     private String category;
 
-    public Reward(String title, String points, String date, String category) {
+    public Reward(Integer id, String title, Integer points, String date, String category) {
+        this.id = id;
         this.title = title;
         this.points = points;
         this.date = date;
@@ -22,7 +24,7 @@ class Reward {
         this.title = title;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
@@ -39,7 +41,7 @@ class Reward {
         return title;
     }
 
-    public String getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
