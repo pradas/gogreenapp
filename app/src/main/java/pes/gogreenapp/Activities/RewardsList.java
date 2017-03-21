@@ -29,11 +29,14 @@ import pes.gogreenapp.Adapters.RewardsAdapter;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
+import static pes.gogreenapp.R.id.orderDateButton;
+
 public class RewardsList extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
     JSONArray jsonArray = new JSONArray();
+    Integer statusOrderDate = 0;
     private List<Reward> rewards = new ArrayList<>();
 
     @Override
@@ -51,13 +54,23 @@ public class RewardsList extends AppCompatActivity {
         adapter = new RewardsAdapter(rewards);
         recyclerView.setAdapter(adapter);
 
-        Button fecha = (Button) findViewById(R.id.orderDateButton);
+        final Button fecha = (Button) findViewById(orderDateButton);
         fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 orderDateRewards();
                 adapter = new RewardsAdapter(rewards);
                 recyclerView.setAdapter(adapter);
+                if (statusOrderDate == 0){
+                    statusOrderDate = 1;
+                    fecha.setText("FECHA ↑");
+                }else if (statusOrderDate == 1){
+                    statusOrderDate = 2;
+                    fecha.setText("FECHA ↓");
+                }else{
+                    statusOrderDate = 1;
+                    fecha.setText("FECHA ↑");
+                }
             }
         });
     }
@@ -88,7 +101,12 @@ public class RewardsList extends AppCompatActivity {
         System.out.println("---------------");*/
         Collections.sort(rewards, new Comparator<Reward>() {
             public int compare(Reward s1, Reward s2) {
-                return s1.getDate().compareTo(s2.getDate());
+                if (statusOrderDate == 2 || statusOrderDate == 0) {
+                    return s1.getDate().compareTo(s2.getDate());
+                }
+                else{
+                    return s2.getDate().compareTo(s1.getDate());
+                }
             }
         });/*
         for (int i = 0; i < rewards.size(); i++){
