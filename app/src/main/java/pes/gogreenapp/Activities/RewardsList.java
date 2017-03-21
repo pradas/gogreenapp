@@ -30,6 +30,7 @@ import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
 import static pes.gogreenapp.R.id.orderDateButton;
+import static pes.gogreenapp.R.id.orderPointsButton;
 
 public class RewardsList extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -37,6 +38,7 @@ public class RewardsList extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     JSONArray jsonArray = new JSONArray();
     Integer statusOrderDate = 0;
+    Integer statusOrderPoints = 0;
     private List<Reward> rewards = new ArrayList<>();
 
     @Override
@@ -55,23 +57,46 @@ public class RewardsList extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         final Button fecha = (Button) findViewById(orderDateButton);
+        final Button points = (Button) findViewById(orderPointsButton);
         fecha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                orderDateRewards();
-                adapter = new RewardsAdapter(rewards);
-                recyclerView.setAdapter(adapter);
-                if (statusOrderDate == 0){
-                    statusOrderDate = 1;
-                    fecha.setText("FECHA ↑");
-                }else if (statusOrderDate == 1){
-                    statusOrderDate = 2;
-                    fecha.setText("FECHA ↓");
-                }else{
-                    statusOrderDate = 1;
-                    fecha.setText("FECHA ↑");
+                @Override
+                public void onClick(View v) {
+                    orderDateRewards();
+                    adapter = new RewardsAdapter(rewards);
+                    recyclerView.setAdapter(adapter);
+                    statusOrderPoints = 0;
+                    points.setText("PUNTOS");
+                    if (statusOrderDate == 0){
+                        statusOrderDate = 1;
+                        fecha.setText("FECHA ↑");
+                    }else if (statusOrderDate == 1){
+                        statusOrderDate = 2;
+                        fecha.setText("FECHA ↓");
+                    }else{
+                        statusOrderDate = 1;
+                        fecha.setText("FECHA ↑");
+                    }
                 }
-            }
+        });
+        points.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    orderPointsRewards();
+                    adapter = new RewardsAdapter(rewards);
+                    recyclerView.setAdapter(adapter);
+                    statusOrderDate = 0;
+                    fecha.setText("FECHA");
+                    if (statusOrderPoints == 0){
+                        statusOrderPoints = 1;
+                        points.setText("PUNTOS ↑");
+                    }else if (statusOrderPoints == 1){
+                        statusOrderPoints = 2;
+                        points.setText("PUNTOS ↓");
+                    }else{
+                        statusOrderPoints = 1;
+                        points.setText("PUNTOS ↑");
+                    }
+                }
         });
     }
 
@@ -113,6 +138,26 @@ public class RewardsList extends AppCompatActivity {
             System.out.println(rewards.get(i).getDate());
         }*/
     }
+    private void orderPointsRewards() {
+        /*
+        for (int i = 0; i < rewards.size(); i++){
+            System.out.println(rewards.get(i).getDate());
+        }
+        System.out.println("---------------");*/
+        Collections.sort(rewards, new Comparator<Reward>() {
+            public int compare(Reward s1, Reward s2) {
+                if (statusOrderPoints == 2 || statusOrderPoints == 0) {
+                    return s1.getPoints().compareTo(s2.getPoints());
+                }
+                else{
+                    return s2.getPoints().compareTo(s1.getPoints());
+                }
+            }
+        });/*
+        for (int i = 0; i < rewards.size(); i++){
+            System.out.println(rewards.get(i).getDate());
+        }*/
+    }
 
     private void initializeJSON() {
         JSONObject obj = new JSONObject();
@@ -130,7 +175,7 @@ public class RewardsList extends AppCompatActivity {
         try {
             obj2.put("id", new Integer(1));
             obj2.put("title", "reward 2");
-            obj2.put("points", new Integer(100));
+            obj2.put("points", new Integer(200));
             obj2.put("date", "11/7/2008");
             obj2.put("category", "category1");
         } catch (JSONException e) {
@@ -141,7 +186,7 @@ public class RewardsList extends AppCompatActivity {
         try {
             obj3.put("id", new Integer(1));
             obj3.put("title", "reward 3");
-            obj3.put("points", new Integer(100));
+            obj3.put("points", new Integer(300));
             obj3.put("date", "31/11/2018");
             obj3.put("category", "category1");
         } catch (JSONException e) {
