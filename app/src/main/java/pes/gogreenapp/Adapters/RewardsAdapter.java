@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import pes.gogreenapp.R;
@@ -50,9 +52,12 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
     public void onBindViewHolder(RewardsAdapter.ViewHolder holder, int position) {
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
-        holder.date.setText(rewards.get(position).getDate());
+        Date d = rewards.get(position).getDate();
+        holder.date.setText(new SimpleDateFormat("dd/MM/yyyy").format(d));
         holder.category.setText(rewards.get(position).getCategory());
     }
+
+
 
     @Override
     public int getItemCount() {

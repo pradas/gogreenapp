@@ -1,5 +1,7 @@
 package pes.gogreenapp.Objects;
 
+import java.util.Date;
+
 /**
  * Created by Albert on 19/03/2017.
  */
@@ -9,10 +11,10 @@ public class Reward {
     private Integer id;
     private String title;
     private Integer points;
-    private String date;
+    private Date date;
     private String category;
 
-    public Reward(Integer id, String title, Integer points, String date, String category) {
+    public Reward(Integer id, String title, Integer points, Date date, String category) {
         this.id = id;
         this.title = title;
         this.points = points;
@@ -28,7 +30,7 @@ public class Reward {
         this.points = points;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -45,7 +47,7 @@ public class Reward {
         return points;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
