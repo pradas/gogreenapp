@@ -101,12 +101,6 @@ public class RewardsList extends AppCompatActivity {
                     }
                 }
         });
-        fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fav.setImageDra
-            }
-        });
     }
 
     private void initializeRewards() {
