@@ -29,6 +29,7 @@ import pes.gogreenapp.Adapters.RewardsAdapter;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
+import static pes.gogreenapp.R.id.favoriteButton;
 import static pes.gogreenapp.R.id.orderDateButton;
 import static pes.gogreenapp.R.id.orderPointsButton;
 
@@ -58,6 +59,8 @@ public class RewardsList extends AppCompatActivity {
 
         final Button fecha = (Button) findViewById(orderDateButton);
         final Button points = (Button) findViewById(orderPointsButton);
+        final ImageButton fav = (ImageButton) findViewById(favoriteButton);
+
         fecha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,6 +100,12 @@ public class RewardsList extends AppCompatActivity {
                         points.setText("PUNTOS ↑");
                     }
                 }
+        });
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fav.setImageDra
+            }
         });
     }
 
