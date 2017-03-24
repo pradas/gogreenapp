@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +32,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
         public TextView points;
         public TextView date;
         public TextView category;
+        public ImageButton fav;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -38,6 +40,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
             points = (TextView) itemView.findViewById(R.id.rewardPoints);
             date = (TextView) itemView.findViewById(R.id.rewardEndDate);
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
+            fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
         }
     }
 
@@ -49,12 +52,25 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RewardsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RewardsAdapter.ViewHolder holder, int position) {
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         Date d = rewards.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd/MM/yyyy").format(d));
         holder.category.setText(rewards.get(position).getCategory());
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.fav.getTag().equals("favorite")) {
+                    holder.fav.setImageResource(R.mipmap.favoritefilled);
+                    holder.fav.setTag("favoritefilled");
+                }
+                else {
+                    holder.fav.setImageResource(R.mipmap.favorite);
+                    holder.fav.setTag("favorite");
+                }
+            }
+        });
     }
 
 
