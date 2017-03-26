@@ -51,7 +51,7 @@
                     android:id="@+id/orderPointsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Puntos" />
+                    android:text="PUNTOS" />
 
                 <Button
                     android:id="@+id/orderDateButton"
