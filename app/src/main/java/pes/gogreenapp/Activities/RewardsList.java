@@ -64,11 +64,11 @@ public class RewardsList extends AppCompatActivity {
         fecha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    orderDateRewards();
                     adapter = new RewardsAdapter(rewards);
                     recyclerView.setAdapter(adapter);
                     statusOrderPoints = 0;
                     points.setText("PUNTOS");
+                    orderDateRewards();
                     if (statusOrderDate == 0){
                         statusOrderDate = 1;
                         fecha.setText("FECHA ↑");
@@ -122,6 +122,7 @@ public class RewardsList extends AppCompatActivity {
     }
 
     private void orderDateRewards() {
+        //
         /*
         for (int i = 0; i < rewards.size(); i++){
             System.out.println(rewards.get(i).getDate());
@@ -130,10 +131,10 @@ public class RewardsList extends AppCompatActivity {
         Collections.sort(rewards, new Comparator<Reward>() {
             public int compare(Reward s1, Reward s2) {
                 if (statusOrderDate == 2 || statusOrderDate == 0) {
-                    return s1.getDate().compareTo(s2.getDate());
+                    return s1.getEndDate().compareTo(s2.getEndDate());
                 }
                 else{
-                    return s2.getDate().compareTo(s1.getDate());
+                    return s2.getEndDate().compareTo(s1.getEndDate());
                 }
             }
         });/*
