@@ -12,6 +12,7 @@ public class Reward {
     private String title;
     private Integer points;
     private Date endDate;
+    private Date exchangeDate;
     private String category;
 
     public Reward(Integer id, String title, Integer points, Date date, String category) {
@@ -38,8 +39,11 @@ public class Reward {
         this.category = category;
     }
 
-    public String getTitle() {
+    public Integer getId() {
+        return id;
+    }
 
+    public String getTitle() {
         return title;
     }
 
@@ -53,5 +57,13 @@ public class Reward {
 
     public String getCategory() {
         return category;
+    }
+
+    public Date getExchangeDate() {
+        return exchangeDate;
+    }
+
+    public void setExchangeDate(Date exchangeDate) {
+        this.exchangeDate = exchangeDate;
     }
 }

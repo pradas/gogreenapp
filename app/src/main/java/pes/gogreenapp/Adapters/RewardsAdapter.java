@@ -64,15 +64,13 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
                 if (holder.fav.getTag().equals("favorite")) {
                     holder.fav.setImageResource(R.mipmap.favoritefilled);
                     holder.fav.setTag("favoritefilled");
-                }
-                else {
+                } else {
                     holder.fav.setImageResource(R.mipmap.favorite);
                     holder.fav.setTag("favorite");
                 }
             }
         });
     }
-
 
 
     @Override
