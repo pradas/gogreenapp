@@ -32,12 +32,14 @@
                     android:id="@+id/showAllButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAllCaps="true"
                     android:text="Todos" />
 
                 <Button
                     android:id="@+id/showCategoriesButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAllCaps="true"
                     android:text="Categorias" />
 
                 <Button
@@ -45,19 +47,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/showAllButton"
+                    android:textAllCaps="true"
                     android:text="Canjeables" />
 
                 <Button
                     android:id="@+id/orderPointsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAllCaps="true"
                     android:text="Puntos" />
 
                 <Button
                     android:id="@+id/orderDateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fecha" />
+                    android:textAllCaps="true"
+                    android:text="Fecha ↓" />
 
             </LinearLayout>
         </HorizontalScrollView>
