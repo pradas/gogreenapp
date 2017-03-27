@@ -1,9 +1,12 @@
 package pes.gogreenapp.Activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -26,11 +29,14 @@ import pes.gogreenapp.R;
 import static pes.gogreenapp.R.id.favoriteButton;
 import static pes.gogreenapp.R.id.orderDateButton;
 import static pes.gogreenapp.R.id.orderPointsButton;
+import static pes.gogreenapp.R.id.showAllButton;
+import static pes.gogreenapp.R.id.showCategoriesButton;
 
 public class RewardsList extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
+    String categorySelected = "";
     private List<Reward> rewards = new ArrayList<>();
 
     @Deprecated
@@ -56,6 +62,10 @@ public class RewardsList extends AppCompatActivity {
 
         final Button endDate = (Button) findViewById(orderDateButton);
         final Button points = (Button) findViewById(orderPointsButton);
+        final Button categories = (Button) findViewById(showCategoriesButton);
+        final Button allRewards = (Button) findViewById(showAllButton);
+        final String [] categoriesList = {"Conciertos", "Transporte", "Ocio", "Gastronomía", "Cultura", "Turismo", "Tecnología", "Salud", "Otros"};
+
 
         /**
          *
@@ -88,6 +98,44 @@ public class RewardsList extends AppCompatActivity {
                 points.setText("PUNTOS ↓");
             }
         });
+        categories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
+                mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
+                int checkeds = 0;
+                mBuilder.setSingleChoiceItems(categoriesList, checkeds, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Al seleccionar una categoria
+                        categorySelected = categoriesList[which];
+                    }
+                });
+                mBuilder.setPositiveButton("SELECCIONAR CATEGORIA", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        List<Reward> filteredRewards = filterRewardsByCategories();
+                        adapter = new RewardsAdapter(filteredRewards);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+                mBuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        categorySelected = "";
+                        // User cancelled the dialog
+                    }
+                });
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        });
+        allRewards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter = new RewardsAdapter(rewards);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     @Deprecated
@@ -109,15 +157,23 @@ public class RewardsList extends AppCompatActivity {
         }
     }
 
+    private List<Reward> filterRewardsByCategories () {
+        List <Reward> rewardsFiltered = new ArrayList<>();
+        for (int i = 0; i < rewards.size(); i ++) {
+            if (rewards.get(i).getCategory().equals(categorySelected)) rewardsFiltered.add(rewards.get(i));
+        }
+        return rewardsFiltered;
+    }
+
     @Deprecated
     private void initializeJSON() {
         JSONObject obj = new JSONObject();
         try {
             obj.put("id", new Integer(1));
-            obj.put("title", "reward 1");
+            obj.put("title", "Reward 1");
             obj.put("points", new Integer(100));
             obj.put("date", "01/01/2018");
-            obj.put("category", "category1");
+            obj.put("category", "Ocio");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -128,7 +184,7 @@ public class RewardsList extends AppCompatActivity {
             obj2.put("title", "reward 2");
             obj2.put("points", new Integer(200));
             obj2.put("date", "11/7/2008");
-            obj2.put("category", "category1");
+            obj2.put("category", "Transporte");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -139,7 +195,7 @@ public class RewardsList extends AppCompatActivity {
             obj3.put("title", "reward 3");
             obj3.put("points", new Integer(300));
             obj3.put("date", "31/11/2018");
-            obj3.put("category", "category1");
+            obj3.put("category", "Cultura");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -150,3 +206,4 @@ public class RewardsList extends AppCompatActivity {
         jsonArray.put(obj2);
     }
 }
+
