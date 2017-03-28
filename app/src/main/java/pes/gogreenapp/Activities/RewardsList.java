@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +25,6 @@ import pes.gogreenapp.Adapters.RewardsAdapter;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
-import static pes.gogreenapp.R.id.favoriteButton;
 import static pes.gogreenapp.R.id.orderDateButton;
 import static pes.gogreenapp.R.id.orderPointsButton;
 import static pes.gogreenapp.R.id.showAllButton;
@@ -71,36 +69,68 @@ public class RewardsList extends AppCompatActivity {
          *
          */
         endDate.setOnClickListener(v -> {
-            adapter = new RewardsAdapter(rewards);
-            recyclerView.setAdapter(adapter);
             points.setText("PUNTOS");
             if ("FECHA ↓".equals(endDate.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 endDate.setText("FECHA ↑");
             } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 endDate.setText("FECHA ↓");
             }
+            recyclerView.setAdapter(adapter);
         });
 
         /**
          *
          */
         points.setOnClickListener(v -> {
-            adapter = new RewardsAdapter(rewards);
-            recyclerView.setAdapter(adapter);
             endDate.setText("FECHA");
             if ("PUNTOS ↓".equals(points.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 points.setText("PUNTOS ↑");
             } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
-                Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 points.setText("PUNTOS ↓");
             }
+            recyclerView.setAdapter(adapter);
         });
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String pastCategory = categorySelected;
+                categorySelected = "Conciertos";
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
                 mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
                 int checkeds = 0;
@@ -121,7 +151,7 @@ public class RewardsList extends AppCompatActivity {
                 });
                 mBuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        categorySelected = "";
+                        categorySelected = pastCategory;
                         // User cancelled the dialog
                     }
                 });
@@ -132,6 +162,7 @@ public class RewardsList extends AppCompatActivity {
         allRewards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categorySelected = "";
                 adapter = new RewardsAdapter(rewards);
                 recyclerView.setAdapter(adapter);
             }
@@ -195,7 +226,7 @@ public class RewardsList extends AppCompatActivity {
             obj3.put("title", "reward 3");
             obj3.put("points", new Integer(300));
             obj3.put("date", "31/11/2018");
-            obj3.put("category", "Cultura");
+            obj3.put("category", "Transporte");
         } catch (JSONException e) {
             e.printStackTrace();
         }
