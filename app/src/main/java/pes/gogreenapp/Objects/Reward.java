@@ -11,14 +11,15 @@ public class Reward {
     private Integer id;
     private String title;
     private Integer points;
-    private Date date;
+    private Date endDate;
+    private Date exchangeDate;
     private String category;
 
     public Reward(Integer id, String title, Integer points, Date date, String category) {
         this.id = id;
         this.title = title;
         this.points = points;
-        this.date = date;
+        this.endDate = date;
         this.category = category;
     }
 
@@ -31,15 +32,18 @@ public class Reward {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.endDate = date;
     }
 
     public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getTitle() {
+    public Integer getId() {
+        return id;
+    }
 
+    public String getTitle() {
         return title;
     }
 
@@ -47,11 +51,19 @@ public class Reward {
         return points;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getEndDate() {
+        return endDate;
     }
 
     public String getCategory() {
         return category;
+    }
+
+    public Date getExchangeDate() {
+        return exchangeDate;
+    }
+
+    public void setExchangeDate(Date exchangeDate) {
+        this.exchangeDate = exchangeDate;
     }
 }

@@ -55,7 +55,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
     public void onBindViewHolder(final RewardsAdapter.ViewHolder holder, int position) {
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
-        Date d = rewards.get(position).getDate();
+        Date d = rewards.get(position).getEndDate();
         holder.date.setText(new SimpleDateFormat("dd/MM/yyyy").format(d));
         holder.category.setText(rewards.get(position).getCategory());
         holder.fav.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +64,13 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
                 if (holder.fav.getTag().equals("favorite")) {
                     holder.fav.setImageResource(R.mipmap.favoritefilled);
                     holder.fav.setTag("favoritefilled");
-                }
-                else {
+                } else {
                     holder.fav.setImageResource(R.mipmap.favorite);
                     holder.fav.setTag("favorite");
                 }
             }
         });
     }
-
 
 
     @Override
