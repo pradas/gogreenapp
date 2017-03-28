@@ -1,8 +1,6 @@
 package pes.gogreenapp;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewAction;
+
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -25,19 +23,16 @@ import static pes.gogreenapp.R.id.rewardPoints;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.RecyclerView;
 
 import pes.gogreenapp.Activities.RewardsList;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestFiltroRewords {
+public class TestFiltroRewards {
     @Before
     public void startTest(){
 
@@ -173,18 +168,6 @@ public class TestFiltroRewords {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Ocio"))));
     }
     @Test
-    public void SeleccionarCategoriaCultura(){
-        onView(withId(R.id.showCategoriesButton))
-                .perform(scrollTo())
-                .perform(click());
-        onView(withText("Cultura"))
-                .perform(click());
-        onView(withText("SELECCIONAR CATEGORIA"))
-                .perform(click());
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("Cultura"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Cultura"))));
-    }
-    @Test
     public void SeleccionarCategoriaTransporte(){
         onView(withId(R.id.showCategoriesButton))
                 .perform(scrollTo())
@@ -195,6 +178,9 @@ public class TestFiltroRewords {
                 .perform(click());
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("Transporte"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(2)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(4)).check(matches(hasDescendant(withText("Transporte"))));
     }
     @Test
     public void VerTodos(){
