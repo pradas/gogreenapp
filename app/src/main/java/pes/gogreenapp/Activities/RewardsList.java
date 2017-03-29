@@ -1,9 +1,11 @@
 package pes.gogreenapp.Activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -20,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.RewardsAdapter;
+import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
@@ -32,10 +35,12 @@ public class RewardsList extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
     private List<Reward> rewards = new ArrayList<>();
+    private String url = "http://10.4.41.145/api/rewards";
+    private String TAG = RewardsList.class.getSimpleName();
 
     @Deprecated
     JSONArray jsonArray = new JSONArray();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +50,7 @@ public class RewardsList extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        /* Se ha de cambiar cuando tengamos la llamada a la API
-        ------------------------------------------------------ */
-        initializeJSON();
-        initializeRewards();
-        /* ---------------------------------------------------- */
-
-        adapter = new RewardsAdapter(rewards);
-        recyclerView.setAdapter(adapter);
+        new GetRewards().execute(url);
 
         final Button endDate = (Button) findViewById(orderDateButton);
         final Button points = (Button) findViewById(orderPointsButton);
@@ -90,63 +88,39 @@ public class RewardsList extends AppCompatActivity {
         });
     }
 
-    @Deprecated
-    private void initializeRewards() {
-        JSONObject jsonObject;
-        for (int i = 0; i < jsonArray.length(); ++i) {
-            try {
-                jsonObject = jsonArray.getJSONObject(i);
-                DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
-                Date d = sourceFormat.parse((String) jsonObject.get("date"));
-                rewards.add(new Reward((Integer) jsonObject.get("id"),
-                        (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
-                        (Date) d, (String) jsonObject.get("category")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    private class GetRewards extends AsyncTask<String, Void, Void> {
 
-    @Deprecated
-    private void initializeJSON() {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("id", new Integer(1));
-            obj.put("title", "reward 1");
-            obj.put("points", new Integer(100));
-            obj.put("date", "01/01/2018");
-            obj.put("category", "category1");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        @Override
+        protected Void doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(url);
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("rewards");
+                    System.out.println(jsonArray.toString());
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        Date d = df.parse((String) jsonObject.get("end_date"));
+                        rewards.add(new Reward((Integer) jsonObject.get("id"),
+                                (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
+                                d, (String) jsonObject.get("category")));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
-        jsonArray.put(obj);
-        JSONObject obj2 = new JSONObject();
-        try {
-            obj2.put("id", new Integer(1));
-            obj2.put("title", "reward 2");
-            obj2.put("points", new Integer(200));
-            obj2.put("date", "11/7/2008");
-            obj2.put("category", "category1");
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        @Override
+        protected void onPostExecute(Void result) {
+            adapter = new RewardsAdapter(rewards);
+            recyclerView.setAdapter(adapter);
         }
-        jsonArray.put(obj2);
-        JSONObject obj3 = new JSONObject();
-        try {
-            obj3.put("id", new Integer(1));
-            obj3.put("title", "reward 3");
-            obj3.put("points", new Integer(300));
-            obj3.put("date", "31/11/2018");
-            obj3.put("category", "category1");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        jsonArray.put(obj3);
-        jsonArray.put(obj2);
-        jsonArray.put(obj);
-        jsonArray.put(obj3);
-        jsonArray.put(obj2);
     }
 }
