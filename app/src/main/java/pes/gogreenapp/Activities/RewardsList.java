@@ -160,7 +160,6 @@ public class RewardsList extends AppCompatActivity {
         }
     }
 
-
     private class GetCategories extends AsyncTask<String, Void, Void> {
 
         @Override
