@@ -43,25 +43,25 @@ public class TestListadoRewards {
     public void showAllRewards() {
         onView(withId(R.id.rv)).perform(click());   //Para que pueda comprobar, si no, no lo comprueba
 
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("reward 2"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("200"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("Transporte"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("11/07/2008"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("reward 2"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("200"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("11/07/2008"))));
 
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("reward 2"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("200"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("Transporte"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(1)).check(matches(hasDescendant(withText("11/07/2008"))));
 
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("reward 2"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("200"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("Transporte"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("11/07/2008"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(2)).check(matches(hasDescendant(withText("reward 2"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(2)).check(matches(hasDescendant(withText("200"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(2)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(2)).check(matches(hasDescendant(withText("11/07/2008"))));
 
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Reward 1"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("100"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("Ocio"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(0)).check(matches(hasDescendant(withText("01/01/2018"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("Reward 1"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("100"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("Ocio"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(3)).check(matches(hasDescendant(withText("01/01/2018"))));
 
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(4)).check(matches(hasDescendant(withText("Reward 1"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(4)).check(matches(hasDescendant(withText("100"))));
@@ -73,10 +73,10 @@ public class TestListadoRewards {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("Transporte"))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("01/12/2018"))));
 
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("reward 3"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("300"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("Transporte"))));
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withText("01/12/2018"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(6)).check(matches(hasDescendant(withText("reward 3"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(6)).check(matches(hasDescendant(withText("300"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(6)).check(matches(hasDescendant(withText("Transporte"))));
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(6)).check(matches(hasDescendant(withText("01/12/2018"))));
     }
 
     @Test
