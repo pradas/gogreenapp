@@ -65,9 +65,8 @@ public class RewardsList extends AppCompatActivity {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
                     adapter = new RewardsAdapter(rewards);
-                }
-                else {
-                    List <Reward> filteredRewards = filterRewardsByCategories();
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
                     adapter = new RewardsAdapter(filteredRewards);
                 }
@@ -76,9 +75,8 @@ public class RewardsList extends AppCompatActivity {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
                     adapter = new RewardsAdapter(rewards);
-                }
-                else {
-                    List <Reward> filteredRewards = filterRewardsByCategories();
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
                     adapter = new RewardsAdapter(filteredRewards);
                 }
@@ -96,9 +94,8 @@ public class RewardsList extends AppCompatActivity {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
                     adapter = new RewardsAdapter(rewards);
-                }
-                else {
-                    List <Reward> filteredRewards = filterRewardsByCategories();
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
                     adapter = new RewardsAdapter(filteredRewards);
                 }
@@ -107,9 +104,8 @@ public class RewardsList extends AppCompatActivity {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
                     adapter = new RewardsAdapter(rewards);
-                }
-                else {
-                    List <Reward> filteredRewards = filterRewardsByCategories();
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
                     adapter = new RewardsAdapter(filteredRewards);
                 }
@@ -117,7 +113,8 @@ public class RewardsList extends AppCompatActivity {
             }
             recyclerView.setAdapter(adapter);
         });
-        categories.setOnClickListener(new View.OnClickListener() {
+
+        categoriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String pastCategory = categorySelected;
@@ -125,11 +122,11 @@ public class RewardsList extends AppCompatActivity {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
                 mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
                 int checkeds = 0;
-                mBuilder.setSingleChoiceItems(categoriesList, checkeds, new DialogInterface.OnClickListener() {
+                mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]), checkeds, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Al seleccionar una categoria
-                        categorySelected = categoriesList[which];
+                        categorySelected = categories.toArray(new String[categories.size()])[which];
                     }
                 });
                 mBuilder.setPositiveButton("SELECCIONAR CATEGORIA", new DialogInterface.OnClickListener() {
@@ -150,6 +147,7 @@ public class RewardsList extends AppCompatActivity {
                 dialog.show();
             }
         });
+
         allRewards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,9 +155,6 @@ public class RewardsList extends AppCompatActivity {
                 adapter = new RewardsAdapter(rewards);
                 recyclerView.setAdapter(adapter);
             }
-        allRewards.setOnClickListener(v -> {
-            adapter = new RewardsAdapter(rewards);
-            recyclerView.setAdapter(adapter);
         });
     }
 
@@ -231,11 +226,6 @@ public class RewardsList extends AppCompatActivity {
             }
             return null;
         }
-        jsonArray.put(obj3);
-        jsonArray.put(obj2);
-        jsonArray.put(obj);
-        jsonArray.put(obj3);
-        jsonArray.put(obj2);
     }
 }
 
