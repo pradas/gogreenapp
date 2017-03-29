@@ -60,55 +60,103 @@ public class RewardsList extends AppCompatActivity {
          *
          */
         endDate.setOnClickListener(v -> {
-            adapter = new RewardsAdapter(rewards);
-            recyclerView.setAdapter(adapter);
             points.setText("PUNTOS");
             if ("FECHA ↓".equals(endDate.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 endDate.setText("FECHA ↑");
             } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 endDate.setText("FECHA ↓");
             }
+            recyclerView.setAdapter(adapter);
         });
 
         /**
          *
          */
         points.setOnClickListener(v -> {
-            adapter = new RewardsAdapter(rewards);
-            recyclerView.setAdapter(adapter);
             endDate.setText("FECHA");
             if ("PUNTOS ↓".equals(points.getText())) {
-                Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 points.setText("PUNTOS ↑");
             } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
-                Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsAdapter(rewards);
+                }
+                else {
+                    List <Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsAdapter(filteredRewards);
+                }
                 points.setText("PUNTOS ↓");
             }
+            recyclerView.setAdapter(adapter);
         });
-
-        categoriesButton.setOnClickListener(v -> {
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
-            mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-            int checkeds = 0;
-            mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]), checkeds, (dialog, which) -> {
-                //Al seleccionar una categoria
-                categorySelected = categories.toArray(new String[categories.size()])[which];
-            });
-            mBuilder.setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
-                // User clicked OK button
-                List<Reward> filteredRewards = filterRewardsByCategories();
-                adapter = new RewardsAdapter(filteredRewards);
-                recyclerView.setAdapter(adapter);
-            });
-            mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
+        categories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pastCategory = categorySelected;
+                categorySelected = "Conciertos";
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
+                mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
+                int checkeds = 0;
+                mBuilder.setSingleChoiceItems(categoriesList, checkeds, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Al seleccionar una categoria
+                        categorySelected = categoriesList[which];
+                    }
+                });
+                mBuilder.setPositiveButton("SELECCIONAR CATEGORIA", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        List<Reward> filteredRewards = filterRewardsByCategories();
+                        adapter = new RewardsAdapter(filteredRewards);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+                mBuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        categorySelected = pastCategory;
+                        // User cancelled the dialog
+                    }
+                });
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        });
+        allRewards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 categorySelected = "";
-                // User cancelled the dialog
-            });
-            AlertDialog dialog = mBuilder.create();
-            dialog.show();
-        });
+                adapter = new RewardsAdapter(rewards);
+                recyclerView.setAdapter(adapter);
+            }
         allRewards.setOnClickListener(v -> {
             adapter = new RewardsAdapter(rewards);
             recyclerView.setAdapter(adapter);
@@ -183,6 +231,11 @@ public class RewardsList extends AppCompatActivity {
             }
             return null;
         }
+        jsonArray.put(obj3);
+        jsonArray.put(obj2);
+        jsonArray.put(obj);
+        jsonArray.put(obj3);
+        jsonArray.put(obj2);
     }
 }
 
