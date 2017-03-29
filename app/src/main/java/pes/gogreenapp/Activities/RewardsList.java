@@ -186,6 +186,7 @@ public class RewardsList extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
     }
 
     private List<Reward> filterRewardsByCategories () {
