@@ -26,6 +26,8 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
         this.rewards = rewards;
     }
 
+    public void setRewards(List<Reward> rewards) { this.rewards = rewards; }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView title;

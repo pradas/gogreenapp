@@ -3,6 +3,7 @@ package pes.gogreenapp.Activities;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
+import static android.os.Build.VERSION_CODES.M;
 import static pes.gogreenapp.R.id.orderDateButton;
 import static pes.gogreenapp.R.id.orderPointsButton;
 import static pes.gogreenapp.R.id.showAllButton;
@@ -36,7 +38,8 @@ import static pes.gogreenapp.R.id.showCategoriesButton;
 public class RewardsList extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    RewardsAdapter adapter;
+    private SwipeRefreshLayout swipeContainer;
     String categorySelected = "";
     private String TAG = RewardsList.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
@@ -47,6 +50,7 @@ public class RewardsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards_list);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         new GetCategories().execute("http://10.4.41.145/api/categories");
@@ -156,6 +160,31 @@ public class RewardsList extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
             }
         });
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+            }
+        });
+    }
+
+    void refreshItems() {
+        // Load items
+        rewards.clear();
+        new GetRewards().execute("http://10.4.41.145/api/rewards");
+        // Load complete
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        // ...
+        adapter.setRewards(rewards);
+        adapter.notifyDataSetChanged();
+        // Stop refresh animation
+        swipeContainer.setRefreshing(false);
     }
 
     private List<Reward> filterRewardsByCategories() {
