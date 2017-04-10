@@ -64,6 +64,13 @@
                     android:text="FECHA ↓"
                     android:textAllCaps="true" />
 
+                <Button
+                    android:id="@+id/logOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOG OUT"
+                    android:textAllCaps="true" />
+
             </LinearLayout>
         </HorizontalScrollView>
 

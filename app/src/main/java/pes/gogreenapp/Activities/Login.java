@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import pes.gogreenapp.R;
+import pes.gogreenapp.Session.SessionManager;
 
 /**
  * Created by Victor on 10/04/2017.
@@ -19,11 +20,16 @@ import pes.gogreenapp.R;
 public class Login extends AppCompatActivity {
     Button bLogin,bCancel;
     EditText tNombre,tContraseña;
+    // Session Manager Class
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        // Session Manager
+        session = new SessionManager(getApplicationContext());
 
         bLogin = (Button)findViewById(R.id.buttonLogin);
         tNombre = (EditText)findViewById(R.id.textNombre);
@@ -32,8 +38,12 @@ public class Login extends AppCompatActivity {
         bCancel = (Button)findViewById(R.id.buttonCancel);
 
         bLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(Login.this, RewardsList.class);
-            startActivity(intent);
+            //Falta llamar a API y coger token si es correcto,
+            session.createLoginSession(tNombre.getText().toString(), "asdfALdkj1q20e3ijdF");
+            // Staring MainActivity
+            Intent i = new Intent(getApplicationContext(), RewardsList.class);
+            startActivity(i);
+            finish();
         });
 
         bCancel.setOnClickListener(v -> {

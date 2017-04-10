@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,12 +23,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.RewardsAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Session.SessionManager;
 
 import static android.os.Build.VERSION_CODES.M;
 import static pes.gogreenapp.R.id.orderDateButton;
@@ -44,6 +47,8 @@ public class RewardsList extends AppCompatActivity {
     private String TAG = RewardsList.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
+    // Session Manager Class
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,26 @@ public class RewardsList extends AppCompatActivity {
         final Button categoriesButton = (Button) findViewById(showCategoriesButton);
         final Button allRewards = (Button) findViewById(showAllButton);
 
+        //-------------- Comprobar si esta logejat i fer login sino ------------------
+        session = new SessionManager(getApplicationContext());
         /**
-         *
-         */
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity is he is not
+         * logged in
+         * */
+        session.checkLogin();
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+        String name = user.get(SessionManager.KEY_NAME);
+        String token = user.get(SessionManager.KEY_TOKEN);
+        Toast.makeText(getApplicationContext(),name, Toast.LENGTH_LONG).show();
+        //----------------------------- Fer logout ------------------------------------
+        final Button logOut = (Button) findViewById(R.id.logOut);
+        logOut.setOnClickListener(v -> {
+            session.logoutUser();
+        });
+        //--------------------------- Final gestio usuaris ----------------------------
+
         endDate.setOnClickListener(v -> {
             points.setText("PUNTOS");
             if ("FECHA ↓".equals(endDate.getText())) {
