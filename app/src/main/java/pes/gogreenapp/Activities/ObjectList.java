@@ -35,13 +35,13 @@ import static pes.gogreenapp.R.id.orderPointsButton;
 import static pes.gogreenapp.R.id.showAllButton;
 import static pes.gogreenapp.R.id.showCategoriesButton;
 
-public class RewardsList extends AppCompatActivity {
+public class ObjectList extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RewardsAdapter adapter;
     private SwipeRefreshLayout swipeContainer;
     String categorySelected = "";
-    private String TAG = RewardsList.class.getSimpleName();
+    private String TAG = ObjectList.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class RewardsList extends AppCompatActivity {
             public void onClick(View v) {
                 String pastCategory = categorySelected;
                 categorySelected = "Conciertos";
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RewardsList.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ObjectList.this);
                 mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
                 int checkeds = 0;
                 mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]), checkeds, new DialogInterface.OnClickListener() {
