@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="pes.gogreenapp.Activities.RewardsList">
+    tools:context="pes.gogreenapp.Fragments.RewardsList">
 
     <RelativeLayout
         android:layout_width="match_parent"
