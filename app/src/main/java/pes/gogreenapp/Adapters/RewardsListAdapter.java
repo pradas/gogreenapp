@@ -18,11 +18,11 @@ import pes.gogreenapp.Objects.Reward;
  * Created by Albert on 19/03/2017.
  */
 
-public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHolder> {
+public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.ViewHolder> {
 
     private List<Reward> rewards;
 
-    public RewardsAdapter(List<Reward> rewards) {
+    public RewardsListAdapter(List<Reward> rewards) {
         this.rewards = rewards;
     }
 
@@ -47,14 +47,14 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.ViewHold
     }
 
     @Override
-    public RewardsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_rewards_list, parent, false);
+    public RewardsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewards_list_cardview, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final RewardsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RewardsListAdapter.ViewHolder holder, int position) {
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         Date d = rewards.get(position).getEndDate();

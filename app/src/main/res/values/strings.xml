@@ -1,12 +1,8 @@
 <resources>
     <string name="app_name">GoGreen</string>
-    <string name="drawer_open"></string>
-    <string name="drawer_close"></string>
-
-
-    <!-- Toolbar titles when navigation menu item is selected -->
-    <string-array name="navigation_drawer_items">
-        <item>Rewards</item>
-    </string-array>
-
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="rewards">Rewards</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About Us</string>
 </resources>

@@ -1,5 +1,6 @@
 package pes.gogreenapp.Handlers;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -26,6 +27,12 @@ public class HttpHandler {
     public HttpHandler() {
     }
 
+    /**
+     * Method to do a Http GET petition.
+     *
+     * @param reqUrl is the url of the service
+     * @return the response of the service called in String format.
+     */
     public String makeServiceCall(String reqUrl) {
         String response = null;
         try {
@@ -33,7 +40,7 @@ public class HttpHandler {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            // lee la response
+            /* Read the response */
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);
         } catch (MalformedURLException e) {
@@ -48,6 +55,13 @@ public class HttpHandler {
         return response;
     }
 
+    /**
+     * Convert the InputStream into String
+     *
+     * @param is InputStream from a previous service call
+     * @return the InputStream transformed into a String format
+     */
+    @NonNull
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();

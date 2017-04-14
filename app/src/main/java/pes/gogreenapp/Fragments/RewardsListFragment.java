@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import pes.gogreenapp.Activities.ObjectList;
-import pes.gogreenapp.Adapters.RewardsAdapter;
+import pes.gogreenapp.Activities.ListActivity;
+import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
@@ -42,25 +42,25 @@ import static pes.gogreenapp.R.id.showCategoriesButton;
  * Created by Albert on 13/04/2017.
  */
 
-public class RewardsList extends Fragment {
+public class RewardsListFragment extends Fragment {
     public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RewardsAdapter adapter;
+    RewardsListAdapter adapter;
     private SwipeRefreshLayout swipeContainer;
     String categorySelected = "";
-    private String TAG = ObjectList.class.getSimpleName();
+    private String TAG = ListActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
 
-    public RewardsList() {
+    public RewardsListFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_rewards_list, container, false);
+        return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
     @Override
@@ -82,21 +82,21 @@ public class RewardsList extends Fragment {
             if ("FECHA ↓".equals(endDate.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsAdapter(rewards);
+                    adapter = new RewardsListAdapter(rewards);
                 } else {
                     List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsAdapter(filteredRewards);
+                    adapter = new RewardsListAdapter(filteredRewards);
                 }
                 endDate.setText("FECHA ↑");
             } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsAdapter(rewards);
+                    adapter = new RewardsListAdapter(rewards);
                 } else {
                     List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsAdapter(filteredRewards);
+                    adapter = new RewardsListAdapter(filteredRewards);
                 }
                 endDate.setText("FECHA ↓");
             }
@@ -108,21 +108,21 @@ public class RewardsList extends Fragment {
             if ("PUNTOS ↓".equals(points.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsAdapter(rewards);
+                    adapter = new RewardsListAdapter(rewards);
                 } else {
                     List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsAdapter(filteredRewards);
+                    adapter = new RewardsListAdapter(filteredRewards);
                 }
                 points.setText("PUNTOS ↑");
             } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsAdapter(rewards);
+                    adapter = new RewardsListAdapter(rewards);
                 } else {
                     List<Reward> filteredRewards = filterRewardsByCategories();
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsAdapter(filteredRewards);
+                    adapter = new RewardsListAdapter(filteredRewards);
                 }
                 points.setText("PUNTOS ↓");
             }
@@ -148,7 +148,7 @@ public class RewardsList extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
                         List<Reward> filteredRewards = filterRewardsByCategories();
-                        adapter = new RewardsAdapter(filteredRewards);
+                        adapter = new RewardsListAdapter(filteredRewards);
                         recyclerView.setAdapter(adapter);
                     }
                 });
@@ -167,7 +167,7 @@ public class RewardsList extends Fragment {
             @Override
             public void onClick(View v) {
                 categorySelected = "";
-                adapter = new RewardsAdapter(rewards);
+                adapter = new RewardsListAdapter(rewards);
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -239,7 +239,7 @@ public class RewardsList extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new RewardsAdapter(rewards);
+            adapter = new RewardsListAdapter(rewards);
             recyclerView.setAdapter(adapter);
         }
     }
