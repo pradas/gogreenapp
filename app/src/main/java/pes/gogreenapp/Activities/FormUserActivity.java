@@ -3,6 +3,7 @@ package pes.gogreenapp.Activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,19 +15,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.junit.runner.Request;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.R;
 
 /**
@@ -131,37 +137,17 @@ public class FormUserActivity extends AppCompatActivity {
         String username = ((TextView) findViewById(R.id.editUsername)).getText().toString();
         String email = ((TextView) findViewById(R.id.editEmail)).getText().toString();
         String password = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
-        String birthdayDate = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
+        String birthdayDate = ((TextView) findViewById(R.id.editFechaNacimiento)).getText().toString();
         mRequestQueue = Volley.newRequestQueue(this);
-        String url ="http://www.google.com";
-        if(!(username.isEmpty() || email.isEmpty() || birthdayDate.isEmpty())) {
-            // Request a string response from the provided URL
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            Toast.makeText(getApplicationContext(),"Creado correctamente", Toast.LENGTH_LONG).show();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(),"No Creado correctamente", Toast.LENGTH_LONG).show();
-                            mTextView.setText("That didn't work!");
-                        }
-            }){
-                @Override
-                protected Map<String,String> getParams() throws AuthFailureError {
-                    getParams().put("username",username);
-                    getParams().put("email",email);
-                    getParams().put("password",password);
-                    getParams().put("birthdayDate",birthdayDate);
-                    return getParams();
-                }
-            };
-// Add the request to the RequestQueue.
-            stringRequest.setTag(TAG);
-            mRequestQueue.add(stringRequest);
-        }
+        String url ="http://raichu.fib.upc.edu/api/rewards";
+        //if(!(username.isEmpty() || email.isEmpty() || birthdayDate.isEmpty())) {
+            HashMap<String,String> impl = new HashMap<>();
+            impl.put("username",username);
+            impl.put("email",email);
+            impl.put("password",password);
+            impl.put("birthdayDate",birthdayDate);
+        String result = new HttpHandler().makeServiceCall(url,"POST",impl);
+        Toast.makeText(this,result, Toast.LENGTH_LONG).show();
+        ((TextView) findViewById(R.id.editUsername)).setText(result);
     }
 }
