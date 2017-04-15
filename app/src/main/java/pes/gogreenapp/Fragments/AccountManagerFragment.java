@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 
 import pes.gogreenapp.R;
 
-public class AboutUsFragment extends Fragment {
-
+public class AccountManagerFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public AboutUsFragment() {
+    public AccountManagerFragment() {
     }
 
     /**
@@ -32,7 +31,7 @@ public class AboutUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.about_us_fragment, container, false);
+        return inflater.inflate(R.layout.account_manager_fragment, container, false);
     }
 
 }

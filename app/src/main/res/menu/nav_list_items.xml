@@ -16,6 +16,9 @@
             android:id="@+id/settings_fragment"
             android:title="@string/settings" />
         <item
+            android:id="@+id/account_manager_fragment"
+            android:title="@string/account_manager" />
+        <item
             android:id="@+id/about_us_fragment"
             android:title="@string/about_us" />
     </group>

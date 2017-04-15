@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import org.jetbrains.annotations.Contract;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
+import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.R;
@@ -121,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.about_us_fragment:
                 fragmentClass = AboutUsFragment.class;
+                break;
+            case R.id.account_manager_fragment:
+                fragmentClass = AccountManagerFragment.class;
                 break;
             default:
                 fragmentClass = RewardsListFragment.class;
