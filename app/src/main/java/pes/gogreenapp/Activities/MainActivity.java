@@ -78,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Set a listener that will be notified when a menu item is selected.
      *
-     * @param navigationView
+     * @param navigationView view of the Navigation Drawer.
      */
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -89,8 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Create a new fragment and specify the fragment to show based on nav item clicked
+     *
+     * @param menuItem item clicked on the Navigation Drawer
+     */
     public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
         switch (menuItem.getItemId()) {
@@ -119,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.closeDrawers();
     }
 
+    /**
+     * Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
+     *
+     * @param savedInstanceState last functional state of this activity.
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -126,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
     }
 
+    /**
+     * Change the actual configuration of the Drawer Toggle.
+     *
+     * @param newConfig the new Configuration.
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
