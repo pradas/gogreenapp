@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import org.jetbrains.annotations.Contract;
 
+import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.R;
@@ -27,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
 
     /**
-     * onCreat method that initialize all the items used in this Activity and layout.
+     * onCreate method to initialize the Activity.
      *
-     * @param savedInstanceState last functional state of this activity.
+     * @param savedInstanceState If the activity is being re-initialized after previously being
+     *                           shut down then this Bundle contains the data it most recently
+     *                           supplied in onSaveInstanceState(Bundle). Otherwise it is null.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Setup method of the Action Bar
+     * Construct a new ActionBarDrawerToggle with a Toolbar.
      *
      * @return the new Action Bar with all the components added.
      */
@@ -65,10 +68,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to check where the item is selected.
+     * This hook is called whenever an item in your options menu is selected.
+     * The default implementation simply returns false to have the normal
+     * processing happen (calling the item's Runnable or sending a message to
+     * its Handler as appropriate).  You can use this method for any items
+     * for which you would like to do processing without those other
+     * facilities.
+     * <p>
+     * Derived classes should call through to the base class for it to
+     * perform the default menu handling.
      *
-     * @param item selected or clicked.
-     * @return true if the selection is on the Drawer Toggle. Either, return false.
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed,
+     * true to consume it here.
+     * @see #onCreateOptionsMenu
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -106,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settings_fragment:
                 fragmentClass = SettingsFragment.class;
                 break;
+            case R.id.about_us_fragment:
+                fragmentClass = AboutUsFragment.class;
+                break;
             default:
                 fragmentClass = RewardsListFragment.class;
         }
@@ -122,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
+
         // Set action bar title
         setTitle(menuItem.getTitle());
+
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }

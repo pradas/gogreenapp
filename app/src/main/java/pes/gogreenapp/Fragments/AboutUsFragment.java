@@ -12,13 +12,12 @@ import pes.gogreenapp.R;
 /**
  * Created by Albert on 13/04/2017.
  */
-public class SettingsFragment extends Fragment {
-    public static String ARG_SETTINGS_NUMBER = "settings_number";
+public class AboutUsFragment extends Fragment {
 
     /**
      * Required empty public constructor
      */
-    public SettingsFragment() {
+    public AboutUsFragment() {
     }
 
     /**
@@ -36,7 +35,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.settings_fragment, container, false);
+        return inflater.inflate(R.layout.about_us_fragment, container, false);
     }
 
 }

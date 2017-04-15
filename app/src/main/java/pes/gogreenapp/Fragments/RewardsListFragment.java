@@ -41,7 +41,6 @@ import static pes.gogreenapp.R.id.showCategoriesButton;
 /**
  * Created by Albert on 13/04/2017.
  */
-
 public class RewardsListFragment extends Fragment {
     public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
@@ -53,10 +52,24 @@ public class RewardsListFragment extends Fragment {
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
 
+    /**
+     * Required empty public constructor
+     */
     public RewardsListFragment() {
 
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in
+     *                           the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI
+     *                           should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     *                           saved state as given here.
+     * @return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

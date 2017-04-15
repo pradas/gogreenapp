@@ -10,9 +10,11 @@ import pes.gogreenapp.R;
 public class ListActivity extends AppCompatActivity {
 
     /**
-     * onCreate method that set the RewardListFragment into this Activity.
+     * onCreate method to initialize the Activity.
      *
-     * @param savedInstanceState last functional state of this activity.
+     * @param savedInstanceState If the activity is being re-initialized after previously being
+     *                           shut down then this Bundle contains the data it most recently
+     *                           supplied in onSaveInstanceState(Bundle). Otherwise it is null.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
