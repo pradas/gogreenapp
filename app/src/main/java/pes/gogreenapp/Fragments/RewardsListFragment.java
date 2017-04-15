@@ -1,7 +1,6 @@
 package pes.gogreenapp.Fragments;
 
 import android.support.v4.app.Fragment;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,8 +45,8 @@ public class RewardsListFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RewardsListAdapter adapter;
-    private SwipeRefreshLayout swipeContainer;
     String categorySelected = "";
+    private SwipeRefreshLayout swipeContainer;
     private String TAG = ListActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
@@ -56,7 +55,6 @@ public class RewardsListFragment extends Fragment {
      * Required empty public constructor
      */
     public RewardsListFragment() {
-
     }
 
     /**
@@ -90,8 +88,9 @@ public class RewardsListFragment extends Fragment {
         final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
         final Button allRewards = (Button) getView().findViewById(showAllButton);
 
+        // Listener for the Date order button
         endDate.setOnClickListener(v -> {
-            points.setText("PUNTOS");
+            points.setText(R.string.points_order_button);
             if ("FECHA ↓".equals(endDate.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
@@ -101,7 +100,7 @@ public class RewardsListFragment extends Fragment {
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
                     adapter = new RewardsListAdapter(filteredRewards);
                 }
-                endDate.setText("FECHA ↑");
+                endDate.setText(R.string.date_ascendant_order_button);
             } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
@@ -111,13 +110,14 @@ public class RewardsListFragment extends Fragment {
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
                     adapter = new RewardsListAdapter(filteredRewards);
                 }
-                endDate.setText("FECHA ↓");
+                endDate.setText(R.string.date_descendent_order_button);
             }
             recyclerView.setAdapter(adapter);
         });
 
+        // Listener for the Points order button.
         points.setOnClickListener(v -> {
-            endDate.setText("FECHA");
+            endDate.setText(R.string.date_order_button);
             if ("PUNTOS ↓".equals(points.getText())) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
@@ -127,7 +127,7 @@ public class RewardsListFragment extends Fragment {
                     Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
                     adapter = new RewardsListAdapter(filteredRewards);
                 }
-                points.setText("PUNTOS ↑");
+                points.setText(R.string.points_ascendent_order_button);
             } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
                 if (categorySelected.equals("")) {
                     Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
@@ -137,81 +137,76 @@ public class RewardsListFragment extends Fragment {
                     Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
                     adapter = new RewardsListAdapter(filteredRewards);
                 }
-                points.setText("PUNTOS ↓");
+                points.setText(R.string.points_descendent_order_button);
             }
             recyclerView.setAdapter(adapter);
         });
 
-        categoriesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pastCategory = categorySelected;
-                categorySelected = "Conciertos";
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-                int checkeds = 0;
-                mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]), checkeds, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Al seleccionar una categoria
+        //Listener for the Categories filer button.
+        categoriesButton.setOnClickListener(v -> {
+            String pastCategory = categorySelected;
+            categorySelected = "Conciertos";
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+            mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
+            int checkeds = 0;
+            mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]),
+                    checkeds, (dialog, which) -> {
                         categorySelected = categories.toArray(new String[categories.size()])[which];
-                    }
-                });
-                mBuilder.setPositiveButton("SELECCIONAR CATEGORIA", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                        List<Reward> filteredRewards = filterRewardsByCategories();
-                        adapter = new RewardsListAdapter(filteredRewards);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-                mBuilder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        categorySelected = pastCategory;
-                        // User cancelled the dialog
-                    }
-                });
-                AlertDialog dialog = mBuilder.create();
-                dialog.show();
-            }
-        });
-
-        allRewards.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                categorySelected = "";
-                adapter = new RewardsListAdapter(rewards);
+                    }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
+                // User clicked OK button
+                List<Reward> filteredRewards = filterRewardsByCategories();
+                adapter = new RewardsListAdapter(filteredRewards);
                 recyclerView.setAdapter(adapter);
-            }
+            });
+            mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
+                categorySelected = pastCategory; // User cancelled the dialog
+            });
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
         });
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                refreshItems();
-            }
+        //Listener for the All Rewards filter button.
+        allRewards.setOnClickListener(v -> {
+            categorySelected = "";
+            adapter = new RewardsListAdapter(rewards);
+            recyclerView.setAdapter(adapter);
         });
 
+        // Refresh items
+        swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
+    /**
+     * On swipe, refresh all the items of the screen.
+     */
     void refreshItems() {
         // Load items
         rewards.clear();
+
+        // Get items
         new GetRewards().execute("http://10.4.41.145/api/rewards");
+
         // Load complete
         onItemsLoadComplete();
     }
 
+    /**
+     * When the refresh is complete, set again the Adapter.
+     */
     void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
-        // ...
         adapter.setRewards(rewards);
         adapter.notifyDataSetChanged();
+
         // Stop refresh animation
         swipeContainer.setRefreshing(false);
     }
 
+    /**
+     * Filter the rewards by the category clicked on the Category filter button.
+     *
+     * @return the List of rewards with the filter applied.
+     */
     private List<Reward> filterRewardsByCategories() {
         List<Reward> rewardsFiltered = new ArrayList<>();
         for (int i = 0; i < rewards.size(); i++) {
@@ -221,8 +216,16 @@ public class RewardsListFragment extends Fragment {
         return rewardsFiltered;
     }
 
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
     private class GetRewards extends AsyncTask<String, Void, Void> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
@@ -241,15 +244,18 @@ public class RewardsListFragment extends Fragment {
                                 (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
                                 d, (String) jsonObject.get("category")));
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
             }
             return null;
         }
 
+        /**
+         * Creates the new Adapter and set the actual rewards by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
         @Override
         protected void onPostExecute(Void result) {
             adapter = new RewardsListAdapter(rewards);
@@ -257,15 +263,23 @@ public class RewardsListFragment extends Fragment {
         }
     }
 
+    /**
+     * Asynchronous Task for the petition GET of all the Categories.
+     */
     private class GetCategories extends AsyncTask<String, Void, Void> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0]);
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
-                JSONObject aux = null;
+                JSONObject aux;
                 try {
                     aux = new JSONObject(response);
                     JSONArray jsonArray = aux.getJSONArray("categories");
@@ -274,7 +288,6 @@ public class RewardsListFragment extends Fragment {
                         categories.add((String) jsonObject.get("name"));
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     e.printStackTrace();
                 }
             }

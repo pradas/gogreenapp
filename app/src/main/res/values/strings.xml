@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GoGreen</string>
+
+    <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="rewards">Rewards</string>
@@ -8,4 +10,12 @@
 
     <!-- Temporal hello world -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="points_order_button">PUNTOS</string>
+
+    <!-- Reward List Buttons -->
+    <string name="date_ascendant_order_button">FECHA ↑</string>
+    <string name="date_descendent_order_button">FECHA ↓</string>
+    <string name="date_order_button">FECHA</string>
+    <string name="points_ascendent_order_button">PUNTOS ↑</string>
+    <string name="points_descendent_order_button">PUNTOS ↓</string>
 </resources>
