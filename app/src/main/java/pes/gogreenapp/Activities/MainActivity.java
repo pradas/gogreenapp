@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import org.jetbrains.annotations.Contract;
 
 import pes.gogreenapp.Fragments.RewardsListFragment;
+import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.R;
 
 /**
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.rewards_list_fragment:
                 fragmentClass = RewardsListFragment.class;
+                break;
+            case R.id.settings_fragment:
+                fragmentClass = SettingsFragment.class;
                 break;
             default:
                 fragmentClass = RewardsListFragment.class;
