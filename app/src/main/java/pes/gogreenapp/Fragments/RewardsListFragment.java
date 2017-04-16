@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Activities.ListActivity;
@@ -229,7 +230,7 @@ public class RewardsListFragment extends Fragment {
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0]);
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {
@@ -276,7 +277,7 @@ public class RewardsListFragment extends Fragment {
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0]);
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux;

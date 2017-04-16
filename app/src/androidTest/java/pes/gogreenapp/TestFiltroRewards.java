@@ -27,7 +27,7 @@ import org.junit.Rule;
 
 import android.support.test.rule.ActivityTestRule;
 
-import pes.gogreenapp.Activities.RewardsList;
+import pes.gogreenapp.Activities.ListActivity;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -39,8 +39,8 @@ public class TestFiltroRewards {
     }
 
     @Rule
-    public ActivityTestRule<RewardsList> mActivityRule = new ActivityTestRule<>(
-            RewardsList.class);
+    public ActivityTestRule<ListActivity> mActivityRule = new ActivityTestRule<>(
+            ListActivity.class);
 
     @Test
     public void PuntosDesc() {
