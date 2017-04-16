@@ -126,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.account_manager_fragment:
                 fragmentClass = AccountManagerFragment.class;
                 break;
+            case R.id.profile_image:
+                fragmentClass = null;
+                break;
             default:
                 fragmentClass = RewardsListFragment.class;
         }
