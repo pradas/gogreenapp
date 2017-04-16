@@ -1,10 +1,12 @@
 package pes.gogreenapp.Activities;
 
 import android.app.DatePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,16 +25,25 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import pes.gogreenapp.Adapters.RewardsAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
 /**
@@ -124,30 +135,31 @@ public class FormUserActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_favorite:
                 String password = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
-                if(!password.isEmpty() && password.equals(((TextView) findViewById(R.id.editContraseñaConfirmar)).getText().toString()))
-                    submitData();
-                else
+                if(!password.isEmpty() && password.equals(((TextView) findViewById(R.id.editContraseñaConfirmar)).getText().toString())) {
+                    String username = ((TextView) findViewById(R.id.editUsername)).getText().toString();
+                    String email = ((TextView) findViewById(R.id.editEmail)).getText().toString();
+                    String birthdayDate = ((TextView) findViewById(R.id.editFechaNacimiento)).getText().toString();
+                    new PostMethod().execute("http://posttestserver.com/post.php",username,email,password,birthdayDate);
+                }else
                     Toast.makeText(this,"Error contraseña no valida", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void submitData(){
-        String username = ((TextView) findViewById(R.id.editUsername)).getText().toString();
-        String email = ((TextView) findViewById(R.id.editEmail)).getText().toString();
-        String password = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
-        String birthdayDate = ((TextView) findViewById(R.id.editFechaNacimiento)).getText().toString();
-        mRequestQueue = Volley.newRequestQueue(this);
-        String url ="http://raichu.fib.upc.edu/api/rewards";
-        //if(!(username.isEmpty() || email.isEmpty() || birthdayDate.isEmpty())) {
+
+    private class PostMethod extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
             HashMap<String,String> impl = new HashMap<>();
-            impl.put("username",username);
-            impl.put("email",email);
-            impl.put("password",password);
-            impl.put("birthdayDate",birthdayDate);
-        String result = new HttpHandler().makeServiceCall(url,"POST",impl);
-        Toast.makeText(this,result, Toast.LENGTH_LONG).show();
-        ((TextView) findViewById(R.id.editUsername)).setText(result);
+            impl.put("username",params[1]);
+            impl.put("email",params[2]);
+            impl.put("password",params[3]);
+            impl.put("birthdayDate",params[4]);
+            String result = new HttpHandler().makeServiceCall(url,"POST" ,impl);
+            Log.i(TAG, "Response from url: " + result);
+            return null;
+        }
     }
 }

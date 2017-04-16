@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -24,6 +25,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.widget.Toast.*;
 
@@ -42,28 +45,36 @@ public class HttpHandler {
         try {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
             // lee la response
-            if(method == "POST"){
-                conn.setDoInput(true);
-                String params = hashMaptoString(param);
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-                writer.write(params);
-                writer.flush();
-                writer(close);
-                os.close();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod(method);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            String params = hashMaptoString(param);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(params);
+            writer.flush();
+            writer.close();
+            os.close();
+            Log.d("err1","err1");
+            if(conn.getResponseCode() != HttpsURLConnection.HTTP_OK){
+                return "Error "+conn.getResponseCode();
             }
             InputStream in = new BufferedInputStream(conn.getInputStream());
-
-            //response = convertStreamToString(in);
+            response = convertStreamToString(in);
+            Log.d("err1","err1");
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
             Log.e(TAG, "ProtocolException: " + e.getMessage());
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e.getMessage());
-        } catch (Exception e) {
+        }catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
         return response;
@@ -113,11 +124,12 @@ public class HttpHandler {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String,String> pair: hmap.entrySet()){
-            if(first) first = false
+            if(first) first = false;
             else result.append("&");
             result.append(URLEncoder.encode(pair.getKey(),"UTF8"));
             result.append("=");
             result.append(URLEncoder.encode(pair.getValue(),"UTF8"));
         }
+        return result.toString();
     }
 }
