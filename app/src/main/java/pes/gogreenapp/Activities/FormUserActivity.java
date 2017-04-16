@@ -52,7 +52,8 @@ import pes.gogreenapp.R;
 
 public class FormUserActivity extends AppCompatActivity {
     private static Integer mYear, mMonth, mDay;
-    public static final String TAG = "submitUserTag";
+    private static final String TAG = "submitUserTag";
+    private static final String URLPetition = "http://raichu.fib.upc.edu/api/users";
     StringRequest stringRequest;
     RequestQueue mRequestQueue;
     @Override
@@ -137,9 +138,11 @@ public class FormUserActivity extends AppCompatActivity {
                 String password = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
                 if(!password.isEmpty() && password.equals(((TextView) findViewById(R.id.editContraseñaConfirmar)).getText().toString())) {
                     String username = ((TextView) findViewById(R.id.editUsername)).getText().toString();
+                   // String user = ((TextView) findViewById(R.id.editUser)).getText().toString();
+
                     String email = ((TextView) findViewById(R.id.editEmail)).getText().toString();
                     String birthdayDate = ((TextView) findViewById(R.id.editFechaNacimiento)).getText().toString();
-                    new PostMethod().execute("http://posttestserver.com/post.php",username,email,password,birthdayDate);
+                    new PostMethod().execute(URLPetition,username,email,password,birthdayDate);
                 }else
                     Toast.makeText(this,"Error contraseña no valida", Toast.LENGTH_LONG).show();
                 return true;
@@ -153,11 +156,13 @@ public class FormUserActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
             HashMap<String,String> impl = new HashMap<>();
+            // 'name', 'email', 'password', 'username', 'role_id'
             impl.put("username",params[1]);
             impl.put("email",params[2]);
             impl.put("password",params[3]);
             impl.put("birthdayDate",params[4]);
-            String result = new HttpHandler().makeServiceCall(url,"POST" ,impl);
+            impl.put("role_id","4");
+            String result = new HttpHandler().makeServiceCall(params[0],"POST" ,impl);
             Log.i(TAG, "Response from url: " + result);
             return null;
         }

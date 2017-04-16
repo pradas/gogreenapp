@@ -238,7 +238,6 @@ public class RewardsList extends AppCompatActivity {
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0]);
-            Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux = null;
                 try {
