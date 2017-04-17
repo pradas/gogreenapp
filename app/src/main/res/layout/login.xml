@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingRight = "20dp"
+    android:paddingLeft = "20dp"
+    android:paddingTop = "20dp"
+    android:paddingBottom = "20dp">
+
+    <TextView
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:text = "GoGreen"
+        android:id = "@+id/Title"
+        android:layout_centerHorizontal = "true"
+        android:textColor = "#ff7aff24"
+        android:textSize = "35sp"
+        android:layout_marginTop="30dp"/>
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageGoGreen"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_below="@+id/Title"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:id = "@+id/textNombre"
+        android:hint = "Nombre de usuario o email"
+        android:focusable = "true"
+        android:textColorHighlight = "#ff7eff15"
+        android:textColorHint = "#000000"
+        android:layout_marginTop = "46dp"
+        android:layout_below = "@+id/imageGoGreen"
+        android:layout_alignParentStart = "true"
+        android:layout_alignParentEnd = "true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/textContraseña"
+        android:layout_below="@+id/textNombre"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/textNombre"
+        android:textColorHint="#000000"
+        android:hint="Contraseña" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="login"
+        android:id="@+id/buttonLogin"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/Title" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/buttonCancel"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
