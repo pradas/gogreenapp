@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import pes.gogreenapp.Fragments.QRCodeFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
@@ -86,15 +88,15 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url", "http://www.fib.upc.edu/");
 
-                /*
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getRootView().getContext());
-                LayoutInflater factory = LayoutInflater.from(v.getRootView().getContext());
-                final View view = factory.inflate(R.layout.code_qr, null);
-                mBuilder.setTitle("ESCANEA EL CODIGO QR PARA UTILIZAR ESTA PROMOCIÓN");
-                mBuilder.setView(view);
-                AlertDialog dialog = mBuilder.create();
-                dialog.show();*/
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new QRCodeFragment();
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
             }
         });
     }
