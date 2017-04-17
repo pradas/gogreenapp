@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import pes.gogreenapp.Adapters.RewardsAdapter;
+import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
 import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
@@ -79,7 +79,7 @@ public class RewardsExchanged extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
+            /*HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0]);
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
@@ -100,7 +100,7 @@ public class RewardsExchanged extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             return null;
         }
 
@@ -115,7 +115,7 @@ public class RewardsExchanged extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
+            /*HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0]);
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
@@ -131,7 +131,7 @@ public class RewardsExchanged extends AppCompatActivity {
                     e.printStackTrace();
                     e.printStackTrace();
                 }
-            }
+            }*/
             return null;
         }
     }
