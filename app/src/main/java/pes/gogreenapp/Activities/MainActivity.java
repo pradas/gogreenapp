@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
+import pes.gogreenapp.Fragments.RewardsExchangedFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Objects.Reward;
@@ -133,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
+                    break;
+                case R.id.rewards_exchanged_fragment:
+                    fragmentClass = RewardsExchangedFragment.class;
                     break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;

@@ -1,6 +1,11 @@
 package pes.gogreenapp.Adapters;
 
-import android.support.v7.app.AlertDialog;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pes.gogreenapp.Activities.RewardsExchanged;
+import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
@@ -22,8 +27,10 @@ import pes.gogreenapp.R;
 public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchangedAdapter.ViewHolder> {
 
     private List<Reward> rewards;
+    private Context context;
 
-    public RewardsExchangedAdapter(List<Reward> rewards) {
+    public RewardsExchangedAdapter(Context context, List<Reward> rewards) {
+        this.context = context;
         this.rewards = rewards;
     }
 
@@ -36,6 +43,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         public TextView points;
         public ImageView rewardImage;
         public Button use;
+        public Integer id;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -44,6 +52,21 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             points = (TextView) itemView.findViewById(R.id.rewardPointsExchanged);
             rewardImage = (ImageView) itemView.findViewById(R.id.rewardImageExchanged);
             use = (Button) itemView.findViewById(R.id.useRewardButton);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
+
+                    FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    Fragment fragment = (Fragment) new RewardDetailedFragment();
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.flContent, fragment);
+                    transaction.commit();
+                }
+            });
         }
     }
 
@@ -56,19 +79,22 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
 
     @Override
     public void onBindViewHolder(RewardsExchangedAdapter.ViewHolder holder, int position) {
+        holder.id = rewards.get(position).getId();
         holder.title.setText(rewards.get(position).getTitle());
         holder.direction.setText(rewards.get(position).getCategory()); //tendra que ser direccion obviamente
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getRootView().getContext());
                 LayoutInflater factory = LayoutInflater.from(v.getRootView().getContext());
                 final View view = factory.inflate(R.layout.code_qr, null);
                 mBuilder.setTitle("ESCANEA EL CODIGO QR PARA UTILIZAR ESTA PROMOCIÓN");
                 mBuilder.setView(view);
                 AlertDialog dialog = mBuilder.create();
-                dialog.show();
+                dialog.show();*/
             }
         });
     }

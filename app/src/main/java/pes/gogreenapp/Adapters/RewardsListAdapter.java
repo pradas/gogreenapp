@@ -1,5 +1,11 @@
 package pes.gogreenapp.Adapters;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
 
@@ -19,13 +26,15 @@ import pes.gogreenapp.Objects.Reward;
  */
 public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.ViewHolder> {
     private List<Reward> rewards;
+    private Context context;
 
     /**
      * Constructor that set the List of Rewards.
      *
      * @param rewards non-null List of the Rewards.
      */
-    public RewardsListAdapter(List<Reward> rewards) {
+    public RewardsListAdapter(Context context, List<Reward> rewards) {
+        this.context = context;
         this.rewards = rewards;
     }
 
@@ -44,6 +53,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         TextView date;
         TextView category;
         ImageButton fav;
+        public Integer id;
 
         /**
          * Constructor of the View Holder that sets all the items.
@@ -57,6 +67,21 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             date = (TextView) itemView.findViewById(R.id.rewardEndDate);
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
+
+                    FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    Fragment fragment = (Fragment) new RewardDetailedFragment();
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.flContent, fragment);
+                    transaction.commit();
+                }
+            });
         }
     }
 
@@ -86,6 +111,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
      */
     @Override
     public void onBindViewHolder(final RewardsListAdapter.ViewHolder holder, int position) {
+        holder.id = rewards.get(position).getId();
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         Date d = rewards.get(position).getEndDate();
