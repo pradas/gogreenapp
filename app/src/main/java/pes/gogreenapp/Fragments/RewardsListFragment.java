@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.ListActivity;
+import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
@@ -38,9 +38,6 @@ import static pes.gogreenapp.R.id.orderPointsButton;
 import static pes.gogreenapp.R.id.showAllButton;
 import static pes.gogreenapp.R.id.showCategoriesButton;
 
-/**
- * Created by Albert on 13/04/2017.
- */
 public class RewardsListFragment extends Fragment {
     public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
@@ -48,7 +45,7 @@ public class RewardsListFragment extends Fragment {
     RewardsListAdapter adapter;
     String categorySelected = "";
     private SwipeRefreshLayout swipeContainer;
-    private String TAG = ListActivity.class.getSimpleName();
+    private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
 
@@ -75,6 +72,15 @@ public class RewardsListFragment extends Fragment {
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

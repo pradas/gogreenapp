@@ -10,23 +10,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
+
+import java.util.HashMap;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
-/**
- * Created by Albert on 13/04/2017.
- */
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    SessionManager session;
 
     /**
      * onCreate method to initialize the Activity.
@@ -38,6 +40,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
+        session = new SessionManager(getApplicationContext());
+        /*
+          Call this function whenever you want to check user login_activity
+          This will redirect user to LoginActivity is he is not
+          logged in
+          */
+        session.checkLogin();
+
+        /* Set main layout */
         setContentView(R.layout.main_activity);
 
         // Set a Toolbar to replace the ActionBar.
