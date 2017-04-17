@@ -38,7 +38,7 @@ public class HttpHandler {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "Bearer {eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cLzEwLjQuNDEuMTQ1XC9hcGlcL3Nlc3Npb25cL25ldyIsImlhdCI6MTQ5MjM1ODM2MiwiZXhwIjoxNDkyMzYxOTYyLCJuYmYiOjE0OTIzNTgzNjIsImp0aSI6ImpvYW9EMDZ5dGRyYkFpMXoifQ.lc9JmfKFmOqV61ZDu23jEZVE1jzuW4nhAkE168SFZXY}");
+            conn.setRequestProperty("Authorization", "Bearer {eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cLzEwLjQuNDEuMTQ1XC9hcGlcL3Nlc3Npb25cL25ldyIsImlhdCI6MTQ5MjQxOTAyOCwiZXhwIjoxNDkyNDIyNjI4LCJuYmYiOjE0OTI0MTkwMjgsImp0aSI6ImNGZWlDV3AxbmI0WjFNb2gifQ.83WSr6cqolby9f-PO4ZZCiX-yTIqSbBa0p56Cet3Kvo}");
 
             if ("POST".equals(method)) {
                 conn.setDoOutput(true);
@@ -46,6 +46,8 @@ public class HttpHandler {
                 OutputStream out = new BufferedOutputStream(conn.getOutputStream());
                 writeStream(out, bodyParameters);
             }
+
+            System.out.println(conn.getResponseCode());
 
             /* Read the response */
             InputStream in = new BufferedInputStream(conn.getInputStream());
