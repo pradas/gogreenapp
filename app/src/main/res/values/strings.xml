@@ -21,4 +21,8 @@
     <string name="points_ascendent_order_button">PUNTOS ↑</string>
     <string name="points_descendent_order_button">PUNTOS ↓</string>
     <string name="log_out">Log Out</string>
+
+    <!-- Alert Dialog Buttons -->
+    <string name="exchange">CANJEAR</string>
+    <string name="cancel">CANCELAR</string>
 </resources>

@@ -1,15 +1,18 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -53,6 +56,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         TextView date;
         TextView category;
         ImageButton fav;
+        Button exchange;
         public Integer id;
 
         /**
@@ -67,6 +71,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             date = (TextView) itemView.findViewById(R.id.rewardEndDate);
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
+            exchange = (Button) itemView.findViewById(R.id.exchangeButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,6 +131,28 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 holder.fav.setTag("favorite");
             }
         });
+        holder.exchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getRootView().getContext());
+                mBuilder.setMessage("¿Está seguro de que desea canjear esta promoción?");
+                mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        });
+
     }
 
     /**
