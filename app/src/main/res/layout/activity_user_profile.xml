@@ -28,7 +28,7 @@
             app:srcCompat="@android:drawable/ic_menu_report_image"
             android:layout_weight="0.45" />
 
-        <EditText
+        <TextView
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
@@ -36,7 +36,7 @@
             android:inputType="textPersonName"
             android:text="nombre" />
 
-        <EditText
+        <TextView
             android:id="@+id/user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -44,7 +44,7 @@
             android:inputType="textPersonName"
             android:text="alias" />
 
-        <EditText
+        <TextView
             android:id="@+id/user_points"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
@@ -52,7 +52,7 @@
             android:inputType="textPersonName"
             android:text="puntos" />
 
-        <EditText
+        <TextView
             android:id="@+id/editText3"
             android:layout_width="182dp"
             android:layout_height="58dp"
@@ -60,14 +60,14 @@
             android:inputType="textPersonName"
             android:text="Gobro desde: " />
 
-        <EditText
+        <TextView
             android:id="@+id/user_creation_date"
             android:layout_width="93dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="date"/>
 
-        <EditText
+        <TextView
             android:id="@+id/user_email"
             android:layout_width="wrap_content"
             android:layout_height="58dp"

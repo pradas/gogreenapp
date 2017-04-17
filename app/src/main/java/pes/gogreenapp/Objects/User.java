@@ -1,5 +1,7 @@
 package pes.gogreenapp.Objects;
 
+import android.graphics.Bitmap;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,10 +23,11 @@ public class User {
     private Integer totalPoints;
     private Date birthDate;
     private Date creationDate;
+    private String userUrlImage;
     //Calendar cal = GregorianCalendar.getInstance();
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    public User(String username, String name, String email, String birthDate) {
+    public User(String username, String name, String email, String birthDate, String userUrlImage) {
         this.username = username;
         this.name = name;
         this.email = email;
@@ -36,6 +39,7 @@ public class User {
         this.currentPoints = 0;
         this.totalPoints = 0;
         this.creationDate = new Date();
+        this. userUrlImage = userUrlImage;
     }
 
     public String getUsername() { return username; }
@@ -66,6 +70,7 @@ public class User {
 
     public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
 
+    public String getUserUrlImage() { return userUrlImage; }
 
-
+    public void setUserUrlImage(String userUrlImage) { this.userUrlImage = userUrlImage; }
 }
