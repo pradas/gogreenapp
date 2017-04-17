@@ -32,7 +32,7 @@ public class SessionManager {
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
 
-    // Email address (make variable public to access from outside)
+    // Token (make variable public to access from outside)
     public static final String KEY_TOKEN = "token";
 
     // Constructor
@@ -69,6 +69,11 @@ public class SessionManager {
         if (!this.isLoggedIn()) {
             // user is not logged in redirect him to LoginActivity Activity
             Intent i = new Intent(_context, LoginActivity.class);
+            // Closing all the Activities
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Add new Flag to start new Activity
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Staring LoginActivity Activity
             _context.startActivity(i);
@@ -118,5 +123,9 @@ public class SessionManager {
     // Get LoginActivity State
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    public String getToken() {
+        return pref.getString(KEY_TOKEN, "");
     }
 }

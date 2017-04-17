@@ -31,6 +31,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
 import static pes.gogreenapp.R.id.orderDateButton;
@@ -48,6 +49,7 @@ public class RewardsListFragment extends Fragment {
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
+    private SessionManager session;
 
     /**
      * Required empty public constructor
@@ -84,6 +86,7 @@ public class RewardsListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        session = new SessionManager(getActivity().getApplicationContext());
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -236,7 +239,8 @@ public class RewardsListFragment extends Fragment {
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {
@@ -283,7 +287,8 @@ public class RewardsListFragment extends Fragment {
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux;

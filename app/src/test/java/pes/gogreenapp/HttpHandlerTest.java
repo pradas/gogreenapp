@@ -21,7 +21,8 @@ public class HttpHandlerTest {
         assertNotNull(httpHandler.makeServiceCall(
                 "http://10.4.41.145/api/rewards",
                 "GET",
-                new HashMap<>()));
+                new HashMap<>(),
+                ""));
     }
 
     @Test
@@ -31,9 +32,10 @@ public class HttpHandlerTest {
         bodyParameters.put("user", "admin");
         bodyParameters.put("password", "Password12");
         assertNotNull(httpHandler.makeServiceCall(
-                "http://10.4.41.145/api/session/new",
+                "http://10.4.41.145/api/session",
                 "POST",
-                bodyParameters));
+                bodyParameters,
+                ""));
     }
     @Test
     public void httpPut() {

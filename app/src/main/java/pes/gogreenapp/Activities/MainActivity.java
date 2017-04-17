@@ -20,6 +20,7 @@ import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -126,44 +127,48 @@ public class MainActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass;
-        switch (menuItem.getItemId()) {
-            case R.id.rewards_list_fragment:
-                fragmentClass = RewardsListFragment.class;
-                break;
-            case R.id.settings_fragment:
-                fragmentClass = SettingsFragment.class;
-                break;
-            case R.id.about_us_fragment:
-                fragmentClass = AboutUsFragment.class;
-                break;
-            case R.id.account_manager_fragment:
-                fragmentClass = AccountManagerFragment.class;
-                break;
-            case R.id.profile_image:
-                fragmentClass = null;
-                break;
-            default:
-                fragmentClass = RewardsListFragment.class;
+        if (menuItem.getItemId() == R.id.log_out) {
+            session.logoutUser();
+        } else {
+            switch (menuItem.getItemId()) {
+                case R.id.rewards_list_fragment:
+                    fragmentClass = RewardsListFragment.class;
+                    break;
+                case R.id.settings_fragment:
+                    fragmentClass = SettingsFragment.class;
+                    break;
+                case R.id.about_us_fragment:
+                    fragmentClass = AboutUsFragment.class;
+                    break;
+                case R.id.account_manager_fragment:
+                    fragmentClass = AccountManagerFragment.class;
+                    break;
+                case R.id.profile_image:
+                    fragmentClass = RewardsListFragment.class;
+                    break;
+                default:
+                    fragmentClass = RewardsListFragment.class;
+            }
+
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+
+            // Set action bar title
+            setTitle(menuItem.getTitle());
+
+            // Close the navigation drawer
+            mDrawer.closeDrawers();
         }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
     }
 
     /**

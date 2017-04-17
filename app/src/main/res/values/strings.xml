@@ -19,4 +19,5 @@
     <string name="date_order_button">FECHA</string>
     <string name="points_ascendent_order_button">PUNTOS ↑</string>
     <string name="points_descendent_order_button">PUNTOS ↓</string>
+    <string name="log_out">Log Out</string>
 </resources>

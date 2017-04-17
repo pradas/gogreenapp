@@ -19,6 +19,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 
+import pes.gogreenapp.Objects.SessionManager;
+
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
 
@@ -29,16 +31,20 @@ public class HttpHandler {
      * Method to do a Http GET petition.
      *
      * @param reqUrl is the url of the service
+     * @param method
+     * @param bodyParameters
+     * @param  token
      * @return the response of the service called in String format.
      */
-    public String makeServiceCall(String reqUrl, String method, HashMap<String, String> bodyParameters) {
+    public String makeServiceCall(String reqUrl, String method,
+                                  HashMap<String, String> bodyParameters, String token) {
         String response = null;
         try {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "Bearer {eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cLzEwLjQuNDEuMTQ1XC9hcGlcL3Nlc3Npb25cL25ldyIsImlhdCI6MTQ5MjQyMzIyNCwiZXhwIjoxNDkyNDI2ODI0LCJuYmYiOjE0OTI0MjMyMjQsImp0aSI6ImNRdVhEMzlmYXdKZ0huclkifQ.i3MBCG9Vgf_ShHUAulw5XI27Ty1VnW6KemOKNlYMxr0}");
+            conn.setRequestProperty("Authorization", "Bearer {" + token + "}");
 
             if ("POST".equals(method)) {
                 conn.setDoOutput(true);
@@ -47,7 +53,7 @@ public class HttpHandler {
                 writeStream(out, bodyParameters);
             }
 
-            System.out.println(conn.getResponseCode());
+            Log.i(TAG, String.valueOf(conn.getResponseCode()));
 
             /* Read the response */
             InputStream in = new BufferedInputStream(conn.getInputStream());
@@ -59,7 +65,7 @@ public class HttpHandler {
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
+            Log.e(TAG, Log.getStackTraceString(e));
         }
         return response;
     }

@@ -12,8 +12,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -76,12 +87,10 @@ public class LoginFragment extends Fragment {
         buttonCancel = (Button) getView().findViewById(R.id.buttonCancel);
 
         buttonLogin.setOnClickListener(v -> {
-            //Falta llamar a API y coger token si es correcto,
-            session.createLoginSession(textName.getText().toString(), "asdfALdkj1q20e3ijdF");
+            new PostLogin().execute("http://10.4.41.145/api/session", "POST",
+                    textName.getText().toString(), textPassword.getText().toString());
             // Staring MainActivity
-            Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-            startActivity(i);
-            getActivity().finish();
+
         });
 
         buttonCancel.setOnClickListener(v -> {
@@ -97,22 +106,31 @@ public class LoginFragment extends Fragment {
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
-         * @param params The parameters of the task.
+         * @param params params[0] is the petition url, params[1] is the method petition,
+         *               params[2] is the username or email for identification in the login and
+         *               params[3] is the password to identification in the login
+         * @return void when finished
          */
         @Override
         protected Void doInBackground(String... params) {
-            HttpHandler httpHandler= new HttpHandler();
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("user", params[2]);
+            bodyParams.put("password", params[3]);
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams,
+                    session.getToken());
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    session.createLoginSession(params[2], aux.get("token").toString());
+                    Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
-        }
-
-        /**
-         * Creates the new Adapter and set the actual rewards by the result obtained.
-         *
-         * @param result of doInBackground()
-         */
-        @Override
-        protected void onPostExecute(Void result) {
-
         }
     }
 }
