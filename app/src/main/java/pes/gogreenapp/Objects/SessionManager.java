@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import pes.gogreenapp.Activities.LoginActivity;
-import pes.gogreenapp.Activities.MainActivity;
+/*import pes.gogreenapp.Activities.LoginActivity;
+import pes.gogreenapp.Activities.MainActivity;*/
 
 public class SessionManager {
     // Shared Preferences
@@ -64,7 +64,7 @@ public class SessionManager {
      * If false it will redirect user to login_activity page
      * Else won't do anything
      */
-    public void checkLogin() {
+    /*public void checkLogin() {
         // Check login_activity status
         if (!this.isLoggedIn()) {
             // user is not logged in redirect him to LoginActivity Activity
@@ -79,7 +79,7 @@ public class SessionManager {
             _context.startActivity(i);
         }
 
-    }
+    }*/
 
 
     /**
@@ -100,7 +100,7 @@ public class SessionManager {
     /**
      * Clear session details
      */
-    public void logoutUser() {
+    /*public void logoutUser() {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
@@ -115,7 +115,7 @@ public class SessionManager {
 
         // Staring LoginActivity Activity
         _context.startActivity(i);
-    }
+    }*/
 
     /**
      * Quick check for login_activity
