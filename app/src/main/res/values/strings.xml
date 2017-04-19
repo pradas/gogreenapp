@@ -20,4 +20,5 @@
     <string name="points_ascendent_order_button">PUNTOS ↑</string>
     <string name="points_descendent_order_button">PUNTOS ↓</string>
     <string name="log_out">Log Out</string>
+    <string name="profile_image_description">Profile image of the user</string>
 </resources>

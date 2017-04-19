@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
@@ -70,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
+
+        // Get the header view
+        View headerView = nvDrawer.getHeaderView(0);
+
+        // Set the username on the header view
+        TextView username = (TextView) headerView.findViewById(R.id.profile_username);
+        username.setText(session.getUsername());
+
+        // On click image go to the profile fragment
+        ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
+        profileImage.setOnClickListener(v -> {
+            try {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.flContent, AboutUsFragment.class.newInstance())
+                        .commit();
+                mDrawer.closeDrawers();
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
