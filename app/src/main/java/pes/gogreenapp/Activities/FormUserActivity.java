@@ -160,7 +160,7 @@ public class FormUserActivity extends AppCompatActivity {
             impl.put("name",params[2]);
             impl.put("email",params[3]);
             impl.put("password",params[4]);
-            impl.put("birthdayDate",params[5]);
+            impl.put("birth_date",params[5]);
             String result = new HttpHandler().makeServiceCall(params[0],"POST" ,impl,"");
             Log.i(TAG, "Response from url: " + result);
             return null;
