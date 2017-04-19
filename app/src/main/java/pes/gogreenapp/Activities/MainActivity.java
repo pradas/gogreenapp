@@ -23,6 +23,7 @@ import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
+import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         profileImage.setOnClickListener(v -> {
             try {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.flContent, AboutUsFragment.class.newInstance())
+                        .replace(R.id.flContent, UserProfileFragment.class.newInstance())
                         .commit();
                 mDrawer.closeDrawers();
             } catch (InstantiationException | IllegalAccessException e) {
