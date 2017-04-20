@@ -10,25 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
-import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.Reward;
+
 import pes.gogreenapp.Objects.RewardDetailed;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -93,19 +87,27 @@ public class RewardDetailedFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = new SessionManager(getActivity().getApplicationContext());
-        new GetReward().execute(url);
-        /*title = (TextView) getView().findViewById(R.id.titleDetailReward);
+        try {
+            new GetReward().execute(url).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        title = (TextView) getView().findViewById(R.id.titleDetailReward);
         title.setText(reward.getTitle());
         description = (TextView) getView().findViewById(R.id.descriptionDetailReward);
         description.setText(reward.getDescription());
         endDate = (TextView) getView().findViewById(R.id.dateValidDetailReward);
-        endDate.setText((CharSequence) reward.getEndDate());
+        Date finalDate = reward.getEndDate();
+        endDate.setText("Promoción valida hasta el " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
         web = (TextView) getView().findViewById(R.id.consultWebDetailReward);
-        web.setText(reward.getContactWeb());
+        web.setText("Consulta mas información en " + reward.getContactWeb());
         advert = (TextView) getView().findViewById(R.id.advertDetailReward);
         advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
-                "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y" +
-                "titular.");*/  //ERROR. Reward es NULL
+                "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y " +
+                "titular.");
+        instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
+        instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
+                "que el propietario o empleado de la tienda escanee el codigo.");
     }
 
     /**
@@ -134,6 +136,8 @@ public class RewardDetailedFragment extends Fragment {
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),
                             (Double) jsonObject.get("exchange_latitude"), (Double) jsonObject.get("exchange_longitude"));
+                    String s = reward.getTitle();
+                    Integer i = reward.getId();
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
