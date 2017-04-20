@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,10 +88,17 @@ public class LoginFragment extends Fragment {
         buttonCancel = (Button) getView().findViewById(R.id.buttonCancel);
 
         buttonLogin.setOnClickListener(v -> {
-            new PostLogin().execute("http://10.4.41.145/api/session", "POST",
-                    textName.getText().toString(), textPassword.getText().toString());
+            if (textName.getText().toString().length() <= 0) {
+                textName.setError("Campo necesario");
+            }
+            else if (textPassword.getText().toString().length() <= 0) {
+                textPassword.setError("Campo necesario");
+            }
+            else {
+                new PostLogin().execute("http://10.4.41.145/api/session", "POST",
+                        textName.getText().toString(), textPassword.getText().toString());
+            }
             // Staring MainActivity
-
         });
 
         buttonCancel.setOnClickListener(v -> {
@@ -101,7 +109,7 @@ public class LoginFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
-    private class PostLogin extends AsyncTask<String, Void, Void> {
+    private class PostLogin extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
@@ -112,7 +120,7 @@ public class LoginFragment extends Fragment {
          * @return void when finished
          */
         @Override
-        protected Void doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("user", params[2]);
@@ -130,7 +138,16 @@ public class LoginFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            return null;
+            else{
+                return "Falla";
+            }
+            return "Correcte";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Falla")) {
+                Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
