@@ -66,12 +66,17 @@ public class UserProfileFragment extends Fragment {
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        UserProfilePublicFragment uppf = new UserProfilePublicFragment();
+        UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
+        UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-            transaction.add(R.id.user_profile_public_fragment, uppf).commit();
+            transaction
+                    .add(R.id.user_profile_public_fragment, uPublicFrag)
+                    .add(R.id.user_profile_private_fragment, uPrivateFrag)
+                    .commit();
+            //transaction.commit();
         }
 
         TextView userName = (TextView) getView().findViewById(user_name);
