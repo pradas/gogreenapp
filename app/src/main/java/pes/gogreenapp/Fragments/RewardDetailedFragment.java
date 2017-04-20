@@ -15,6 +15,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -84,16 +85,27 @@ public class RewardDetailedFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         TextView title;
         TextView description;
+        TextView endDate;
+        TextView web;
+        TextView advert;
+        TextView instructions;
+
 
         super.onActivityCreated(savedInstanceState);
         session = new SessionManager(getActivity().getApplicationContext());
         new GetReward().execute(url);
-        title = (TextView) getView().findViewById(R.id.titleDetailReward);
+        /*title = (TextView) getView().findViewById(R.id.titleDetailReward);
         title.setText(reward.getTitle());
         description = (TextView) getView().findViewById(R.id.descriptionDetailReward);
         description.setText(reward.getDescription());
-
-
+        endDate = (TextView) getView().findViewById(R.id.dateValidDetailReward);
+        endDate.setText((CharSequence) reward.getEndDate());
+        web = (TextView) getView().findViewById(R.id.consultWebDetailReward);
+        web.setText(reward.getContactWeb());
+        advert = (TextView) getView().findViewById(R.id.advertDetailReward);
+        advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
+                "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y" +
+                "titular.");*/  //ERROR. Reward es NULL
     }
 
     /**
@@ -121,8 +133,7 @@ public class RewardDetailedFragment extends Fragment {
                             (String) jsonObject.get("title"), (Integer) jsonObject.get("points"), endDate,
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),
-                            (Integer) jsonObject.get("exchange_latitude"), (Integer) jsonObject.get("exchange_longitude"));
-                    String title = reward.getTitle();
+                            (Double) jsonObject.get("exchange_latitude"), (Double) jsonObject.get("exchange_longitude"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }

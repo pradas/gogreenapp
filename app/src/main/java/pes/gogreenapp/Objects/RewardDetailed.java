@@ -15,12 +15,14 @@ public class RewardDetailed {
     private String info;
     private String contactWeb;
     private String contactInfo;
-    private Integer exchangeLatitude;
-    private Integer exchangeLenght;
+    private Double exchangeLatitude;
+    private Double exchangeLenght;
 
-    public RewardDetailed(Integer id, String title, Integer points, Date endDate,String description,
-                          String info, String contactWeb, String contactInfo, Integer exchangeLatitude,
-                          Integer exchangeLenght) {
+    public RewardDetailed () {}
+
+    public RewardDetailed(Integer id,String title, Integer points, Date endDate,String description,
+                          String info, String contactWeb, String contactInfo, Double exchangeLatitude,
+                          Double exchangeLenght) {
         this.id = id;
         this.title = title;
         this.points = points;
@@ -65,11 +67,11 @@ public class RewardDetailed {
         return contactInfo;
     }
 
-    public Integer getExchangeLatitude() {
+    public Double getExchangeLatitude() {
         return exchangeLatitude;
     }
 
-    public Integer getExchangeLenght() {
+    public Double getExchangeLenght() {
         return exchangeLenght;
     }
 
@@ -105,11 +107,11 @@ public class RewardDetailed {
         this.contactInfo = contactInfo;
     }
 
-    public void setExchangeLatitude(Integer exchangeLatitude) {
+    public void setExchangeLatitude(Double exchangeLatitude) {
         this.exchangeLatitude = exchangeLatitude;
     }
 
-    public void setExchangeLenght(Integer exchangeLenght) {
+    public void setExchangeLenght(Double exchangeLenght) {
         this.exchangeLenght = exchangeLenght;
     }
 }

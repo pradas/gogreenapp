@@ -20,7 +20,6 @@
         android:layout_width="570px"
         android:layout_height="wrap_content"
         android:id="@+id/descriptionDetailReward"
-        android:text="50% de descuento en las entradas del próximo concierto de Iron Maiden"
         android:textSize="16dp"
         android:textColor="#000000"
         android:fontFamily="sans-serif-smallcaps"
