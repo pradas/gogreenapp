@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,6 +103,7 @@ public class RewardsListFragment extends Fragment {
         final Button points = (Button) getView().findViewById(orderPointsButton);
         final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
         final Button allRewards = (Button) getView().findViewById(showAllButton);
+        TextView warning = (TextView) getView().findViewById(R.id.warningNoResult);
 
         // Listener for the Date order button
         endDate.setOnClickListener(v -> {
@@ -170,6 +172,8 @@ public class RewardsListFragment extends Fragment {
                     }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
                 // User clicked OK button
                 List<Reward> filteredRewards = filterRewardsByCategories();
+                if (filteredRewards.size() == 0) warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
+                else warning.setText("");
                 adapter = new RewardsListAdapter(getContext(), filteredRewards);
                 recyclerView.setAdapter(adapter);
             });
