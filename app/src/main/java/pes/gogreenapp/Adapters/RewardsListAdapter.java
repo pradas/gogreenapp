@@ -78,6 +78,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
+                    bundle.putString("parent", "list");
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();

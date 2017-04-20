@@ -51,7 +51,7 @@ public class QRCodeFragment extends Fragment {
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder encoder = new BarcodeEncoder();
             Bitmap bitmap = encoder.createBitmap (bitMatrix);
             qrImage.setImageBitmap(bitmap);

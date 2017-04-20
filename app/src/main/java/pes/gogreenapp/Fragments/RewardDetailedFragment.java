@@ -1,14 +1,21 @@
 package pes.gogreenapp.Fragments;
 
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +90,8 @@ public class RewardDetailedFragment extends Fragment {
         TextView web;
         TextView advert;
         TextView instructions;
+        ImageButton fav;
+        Button action;
 
 
         super.onActivityCreated(savedInstanceState);
@@ -93,21 +102,77 @@ public class RewardDetailedFragment extends Fragment {
             e.printStackTrace();
         }
         title = (TextView) getView().findViewById(R.id.titleDetailReward);
-        title.setText(reward.getTitle());
         description = (TextView) getView().findViewById(R.id.descriptionDetailReward);
-        description.setText(reward.getDescription());
         endDate = (TextView) getView().findViewById(R.id.dateValidDetailReward);
+        web = (TextView) getView().findViewById(R.id.consultWebDetailReward);
+        advert = (TextView) getView().findViewById(R.id.advertDetailReward);
+        instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
+        fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButton);
+        action = (Button) getView().findViewById(R.id.actionDetailReward);
+
+        if (getArguments().getString("parent").equals("list")) action.setText("CANJEAR");
+        else action.setText("UTILIZAR");
+        title.setText(reward.getTitle());
+        description.setText(reward.getDescription());
         Date finalDate = reward.getEndDate();
         endDate.setText("Promoción valida hasta el " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
-        web = (TextView) getView().findViewById(R.id.consultWebDetailReward);
         web.setText("Consulta mas información en " + reward.getContactWeb());
-        advert = (TextView) getView().findViewById(R.id.advertDetailReward);
         advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
                 "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y " +
                 "titular.");
-        instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
                 "que el propietario o empleado de la tienda escanee el código.");
+
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fav.getTag().equals("favorite")) {
+                    fav.setImageResource(R.mipmap.favoritefilled);
+                    fav.setTag("favoritefilled");
+                } else {
+                    fav.setImageResource(R.mipmap.favorite);
+                    fav.setTag("favorite");
+                }
+            }
+        });
+
+        action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getArguments().getString("parent").equals("list")) { //ACCIÓN CANJEAR
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getRootView().getContext());
+                    mBuilder.setMessage("¿Está seguro de que desea canjear esta promoción?");
+                    mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog dialog = mBuilder.create();
+                    dialog.show();
+                }
+
+                else { //ACCIÓN UTILIZAR
+                    String url = "http://10.4.41.145/api/users/" + session.getUserName() + "/rewards/" + reward.getId();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", url);
+
+                    FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    Fragment fragment = (Fragment) new QRCodeFragment();
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.flContent, fragment);
+                    transaction.commit();
+
+                }
+            }
+        });
     }
 
     /**

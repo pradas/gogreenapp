@@ -20,6 +20,7 @@ import java.util.List;
 import pes.gogreenapp.Fragments.QRCodeFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
 /**
@@ -30,10 +31,13 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
 
     private List<Reward> rewards;
     private Context context;
+    private String userName;
 
-    public RewardsExchangedAdapter(Context context, List<Reward> rewards) {
+
+    public RewardsExchangedAdapter(Context context, List<Reward> rewards, String userName) {
         this.context = context;
         this.rewards = rewards;
+        this.userName = userName;
     }
 
     public void setRewards(List<Reward> rewards) { this.rewards = rewards; }
@@ -60,6 +64,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
+                    bundle.putString("parent", "exchangeds");
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
@@ -88,8 +93,9 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String url = "http://10.4.41.145/api/users/" + userName + "/rewards/" + rewards.get(position).getId();
                 Bundle bundle = new Bundle();
-                bundle.putString("url", "http://www.fib.upc.edu/");
+                bundle.putString("url", url);
 
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
