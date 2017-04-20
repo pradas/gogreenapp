@@ -122,6 +122,7 @@ public class RewardDetailedFragment extends Fragment {
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),
                             (Integer) jsonObject.get("exchange_latitude"), (Integer) jsonObject.get("exchange_longitude"));
+                    String title = reward.getTitle();
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
