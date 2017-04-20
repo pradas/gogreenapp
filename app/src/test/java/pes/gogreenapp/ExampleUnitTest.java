@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import pes.gogreenapp.Activities.RewardsList;
+//import pes.gogreenapp.Activities.RewardsList;
 
 import static org.junit.Assert.*;
 

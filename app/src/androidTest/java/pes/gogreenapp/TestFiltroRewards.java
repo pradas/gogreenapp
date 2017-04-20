@@ -1,6 +1,6 @@
 package pes.gogreenapp;
 
-
+/*
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -31,9 +31,9 @@ import pes.gogreenapp.Activities.RewardsList;
 
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
+@LargeTest*/
 public class TestFiltroRewards {
-    @Before
+/*    @Before
     public void startTest(){
 
     }
@@ -194,5 +194,5 @@ public class TestFiltroRewards {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(4)).check(matches(hasDescendant(withId(R.id.rewardTitle))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(5)).check(matches(hasDescendant(withId(R.id.rewardTitle))));
         onView(withId(R.id.rv)).perform(RecyclerViewActions.scrollToPosition(6)).check(matches(hasDescendant(withId(R.id.rewardTitle))));
-    }
+    }*/
 }

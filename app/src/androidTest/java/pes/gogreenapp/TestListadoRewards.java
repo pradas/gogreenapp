@@ -24,13 +24,13 @@ import org.junit.Rule;
 import android.support.test.rule.ActivityTestRule;
 
 
-import pes.gogreenapp.Activities.RewardsList;
+//import pes.gogreenapp.Activities.RewardsList;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestListadoRewards {
-    @Before
+    /*@Before
     public void startTest(){
 
     }
@@ -166,5 +166,5 @@ public class TestListadoRewards {
         onView(withId(R.id.rv)).perform(RecyclerViewActions
                 .actionOnItemAtPosition(0, AuxiliarTestMethods.MyViewAction.clickChildViewWithId(R.id.favoriteButton)))
                 .check(matches(withDrawable(R.mipmap.favorite)));
-    }
+    }*/
 }
