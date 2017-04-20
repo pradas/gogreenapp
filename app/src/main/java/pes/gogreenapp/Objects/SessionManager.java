@@ -128,4 +128,6 @@ public class SessionManager {
     public String getToken() {
         return pref.getString(KEY_TOKEN, "");
     }
+
+    public String getUserName() { return pref.getString(KEY_NAME, ""); }
 }

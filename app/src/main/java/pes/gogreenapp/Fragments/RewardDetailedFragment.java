@@ -107,7 +107,7 @@ public class RewardDetailedFragment extends Fragment {
                 "titular.");
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
-                "que el propietario o empleado de la tienda escanee el codigo.");
+                "que el propietario o empleado de la tienda escanee el código.");
     }
 
     /**

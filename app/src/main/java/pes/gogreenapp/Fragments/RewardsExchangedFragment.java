@@ -40,12 +40,13 @@ public class RewardsExchangedFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RewardsExchangedAdapter adapter;
-    String categorySelected = "";
+    String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
     private SessionManager session;
+    private String userName;
 
     /**
      * Required empty public constructor
@@ -87,8 +88,9 @@ public class RewardsExchangedFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerExchanged);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        new GetCategories().execute("http://10.4.41.145/api/categories");
-        new GetRewards().execute("http://10.4.41.145/api/rewards");
+        userName = session.getUserName();
+        new GetCategories().execute(url + "categories");
+        new GetRewards().execute(url + "users/" + userName + "/rewards");
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
@@ -102,7 +104,7 @@ public class RewardsExchangedFragment extends Fragment {
         rewards.clear();
 
         // Get items
-        new GetRewards().execute("http://10.4.41.145/api/rewards");
+        new GetRewards().execute(url + userName + "rewards");
 
         // Load complete
         onItemsLoadComplete();
