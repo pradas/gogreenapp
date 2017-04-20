@@ -8,12 +8,19 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="pes.gogreenapp.Activities.UserProfile">
-    
+    tools:context="pes.gogreenapp.Fragments.UserProfileFragment">
+
     <FrameLayout
-        android:id="@+id/user_profile_container_fragment"
+        android:id="@+id/user_profile_public_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:id="@+id/user_profile_private_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </RelativeLayout>
+
 

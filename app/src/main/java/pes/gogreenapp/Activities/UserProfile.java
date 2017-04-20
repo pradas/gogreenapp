@@ -18,7 +18,7 @@ public class UserProfile extends AppCompatActivity {
     Boolean SoyUsuarioPropio = true;
 
 /*
-    FragmentManager fragmentManager = getSupportFragmentManager();
+
     fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
     user_profile_common_content fragment = new user_profile_common_content();
@@ -33,7 +33,7 @@ public class UserProfile extends AppCompatActivity {
         if (savedInstanceState == null) {
             try {
                 getSupportFragmentManager()
-                        .beginTransaction().add(R.id.user_common_content_profile, UserProfileFragment.class.newInstance())
+                        .beginTransaction().add(R.id.user_profile_container_fragment, UserProfileFragment.class.newInstance())
                         .commit();
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
