@@ -23,6 +23,7 @@ import pes.gogreenapp.Objects.SessionManager;
 
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
+
     public HttpHandler() {
     }
 
@@ -38,7 +39,6 @@ public class HttpHandler {
     public String makeServiceCall(String reqUrl, String method,
                                   HashMap<String, String> bodyParameters, String token) {
         String response = null;
-        String resCode = "300";
         try {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -52,26 +52,20 @@ public class HttpHandler {
                 OutputStream out = new BufferedOutputStream(conn.getOutputStream());
                 writeStream(out, bodyParameters);
             }
-            resCode = String.valueOf(conn.getResponseCode());
-            Log.i(TAG, resCode);
-            response = resCode;
+
+            Log.i(TAG, String.valueOf(conn.getResponseCode()));
+
             /* Read the response */
-            if(!resCode.equals("200")) {
-                InputStream in = new BufferedInputStream(conn.getInputStream());
-                response = convertStreamToString(in);
-            }
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            response = convertStreamToString(in);
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
-            return resCode;
         } catch (ProtocolException e) {
             Log.e(TAG, "ProtocolException: " + e.getMessage());
-            return resCode;
         } catch (IOException e) {
             Log.e(TAG, "IOException: " + e.getMessage());
-            return resCode;
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            return resCode;
         }
         return response;
     }

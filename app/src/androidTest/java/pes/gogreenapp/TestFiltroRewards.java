@@ -1,6 +1,6 @@
 package pes.gogreenapp;
 
-/*
+
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -27,20 +27,21 @@ import org.junit.Rule;
 
 import android.support.test.rule.ActivityTestRule;
 
-import pes.gogreenapp.Activities.RewardsList;
+
 
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest*/
+@LargeTest
 public class TestFiltroRewards {
-/*    @Before
+    /*
+    @Before
     public void startTest(){
 
     }
 
     @Rule
-    public ActivityTestRule<RewardsList> mActivityRule = new ActivityTestRule<>(
-            RewardsList.class);
+    public ActivityTestRule<ListActivity> mActivityRule = new ActivityTestRule<>(
+            ListActivity.class);
 
     @Test
     public void PuntosDesc() {
