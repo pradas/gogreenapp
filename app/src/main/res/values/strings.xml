@@ -1,4 +1,28 @@
 <resources>
     <string name="app_name">GoGreen</string>
-    <string name="action_settings">test</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="rewards">Rewards</string>
+    <string name="rewards_exchanged">Rewards Canjeados</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About Us</string>
+    <string name="account_manager">Account Manager</string>
+
+    <!-- Temporal hello world -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="points_order_button">PUNTOS</string>
+
+    <!-- Reward List Buttons -->
+    <string name="date_ascendant_order_button">FECHA ↑</string>
+    <string name="date_descendent_order_button">FECHA ↓</string>
+    <string name="date_order_button">FECHA</string>
+    <string name="points_ascendent_order_button">PUNTOS ↑</string>
+    <string name="points_descendent_order_button">PUNTOS ↓</string>
+    <string name="log_out">Log Out</string>
+
+    <!-- Alert Dialog Buttons -->
+    <string name="exchange">CANJEAR</string>
+    <string name="cancel">CANCELAR</string>
 </resources>

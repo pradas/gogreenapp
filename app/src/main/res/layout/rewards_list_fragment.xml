@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="pes.gogreenapp.Activities.RewardsList">
+    tools:context="pes.gogreenapp.Fragments.RewardsListFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -64,6 +64,13 @@
                     android:text="FECHA ↓"
                     android:textAllCaps="true" />
 
+                <Button
+                    android:id="@+id/logOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOG OUT"
+                    android:textAllCaps="true" />
+
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -83,6 +90,12 @@
                 tools:layout_editor_absoluteY="0dp" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/warningNoResult"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 </RelativeLayout>
