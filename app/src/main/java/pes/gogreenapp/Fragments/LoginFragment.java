@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment {
     private EditText textName;
     private EditText textPassword;
     private Button buttonCancel;
-
+    public static final String URLpetition = "http://10.4.41.145/api/session";
     /**
      * Required empty public constructor
      */
@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment {
                 textPassword.setError("Campo necesario");
             }
             else {
-                new PostLogin().execute("http://10.4.41.145/api/session", "POST",
+                new PostLogin().execute(URLpetition, "POST",
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
-    private class PostLogin extends AsyncTask<String, Void, String> {
+    public class PostLogin extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.

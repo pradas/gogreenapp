@@ -6,22 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
-import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
-import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 
@@ -34,9 +23,9 @@ public class RewardsExchanged extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     RewardsExchangedAdapter adapter;
     private SwipeRefreshLayout swipeContainer;
-    private String TAG = RewardsExchanged.class.getSimpleName();
+    //private String TAG = RewardsExchanged.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
-    private List<String> categories = new ArrayList<>();
+    //private List<String> categories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
