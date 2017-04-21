@@ -66,8 +66,11 @@ public class UserProfileFragment extends Fragment {
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
         UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
+        RewardsExchangedFragment rExFrag = new RewardsExchangedFragment();
+
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -75,8 +78,9 @@ public class UserProfileFragment extends Fragment {
             transaction
                     .add(R.id.user_profile_public_fragment, uPublicFrag)
                     .add(R.id.user_profile_private_fragment, uPrivateFrag)
+                    .add(R.id.rewards_exchanged_fragment, rExFrag)
                     .commit();
-            //transaction.commit();
+
         }
 
         TextView userName = (TextView) getView().findViewById(user_name);

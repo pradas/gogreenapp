@@ -10,18 +10,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.HashMap;
-
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
-import pes.gogreenapp.Fragments.RewardsExchangedFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
-import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -135,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
                     break;
-                case R.id.rewards_exchanged_fragment:
-                    fragmentClass = RewardsExchangedFragment.class;
+                case R.id.user_profile_fragment:
+                    fragmentClass = UserProfileFragment.class;
                     break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;
