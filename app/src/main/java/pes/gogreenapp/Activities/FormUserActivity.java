@@ -123,21 +123,54 @@ public class FormUserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_favorite:
-                String password = ((TextView) findViewById(R.id.editContraseña)).getText().toString();
-                String username = ((TextView) findViewById(R.id.editUsername)).getText().toString();
-                String name = ((TextView) findViewById(R.id.editName)).getText().toString();
-                String email = ((EditText) findViewById(R.id.editEmail)).getText().toString();
-                String birthdayDate = ((TextView) findViewById(R.id.editFechaNacimiento)).getText().toString();
-                if(username.isEmpty() || name.isEmpty() || email.isEmpty() || birthdayDate.isEmpty())
-                    Toast.makeText(this, "Faltan datos por rellenar", Toast.LENGTH_LONG).show();
-                else {
-                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                        Toast.makeText(this, "Email no valido", Toast.LENGTH_LONG).show();
-                    } else if (!password.isEmpty() && password.equals(((TextView) findViewById(R.id.editContraseñaConfirmar)).getText().toString())) {
-                        new PostMethod().execute(URLPetition, username, name, email, password, birthdayDate);
-                    } else
-                        Toast.makeText(this, "Error contraseña no valida", Toast.LENGTH_LONG).show();
-                    }
+                EditText password = (EditText) findViewById(R.id.editContraseña);
+                EditText password2 = (EditText) findViewById(R.id.editContraseñaConfirmar);
+                EditText username = (EditText) findViewById(R.id.editUsername);
+                EditText name = (EditText) findViewById(R.id.editName);
+                EditText email = (EditText) findViewById(R.id.editEmail);
+                EditText birthdayDate = (EditText) findViewById(R.id.editFechaNacimiento);
+                boolean ok = true;
+                int passwordok = 0;
+                if(username.getText().toString().isEmpty()){
+                    username.setError("Campo necesario");
+                    ok = false;
+                }
+
+                if(name.getText().toString().isEmpty()){
+                    name.setError("Campo necesario");
+                    ok = false;
+                }
+
+                if(password.getText().toString().isEmpty()){
+                    password.setError("Campo necesario");
+                    ok = false;
+                    passwordok++;
+                }
+
+                if(password2.getText().toString().isEmpty()){
+                    password2.setError("Campo necesario");
+                    ok = false;
+                    passwordok++;
+                }
+                if(passwordok == 0 && !password.getText().toString().equals(password2.getText().toString())){
+                    password.setError("La contraseña no es la misma");
+                }
+
+                if(email.getText().toString().isEmpty()){
+                    email.setError("Campo necesario");
+                    ok = false;
+                }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                    email.setError("Email no valido");
+                    ok = false;
+                }
+
+                if(birthdayDate.getText().toString().isEmpty()){
+                    birthdayDate.setError("Campo necesario");
+                    ok = false;
+                }
+
+                if(ok) new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,7 +179,9 @@ public class FormUserActivity extends AppCompatActivity {
     /**
      * Asynchronous Task for the petition POST to send a petition of register an User
      */
-    private class PostMethod extends AsyncTask<String, Void, Void> {
+    private class PostMethod extends AsyncTask<String, Void, String> {
+
+
         @Override
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
@@ -159,7 +194,7 @@ public class FormUserActivity extends AppCompatActivity {
          *               params[5] is the birthday date
          * @return void when finished
          */
-        protected Void doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
             HashMap<String,String> impl = new HashMap<>();
             impl.put("username",params[1]);
@@ -167,15 +202,24 @@ public class FormUserActivity extends AppCompatActivity {
             impl.put("email",params[3]);
             impl.put("password",params[4]);
             impl.put("birth_date",params[5]);
+
             String result = new HttpHandler().makeServiceCall(params[0],"POST" ,impl,"");
             Log.i(TAG, "Response from url: " + result);
-            if(result.isEmpty()){
-                Toast.makeText(getApplicationContext(),"No se ha conseguido enviar los datos",Toast.LENGTH_LONG).show();
-            }else{
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("409")){
+                Toast.makeText(getApplicationContext(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
+            }else if(s.equals("200")){
                 Toast.makeText(getApplicationContext(),"Usuario creado",Toast.LENGTH_LONG).show();
                 //TODO Change Location
+            }else{
+                Toast.makeText(getApplicationContext(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
             }
-            return null;
         }
     }
 }
