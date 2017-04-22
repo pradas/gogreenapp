@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import pes.gogreenapp.Activities.RewardsExchanged;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 

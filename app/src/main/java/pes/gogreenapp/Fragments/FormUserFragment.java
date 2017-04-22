@@ -5,12 +5,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,7 +30,7 @@ import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.R;
 
 /**
- * Created by jalvarez on 4/7/17.
+ * Created by Jorge Alvarez on 07/04/17.
  */
 
 public class FormUserFragment extends Fragment {
@@ -37,13 +38,13 @@ public class FormUserFragment extends Fragment {
     private static final String TAG = "submitUserTag";
     private static final String URLPetition = "http://raichu.fib.upc.edu/api/users";
     RequestQueue mRequestQueue;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
-        final ImageButton pickDate = (ImageButton) findViewById(R.id.datePickerButton);
-        final TextView textView = (TextView) findViewById(R.id.editFechaNacimiento);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getView().findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
+        final ImageButton pickDate = (ImageButton) getView().findViewById(R.id.datePickerButton);
+        final EditText textView = (EditText) getView().findViewById(R.id.editFechaNacimiento);
 
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -64,54 +65,68 @@ public class FormUserFragment extends Fragment {
         };
 
         pickDate.setOnClickListener((View v) -> {
-                // TODO Auto-generated method stub
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR)-18;
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+            // TODO Auto-generated method stub
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR)-18;
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                // Launch Date Picker Dialog
-                DatePickerDialog dpd = new DatePickerDialog(this,
-                        new DatePickerDialog.OnDateSetListener() {
+            // Launch Date Picker Dialog
+            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                    new DatePickerDialog.OnDateSetListener() {
 
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // Display Selected date in textbox
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                            // Display Selected date in textbox
 
-                                if (year > mYear)
-                                    view.updateDate(mYear, mMonth, mDay);
+                            if (year > mYear)
+                                view.updateDate(mYear, mMonth, mDay);
 
-                                if (monthOfYear > mMonth && year == mYear)
-                                    view.updateDate(mYear, mMonth, mDay);
+                            if (monthOfYear > mMonth && year == mYear)
+                                view.updateDate(mYear, mMonth, mDay);
 
-                                if (dayOfMonth > mDay && year == mYear && monthOfYear == mMonth)
-                                    view.updateDate(mYear, mMonth, mDay);
-                                String sDayOfMonth = String.format("%02d",dayOfMonth);
-                                String sMonthOfYear = String.format("%02d",monthOfYear + 1);
-                                textView.setText(sDayOfMonth + "-"
-                                        + sMonthOfYear + "-" + year);
+                            if (dayOfMonth > mDay && year == mYear && monthOfYear == mMonth)
+                                view.updateDate(mYear, mMonth, mDay);
+                            String sDayOfMonth = String.format("%02d",dayOfMonth);
+                            String sMonthOfYear = String.format("%02d",monthOfYear + 1);
+                            textView.setText(sDayOfMonth + "-"
+                                    + sMonthOfYear + "-" + year);
+                            textView.setError(null);
+                            textView.clearFocus();
 
-                            }
-                        }, mYear, mMonth, mDay);
+                        }
+                    }, mYear, mMonth, mDay);
             Calendar calendar = Calendar.getInstance();
             calendar.set(mYear,mMonth,mDay);
             dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
             dpd.show();
         });
     }
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.menu_register, menu);
-            return super.onCreateOptionsMenu(menu);
-        }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_register, container, false);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_register, menu);
+    }
 
     @Override
     /**
      * Override default onStop to apply a interruption of Petitions
      */
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(TAG);
@@ -122,12 +137,12 @@ public class FormUserFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_favorite:
-                EditText password = (EditText) findViewById(R.id.editContraseña);
-                EditText password2 = (EditText) findViewById(R.id.editContraseñaConfirmar);
-                EditText username = (EditText) findViewById(R.id.editUsername);
-                EditText name = (EditText) findViewById(R.id.editName);
-                EditText email = (EditText) findViewById(R.id.editEmail);
-                EditText birthdayDate = (EditText) findViewById(R.id.editFechaNacimiento);
+                EditText password = (EditText) getView().findViewById(R.id.editContraseña);
+                EditText password2 = (EditText) getView().findViewById(R.id.editContraseñaConfirmar);
+                EditText username = (EditText) getView().findViewById(R.id.editUsername);
+                EditText name = (EditText) getView().findViewById(R.id.editName);
+                EditText email = (EditText) getView().findViewById(R.id.editEmail);
+                EditText birthdayDate = (EditText) getView().findViewById(R.id.editFechaNacimiento);
                 boolean ok = true;
                 int passwordok = 0;
                 if(username.getText().toString().isEmpty()){
@@ -194,7 +209,7 @@ public class FormUserFragment extends Fragment {
          * @return void when finished
          */
         protected String doInBackground(String... params) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(getActivity());
             HashMap<String,String> impl = new HashMap<>();
             impl.put("username",params[1]);
             impl.put("name",params[2]);
@@ -210,14 +225,15 @@ public class FormUserFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
             if(s.equals("409")){
-                Toast.makeText(getApplicationContext(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
             }else if(s.equals("200")){
-                Toast.makeText(getApplicationContext(),"Usuario creado",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
                 //TODO Change Location
+                new LoginFragment().postPetitionOutside(((EditText) getView().findViewById(R.id.editUsername)).getText().toString(), ((EditText) getView().findViewById(R.id.editContraseña)).getText().toString());
             }else{
-                Toast.makeText(getApplicationContext(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -6,4 +6,9 @@
         <item name="colorAccent">#FF4081</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+    <style name="BarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#673AB7</item>
+        <item name="colorPrimaryDark">#512DA8</item>
+        <item name="colorAccent">#FF4081</item>
+    </style>
 </resources>

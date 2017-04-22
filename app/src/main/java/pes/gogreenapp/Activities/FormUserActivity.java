@@ -24,13 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.R;
 
 /**
- * Created by jalvarez on 4/7/17.
+ * Created by Jorge Alvarez on 07/04/17.
  */
 
 public class FormUserActivity extends AppCompatActivity {

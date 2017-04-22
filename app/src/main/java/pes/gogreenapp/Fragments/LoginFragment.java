@@ -13,19 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -105,11 +99,13 @@ public class LoginFragment extends Fragment {
             getActivity().finish();
         });
     }
-
+    public void postPetitionOutside(String name, String password){
+        new PostLogin().execute(URLpetition, "POST",name, password);
+    }
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
-    public class PostLogin extends AsyncTask<String, Void, String> {
+    private class PostLogin extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
