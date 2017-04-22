@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -40,6 +39,15 @@ public class FormUserFragment extends Fragment {
     RequestQueue mRequestQueue;
 
     @Override
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
@@ -106,20 +114,33 @@ public class FormUserFragment extends Fragment {
 
     @Nullable
     @Override
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in
+     *                           the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI
+     *                           should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     *                           saved state as given here.
+     * @return the View for the fragment's UI, or null.
+     */
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_register, container, false);
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param menu               If non-null, the menu will be re-constructed applied.
+     *                           If null the menu will be destroyed
+     * @param inflater           The MenuInflater object that can be used to inflate any views in
+     *                           the fragment.
+     */
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_register, menu);
+        inflater.inflate(R.menu.menu_register, null);
     }
 
     @Override
@@ -134,6 +155,9 @@ public class FormUserFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Override default onOptionsItemSelected to apply the creation method
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_favorite:
@@ -194,8 +218,6 @@ public class FormUserFragment extends Fragment {
      * Asynchronous Task for the petition POST to send a petition of register an User
      */
     private class PostMethod extends AsyncTask<String, Void, String> {
-
-
         @Override
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
