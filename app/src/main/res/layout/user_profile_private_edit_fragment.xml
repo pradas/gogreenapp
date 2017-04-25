@@ -1,0 +1,62 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="pes.gogreenapp.Fragments.UserProfilePrivateEditFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+    <Button
+        android:id="@+id/edit_profile_button"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:text="Fecha de nacimiento" />
+
+
+
+    <TextView
+        android:id="@+id/user_birthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="date"/>
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:text="Puntos actuales: " />
+
+    <TextView
+        android:id="@+id/user_currentpoints"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/user_email_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+</FrameLayout>

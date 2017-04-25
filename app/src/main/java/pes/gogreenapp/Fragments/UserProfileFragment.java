@@ -29,7 +29,9 @@ import static pes.gogreenapp.R.id.user_points;
 /**
  * Created by Daniel on 17/04/2017.
  */
-public class UserProfileFragment extends Fragment {
+public class UserProfileFragment extends Fragment
+        implements UserProfilePrivateEditFragment.OnEditSelectionEventListener,
+                    UserProfilePrivateFragment.OnEditSelectionEventListener{
     User testUser;
     /**
      *  Required empty public constructor
@@ -37,6 +39,7 @@ public class UserProfileFragment extends Fragment {
     public UserProfileFragment(){
 
     }
+
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
@@ -55,6 +58,50 @@ public class UserProfileFragment extends Fragment {
         return inflater.inflate(R.layout.user_profile_container_fragment, container, false);
     }
 
+    @Override
+    public void onEditSelectionEvent(boolean editUser){
+
+
+        if(editUser){
+
+
+            UserProfilePublicEditFragment uPublicEditFrag = new UserProfilePublicEditFragment();
+            UserProfilePrivateEditFragment uPrivateEditFrag = new UserProfilePrivateEditFragment();
+
+
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+            transaction
+                    .replace(R.id.user_profile_c1, uPublicEditFrag)
+                    .replace(R.id.user_profile_c2, uPrivateEditFrag)
+                    .addToBackStack(null)
+                    .commit();
+            /*
+            transaction.replace(R.id.user_profile_c1, uPublicEditFrag);
+            transaction.commit();
+
+
+            transaction = getChildFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.user_profile_c2, uPrivateEditFrag);
+            transaction.commit();
+            */
+
+        }
+        else {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
+            UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
+            transaction
+                    .replace(R.id.user_profile_c1, uPublicFrag)
+                    .replace(R.id.user_profile_c2, uPrivateFrag)
+                    .addToBackStack(null)
+                    .commit();
+
+        }
+
+    }
+
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -67,20 +114,23 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
-        UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
-        UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
         RewardsExchangedFragment rExFrag = new RewardsExchangedFragment();
 
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) {
+
+            UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
+            UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
+
+
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
+
             transaction
-                    .add(R.id.user_profile_public_fragment, uPublicFrag)
-                    .add(R.id.user_profile_private_fragment, uPrivateFrag)
+                    .add(R.id.user_profile_c1, uPublicFrag)
+                    .add(R.id.user_profile_c2, uPrivateFrag)
                     .add(R.id.rewards_exchanged_fragment, rExFrag)
                     .commit();
-
         }
 
         TextView userName = (TextView) getView().findViewById(user_name);
@@ -97,10 +147,6 @@ public class UserProfileFragment extends Fragment {
 
         initializeUser();
         new GetInfoUser().execute();
-
-
-
-
 
     }
 

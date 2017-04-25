@@ -1,5 +1,6 @@
 package pes.gogreenapp.Fragments;
 
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,17 +26,26 @@ import pes.gogreenapp.R;
 
 import static pes.gogreenapp.R.id.user_creation_date;
 import static pes.gogreenapp.R.id.user_image;
-import static pes.gogreenapp.R.id.user_name;
+import static pes.gogreenapp.R.id.user_name_edit;
 import static pes.gogreenapp.R.id.user_nickname;
 import static pes.gogreenapp.R.id.user_points;
 
-
-public class UserProfilePublicFragment extends Fragment {
+ /**
+ * A simple {@link Fragment} subclass.
+ */
+public class UserProfilePublicEditFragment extends Fragment {
     User testUser;
 
-    public UserProfilePublicFragment() {
+
+    private void initializeUser(){
+        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
+    }
+
+    public UserProfilePublicEditFragment() {
         // Required empty public constructor
     }
+
+
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
@@ -51,8 +62,9 @@ public class UserProfilePublicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_profile_public_fragment, container, false);
+        return inflater.inflate(R.layout.user_profile_public_edit_fragment, container, false);
     }
+
 
     /**
      * Called when the fragment's activity has been created and this
@@ -68,9 +80,10 @@ public class UserProfilePublicFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
-        TextView userName = (TextView) getView().findViewById(user_name);
+        EditText userName = (EditText) getView().findViewById(user_name_edit);
         TextView userNickName = (TextView) getView().findViewById(user_nickname);
         TextView userPoints = (TextView) getView().findViewById(user_points);
+
         TextView userCreationDate = (TextView) getView().findViewById(user_creation_date);
         ImageView userImage = (ImageView) getView().findViewById(user_image);
 
@@ -80,23 +93,16 @@ public class UserProfilePublicFragment extends Fragment {
         //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
         initializeUser();
-        new UserProfilePublicFragment.GetInfoUser().execute();
+        new UserProfilePublicEditFragment.GetInfoUser().execute();
 
         userName.setText(testUser.getName());
         userNickName.setText(testUser.getUsername());
         userPoints.setText(String.valueOf(testUser.getTotalPoints()));
         userCreationDate.setText((String) sourceFormat.format(testUser.getCreationDate()));
         //userCreationDate.setText(date);
-
         //userImage.setImageResource();
 
 
-
-    }
-
-
-    private void initializeUser(){
-        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
     }
 
@@ -142,4 +148,8 @@ public class UserProfilePublicFragment extends Fragment {
         }
 
     }
+
+
+
+
 }
