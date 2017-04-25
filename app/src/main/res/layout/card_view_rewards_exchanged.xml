@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground"
+    card_view:cardBackgroundColor="#A8FFAE"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/rewardImageExchanged"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/rewardTitleExchanged"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/rewardPointsExchanged"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rewardTitleExchanged" />
+
+        <TextView
+            android:id="@+id/rewardCategoryExchanged"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rewardPointsExchanged"/>
+
+        <TextView
+            android:id="@+id/rewardEndDateExchanged"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"/>
+
+        <ImageButton
+            android:id="@+id/favoriteExchangedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="90dp"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:tag="favorite"
+            android:background="?android:selectableItemBackground"
+            android:src="@mipmap/favorite" />
+
+        <Button
+            android:id="@+id/useRewardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="Usar" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
