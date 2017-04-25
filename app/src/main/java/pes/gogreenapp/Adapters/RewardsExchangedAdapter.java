@@ -12,9 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import pes.gogreenapp.Fragments.QRCodeFragment;
@@ -45,19 +50,23 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
-        public TextView direction;
+        public TextView category;
         public TextView points;
+        public TextView endDate;
         public ImageView rewardImage;
         public Button use;
+        public ImageButton fav;
         public Integer id;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.rewardTitleExchanged);
-            direction = (TextView) itemView.findViewById(R.id.rewardDirectionExchanged);
+            category = (TextView) itemView.findViewById(R.id.rewardCategoryExchanged);
             points = (TextView) itemView.findViewById(R.id.rewardPointsExchanged);
+            endDate = (TextView) itemView.findViewById(R.id.rewardEndDateExchanged);
             rewardImage = (ImageView) itemView.findViewById(R.id.rewardImageExchanged);
             use = (Button) itemView.findViewById(R.id.useRewardButton);
+            fav = (ImageButton) itemView.findViewById(R.id.favoriteExchangedButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,8 +97,22 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     public void onBindViewHolder(RewardsExchangedAdapter.ViewHolder holder, int position) {
         holder.id = rewards.get(position).getId();
         holder.title.setText(rewards.get(position).getTitle());
-        holder.direction.setText(rewards.get(position).getCategory()); //tendra que ser direccion obviamente
+        holder.category.setText(rewards.get(position).getCategory());
+        Date d = rewards.get(position).getEndDate();
+        holder.endDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(d));
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
+        holder.fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.fav.getTag().equals("favorite")) {
+                    holder.fav.setImageResource(R.mipmap.favoritefilled);
+                    holder.fav.setTag("favoritefilled");
+                } else {
+                    holder.fav.setImageResource(R.mipmap.favorite);
+                    holder.fav.setTag("favorite");
+                }
+            }
+        });
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +134,4 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     public int getItemCount() {
         return rewards.size();
     }
-
-
 }

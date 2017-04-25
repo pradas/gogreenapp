@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the username on the header view
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
-        username.setText(session.getUsername());
+        username.setText(session.getUserName());
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
