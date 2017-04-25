@@ -31,7 +31,7 @@ import static pes.gogreenapp.R.id.user_points;
 
 public class UserProfilePublicFragment extends Fragment {
     User testUser;
-
+    String url = "http://10.4.41.145/api/";
     public UserProfilePublicFragment() {
         // Required empty public constructor
     }
@@ -73,7 +73,6 @@ public class UserProfilePublicFragment extends Fragment {
         TextView userPoints = (TextView) getView().findViewById(user_points);
         TextView userCreationDate = (TextView) getView().findViewById(user_creation_date);
         ImageView userImage = (ImageView) getView().findViewById(user_image);
-
         DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         //a la espera de tener la petición de la API hecha
