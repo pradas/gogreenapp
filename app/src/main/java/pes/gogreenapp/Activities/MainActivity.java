@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.HashMap;
-
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
@@ -157,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
+                    break;
+                case R.id.user_profile_fragment:
+                    fragmentClass = UserProfileFragment.class;
                     break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;

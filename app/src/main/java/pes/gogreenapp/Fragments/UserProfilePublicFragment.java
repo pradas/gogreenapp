@@ -1,16 +1,21 @@
 package pes.gogreenapp.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -25,17 +30,11 @@ import static pes.gogreenapp.R.id.user_nickname;
 import static pes.gogreenapp.R.id.user_points;
 
 
-
-/**
- * Created by Daniel on 17/04/2017.
- */
-public class UserProfileFragment extends Fragment {
+public class UserProfilePublicFragment extends Fragment {
     User testUser;
-    /**
-     *  Required empty public constructor
-     */
-    public UserProfileFragment(){
 
+    public UserProfilePublicFragment() {
+        // Required empty public constructor
     }
 
     /**
@@ -52,7 +51,8 @@ public class UserProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.user_profile_container_fragment, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.user_profile_public_fragment, container, false);
     }
 
     /**
@@ -65,23 +65,9 @@ public class UserProfileFragment extends Fragment {
      *                           a previous saved state, this is the state.
      */
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
-        UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
-        RewardsExchangedFragment rExFrag = new RewardsExchangedFragment();
+    public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null) {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-            transaction
-                    .add(R.id.user_profile_public_fragment, uPublicFrag)
-                    .add(R.id.user_profile_private_fragment, uPrivateFrag)
-                    .add(R.id.rewards_exchanged_fragment, rExFrag)
-                    .commit();
-
-        }
 
         TextView userName = (TextView) getView().findViewById(user_name);
         TextView userNickName = (TextView) getView().findViewById(user_nickname);
@@ -96,9 +82,15 @@ public class UserProfileFragment extends Fragment {
         //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
         initializeUser();
-        new GetInfoUser().execute();
+        new UserProfilePublicFragment.GetInfoUser().execute();
 
-
+        userName.setText(testUser.getName());
+        userNickName.setText(testUser.getUsername());
+        userPoints.setText(String.valueOf(testUser.getTotalPoints()));
+        userCreationDate.setText((String) sourceFormat.format(testUser.getCreationDate()));
+        //userCreationDate.setText(date);
+        userEmail.setText(testUser.getEmail());
+        //userImage.setImageResource();
 
 
 
@@ -110,10 +102,20 @@ public class UserProfileFragment extends Fragment {
 
     }
 
-
-
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
+        Bitmap b_image_user;
 
+        private Bitmap getRemoteImage(final URL aURL) {
+            try {
+                final URLConnection conn = aURL.openConnection();
+                conn.connect();
+                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                final Bitmap bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bm;
+            } catch (IOException e) {}
+            return null;
+        }
 
 
         @Override
@@ -122,7 +124,14 @@ public class UserProfileFragment extends Fragment {
             //String response = httpHandler.makeServiceCall(urls[0]);
             //Log.i(TAG, "Response from url: " + response);
 
-
+            URL imageUrl = null;
+            try {
+                imageUrl = new URL(testUser.getUserUrlImage());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            b_image_user = this.getRemoteImage(imageUrl);
+            //testUser.setUserImage();
 
             return null;
         }
@@ -130,9 +139,9 @@ public class UserProfileFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-
+            ImageView userImage = (ImageView) getView().findViewById(user_image);
+            userImage.setImageBitmap(b_image_user);
         }
 
     }
-
 }

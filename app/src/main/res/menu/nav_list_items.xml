@@ -7,6 +7,9 @@
         <item
             android:id="@+id/rewards_list_fragment"
             android:title="@string/rewards" />
+        <item
+            android:id="@+id/user_profile_fragment"
+            android:title="@string/user_profile" />
     </group>
     <!-- This group represents the items after the separator -->
     <group

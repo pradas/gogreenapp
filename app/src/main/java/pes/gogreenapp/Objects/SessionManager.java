@@ -129,7 +129,5 @@ public class SessionManager {
         return pref.getString(KEY_TOKEN, "");
     }
 
-    public String getUsername() {
-        return pref.getString(KEY_NAME, "");
-    }
+    public String getUserName() { return pref.getString(KEY_NAME, ""); }
 }
