@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
 
@@ -22,7 +21,6 @@ import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -155,9 +153,6 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
-                    break;
-                case R.id.user_profile_fragment:
-                    fragmentClass = UserProfileFragment.class;
                     break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;
