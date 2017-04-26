@@ -149,6 +149,13 @@ public class RewardDetailedFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+                            //Se tendrán que restar los puntos y hacer la llamada a la API
+
+                            FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            Fragment fragment = (Fragment) new RewardsListFragment();
+                            transaction.replace(R.id.flContent, fragment);
+                            transaction.commit();
                         }
                     });
                     mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
