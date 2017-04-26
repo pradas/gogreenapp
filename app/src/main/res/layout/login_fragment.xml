@@ -7,7 +7,7 @@
     android:paddingTop="20dp">
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/TitleLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -20,7 +20,7 @@
         android:id="@+id/imageGoGreen"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/Title"
+        android:layout_below="@+id/TitleLogIn"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher_round" />
 
@@ -53,16 +53,9 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="login"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/Title"
-        android:text="login" />
+        android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Cancel" />
 
 </RelativeLayout>

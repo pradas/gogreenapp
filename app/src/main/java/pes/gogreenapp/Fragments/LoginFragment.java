@@ -38,7 +38,6 @@ public class LoginFragment extends Fragment {
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
-    private Button buttonCancel;
 
     /**
      * Required empty public constructor
@@ -85,25 +84,23 @@ public class LoginFragment extends Fragment {
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
 
-        buttonCancel = (Button) getView().findViewById(R.id.buttonCancel);
-
         buttonLogin.setOnClickListener(v -> {
+            Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
-                textName.setError("Campo necesario");
+                textName.setError("Nombre necesario");
+                send = false;
             }
-            else if (textPassword.getText().toString().length() <= 0) {
-                textPassword.setError("Campo necesario");
+            if (textPassword.getText().toString().length() <= 0) {
+                textPassword.setError("Contraseña necesaria");
+                send = false;
             }
-            else {
+            if (send) {
                 new PostLogin().execute("http://10.4.41.145/api/session", "POST",
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
         });
 
-        buttonCancel.setOnClickListener(v -> {
-            getActivity().finish();
-        });
     }
 
     /**
@@ -118,7 +115,7 @@ public class LoginFragment extends Fragment {
          *               params[1] is the method petition,
          *               params[2] is the username or email for identification in the login and
          *               params[3] is the password to identification in the login
-         * @return void when finished
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
          */
         @Override
         protected String doInBackground(String... params) {
@@ -145,6 +142,12 @@ public class LoginFragment extends Fragment {
             return "Correcte";
         }
 
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result    If is "Falla" makes the toast.
+         *
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Falla")) {
                 Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
