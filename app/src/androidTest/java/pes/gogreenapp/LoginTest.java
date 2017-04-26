@@ -70,7 +70,6 @@ public class LoginTest {
         }
     }
 
-
     @Test
     public void CorrectLogin() {
         onView(withId(R.id.username_edit_text))
