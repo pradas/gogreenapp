@@ -87,11 +87,11 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
-                textName.setError("Campo necesario");
+                textName.setError("Nombre necesario");
                 send = false;
             }
             if (textPassword.getText().toString().length() <= 0) {
-                textPassword.setError("Campo necesario");
+                textPassword.setError("Contraseña necesaria");
                 send = false;
             }
             if (send) {
