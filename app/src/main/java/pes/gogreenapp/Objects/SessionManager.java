@@ -25,6 +25,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_POINTS = "points";
 
     /**
      *
@@ -41,10 +42,11 @@ public class SessionManager {
     /**
      * Create login_activity session
      */
-    public void createLoginSession(String username, String token) {
+    public void createLoginSession(String username, String token, int points) {
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_TOKEN, token);
         editor.putBoolean(IS_LOGIN, true);
+        editor.putInt(KEY_POINTS, points);
         editor.commit();
     }
 
@@ -101,4 +103,6 @@ public class SessionManager {
     public String getUserName() {
         return pref.getString(KEY_USERNAME, "");
     }
+
+    public int getPoints() { return pref.getInt(KEY_POINTS, 0); }
 }

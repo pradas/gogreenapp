@@ -129,7 +129,7 @@ public class LoginFragment extends Fragment {
                     JSONObject aux = new JSONObject(response);
                     new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
                     session = new SessionManager(getActivity().getApplicationContext(), params[2]);
-                    session.createLoginSession(params[2], aux.get("token").toString());
+                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
