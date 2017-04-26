@@ -27,6 +27,7 @@ import java.util.List;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -84,7 +85,7 @@ public class RewardsExchangedFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = new SessionManager(getActivity().getApplicationContext(),
-                SessionManager.currentUsername);
+                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvExchanged);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerExchanged);
         layoutManager = new LinearLayoutManager(getActivity());
