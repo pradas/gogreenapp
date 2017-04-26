@@ -21,6 +21,7 @@ import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
-        session = new SessionManager(getApplicationContext(), SessionManager.currentUsername);
+        session = new SessionManager(getApplicationContext(),
+                new GlobalPreferences(getApplicationContext()).getUser());
         /*
           Call this function whenever you want to check user login_activity
           This will redirect user to LoginActivity is he is not

@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutionException;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
 
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.RewardDetailed;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -97,7 +98,7 @@ public class RewardDetailedFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = new SessionManager(getActivity().getApplicationContext(),
-                SessionManager.currentUsername);
+                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
         try {
             new GetReward().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {

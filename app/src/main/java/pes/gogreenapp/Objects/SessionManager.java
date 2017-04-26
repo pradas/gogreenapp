@@ -6,16 +6,17 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import pes.gogreenapp.Activities.LoginActivity;
+import pes.gogreenapp.R;
 
 public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
 
     // Editor for Shared preferences
-    Editor editor;
+    private Editor editor;
 
     // Context
-    Context _context;
+    private Context _context;
 
     // Shared pref mode
     private static final int PRIVATE_MODE = 0;
@@ -24,7 +25,6 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_TOKEN = "token";
-    public static String currentUsername = "";
 
     /**
      *
@@ -36,7 +36,6 @@ public class SessionManager {
         pref = _context.getSharedPreferences(Username, PRIVATE_MODE);
         editor = pref.edit();
         editor.apply();
-        currentUsername = Username;
     }
 
     /**

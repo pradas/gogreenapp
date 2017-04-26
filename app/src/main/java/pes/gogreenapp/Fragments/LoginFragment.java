@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -126,6 +127,7 @@ public class LoginFragment extends Fragment {
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
+                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
                     session = new SessionManager(getActivity().getApplicationContext(), params[2]);
                     session.createLoginSession(params[2], aux.get("token").toString());
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
