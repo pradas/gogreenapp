@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,9 @@ public class LoginFragment extends Fragment {
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
-    private Button buttonCancel;
+    private Button buttonRegister;
     public static final String URLpetition = "http://10.4.41.145/api/session";
+
     /**
      * Required empty public constructor
      */
@@ -79,29 +81,35 @@ public class LoginFragment extends Fragment {
         textName = (EditText) getView().findViewById(R.id.textNombre);
         textPassword = (EditText) getView().findViewById(R.id.textContraseña);
 
-        buttonCancel = (Button) getView().findViewById(R.id.buttonCancel);
+        buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
 
         buttonLogin.setOnClickListener(v -> {
             if (textName.getText().toString().length() <= 0) {
                 textName.setError("Campo necesario");
-            }
-            else if (textPassword.getText().toString().length() <= 0) {
+            } else if (textPassword.getText().toString().length() <= 0) {
                 textPassword.setError("Campo necesario");
-            }
-            else {
+            } else {
                 new PostLogin().execute(URLpetition, "POST",
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
+
         });
 
-        buttonCancel.setOnClickListener(v -> {
-            getActivity().finish();
+        buttonRegister.setOnClickListener(v -> {
+            try {
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container_login, RegisterFragment.class.newInstance())
+                        .commit();
+            } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            getActivity().setTitle("Register");
         });
     }
-    public void postPetitionOutside(String name, String password){
-        new PostLogin().execute(URLpetition, "POST",name, password);
-    }
+
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
@@ -133,8 +141,7 @@ public class LoginFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 return "Falla";
             }
             return "Correcte";
@@ -142,7 +149,7 @@ public class LoginFragment extends Fragment {
 
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Falla")) {
-                Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
             }
         }
     }

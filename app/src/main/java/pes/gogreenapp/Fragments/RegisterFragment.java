@@ -1,6 +1,7 @@
 package pes.gogreenapp.Fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,19 +21,26 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
 /**
  * Created by Jorge Alvarez on 07/04/17.
  */
 
-public class FormUserFragment extends Fragment {
+public class RegisterFragment extends Fragment {
+    private SessionManager session;
+
     private static Integer mYear, mMonth, mDay;
     private static final String TAG = "submitUserTag";
     private static final String URLPetition = "http://raichu.fib.upc.edu/api/users";
@@ -50,6 +58,9 @@ public class FormUserFragment extends Fragment {
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        session = new SessionManager(getActivity().getApplicationContext());
+
         getView().findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
         final ImageButton pickDate = (ImageButton) getView().findViewById(R.id.datePickerButton);
         final EditText textView = (EditText) getView().findViewById(R.id.editFechaNacimiento);
@@ -126,6 +137,7 @@ public class FormUserFragment extends Fragment {
      * @return the View for the fragment's UI, or null.
      */
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.activity_register, container, false);
     }
 
@@ -140,7 +152,7 @@ public class FormUserFragment extends Fragment {
      */
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_register, null);
+        inflater.inflate(R.menu.menu_register, menu);
     }
 
     @Override
@@ -247,16 +259,59 @@ public class FormUserFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
-            if(s.equals("409")){
-                Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
-            }else if(s.equals("200")){
-                Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
-                //TODO Change Location
-                new LoginFragment().postPetitionOutside(((EditText) getView().findViewById(R.id.editUsername)).getText().toString(), ((EditText) getView().findViewById(R.id.editContraseña)).getText().toString());
-            }else{
+            if(s == null){
                 Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
+            }else if(s.equals("409")){
+                Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
+                EditText name = (EditText) getView().findViewById(R.id.editName);
+                EditText password = (EditText) getView().findViewById(R.id.editContraseña);
+            }else{
+                Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
             }
         }
     }
+
+    private class PostLogin extends AsyncTask<String, Void, String> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url, params[1] is the method petition,
+         *               params[2] is the username or email for identification in the login and
+         *               params[3] is the password to identification in the login
+         * @return void when finished
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("user", params[2]);
+            bodyParams.put("password", params[3]);
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams,
+                    session.getToken());
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    session.createLoginSession(params[2], aux.get("token").toString());
+                    Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                return "Falla";
+            }
+            return "Correcte";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Falla")) {
+                Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
 }

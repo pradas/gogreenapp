@@ -53,13 +53,15 @@ public class HttpHandler {
                 OutputStream out = new BufferedOutputStream(conn.getOutputStream());
                 writeStream(out, bodyParameters);
             }
-            resCode=String.valueOf(conn.getResponseCode());
-            Log.i(TAG, String.valueOf(conn.getResponseCode()));
+            resCode = String.valueOf(conn.getResponseCode());
+            Log.i(TAG, resCode);
 
             /* Read the response */
-            if(!resCode.equals("200")) {
+            if(resCode.equals("200")) {
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 response = convertStreamToString(in);
+            }else{
+                response = resCode;
             }
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());

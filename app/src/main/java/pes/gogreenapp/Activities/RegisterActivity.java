@@ -2,10 +2,8 @@ package pes.gogreenapp.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 
-import pes.gogreenapp.Fragments.FormUserFragment;
+import pes.gogreenapp.Fragments.RegisterFragment;
 import pes.gogreenapp.R;
 
 /**
@@ -20,7 +18,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
        getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new FormUserFragment())
+                    .add(R.id.container_login, new RegisterFragment())
                     .commit();
     }
 
