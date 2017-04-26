@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.HashMap;
-
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the username on the header view
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
-        username.setText(session.getUsername());
+        username.setText(session.getUserName());
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -158,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
                     break;
+                case R.id.user_profile_fragment:
+                    fragmentClass = UserProfileFragment.class;
+                    break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;
                     break;
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentClass = AccountManagerFragment.class;
                     break;
                 case R.id.profile_image:
-                    fragmentClass = RewardsListFragment.class;
+                    fragmentClass = UserProfileFragment.class;
                     break;
                 default:
                     fragmentClass = RewardsListFragment.class;

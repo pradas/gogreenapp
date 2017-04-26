@@ -17,37 +17,37 @@
         android:padding="15dp">
 
         <ImageView
-            android:id="@+id/rewardImage"
+            android:id="@+id/rewardImageExchanged"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <TextView
-            android:id="@+id/rewardTitle"
+            android:id="@+id/rewardTitleExchanged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
         <TextView
-            android:id="@+id/rewardPoints"
+            android:id="@+id/rewardPointsExchanged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rewardTitle" />
+            android:layout_below="@+id/rewardTitleExchanged" />
 
         <TextView
-            android:id="@+id/rewardCategory"
+            android:id="@+id/rewardCategoryExchanged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rewardPoints"/>
+            android:layout_below="@+id/rewardPointsExchanged"/>
 
         <TextView
-            android:id="@+id/rewardEndDate"
+            android:id="@+id/rewardEndDateExchanged"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"/>
 
         <ImageButton
-            android:id="@+id/favoriteButton"
+            android:id="@+id/favoriteExchangedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -59,12 +59,12 @@
             android:src="@mipmap/favorite" />
 
         <Button
-            android:id="@+id/exchangeButton"
+            android:id="@+id/useRewardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:text="Canjear" />
+            android:text="Usar" />
 
     </RelativeLayout>
 
