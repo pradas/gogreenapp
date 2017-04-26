@@ -82,8 +82,8 @@ public class LoginFragment extends Fragment {
         session = new SessionManager(getActivity().getApplicationContext());
 
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
-        textName = (EditText) getView().findViewById(R.id.textNombre);
-        textPassword = (EditText) getView().findViewById(R.id.textContraseña);
+        textName = (EditText) getView().findViewById(R.id.username_edit_text);
+        textPassword = (EditText) getView().findViewById(R.id.password_user_text);
 
         buttonCancel = (Button) getView().findViewById(R.id.buttonCancel);
 

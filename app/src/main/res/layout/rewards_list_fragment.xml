@@ -7,6 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
+    android:id="@+id/rewards_list"
     tools:context="pes.gogreenapp.Fragments.RewardsListFragment">
 
     <RelativeLayout
@@ -39,7 +40,7 @@
                     android:id="@+id/showCategoriesButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Categorias"
+                    android:text="@string/categories"
                     android:textAllCaps="true" />
 
                 <Button
