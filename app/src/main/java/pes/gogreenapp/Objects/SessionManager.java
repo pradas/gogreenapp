@@ -1,14 +1,11 @@
 package pes.gogreenapp.Objects;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import pes.gogreenapp.Activities.LoginActivity;
-import pes.gogreenapp.Activities.MainActivity;
 
 public class SessionManager {
     // Shared Preferences
@@ -21,41 +18,34 @@ public class SessionManager {
     Context _context;
 
     // Shared pref mode
-    int PRIVATE_MODE = 0;
-
-    // Sharedpref file name
-    private static final String PREF_NAME = "GoGreenPref";
+    private static final int PRIVATE_MODE = 0;
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_TOKEN = "token";
+    public static String currentUsername = "";
 
-    // User name (make variable public to access from outside)
-    public static final String KEY_NAME = "name";
-
-    // Token (make variable public to access from outside)
-    public static final String KEY_TOKEN = "token";
-
-    // Constructor
-    public SessionManager(Context context) {
+    /**
+     *
+     * @param context context of the APP
+     * @param Username username of the shared preferences
+     */
+    public SessionManager(Context context, String Username) {
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(Username, PRIVATE_MODE);
         editor = pref.edit();
+        editor.apply();
+        currentUsername = Username;
     }
 
     /**
      * Create login_activity session
      */
-    public void createLoginSession(String name, String token) {
-        // Storing login_activity value as TRUE
-        editor.putBoolean(IS_LOGIN, true);
-
-        // Storing name in pref
-        editor.putString(KEY_NAME, name);
-
-        // Storing email in pref
+    public void createLoginSession(String username, String token) {
+        editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_TOKEN, token);
-
-        // commit changes
+        editor.putBoolean(IS_LOGIN, true);
         editor.commit();
     }
 
@@ -65,10 +55,10 @@ public class SessionManager {
      * Else won't do anything
      */
     public void checkLogin() {
-        // Check login_activity status
         if (!this.isLoggedIn()) {
-            // user is not logged in redirect him to LoginActivity Activity
+            // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
+
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -78,22 +68,6 @@ public class SessionManager {
             // Staring LoginActivity Activity
             _context.startActivity(i);
         }
-
-    }
-
-    /**
-     * Get stored session data
-     */
-    public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
-        // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
-        // user email id
-        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
-
-        // return user
-        return user;
     }
 
     /**
@@ -106,6 +80,7 @@ public class SessionManager {
 
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
+
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -116,11 +91,7 @@ public class SessionManager {
         _context.startActivity(i);
     }
 
-    /**
-     * Quick check for login_activity
-     **/
-    // Get LoginActivity State
-    public boolean isLoggedIn() {
+    private boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
@@ -129,6 +100,6 @@ public class SessionManager {
     }
 
     public String getUserName() {
-        return pref.getString(KEY_NAME, "");
+        return pref.getString(KEY_USERNAME, "");
     }
 }

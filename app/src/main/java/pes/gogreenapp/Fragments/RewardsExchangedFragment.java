@@ -83,7 +83,8 @@ public class RewardsExchangedFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity().getApplicationContext(),
+                SessionManager.currentUsername);
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvExchanged);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerExchanged);
         layoutManager = new LinearLayoutManager(getActivity());

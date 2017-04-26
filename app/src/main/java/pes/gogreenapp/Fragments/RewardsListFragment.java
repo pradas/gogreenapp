@@ -90,7 +90,8 @@ public class RewardsListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity().getApplicationContext(),
+                SessionManager.currentUsername);
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -172,7 +173,8 @@ public class RewardsListFragment extends Fragment {
                     }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
                 // User clicked OK button
                 List<Reward> filteredRewards = filterRewardsByCategories();
-                if (filteredRewards.size() == 0) warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
+                if (filteredRewards.size() == 0)
+                    warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
                 else warning.setText("");
                 adapter = new RewardsListAdapter(getContext(), filteredRewards);
                 recyclerView.setAdapter(adapter);
