@@ -27,7 +27,6 @@ import pes.gogreenapp.R;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
-    private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     SessionManager session;
 
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext(), SessionManager.currentUsername);
         /*
           Call this function whenever you want to check user login_activity
           This will redirect user to LoginActivity is he is not
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
 
         // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
@@ -120,10 +119,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**

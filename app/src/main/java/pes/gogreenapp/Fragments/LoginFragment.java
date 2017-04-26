@@ -29,6 +29,8 @@ import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
+import static pes.gogreenapp.R.id.buttonLogin;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -77,9 +79,6 @@ public class LoginFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Session Manager
-        session = new SessionManager(getActivity().getApplicationContext());
-
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
@@ -123,11 +122,11 @@ public class LoginFragment extends Fragment {
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
-            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams,
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
+                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
                     session.createLoginSession(params[2], aux.get("token").toString());
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
@@ -135,8 +134,7 @@ public class LoginFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 return "Falla";
             }
             return "Correcte";
@@ -145,12 +143,11 @@ public class LoginFragment extends Fragment {
         /**
          * Called when doInBackground is finished, Toast an error if there is an error.
          *
-         * @param result    If is "Falla" makes the toast.
-         *
+         * @param result If is "Falla" makes the toast.
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Falla")) {
-                Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
             }
         }
     }

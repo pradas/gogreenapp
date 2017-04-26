@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +68,7 @@ public class RewardDetailedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.reward_detailed_fragment, container, false);
+        View view = inflater.inflate(R.layout.reward_detailed_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
         return view;
@@ -95,7 +96,8 @@ public class RewardDetailedFragment extends Fragment {
 
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity().getApplicationContext(),
+                SessionManager.currentUsername);
         try {
             new GetReward().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -156,9 +158,7 @@ public class RewardDetailedFragment extends Fragment {
                     });
                     AlertDialog dialog = mBuilder.create();
                     dialog.show();
-                }
-
-                else { //ACCIÓN UTILIZAR
+                } else { //ACCIÓN UTILIZAR
                     String url = "http://10.4.41.145/api/users/" + session.getUserName() + "/rewards/" + reward.getId();
                     Bundle bundle = new Bundle();
                     bundle.putString("url", url);
@@ -196,7 +196,7 @@ public class RewardDetailedFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     Date endDate = df.parse((String) jsonObject.get("end_date"));
-                    reward =  new RewardDetailed((Integer) jsonObject.get("id"),
+                    reward = new RewardDetailed((Integer) jsonObject.get("id"),
                             (String) jsonObject.get("title"), (Integer) jsonObject.get("points"), endDate,
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),
