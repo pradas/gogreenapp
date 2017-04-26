@@ -19,7 +19,7 @@
         android:id="@+id/edit_profile_button"
         android:layout_width="174dp"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Editar" />
 
     <TextView
         android:id="@+id/textView"
@@ -37,6 +37,13 @@
         android:ems="10"
         android:inputType="date"/>
 
+    <Button
+        android:id="@+id/user_birthdate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="date"
+        android:text="edita fecha"/>
 
     <TextView
         android:id="@+id/textView2"
