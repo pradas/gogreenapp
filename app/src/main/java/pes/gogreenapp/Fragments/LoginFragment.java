@@ -114,7 +114,8 @@ public class LoginFragment extends Fragment {
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
-         * @param params params[0] is the petition url, params[1] is the method petition,
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
          *               params[2] is the username or email for identification in the login and
          *               params[3] is the password to identification in the login
          * @return void when finished

@@ -81,7 +81,6 @@ public class SessionManager {
 
     }
 
-
     /**
      * Get stored session data
      */
@@ -129,5 +128,7 @@ public class SessionManager {
         return pref.getString(KEY_TOKEN, "");
     }
 
-    public String getUserName() { return pref.getString(KEY_NAME, ""); }
+    public String getUserName() {
+        return pref.getString(KEY_NAME, "");
+    }
 }
