@@ -32,7 +32,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
 
 import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.RewardDetailed;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -46,7 +46,7 @@ public class RewardDetailedFragment extends Fragment {
     private Integer id;
     private String TAG = MainActivity.class.getSimpleName();
     private String url = "http://10.4.41.145/api/rewards/";
-    private RewardDetailed reward;
+    private Reward reward;
 
 
     /**
@@ -197,7 +197,7 @@ public class RewardDetailedFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     Date endDate = df.parse((String) jsonObject.get("end_date"));
-                    reward = new RewardDetailed((Integer) jsonObject.get("id"),
+                    reward = new Reward((Integer) jsonObject.get("id"),
                             (String) jsonObject.get("title"), (Integer) jsonObject.get("points"), endDate,
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),

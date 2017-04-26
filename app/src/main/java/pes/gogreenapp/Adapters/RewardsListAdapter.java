@@ -72,6 +72,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
             exchange = (Button) itemView.findViewById(R.id.exchangeButton);
+            exchange.setText("Canjear");
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

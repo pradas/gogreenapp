@@ -50,7 +50,6 @@ public class RewardsListFragment extends Fragment {
     String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = MainActivity.class.getSimpleName();
-    private List<Integer> idsExchangeds = new ArrayList<>();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
     private SessionManager session;
@@ -98,7 +97,6 @@ public class RewardsListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         userName = session.getUserName();
-        new GetRewardsExchangeds().execute(url + "users/" + userName + "/rewards");
         new GetCategories().execute(url + "categories");
         new GetRewards().execute(url + "rewards");
         final Button endDate = (Button) getView().findViewById(orderDateButton);
@@ -241,39 +239,6 @@ public class RewardsListFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
-    private class GetRewardsExchangeds extends AsyncTask<String, Void, Void> {
-
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param urls The parameters of the task.
-         */
-        @Override
-        protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
-            Log.i(TAG, "Response from url: " + response);
-            if (response != null) {
-                try {
-                    JSONObject aux = new JSONObject(response);
-                    JSONArray jsonArray = aux.getJSONArray("rewards");
-                    System.out.println(jsonArray.toString());
-                    for (int i = 0; i < jsonArray.length(); ++i) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        idsExchangeds.add((Integer) jsonObject.get("id"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Asynchronous Task for the petition GET of all the Rewards.
-     */
     private class GetRewards extends AsyncTask<String, Void, Void> {
 
         /**
@@ -294,13 +259,12 @@ public class RewardsListFragment extends Fragment {
                     System.out.println(jsonArray.toString());
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if ((idsExchangeds.contains((Integer) jsonObject.get("id")))) {
-                            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                            Date d = df.parse((String) jsonObject.get("end_date"));
-                            rewards.add(new Reward((Integer) jsonObject.get("id"),
-                                    (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
-                                    d, (String) jsonObject.get("category")));
-                        }
+                        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        Date d = df.parse((String) jsonObject.get("end_date"));
+                        rewards.add(new Reward((Integer) jsonObject.get("id"),
+                                (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
+                                d, (String) jsonObject.get("category")));
+
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

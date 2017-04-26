@@ -60,13 +60,14 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.rewardTitleExchanged);
-            category = (TextView) itemView.findViewById(R.id.rewardCategoryExchanged);
-            points = (TextView) itemView.findViewById(R.id.rewardPointsExchanged);
-            endDate = (TextView) itemView.findViewById(R.id.rewardEndDateExchanged);
-            rewardImage = (ImageView) itemView.findViewById(R.id.rewardImageExchanged);
-            use = (Button) itemView.findViewById(R.id.useRewardButton);
-            fav = (ImageButton) itemView.findViewById(R.id.favoriteExchangedButton);
+            title = (TextView) itemView.findViewById(R.id.rewardTitle);
+            category = (TextView) itemView.findViewById(R.id.rewardCategory);
+            points = (TextView) itemView.findViewById(R.id.rewardPoints);
+            endDate = (TextView) itemView.findViewById(R.id.rewardEndDate);
+            rewardImage = (ImageView) itemView.findViewById(R.id.rewardImage);
+            use = (Button) itemView.findViewById(R.id.exchangeButton);
+            use.setText("Utilizar");
+            fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,7 +89,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
 
     @Override
     public RewardsExchangedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_rewards_exchanged, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewards_list_cardview, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
