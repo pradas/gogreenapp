@@ -1,15 +1,9 @@
 package pes.gogreenapp.Objects;
 
-import android.graphics.Bitmap;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import static java.util.Calendar.SECOND;
 
 /**
  * Created by Dani on 13/04/2017.
@@ -38,6 +32,21 @@ public class User {
         }
         this.currentPoints = 0;
         this.totalPoints = 0;
+        this.creationDate = new Date();
+        this. userUrlImage = userUrlImage;
+    }
+
+    public User(String username, String name, String email, String birthDate, String userUrlImage, int totalPoints, int currentPoints) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        try {
+            this.birthDate = sourceFormat.parse((String) birthDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.currentPoints = currentPoints;
+        this.totalPoints = totalPoints;
         this.creationDate = new Date();
         this. userUrlImage = userUrlImage;
     }

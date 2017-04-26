@@ -46,7 +46,7 @@
             android:layout_height="64dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="puntos" />
+            android:text="puntos totales" />
 
         <TextView
             android:id="@+id/editText3"
