@@ -169,7 +169,7 @@ public class UserProfilePublicFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            b_image_user = this.getRemoteImage(imageUrl);
+            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
             //testUser.setUserImage();
 
             return null;
@@ -179,7 +179,7 @@ public class UserProfilePublicFragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             ImageView userImage = (ImageView) getView().findViewById(user_image);
-            userImage.setImageBitmap(b_image_user);
+            if(userInfo.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
             userNameLayout.setText(userInfo.getName());
             userNickName.setText(userInfo.getUsername());
             userPoints.setText(String.valueOf(userInfo.getTotalPoints()));
