@@ -41,6 +41,7 @@ public class LoginFragment extends Fragment {
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
+    private Button buttonRegister;
 
     /**
      * Required empty public constructor
@@ -83,7 +84,7 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
-
+        buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
@@ -99,6 +100,19 @@ public class LoginFragment extends Fragment {
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
+        });
+
+        buttonRegister.setOnClickListener(v -> {
+            try {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container_login, RegisterFragment.class.newInstance())
+                        .commit();
+            } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            getActivity().setTitle("Register");
         });
 
     }
