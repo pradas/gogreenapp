@@ -98,7 +98,7 @@ public class LoginFragment extends Fragment {
 
         buttonRegister.setOnClickListener(v -> {
             try {
-                getChildFragmentManager()
+                getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.container_login, RegisterFragment.class.newInstance())
                         .commit();

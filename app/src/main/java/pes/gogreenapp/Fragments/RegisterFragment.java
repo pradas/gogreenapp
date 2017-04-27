@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,6 +30,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import pes.gogreenapp.Activities.LoginActivity;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.SessionManager;
@@ -64,6 +66,7 @@ public class RegisterFragment extends Fragment {
         getView().findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
         final ImageButton pickDate = (ImageButton) getView().findViewById(R.id.datePickerButton);
         final EditText textView = (EditText) getView().findViewById(R.id.editFechaNacimiento);
+        final Button createUserButton = (Button) getView().findViewById(R.id.create_user_button);
 
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -82,7 +85,56 @@ public class RegisterFragment extends Fragment {
 
 
         };
+        createUserButton.setOnClickListener(v -> {
+            EditText password = (EditText) getView().findViewById(R.id.editContraseña);
+            EditText password2 = (EditText) getView().findViewById(R.id.editContraseñaConfirmar);
+            EditText username = (EditText) getView().findViewById(R.id.editUsername);
+            EditText name = (EditText) getView().findViewById(R.id.editName);
+            EditText email = (EditText) getView().findViewById(R.id.editEmail);
+            EditText birthdayDate = (EditText) getView().findViewById(R.id.editFechaNacimiento);
+            boolean ok = true;
+            int passwordok = 0;
+            if(username.getText().toString().isEmpty()){
+                username.setError("Campo necesario");
+                ok = false;
+            }
 
+            if(name.getText().toString().isEmpty()){
+                name.setError("Campo necesario");
+                ok = false;
+            }
+
+            if(password.getText().toString().isEmpty()){
+                password.setError("Campo necesario");
+                ok = false;
+                passwordok++;
+            }
+
+            if(password2.getText().toString().isEmpty()){
+                password2.setError("Campo necesario");
+                ok = false;
+                passwordok++;
+            }
+            if(passwordok == 0 && !password.getText().toString().equals(password2.getText().toString())){
+                password.setError("La contraseña no es la misma");
+            }
+
+            if(email.getText().toString().isEmpty()){
+                email.setError("Campo necesario");
+                ok = false;
+            }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                email.setError("Email no valido");
+                ok = false;
+            }
+
+            if(birthdayDate.getText().toString().isEmpty()){
+                birthdayDate.setError("Campo necesario");
+                ok = false;
+            }
+
+            if(ok) new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
+
+        });
         pickDate.setOnClickListener((View v) -> {
             // TODO Auto-generated method stub
             final Calendar c = Calendar.getInstance();
@@ -137,7 +189,6 @@ public class RegisterFragment extends Fragment {
      * @return the View for the fragment's UI, or null.
      */
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.activity_register, container, false);
     }
 
@@ -166,66 +217,6 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    @Override
-    /**
-     * Override default onOptionsItemSelected to apply the creation method
-     */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.action_favorite:
-                EditText password = (EditText) getView().findViewById(R.id.editContraseña);
-                EditText password2 = (EditText) getView().findViewById(R.id.editContraseñaConfirmar);
-                EditText username = (EditText) getView().findViewById(R.id.editUsername);
-                EditText name = (EditText) getView().findViewById(R.id.editName);
-                EditText email = (EditText) getView().findViewById(R.id.editEmail);
-                EditText birthdayDate = (EditText) getView().findViewById(R.id.editFechaNacimiento);
-                boolean ok = true;
-                int passwordok = 0;
-                if(username.getText().toString().isEmpty()){
-                    username.setError("Campo necesario");
-                    ok = false;
-                }
-
-                if(name.getText().toString().isEmpty()){
-                    name.setError("Campo necesario");
-                    ok = false;
-                }
-
-                if(password.getText().toString().isEmpty()){
-                    password.setError("Campo necesario");
-                    ok = false;
-                    passwordok++;
-                }
-
-                if(password2.getText().toString().isEmpty()){
-                    password2.setError("Campo necesario");
-                    ok = false;
-                    passwordok++;
-                }
-                if(passwordok == 0 && !password.getText().toString().equals(password2.getText().toString())){
-                    password.setError("La contraseña no es la misma");
-                }
-
-                if(email.getText().toString().isEmpty()){
-                    email.setError("Campo necesario");
-                    ok = false;
-                }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
-                    email.setError("Email no valido");
-                    ok = false;
-                }
-
-                if(birthdayDate.getText().toString().isEmpty()){
-                    birthdayDate.setError("Campo necesario");
-                    ok = false;
-                }
-
-                if(ok) new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
     /**
      * Asynchronous Task for the petition POST to send a petition of register an User
      */
@@ -263,10 +254,11 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
             }else if(s.equals("409")){
                 Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
-                EditText name = (EditText) getView().findViewById(R.id.editName);
-                EditText password = (EditText) getView().findViewById(R.id.editContraseña);
             }else{
-                Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
+                EditText name = (EditText) getView().findViewById(R.id.editUsername);
+                EditText password = (EditText) getView().findViewById(R.id.editContraseña);
+                new PostLogin().execute(LoginFragment.URLpetition,"POST",name.getText().toString(),password.getText().toString());
             }
         }
     }
@@ -283,6 +275,7 @@ public class RegisterFragment extends Fragment {
          */
         @Override
         protected String doInBackground(String... params) {
+            Log.i("MODE ON","MODE ON");
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("user", params[2]);
