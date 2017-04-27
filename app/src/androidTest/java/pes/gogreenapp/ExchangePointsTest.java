@@ -67,6 +67,6 @@ public class ExchangePointsTest {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
+        onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 }

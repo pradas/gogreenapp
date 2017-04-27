@@ -148,6 +148,11 @@ public class RewardDetailedFragment extends Fragment {
                     mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            Fragment fragment = (Fragment) new RewardsListFragment();
+                            transaction.replace(R.id.flContent, fragment);
+                            transaction.commit();
 
                         }
                     });

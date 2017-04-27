@@ -2,6 +2,8 @@ package pes.gogreenapp.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,12 +17,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Fragments.LoginFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
+import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
 
@@ -30,6 +42,7 @@ import pes.gogreenapp.Objects.Reward;
 public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.ViewHolder> {
     private List<Reward> rewards;
     private Context context;
+    private SessionManager session;
 
     /**
      * Constructor that set the List of Rewards.
@@ -39,6 +52,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     public RewardsListAdapter(Context context, List<Reward> rewards) {
         this.context = context;
         this.rewards = rewards;
+        this.session = new SessionManager(context, new GlobalPreferences(context).getUser());
     }
 
     /**
@@ -141,6 +155,8 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        new RewardsListAdapter.PostExchange().execute("http://10.4.41.145/api/users/", "POST",
+                                String.valueOf(holder.id), session.getUserName());
 
                     }
                 });
@@ -155,6 +171,44 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             }
         });
 
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostExchange extends AsyncTask<String, Void, String> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username or email for identification in the login and
+         *               params[3] is the password to identification in the login
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params[3] + "/rewards";
+            bodyParams.put("reward_id", params[2]);
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
+            if (response == null) return "Error";
+            return "Correct";
+        }
+
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al canjear el reward. Intentelo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward canjeado", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
