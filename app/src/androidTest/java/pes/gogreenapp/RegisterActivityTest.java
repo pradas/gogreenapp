@@ -32,7 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
- * Created by Haloman on 27/04/2017.
+ * Created by Jorge Alvarez on 27/04/2017.
  */
 
 public class RegisterActivityTest {

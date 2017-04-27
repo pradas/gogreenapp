@@ -30,9 +30,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import pes.gogreenapp.Activities.LoginActivity;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
@@ -60,8 +60,6 @@ public class RegisterFragment extends Fragment {
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        session = new SessionManager(getActivity().getApplicationContext());
 
         getView().findViewById(R.id.editFechaNacimiento).setOnKeyListener(null);
         final ImageButton pickDate = (ImageButton) getView().findViewById(R.id.datePickerButton);
@@ -258,7 +256,7 @@ public class RegisterFragment extends Fragment {
                 //Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
                 EditText name = (EditText) getView().findViewById(R.id.editUsername);
                 EditText password = (EditText) getView().findViewById(R.id.editContraseña);
-                new PostLogin().execute(LoginFragment.URLpetition,"POST",name.getText().toString(),password.getText().toString());
+                new PostLogin().execute("http://10.4.41.145/api/session","POST",name.getText().toString(),password.getText().toString());
             }
         }
     }
@@ -268,43 +266,50 @@ public class RegisterFragment extends Fragment {
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
-         * @param params params[0] is the petition url, params[1] is the method petition,
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
          *               params[2] is the username or email for identification in the login and
          *               params[3] is the password to identification in the login
-         * @return void when finished
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
          */
         @Override
         protected String doInBackground(String... params) {
-            Log.i("MODE ON","MODE ON");
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
-            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams,
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    session.createLoginSession(params[2], aux.get("token").toString());
+                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
+                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
+                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 return "Falla";
+
             }
             return "Correcte";
         }
 
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Falla")) {
-                Toast.makeText(getActivity(),"Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
             }
         }
     }
+
 
 
 }

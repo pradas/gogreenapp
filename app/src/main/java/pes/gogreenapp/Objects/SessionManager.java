@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import pes.gogreenapp.Activities.LoginActivity;
-import pes.gogreenapp.R;
 
 public class SessionManager {
     // Shared Preferences
