@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/titleUseNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="ESCANEA EL CÓDIGO QR PARA UTILIZAR LA PROMOCIÓN"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
     <ImageView
         android:id="@+id/qrCode"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/qr_img" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/titleUseNow"/>
 
-</LinearLayout>
+</RelativeLayout>

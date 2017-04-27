@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
+
+import static pes.gogreenapp.R.id.buttonLogin;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,8 +41,6 @@ public class LoginFragment extends Fragment {
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
-    private Button buttonRegister;
-    public static final String URLpetition = "http://10.4.41.145/api/session";
 
     /**
      * Required empty public constructor
@@ -74,40 +80,27 @@ public class LoginFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Session Manager
-        session = new SessionManager(getActivity().getApplicationContext());
-
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
-        textName = (EditText) getView().findViewById(R.id.textNombre);
-        textPassword = (EditText) getView().findViewById(R.id.textContraseña);
-
-        buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
+        textName = (EditText) getView().findViewById(R.id.username_edit_text);
+        textPassword = (EditText) getView().findViewById(R.id.password_user_text);
 
         buttonLogin.setOnClickListener(v -> {
+            Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
-                textName.setError("Campo necesario");
-            } else if (textPassword.getText().toString().length() <= 0) {
-                textPassword.setError("Campo necesario");
-            } else {
-                new PostLogin().execute(URLpetition, "POST",
+                textName.setError("Nombre necesario");
+                send = false;
+            }
+            if (textPassword.getText().toString().length() <= 0) {
+                textPassword.setError("Contraseña necesaria");
+                send = false;
+            }
+            if (send) {
+                new PostLogin().execute("http://10.4.41.145/api/session", "POST",
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
-
         });
 
-        buttonRegister.setOnClickListener(v -> {
-            try {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container_login, RegisterFragment.class.newInstance())
-                        .commit();
-            } catch (java.lang.InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-            getActivity().setTitle("Register");
-        });
     }
 
     /**
@@ -118,10 +111,11 @@ public class LoginFragment extends Fragment {
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
-         * @param params params[0] is the petition url, params[1] is the method petition,
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
          *               params[2] is the username or email for identification in the login and
          *               params[3] is the password to identification in the login
-         * @return void when finished
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
          */
         @Override
         protected String doInBackground(String... params) {
@@ -129,12 +123,13 @@ public class LoginFragment extends Fragment {
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
-            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams,
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    session.createLoginSession(params[2], aux.get("token").toString());
+                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
+                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
+                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
@@ -143,10 +138,16 @@ public class LoginFragment extends Fragment {
                 }
             } else {
                 return "Falla";
+
             }
             return "Correcte";
         }
 
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Falla")) {
                 Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();

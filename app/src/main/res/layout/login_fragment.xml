@@ -7,7 +7,7 @@
     android:paddingTop="20dp">
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/TitleLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -20,12 +20,12 @@
         android:id="@+id/imageGoGreen"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/Title"
+        android:layout_below="@+id/TitleLogIn"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher_round" />
 
     <EditText
-        android:id="@+id/textNombre"
+        android:id="@+id/username_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -38,12 +38,12 @@
         android:textColorHint="#000000" />
 
     <EditText
-        android:id="@+id/textContraseña"
+        android:id="@+id/password_user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textNombre"
+        android:layout_alignEnd="@+id/username_edit_text"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textNombre"
+        android:layout_below="@+id/username_edit_text"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
@@ -53,9 +53,9 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="login"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/Title"
-        android:text="login" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/buttonRegister"

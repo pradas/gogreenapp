@@ -1,9 +1,18 @@
 package pes.gogreenapp.Adapters;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -11,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
 
@@ -19,13 +29,15 @@ import pes.gogreenapp.Objects.Reward;
  */
 public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.ViewHolder> {
     private List<Reward> rewards;
+    private Context context;
 
     /**
      * Constructor that set the List of Rewards.
      *
      * @param rewards non-null List of the Rewards.
      */
-    public RewardsListAdapter(List<Reward> rewards) {
+    public RewardsListAdapter(Context context, List<Reward> rewards) {
+        this.context = context;
         this.rewards = rewards;
     }
 
@@ -44,6 +56,8 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         TextView date;
         TextView category;
         ImageButton fav;
+        Button exchange;
+        public Integer id;
 
         /**
          * Constructor of the View Holder that sets all the items.
@@ -57,6 +71,24 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             date = (TextView) itemView.findViewById(R.id.rewardEndDate);
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
+            exchange = (Button) itemView.findViewById(R.id.exchangeButton);
+            exchange.setText("Canjear");
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
+                    bundle.putString("parent", "list");
+
+                    FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    Fragment fragment = (Fragment) new RewardDetailedFragment();
+                    fragment.setArguments(bundle);
+                    transaction.replace(R.id.flContent, fragment);
+                    transaction.commit();
+                }
+            });
         }
     }
 
@@ -86,6 +118,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
      */
     @Override
     public void onBindViewHolder(final RewardsListAdapter.ViewHolder holder, int position) {
+        holder.id = rewards.get(position).getId();
         holder.title.setText(rewards.get(position).getTitle());
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
         Date d = rewards.get(position).getEndDate();
@@ -100,6 +133,28 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 holder.fav.setTag("favorite");
             }
         });
+        holder.exchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(v.getRootView().getContext());
+                mBuilder.setMessage("¿Está seguro de que desea canjear esta promoción?");
+                mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        });
+
     }
 
     /**

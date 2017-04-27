@@ -13,25 +13,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.Contract;
-
-import java.util.HashMap;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
-import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
-    private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     SessionManager session;
 
@@ -47,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
-        session = new SessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext(),
+                new GlobalPreferences(getApplicationContext()).getUser());
         /*
           Call this function whenever you want to check user login_activity
           This will redirect user to LoginActivity is he is not
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
 
         // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         // Setup drawer view
         setupDrawerContent(nvDrawer);
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the username on the header view
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
-        username.setText(session.getUsername());
+        username.setText(session.getUserName());
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -124,10 +121,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**
@@ -168,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentClass = AccountManagerFragment.class;
                     break;
                 case R.id.profile_image:
-                    fragmentClass = RewardsListFragment.class;
+                    fragmentClass = UserProfileFragment.class;
                     break;
                 default:
                     fragmentClass = RewardsListFragment.class;

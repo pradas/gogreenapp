@@ -13,6 +13,12 @@ public class Reward {
     private Date endDate;
     //private Date exchangeDate;
     private String category;
+    private String description;
+    private String info;
+    private String contactWeb;
+    private String contactInfo;
+    private Double exchangeLatitude;
+    private Double exchangeLenght;
 
     /**
      * Constructor of the Reward Object.
@@ -29,6 +35,21 @@ public class Reward {
         this.points = points;
         this.endDate = endDate;
         this.category = category;
+    }
+
+    public Reward(Integer id, String title, Integer points, Date endDate, String description,
+                  String info, String contactWeb, String contactInfo, Double exchangeLatitude,
+                  Double exchangeLenght) {
+        this.id = id;
+        this.title = title;
+        this.points = points;
+        this.endDate = endDate;
+        this.description = description;
+        this.info = info;
+        this.contactWeb = contactWeb;
+        this.contactInfo = contactInfo;
+        this.exchangeLatitude = exchangeLatitude;
+        this.exchangeLenght = exchangeLenght;
     }
 
     /**
@@ -119,4 +140,52 @@ public class Reward {
     public void setExchangeDate(Date exchangeDate) {
         this.exchangeDate = exchangeDate;
     }*/
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getContactWeb() {
+        return contactWeb;
+    }
+
+    public void setContactWeb(String contactWeb) {
+        this.contactWeb = contactWeb;
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public Double getExchangeLatitude() {
+        return exchangeLatitude;
+    }
+
+    public void setExchangeLatitude(Double exchangeLatitude) {
+        this.exchangeLatitude = exchangeLatitude;
+    }
+
+    public Double getExchangeLenght() {
+        return exchangeLenght;
+    }
+
+    public void setExchangeLenght(Double exchangeLenght) {
+        this.exchangeLenght = exchangeLenght;
+    }
 }
