@@ -10,6 +10,10 @@ import android.widget.ImageView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+
+/**
+ * Created by Adrian on 28/04/2017.
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 /**
@@ -34,7 +38,7 @@ public class EspressoTestsMatchers {
             this.expectedId = resourceId;
         }
         @Override
-        public boolean matchesSafely(View target) {
+        protected boolean matchesSafely(View target) {
             if (!(target instanceof ImageView || target instanceof ImageButton)){
                 return false;
             }
