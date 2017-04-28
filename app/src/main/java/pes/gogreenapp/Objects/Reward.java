@@ -19,6 +19,7 @@ public class Reward {
     private String contactInfo;
     private Double exchangeLatitude;
     private Double exchangeLenght;
+    private boolean favorite;
 
     /**
      * Constructor of the Reward Object.
@@ -29,12 +30,13 @@ public class Reward {
      * @param endDate  of the Reward.
      * @param category of the Reward.
      */
-    public Reward(Integer id, String title, Integer points, Date endDate, String category) {
+    public Reward(Integer id, String title, Integer points, Date endDate, String category, Boolean favorite) {
         this.id = id;
         this.title = title;
         this.points = points;
         this.endDate = endDate;
         this.category = category;
+        this.favorite = favorite;
     }
 
     public Reward(Integer id, String title, Integer points, Date endDate, String description,
@@ -187,5 +189,13 @@ public class Reward {
 
     public void setExchangeLenght(Double exchangeLenght) {
         this.exchangeLenght = exchangeLenght;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

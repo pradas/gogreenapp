@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,7 +149,22 @@ public class RewardDetailedFragment extends Fragment {
                     mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            if (session.getPoints() < (Integer) reward.getPoints()) {
+                                Toast.makeText(getActivity(), "No tienes suficientes puntos para canjear este reward",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                new PostReward().execute("http://10.4.41.145/api/users/", "POST",
+                                        session.getUserName(), (String) String.valueOf(reward.getId()));
+                                Integer points = session.getPoints();
+                                points -= (Integer) reward.getPoints();
+                                //no se como se hace el set
+                                /* FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                                FragmentTransaction transaction = manager.beginTransaction();
+                                Fragment fragment = (Fragment) new RewardsListFragment();
+                                transaction.replace(R.id.flContent, fragment);
+                                transaction.commit();*/ //No funciona
+                            }
                         }
                     });
                     mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -174,6 +190,41 @@ public class RewardDetailedFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private class PostReward extends AsyncTask<String, Void, String> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username or email for identification in the login and
+         *               params[3] is the password to identification in the login
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(getActivity(), "Error al canjear el Reward. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(getActivity(), "Reward canjeado con exito.", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

@@ -141,6 +141,8 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         holder.category.setText(rewards.get(position).getCategory());
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
+                new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                        session.getUserName(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favoritefilled);
                 holder.fav.setTag("favoritefilled");
             } else {
@@ -156,13 +158,22 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new PostReward().execute("http://10.4.41.145/api/users/", "POST",
-                                session.getUserName(), holder.id.toString());
-                        FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        Fragment fragment = (Fragment) new RewardsListFragment();
-                        transaction.replace(R.id.flContent, fragment);
-                        transaction.commit();
+                        if (session.getPoints() < (Integer) rewards.get(position).getPoints()) {
+                            Toast.makeText(context, "No tienes suficientes puntos para canjear este reward",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            new PostReward().execute("http://10.4.41.145/api/users/", "POST",
+                                    session.getUserName(), holder.id.toString());
+                            Integer points = session.getPoints();
+                            points -= (Integer) rewards.get(position).getPoints();
+                            //no se como se hace el set
+                            FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            Fragment fragment = (Fragment) new RewardsListFragment();
+                            transaction.replace(R.id.flContent, fragment);
+                            transaction.commit();
+                        }
                     }
                 });
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -212,6 +223,30 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 Toast.makeText(context, "Error al canjear el Reward. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
             else Toast.makeText(context, "Reward canjeado con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 
