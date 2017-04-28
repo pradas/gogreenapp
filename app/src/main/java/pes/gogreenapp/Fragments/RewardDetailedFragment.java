@@ -161,11 +161,11 @@ public class RewardDetailedFragment extends Fragment {
                                 Integer points = session.getPoints();
                                 points -= (Integer) reward.getPoints();
                                 //no se como se hace el set
-                                FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                                /*FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new RewardsListFragment();
                                 transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();
+                                transaction.commit();*/
                             }
                         }
                     });
