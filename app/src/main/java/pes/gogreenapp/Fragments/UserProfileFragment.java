@@ -1,6 +1,5 @@
 package pes.gogreenapp.Fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,21 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
-
-import static pes.gogreenapp.R.id.user_creation_date;
-import static pes.gogreenapp.R.id.user_email;
-import static pes.gogreenapp.R.id.user_image;
-import static pes.gogreenapp.R.id.user_name;
-import static pes.gogreenapp.R.id.user_nickname;
-import static pes.gogreenapp.R.id.user_points;
 
 
 
@@ -32,7 +18,7 @@ import static pes.gogreenapp.R.id.user_points;
 public class UserProfileFragment extends Fragment
         implements UserProfilePrivateEditFragment.OnEditSelectionEventListener,
                     UserProfilePrivateFragment.OnEditSelectionEventListener{
-    User testUser;
+
     /**
      *  Required empty public constructor
      */
@@ -58,34 +44,22 @@ public class UserProfileFragment extends Fragment
         return inflater.inflate(R.layout.user_profile_fragment, container, false);
     }
 
+
+    /**
+     * when pressing the "edit" button, replace the fragments shown on the profile
+     */
     @Override
     public void onEditSelectionEvent(boolean editUser){
 
-
         if(editUser){
-
-
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             UserProfilePublicEditFragment uPublicEditFrag = new UserProfilePublicEditFragment();
             UserProfilePrivateEditFragment uPrivateEditFrag = new UserProfilePrivateEditFragment();
-
-
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
             transaction
                     .replace(R.id.user_profile_c1, uPublicEditFrag)
                     .replace(R.id.user_profile_c2, uPrivateEditFrag)
                     .addToBackStack(null)
                     .commit();
-            /*
-            transaction.replace(R.id.user_profile_c1, uPublicEditFrag);
-            transaction.commit();
-
-
-            transaction = getChildFragmentManager().beginTransaction();
-
-            transaction.replace(R.id.user_profile_c2, uPrivateEditFrag);
-            transaction.commit();
-            */
 
         }
         else {
@@ -119,12 +93,9 @@ public class UserProfileFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) {
 
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
             UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
-
-
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
 
             transaction
                     .add(R.id.user_profile_c1, uPublicFrag)
@@ -132,53 +103,8 @@ public class UserProfileFragment extends Fragment
                     .add(R.id.rewards_exchanged_fragment, rExFrag)
                     .commit();
         }
-
-        TextView userName = (TextView) getView().findViewById(user_name);
-        TextView userNickName = (TextView) getView().findViewById(user_nickname);
-        TextView userPoints = (TextView) getView().findViewById(user_points);
-        TextView userEmail = (TextView) getView().findViewById(user_email);
-        TextView userCreationDate = (TextView) getView().findViewById(user_creation_date);
-        ImageView userImage = (ImageView) getView().findViewById(user_image);
-
-        DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        //a la espera de tener la petición de la API hecha
-        //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
-        initializeUser();
-        new GetInfoUser().execute();
-
     }
 
 
-    private void initializeUser(){
-        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
-    }
-
-
-
-    private class GetInfoUser extends AsyncTask<String, Void, Void> {
-
-
-
-        @Override
-        protected Void doInBackground(String... urls) {
-            //HttpHandler httpHandler = new HttpHandler();
-            //String response = httpHandler.makeServiceCall(urls[0]);
-            //Log.i(TAG, "Response from url: " + response);
-
-
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Void result) {
-
-        }
-
-    }
 
 }
