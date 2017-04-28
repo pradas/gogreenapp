@@ -149,6 +149,8 @@ public class RewardDetailedFragment extends Fragment {
                     mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+
                             if (session.getPoints() < (Integer) reward.getPoints()) {
                                 Toast.makeText(getActivity(), "No tienes suficientes puntos para canjear este reward",
                                         Toast.LENGTH_LONG).show();
@@ -159,11 +161,11 @@ public class RewardDetailedFragment extends Fragment {
                                 Integer points = session.getPoints();
                                 points -= (Integer) reward.getPoints();
                                 //no se como se hace el set
-                                /* FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+                                FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new RewardsListFragment();
                                 transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();*/ //No funciona
+                                transaction.commit();
                             }
                         }
                     });

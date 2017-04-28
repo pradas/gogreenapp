@@ -6,12 +6,7 @@ import android.view.View;
 
 import org.hamcrest.Matcher;
 
-/**
- * Created by Adrian on 28/04/2017.
- */
-
 public class MyViewAction {
-
     public static ViewAction clickChildViewWithId(final int id) {
         return new ViewAction() {
             @Override
@@ -31,5 +26,4 @@ public class MyViewAction {
             }
         };
     }
-
 }
