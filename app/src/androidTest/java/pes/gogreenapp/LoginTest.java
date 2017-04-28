@@ -73,7 +73,7 @@ public class LoginTest {
     @Test
     public void CorrectLogin() {
         onView(withId(R.id.username_edit_text))
-                .perform(clearText(), typeText("admin"));
+                .perform(clearText(), typeText("user"));
         onView(withId(R.id.password_user_text))
                 .perform(clearText(), typeText("Password12"));
         onView(withId(R.id.buttonLogin))
@@ -108,7 +108,7 @@ public class LoginTest {
     @Test
     public void noPassword() {
         onView(withId(R.id.username_edit_text))
-                .perform(clearText(), typeText("admin"));
+                .perform(clearText(), typeText("user"));
         onView(withId(R.id.buttonLogin))
                 .perform(click());
         onView(withId(R.id.password_user_text))

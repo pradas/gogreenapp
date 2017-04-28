@@ -29,7 +29,7 @@ public class HttpHandlerTest {
     public void httpPost() throws Exception {
         HttpHandler httpHandler = new HttpHandler();
         HashMap<String, String> bodyParameters = new HashMap<>();
-        bodyParameters.put("user", "admin");
+        bodyParameters.put("user", "user");
         bodyParameters.put("password", "Password12");
         assertNotNull(httpHandler.makeServiceCall(
                 "http://10.4.41.145/api/session",

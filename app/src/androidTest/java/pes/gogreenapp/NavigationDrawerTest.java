@@ -102,16 +102,11 @@ public class NavigationDrawerTest {
     /**
      * Check if on User Profile menu item click the View user_profile is displayed
      */
-
-    //Test deprecated
     @Test
     public void checkUserProfileAccess() {
-        onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open());
-        onView(withId(R.id.header))
-                .perform(click());
-        onView(withId(R.id.user_nickname))
-            .check(matches(isDisplayed()));
+        onView(withId(R.id.profile_image)).perform(click());
+        onView(withId(R.id.user_profile))
+                .check(matches(isDisplayed()));
     }
 
 
