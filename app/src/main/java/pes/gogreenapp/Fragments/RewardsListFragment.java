@@ -52,6 +52,7 @@ public class RewardsListFragment extends Fragment {
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
+    private List<Integer> favorites = new ArrayList<>();
     private SessionManager session;
     private String userName;
 
@@ -97,6 +98,7 @@ public class RewardsListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         userName = session.getUserName();
+        new GetFavorites().execute(url + "users/" + session.getUserName() + "/favourite-rewards");
         new GetCategories().execute(url + "categories");
         new GetRewards().execute(url + "rewards");
         final Button endDate = (Button) getView().findViewById(orderDateButton);
@@ -239,6 +241,50 @@ public class RewardsListFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
+    private class GetFavorites extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("rewards");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        favorites.add((Integer) (jsonObject.get("reward-id")));
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Creates the new Adapter and set the actual rewards by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            adapter = new RewardsListAdapter(getContext(), rewards);
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
     private class GetRewards extends AsyncTask<String, Void, Void> {
 
         /**
@@ -256,14 +302,15 @@ public class RewardsListFragment extends Fragment {
                 try {
                     JSONObject aux = new JSONObject(response);
                     JSONArray jsonArray = aux.getJSONArray("rewards");
-                    System.out.println(jsonArray.toString());
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         Date d = df.parse((String) jsonObject.get("end_date"));
+                        Boolean favorite = false;
+                        if (favorites.contains((Integer) jsonObject.get("id"))) favorite = true;
                         rewards.add(new Reward((Integer) jsonObject.get("id"),
                                 (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
-                                d, (String) jsonObject.get("category")));
+                                d, (String) jsonObject.get("category"), favorite));
 
                     }
                 } catch (JSONException | ParseException e) {

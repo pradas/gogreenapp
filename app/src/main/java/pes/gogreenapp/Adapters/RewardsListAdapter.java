@@ -2,6 +2,9 @@ package pes.gogreenapp.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInstaller;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,12 +18,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
+import pes.gogreenapp.Fragments.RewardsListFragment;
+import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
+import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
 
@@ -30,6 +43,7 @@ import pes.gogreenapp.Objects.Reward;
 public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.ViewHolder> {
     private List<Reward> rewards;
     private Context context;
+    private SessionManager session;
 
     /**
      * Constructor that set the List of Rewards.
@@ -39,6 +53,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     public RewardsListAdapter(Context context, List<Reward> rewards) {
         this.context = context;
         this.rewards = rewards;
+        this.session = new SessionManager(context, new GlobalPreferences(context).getUser());
     }
 
     /**
@@ -126,6 +141,8 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         holder.category.setText(rewards.get(position).getCategory());
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
+                new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                        session.getUserName(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favoritefilled);
                 holder.fav.setTag("favoritefilled");
             } else {
@@ -141,7 +158,22 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        if (session.getPoints() < (Integer) rewards.get(position).getPoints()) {
+                            Toast.makeText(context, "No tienes suficientes puntos para canjear este reward",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            new PostReward().execute("http://10.4.41.145/api/users/", "POST",
+                                    session.getUserName(), holder.id.toString());
+                            Integer points = session.getPoints();
+                            points -= (Integer) rewards.get(position).getPoints();
+                            //no se como se hace el set
+                            FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            Fragment fragment = (Fragment) new RewardsListFragment();
+                            transaction.replace(R.id.flContent, fragment);
+                            transaction.commit();
+                        }
                     }
                 });
                 mBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -154,7 +186,68 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 dialog.show();
             }
         });
+    }
 
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostReward extends AsyncTask<String, Void, String> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username or email for identification in the login and
+         *               params[3] is the password to identification in the login
+         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al canjear el Reward. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward canjeado con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
