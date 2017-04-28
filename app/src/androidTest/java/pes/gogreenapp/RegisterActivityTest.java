@@ -55,85 +55,182 @@ public class RegisterActivityTest {
             }
         };
     }
+
+    private static Matcher<View> notHasError() {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof EditText)) {
+                    return false;
+                }
+                EditText editText = (EditText) view;
+                return editText.getError() == null;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+
+            }
+        };
+    }
+
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
 
     /**
-     * If is logged in, log out, also enter to register
+     * At start, enter to the register view
      */
     @Before
     public void setup() {
         try {
-            onView(withId(R.id.drawer_layout))
-                    .perform(DrawerActions.open());
-            onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.log_out));
+            /*onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());*/
+            onView(withId(R.id.buttonRegister))
+                    .perform(click());
         } catch (NoMatchingViewException e) {
         }
     }
 
     @Test
-    public void CorrectLogin() {
-        onView(withId(R.id.username_edit_text))
-                .perform(clearText(), typeText("admin"));
-        onView(withId(R.id.password_user_text))
-                .perform(clearText(), typeText("Password12"));
-        onView(withId(R.id.buttonLogin))
-                .perform(click());
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isDisplayed()));
-
-    }
-
-    @Test
-    public void IncorrectLogin() {
-        onView(withId(R.id.username_edit_text))
-                .perform(clearText(), typeText("a"));
-        onView(withId(R.id.password_user_text))
-                .perform(clearText(), typeText("a"));
-        onView(withId(R.id.buttonLogin))
-                .perform(click());
-        onView(withText("Nombre o password incorrecto")).inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
-
-    }
-
-    @Test
-    public void noPasswordAndNoUsername() {
-        onView(withId(R.id.buttonLogin))
-                .perform(click());
-        onView(withId(R.id.password_user_text))
-                .check(matches(withError("Contraseña necesaria")));
-        onView(withId(R.id.username_edit_text))
-                .check(matches(withError("Nombre necesario")));
-    }
-
-    @Test
-    public void noPassword() {
-        onView(withId(R.id.username_edit_text))
-                .perform(clearText(), typeText("admin"));
-        onView(withId(R.id.buttonLogin))
-                .perform(click());
-        onView(withId(R.id.password_user_text))
-                .check(matches(withError("Contraseña necesaria")));
-    }
-
-    @Test
-    public void noUsername() {
-        onView(withId(R.id.password_user_text))
-                .perform(clearText(), typeText("Password12"));
-        onView(withId(R.id.buttonLogin))
-                .perform(click());
-        onView(withId(R.id.username_edit_text))
-                .check(matches(withError("Nombre necesario")));
-    }
-
     /**
-     * Check if the Log in is open.
+     * Validates if there's no data on the field "Nombre"
+     * return message error "Campo necesario"
      */
+    public void noNameInRegister() {
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editName))
+                .check(matches(withError("Campo necesario")));
+    }
+
     @Test
-    public void checkLogInIsOpen() {
-        onView(withId(R.id.TitleLogIn))
-                .check(matches(isDisplayed()));
+    /**
+     * Validates if there's no data on the field "Nombre de usuario"
+     * return message error "Campo necesario"
+     */
+    public void noUsernameInRegister() {
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editUsername))
+                .check(matches(withError("Campo necesario")));
+    }
+
+    @Test
+    /**
+     * Validates if there's no data on the field "Correo electronico"
+     * return message error "Campo necesario"
+     */
+    public void noEmailInRegister() {
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editEmail))
+                .check(matches(withError("Campo necesario")));
+
+    }
+    @Test
+    /**
+     * Validates if the data put on the input field "Correo electronico " is actually an Email
+     * return message error "Email no valido"
+     */
+    public void noVaildEmailInRegister() {
+        onView(withId(R.id.editEmail))
+                .perform(clearText(), typeText("iLikeToCallMyselfPrincess"));
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editEmail))
+                .check(matches(withError("Email no valido")));
+    }
+
+    @Test
+    /**
+     * Validates if there's no data on the field "Contraseña"
+     * return message error "Campo necesario"
+     */
+    public void noPasswordInRegister() {
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editContraseña))
+                .check(matches(withError("Campo necesario")));
+
+    }
+
+    @Test
+    /**
+     * Validates if there's no data on the field "Confirmar Contraseña"
+     * return message error "Campo necesario"
+     */
+    public void noPasswordConfirmInRegister() {
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editContraseñaConfirmar))
+                .check(matches(withError("Campo necesario")));
+    }
+
+    @Test
+    /**
+     * Validates if data inside the fields "Contraseña" and "Confirmar Contraseña"
+     * return message error "Campo necesario"
+     */
+    public void PasswordsAreNotEqualsInRegister() {
+        onView(withId(R.id.editContraseña))
+                .perform(clearText(), typeText("There's only"));
+        onView(withId(R.id.editContraseñaConfirmar))
+                .perform(clearText(), typeText("2 Genders"));
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editContraseña))
+                .check(matches(withError("La contraseña no es la misma")));
+    }
+
+    @Test
+    /**
+     * Validates if data inside the field "Fecha de nacimiento" has data
+     * return message error "La contraseña no es la misma"
+     */
+    public void noDateInRegister(){
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+        onView(withId(R.id.editFechaNacimiento))
+                .check(matches(withError("Campo necesario")));
+    }
+
+    @Test
+    /**
+     * Check if every data is inserted correctly
+     */
+    public void checkRegisterValid(){
+        //hasError
+        onView(withId(R.id.editName))
+                .perform(clearText(), typeText("Test"));
+        onView(withId(R.id.editUsername))
+                .perform(clearText(), typeText("Test"));
+        onView(withId(R.id.editEmail))
+                .perform(clearText(), typeText("test@test.com"));
+        onView(withId(R.id.editContraseña))
+                .perform(clearText(), typeText("1234"));
+        onView(withId(R.id.editContraseñaConfirmar))
+                .perform(clearText(), typeText("1234"));
+
+        onView(withId(R.id.datePickerButton))
+                .perform(click());
+        onView(withText("OK")).perform(click());
+
+        //Start the creation
+        onView(withId(R.id.create_user_button))
+                .perform(click());
+
+        //Check everything is K
+        onView(withId(R.id.editName))
+                .check(matches(notHasError()));
+        onView(withId(R.id.editUsername))
+                .check(matches(notHasError()));
+        onView(withId(R.id.editEmail))
+                .check(matches(notHasError()));
+        onView(withId(R.id.editContraseña))
+                .check(matches(notHasError()));
+        onView(withId(R.id.editContraseñaConfirmar))
+                .check(matches(notHasError()));
     }
 }
