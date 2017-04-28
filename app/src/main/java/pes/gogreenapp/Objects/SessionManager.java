@@ -105,4 +105,6 @@ public class SessionManager {
     }
 
     public int getPoints() { return pref.getInt(KEY_POINTS, 0); }
+
+    public void setKeyPoints (Integer points) {}
 }
