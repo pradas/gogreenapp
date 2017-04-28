@@ -103,22 +103,6 @@ public class ListRewardTest {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void FavButtonChangeToFavoriteFilled() {
-        onView(withId(R.id.rv)).perform(
-        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favoritefilled)));
-    }
-
-    @Test
-    public void FavButtonChangeToFavoriteEmpty() {
-        onView(withId(R.id.rv)).perform(
-        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.rv)).perform(
-        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favorite)));
-    }
-
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
         return new RecyclerViewMatcher(recyclerViewId);
     }
