@@ -89,7 +89,8 @@ public class UserProfilePublicFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext());
+        //Posible conflicto
+        session = new SessionManager(getActivity().getApplicationContext(),userName);
         userNameLayout = (TextView) getView().findViewById(user_name);
         userNickName = (TextView) getView().findViewById(user_nickname);
         userPoints = (TextView) getView().findViewById(user_points);
