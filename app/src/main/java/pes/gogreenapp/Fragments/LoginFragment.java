@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class LoginFragment extends Fragment {
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
+    private Button buttonRegister;
 
     /**
      * Required empty public constructor
@@ -83,7 +85,7 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
-
+        buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
@@ -99,6 +101,19 @@ public class LoginFragment extends Fragment {
                         textName.getText().toString(), textPassword.getText().toString());
             }
             // Staring MainActivity
+        });
+
+        buttonRegister.setOnClickListener(v -> {
+            try {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container_login, RegisterFragment.class.newInstance())
+                        .commit();
+            } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            getActivity().setTitle("Register");
         });
 
     }
@@ -124,7 +139,7 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response != null) {
+            if (response != null && !response.equals("500") ) {
                 try {
                     JSONObject aux = new JSONObject(response);
                     new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
