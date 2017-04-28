@@ -95,9 +95,6 @@ public class UserProfilePrivateFragment extends Fragment {
         userEmail = (TextView) getView().findViewById(user_email);
 
 
-        //a la espera de tener la petición de la API hecha
-        //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
         initializeUser();
         userName = session.getUserName();
         new GetPrivateInfoUser().execute(url + "users/" + userName);

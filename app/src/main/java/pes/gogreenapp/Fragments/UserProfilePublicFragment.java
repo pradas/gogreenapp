@@ -106,17 +106,6 @@ public class UserProfilePublicFragment extends Fragment {
         userName = session.getUserName();
         new GetPublicInfoUser().execute(url + "users/" + userName);
 
-        /*
-        userNameLayout.setText(testUser.getName());
-        userNickName.setText(testUser.getUsername());
-        userPoints.setText(String.valueOf(testUser.getTotalPoints()));
-        userCreationDate.setText((String) sourceFormat.format(testUser.getCreationDate()));
-        //userCreationDate.setText(date);
-        */
-        //userImage.setImageResource();
-
-
-
     }
 
 
