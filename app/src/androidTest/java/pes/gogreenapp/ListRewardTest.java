@@ -87,13 +87,14 @@ public class ListRewardTest {
                 .check(matches(hasDescendant(withId(R.id.card_view))));
     }
 
+    /*
     @Test
     public void orderedByDate() {
         onView(withRecyclerView(R.id.rv).atPosition(0))
                 .check(matches(hasDescendant(withText("07/07/2017"))));
         onView(withRecyclerView(R.id.rv).atPosition(1))
                 .check(matches(hasDescendant(withText("13/07/2017"))));
-    }
+    }*/
 
     @Test
     public void clickInRewardGoesToRewardDetail() {
