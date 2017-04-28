@@ -2,7 +2,6 @@ package pes.gogreenapp;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -39,13 +38,13 @@ public class PrivateProfileTest {
         try {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
-            onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.user_profile_fragment));
+            onView(withId(R.id.header))
+                    .perform(click());
 
         } catch (NoMatchingViewException e) {
-            onView(withId(R.id.textNombre))
+            onView(withId(R.id.username_edit_text))
                     .perform(clearText(), typeText("user"));
-            onView(withId(R.id.textContraseña))
+            onView(withId(R.id.password_user_text))
                     .perform(clearText(), typeText("Password12"));
             onView(withId(R.id.buttonLogin))
                     .perform(click());

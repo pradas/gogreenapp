@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
@@ -83,7 +84,8 @@ public class UserProfilePrivateFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext());
+        session = new SessionManager(getActivity().getApplicationContext(),
+                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
 
         onAttachToParentFragment(getParentFragment());
 
