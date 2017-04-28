@@ -5,14 +5,11 @@ import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 
-import junit.framework.AssertionFailedError;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Objects.SessionManager;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -100,14 +97,21 @@ public class NavigationDrawerTest {
                 .check(matches(isDisplayed()));
     }
 
+
+
     /**
      * Check if on User Profile menu item click the View user_profile is displayed
      */
+
+    //Test deprecated
     @Test
     public void checkUserProfileAccess() {
-        onView(withId(R.id.profile_image)).perform(click());
-        onView(withId(R.id.user_profile))
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.header))
+                .perform(click());
+        onView(withId(R.id.user_nickname))
+            .check(matches(isDisplayed()));
     }
 
 
