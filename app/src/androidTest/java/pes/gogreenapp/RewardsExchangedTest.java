@@ -77,6 +77,7 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
+    // TODO fix test
     @Test
     public void openRewardDetailed() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -87,6 +88,7 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
+    // TODO fix test
     @Test
     public void RewardDetailedHasUseButton() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -97,6 +99,7 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
+    // TODO fix test
     @Test
     public void UseButtonDisplaysQRCode() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -108,6 +111,7 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
+    // TODO fix test
     @Test
     public void UseButtonDisplaysQRCodeInRewardDetaied() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
