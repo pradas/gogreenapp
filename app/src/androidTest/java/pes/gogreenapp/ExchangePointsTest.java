@@ -64,14 +64,13 @@ public class ExchangePointsTest {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    /*
     @Test
     public void actionExchangeAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }*/
+    }
 
     @Test
     public void actionCancelAlertDialog() {
