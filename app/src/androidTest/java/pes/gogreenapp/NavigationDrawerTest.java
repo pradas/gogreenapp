@@ -4,10 +4,14 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import pes.gogreenapp.Activities.MainActivity;
 
@@ -19,15 +23,16 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+@RunWith(AndroidJUnit4.class)
 public class NavigationDrawerTest {
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
-            MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityRule =
+            new ActivityTestRule<>(MainActivity.class, true, true);
 
     /**
      * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
-     * a valid user logged. Due this, the setup do the Login with
-     * the username user and the password Password12
+     * a valid user logged. Due this, the setup do the Login with the username user
+     * and the password Password12
      */
     @Before
     public void setup() {
@@ -41,6 +46,8 @@ public class NavigationDrawerTest {
                     .perform(clearText(), typeText("Password12"));
             onView(withId(R.id.buttonLogin))
                     .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
         }
     }
 
@@ -97,8 +104,6 @@ public class NavigationDrawerTest {
                 .check(matches(isDisplayed()));
     }
 
-
-
     /**
      * Check if on User Profile menu item click the View user_profile is displayed
      */
@@ -108,6 +113,4 @@ public class NavigationDrawerTest {
         onView(withId(R.id.user_profile))
                 .check(matches(isDisplayed()));
     }
-
-
 }
