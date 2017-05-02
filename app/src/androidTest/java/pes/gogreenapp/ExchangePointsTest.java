@@ -43,6 +43,16 @@ public class ExchangePointsTest {
             onView(withId(R.id.nvView))
                     .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         } catch (NoMatchingViewException e) {
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
+                    .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         }
     }
 

@@ -18,11 +18,13 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static pes.gogreenapp.EspressoTestsMatchers.withDrawable;
+import static pes.gogreenapp.ListRewardTest.withRecyclerView;
 
 
 /**
@@ -63,21 +65,52 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    /*@Test
-    public void CardViewHasTheCorrectAttributes() {
+    @Test
+    public void CardViewHasTitle() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withId(R.id.rewardTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.rewardPoints)).check(matches(isDisplayed()));
-        onView(withId(R.id.rewardCategory)).check(matches(isDisplayed()));
-        onView(withId(R.id.rewardEndDate)).check(matches(isDisplayed()));
-        onView(withId(R.id.favoriteButton)).check(matches(isDisplayed()));
-        onView(withId(R.id.exchangeButton)).check(matches(isDisplayed()));
-    }*/
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardTitle))));
+    }
+
+    @Test
+    public void CardViewHasPoints() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardPoints))));
+    }
+
+    @Test
+    public void CardViewHasCategory() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardCategory))));
+
+    }
+
+    @Test
+    public void CardViewHasEndDate() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
+    }
+
+    @Test
+    public void CardViewHasFavoriteButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.favoriteButton))));
+    }
+
+    @Test
+    public void CardViewHasExchangeButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.exchangeButton))));
+    }
 
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void openRewardDetailed() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -88,7 +121,6 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void RewardDetailedHasUseButton() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -99,7 +131,6 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void UseButtonDisplaysQRCode() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -111,7 +142,6 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void UseButtonDisplaysQRCodeInRewardDetaied() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -123,18 +153,21 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    /*@Test
+    // TODO fix test
+    @Test
     public void FavButtonChangeToFavoriteFilled() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.rvExchanged)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favoritefilled)));
-    }*/
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withDrawable(R.mipmap.favoritefilled))));
+    }
 
     /**
      * Check if the Navigation Drawer is open.
      */
-    /*@Test
+    // TODO fix test
+    @Test
     public void FavButtonChangeToFavoriteEmpty() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.rvExchanged)).perform(
@@ -142,5 +175,5 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rvExchanged)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
         onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favorite)));
-    }*/
+    }
 }

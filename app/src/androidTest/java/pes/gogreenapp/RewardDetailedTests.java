@@ -57,15 +57,50 @@ public class RewardDetailedTests {
     }
 
     @Test
-    public void rewardDetailedHasTheirAttributes() {
+    public void rewardDetailedHasTitle() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.titleDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasDescription() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.descriptionDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasDateValid() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.dateValidDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasConsultWeb() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.consultWebDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasAdverts() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.advertDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasInstructions() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.instructionsDetailReward)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasFavoriteButton() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.favoriteDetailButton)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void rewardDetailedHasButtonAction() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).check(matches(isDisplayed()));
     }
 
@@ -90,14 +125,14 @@ public class RewardDetailedTests {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    /*
+    //TODO fix test
     @Test
     public void actionExchangeAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }*/
+    }
 
     @Test
     public void actionCancelAlertDialog() {
