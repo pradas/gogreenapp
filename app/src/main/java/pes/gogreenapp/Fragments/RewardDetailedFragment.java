@@ -45,6 +45,7 @@ public class RewardDetailedFragment extends Fragment {
 
     private SessionManager session;
     private Integer id;
+    private Boolean error = false;
     private String TAG = MainActivity.class.getSimpleName();
     private String url = "http://10.4.41.145/api/rewards/";
     private Reward reward;
@@ -149,8 +150,6 @@ public class RewardDetailedFragment extends Fragment {
                     mBuilder.setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-
                             if (session.getPoints() < (Integer) reward.getPoints()) {
                                 Toast.makeText(getActivity(), "No tienes suficientes puntos para canjear este reward",
                                         Toast.LENGTH_LONG).show();
@@ -161,11 +160,13 @@ public class RewardDetailedFragment extends Fragment {
                                 Integer points = session.getPoints();
                                 points -= (Integer) reward.getPoints();
                                 //no se como se hace el set
-                                /*FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
+
+                                if (!error) Toast.makeText(getActivity(), "Reward canjeado con exito", Toast.LENGTH_LONG).show();
+                                FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new RewardsListFragment();
                                 transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();*/
+                                transaction.commit();
                             }
                         }
                     });
@@ -213,6 +214,7 @@ public class RewardDetailedFragment extends Fragment {
             String url = params[0] + params [2] + "/rewards";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
+            error = true;
             return "Error";
         }
 
@@ -225,7 +227,6 @@ public class RewardDetailedFragment extends Fragment {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al canjear el Reward. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
-            else Toast.makeText(getActivity(), "Reward canjeado con exito.", Toast.LENGTH_LONG).show();
         }
     }
 
