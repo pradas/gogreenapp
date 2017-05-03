@@ -27,4 +27,13 @@
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
+    <string name="titulo">Titulo:</string>
+    <string name="tituloCreateEvent">Titulo</string>
+    <string name="titulo_del_evento">Título del evento</string>
+    <string name="descripcion">Descripción</string>
+    <string name="descripci_n_del_evento">Descripción del evento</string>
+    <string name="puntos">Puntos:</string>
+    <string name="direccion">Dirección</string>
+    <string name="direccion_del_evento">Dirección del evento</string>
+    <string name="fecha">Fecha</string>
 </resources>

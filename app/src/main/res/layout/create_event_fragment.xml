@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TitleCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/tituloCreateEvent"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/titleCreateEvent_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/TitleCreateEvent"
+            android:focusable="true"
+            android:hint="@string/titulo_del_evento"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#000000" />
+
+        <TextView
+            android:id="@+id/DescriptionCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleCreateEvent_edit_text"
+            android:text="@string/descripcion"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/DescriptionCreateEvent_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/DescriptionCreateEvent"
+            android:focusable="true"
+            android:hint="@string/descripci_n_del_evento"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#000000" />
+
+        <TextView
+            android:id="@+id/PointsCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/DescriptionCreateEvent_edit_text"
+            android:text="@string/puntos"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/PointsCreateEvent_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#000000"
+            android:layout_below="@+id/PointsCreateEvent"/>
+
+        <TextView
+            android:id="@+id/DirectionCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/PointsCreateEvent_edit_text"
+            android:text="@string/direccion"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/DirectionCreateEvent_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/direccion_del_evento"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#000000"
+            android:layout_below="@+id/DirectionCreateEvent"/>
+
+        <TextView
+            android:id="@+id/DateCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/DirectionCreateEvent_edit_text"
+            android:text="@string/fecha"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/datePickerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/DateCreateEvent"
+            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+        <Button
+            android:id="@+id/buttonSendEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_below="@+id/datePickerButton"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
