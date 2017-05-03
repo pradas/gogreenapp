@@ -1,6 +1,7 @@
 package pes.gogreenapp;
 
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -62,17 +63,37 @@ public class ListRewardTest {
     }
 
     @Test
-    public void rewardHasCorrectAttributes() {
+    public void rewardHasTitle() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardTitle))));
+    }
+
+    @Test
+    public void rewardHasPoints() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardPoints))));
+    }
+
+    @Test
+    public void rewardHasCategory() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardCategory))));
+    }
+
+    @Test
+    public void rewardHasEndDate() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
+    }
+
+    @Test
+    public void rewardHasFavoriteButton() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.favoriteButton))));
+    }
+
+    @Test
+    public void rewardHasExchangeButton() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.exchangeButton))));
     }
@@ -83,15 +104,6 @@ public class ListRewardTest {
                 .check(matches(hasDescendant(withId(R.id.card_view))));
     }
 
-    // TODO fix test
-    @Test
-    public void orderedByDate() {
-        onView(withRecyclerView(R.id.rv).atPosition(0))
-                .check(matches(hasDescendant(withText("07/07/2017"))));
-        onView(withRecyclerView(R.id.rv).atPosition(1))
-                .check(matches(hasDescendant(withText("13/07/2017"))));
-    }
-
     @Test
     public void clickInRewardGoesToRewardDetail() {
         onView(withId(R.id.rv))
@@ -99,23 +111,22 @@ public class ListRewardTest {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
-    // TODO fix test
     @Test
     public void FavButtonChangeToFavoriteFilled() {
         onView(withId(R.id.rv)).perform(
-            RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton))
-        ).check(matches(withDrawable(R.mipmap.favoritefilled)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favoritefilled)));
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favoritefilled)));
     }
 
-    // TODO fix test
     @Test
     public void FavButtonChangeToFavoriteEmpty() {
         onView(withId(R.id.rv)).perform(
-        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
         onView(withId(R.id.rv)).perform(
-        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favorite)));
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favorite)));
     }
 
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

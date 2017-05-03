@@ -153,20 +153,18 @@ public class RewardsExchangedTest {
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void FavButtonChangeToFavoriteFilled() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.rvExchanged)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withDrawable(R.mipmap.favoritefilled))));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favoritefilled)));
     }
 
     /**
      * Check if the Navigation Drawer is open.
      */
-    // TODO fix test
     @Test
     public void FavButtonChangeToFavoriteEmpty() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
@@ -174,6 +172,7 @@ public class RewardsExchangedTest {
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
         onView(withId(R.id.rvExchanged)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.favoriteButton)).check(matches(withDrawable(R.mipmap.favorite)));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favorite)));
     }
 }
