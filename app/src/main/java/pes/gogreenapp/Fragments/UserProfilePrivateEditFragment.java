@@ -30,6 +30,7 @@ import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 
 import static pes.gogreenapp.R.id.edit_profile_button;
+import static pes.gogreenapp.R.id.save_profile_button;
 import static pes.gogreenapp.R.id.user_birthdate;
 import static pes.gogreenapp.R.id.user_birthdate_button;
 import static pes.gogreenapp.R.id.user_currentpoints;
@@ -50,15 +51,18 @@ public class UserProfilePrivateEditFragment extends Fragment {
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 
-    OnEditSelectionEventListener mOnEditSelectionEventListener;
+    OnEditProfileEventListener mOnEditSelectionEventListener;
 
     public UserProfilePrivateEditFragment() {
         // Required empty public constructor
     }
 
-    public interface OnEditSelectionEventListener{
+    public interface OnEditProfileEventListener {
         void onEditSelectionEvent(boolean userEdit);
+        void onSaveSelectionEvent();
     }
+
+
 
 
     private void initializeUser(){
@@ -68,11 +72,11 @@ public class UserProfilePrivateEditFragment extends Fragment {
 
     public void onAttachToParentFragment(Fragment fragment) {
         try{
-            mOnEditSelectionEventListener = (OnEditSelectionEventListener) fragment;
+            mOnEditSelectionEventListener = (OnEditProfileEventListener) fragment;
         }
         catch (ClassCastException e){
             throw new ClassCastException(
-                    fragment.toString() + " must implement OnEditSelectionEventListener");
+                    fragment.toString() + " must implement OnEditProfileEventListener");
         }
     }
 
@@ -94,6 +98,7 @@ public class UserProfilePrivateEditFragment extends Fragment {
         onAttachToParentFragment(getParentFragment());
         Button editBirthdate = (Button) getView().findViewById(user_birthdate_button);
         Button editButton = (Button) getView().findViewById(edit_profile_button);
+        Button saveButton = (Button) getView().findViewById(save_profile_button);
         userBirthDate = (TextView) getView().findViewById(user_birthdate);
         userCurrentPoints = (TextView) getView().findViewById(user_currentpoints);
         userEmail = (EditText) getView().findViewById(user_email_edit);
@@ -113,6 +118,12 @@ public class UserProfilePrivateEditFragment extends Fragment {
                 mOnEditSelectionEventListener.onEditSelectionEvent(false);
             }
         });
+        saveButton.setOnClickListener(v -> {
+            if(mOnEditSelectionEventListener != null){
+                mOnEditSelectionEventListener.onSaveSelectionEvent();
+            }
+        });
+
         editBirthdate.setOnClickListener(v -> {
             final Calendar c = Calendar.getInstance();
             //modificar para tener el cumpleaños del usuario actual;
@@ -196,5 +207,8 @@ public class UserProfilePrivateEditFragment extends Fragment {
         }
 
     }
+
+
+
 
 }

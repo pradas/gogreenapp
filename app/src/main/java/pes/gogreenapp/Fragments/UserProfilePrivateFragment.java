@@ -68,7 +68,7 @@ public class UserProfilePrivateFragment extends Fragment {
        }
        catch (ClassCastException e){
            throw new ClassCastException(
-                   fragment.toString() + " must implement OnEditSelectionEventListener");
+                   fragment.toString() + " must implement OnEditProfileEventListener");
         }
     }
 

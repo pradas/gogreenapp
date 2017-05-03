@@ -19,7 +19,7 @@
             android:id="@+id/edit_profile_button"
             android:layout_width="174dp"
             android:layout_height="wrap_content"
-            android:text="Edit" />
+            android:text="Editar" />
 
         <TextView
             android:id="@+id/textView"
