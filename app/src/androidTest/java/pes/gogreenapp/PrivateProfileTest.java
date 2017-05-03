@@ -38,7 +38,7 @@ public class PrivateProfileTest {
         try {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
-            onView(withId(R.id.header))
+            onView(withId(R.id.profile_image))
                     .perform(click());
 
         } catch (NoMatchingViewException e) {
@@ -54,7 +54,6 @@ public class PrivateProfileTest {
     /**
      * Check if the user image is displayed
      */
-    // TODO fix test
     @Test
     public void checkImageIsShown(){
         onView(withId(R.id.user_image))
@@ -65,7 +64,6 @@ public class PrivateProfileTest {
     /**
      * Check if the user name is displayed
      */
-    // TODO fix test
     @Test
     public void checkUserNameIsShown(){
         onView(withId(R.id.user_name))
@@ -75,17 +73,14 @@ public class PrivateProfileTest {
     /**
      * Check if the user nickname is displayed
      */
-    // TODO fix test
     @Test
     public void checkUserNicknameIsShown(){
-        onView(withId(R.id.user_nickname))
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.user_nickname)).check(matches(isDisplayed()));
     }
 
     /**
      * Check if the current points are displayed
      */
-    // TODO fix test
     @Test
     public void checkUserCurrentPointsIsShown(){
         onView(withId(R.id.user_points))
@@ -96,7 +91,6 @@ public class PrivateProfileTest {
     /**
      * Check if the user birth date is displayed
      */
-    // TODO fix test
     @Test
     public void checkBirthDateIsShown(){
         onView(withId(R.id.user_birthdate))
@@ -106,7 +100,7 @@ public class PrivateProfileTest {
     /**
      * Check if the user current points are displayed
      */
-    // TODO fix test
+
     @Test
     public void checkCurrentPointsAreShown(){
         onView(withId(R.id.user_birthdate))
