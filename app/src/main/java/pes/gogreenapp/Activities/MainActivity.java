@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Contract;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
+import pes.gogreenapp.Fragments.CreateEventFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
@@ -163,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.profile_image:
                     fragmentClass = UserProfileFragment.class;
+                    break;
+                case R.id.create_event_fragment:
+                    fragmentClass = CreateEventFragment.class;
                     break;
                 default:
                     fragmentClass = RewardsListFragment.class;
