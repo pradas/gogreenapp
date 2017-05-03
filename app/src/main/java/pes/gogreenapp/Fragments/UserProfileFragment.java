@@ -164,11 +164,9 @@ public class UserProfileFragment extends Fragment
         protected String doInBackground(String... params) {
             mRequestQueue = Volley.newRequestQueue(getActivity());
             HashMap<String,String> impl = new HashMap<>();
-            impl.put("username",params[1]);
-            impl.put("name",params[2]);
-            impl.put("email",params[3]);
-            impl.put("password",params[4]);
-            impl.put("birth_date",params[5]);
+            impl.put("name",params[1]);
+            impl.put("email",params[2]);
+            impl.put("birth_date",params[3]);
 
             String result = new HttpHandler().makeServiceCall(params[0],"PUT" ,impl,"");
             Log.i(TAG, "Response from url: " + result);
@@ -180,8 +178,6 @@ public class UserProfileFragment extends Fragment
         protected void onPostExecute(String s) {
             if(s == null){
                 Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo mÃ¡s tarde",Toast.LENGTH_LONG).show();
-            }else if(s.equals("409")){
-                Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(getActivity(),"Usuario editado",Toast.LENGTH_LONG).show();
             }
