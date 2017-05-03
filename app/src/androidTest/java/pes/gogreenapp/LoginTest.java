@@ -31,27 +31,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static pes.gogreenapp.EspressoTestsMatchers.withError;
 
 public class LoginTest {
 
-    private static Matcher<View> withError(final String expected) {
-        return new TypeSafeMatcher<View>() {
-
-            @Override
-            public boolean matchesSafely(View view) {
-                if (!(view instanceof EditText)) {
-                    return false;
-                }
-                EditText editText = (EditText) view;
-                return editText.getError().toString().equals(expected);
-            }
-
-            @Override
-            public void describeTo(Description description) {
-
-            }
-        };
-    }
     @Rule
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
@@ -70,6 +53,10 @@ public class LoginTest {
         }
     }
 
+    /**
+     * Check that if the user put the username and
+     * password correctly the principal layout is displayed.
+     */
     @Test
     public void CorrectLogin() {
         onView(withId(R.id.username_edit_text))
@@ -83,6 +70,10 @@ public class LoginTest {
 
     }
 
+    /**
+     * Check that if the user don't put the username and
+     * password correctly there is an error in a Toast.
+     */
     @Test
     public void IncorrectLogin() {
         onView(withId(R.id.username_edit_text))
@@ -95,6 +86,11 @@ public class LoginTest {
 
     }
 
+    /**
+     * Check that if the user don't put the username and
+     * password there is an error in the password_user_text and
+     * username_edit_text.
+     */
     @Test
     public void noPasswordAndNoUsername() {
         onView(withId(R.id.buttonLogin))
@@ -105,6 +101,10 @@ public class LoginTest {
                 .check(matches(withError("Nombre necesario")));
     }
 
+    /**
+     * Check that if the user don't put the password there is an error
+     * in the password_user_text.
+     */
     @Test
     public void noPassword() {
         onView(withId(R.id.username_edit_text))
@@ -115,6 +115,10 @@ public class LoginTest {
                 .check(matches(withError("Contraseña necesaria")));
     }
 
+    /**
+     * Check that if the user don't put the username there is an error
+     * in the username_edit_text.
+     */
     @Test
     public void noUsername() {
         onView(withId(R.id.password_user_text))
