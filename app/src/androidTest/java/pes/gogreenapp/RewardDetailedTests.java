@@ -132,6 +132,7 @@ public class RewardDetailedTests {
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
+        //no lo canjea porque no tiene coins para ello
     }
 
     @Test
@@ -156,6 +157,4 @@ public class RewardDetailedTests {
         onView(withId(R.id.favoriteDetailButton)).perform(click());
         onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.mipmap.favorite)));
     }
-
-
 }

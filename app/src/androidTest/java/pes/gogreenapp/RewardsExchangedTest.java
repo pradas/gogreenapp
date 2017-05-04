@@ -54,4 +54,118 @@ public class RewardsExchangedTest {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.rewardsExchangedFragment)).check(matches(isDisplayed()));
     }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void CardViewHasTitle() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardTitle))));
+    }
+
+    @Test
+    public void CardViewHasPoints() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardPoints))));
+    }
+
+    @Test
+    public void CardViewHasCategory() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardCategory))));
+
+    }
+
+    @Test
+    public void CardViewHasEndDate() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
+    }
+
+    @Test
+    public void CardViewHasFavoriteButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.favoriteButton))));
+    }
+
+    @Test
+    public void CardViewHasExchangeButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.exchangeButton))));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void openRewardDetailed() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void RewardDetailedHasUseButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withText("UTILIZAR")).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void UseButtonDisplaysQRCode() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+        onView(withId(R.id.qrCode)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void UseButtonDisplaysQRCodeInRewardDetaied() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.actionDetailReward)).perform(click());
+        onView(withId(R.id.qrCode)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void FavButtonChangeToFavoriteFilled() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favoritefilled)));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void FavButtonChangeToFavoriteEmpty() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favorite)));
+    }
 }

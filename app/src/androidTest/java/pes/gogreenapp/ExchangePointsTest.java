@@ -57,19 +57,32 @@ public class ExchangePointsTest {
     }
 
     @Test
-    public void exchangeButtonDisplaysAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+    public void exchangeButtonDisplaysAlertDialogWithTitle() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("¿Está seguro de que desea canjear esta promoción?")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void exchangeButtonDisplaysAlertDialogWithButtonExchange() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("CANJEAR")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void exchangeButtonDisplaysAlertDialogWithButtonCancel() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
+    //TODO fix test
     @Test
     public void actionExchangeAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
+
+        //No funciona porque coge una reward que no tiene suficientes puntos para canjear.
     }
 
     @Test
