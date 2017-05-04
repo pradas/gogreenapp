@@ -17,6 +17,7 @@ import static org.hamcrest.Matchers.not;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -106,6 +107,7 @@ public class RegisterActivityTest {
                     .perform(DrawerActions.open());*/
             onView(withId(R.id.buttonRegister))
                     .perform(click());
+            RegisterFragment.testMode = true;
         } catch (NoMatchingViewException e) {
         }
     }
@@ -249,5 +251,9 @@ public class RegisterActivityTest {
                 .check(matches(notHasError()));
         onView(withId(R.id.editContraseñaConfirmar))
                 .check(matches(notHasError()));
+    }
+    @After
+    public void unsetup(){
+        RegisterFragment.testMode = false;
     }
 }
