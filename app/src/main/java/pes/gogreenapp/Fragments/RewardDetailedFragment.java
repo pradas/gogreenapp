@@ -128,10 +128,21 @@ public class RewardDetailedFragment extends Fragment {
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
                 "que el propietario o empleado de la tienda escanee el código.");
 
+        if (reward.isFavorite()) {
+            fav.setTag("favoritefilled");
+            fav.setImageResource(R.mipmap.favoritefilled);
+        }
+        else {
+            fav.setImageResource(R.mipmap.favorite);
+            fav.setTag("favorite");
+        }
+
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fav.getTag().equals("favorite")) {
+                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                            session.getUserName(), reward.getId().toString());
                     fav.setImageResource(R.mipmap.favoritefilled);
                     fav.setTag("favoritefilled");
                 } else {
@@ -195,6 +206,30 @@ public class RewardDetailedFragment extends Fragment {
         });
     }
 
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(getActivity(), "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(getActivity(), "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private class PostReward extends AsyncTask<String, Void, String> {
 
         /**
@@ -255,9 +290,8 @@ public class RewardDetailedFragment extends Fragment {
                             (String) jsonObject.get("title"), (Integer) jsonObject.get("points"), endDate,
                             (String) jsonObject.get("description"), (String) jsonObject.get("exchange_info"),
                             (String) jsonObject.get("contact_web"), (String) jsonObject.get("contact_info"),
-                            (Double) jsonObject.get("exchange_latitude"), (Double) jsonObject.get("exchange_longitude"));
-                    String s = reward.getTitle();
-                    Integer i = reward.getId();
+                            (Double) jsonObject.get("exchange_latitude"), (Double) jsonObject.get("exchange_longitude"),
+                            (Boolean) jsonObject.get("favourite"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
