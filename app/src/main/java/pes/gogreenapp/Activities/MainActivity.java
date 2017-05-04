@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Contract;
 
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
+import pes.gogreenapp.Fragments.GivePointsFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
@@ -151,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
                     fragmentClass = RewardsListFragment.class;
+                    break;
+                case R.id.give_points_fragment:
+                    fragmentClass = GivePointsFragment.class;
                     break;
                 case R.id.settings_fragment:
                     fragmentClass = SettingsFragment.class;

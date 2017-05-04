@@ -27,4 +27,11 @@
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
+
+    <!-- Hints Give Points -->
+    <string name="username">Nombre de usuario</string>
+
+    <!-- Radio Buttons Give Points -->
+    <string name="events">Eventos</string>
+    <string name="points">Puntos</string>
 </resources>
