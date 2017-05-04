@@ -36,4 +36,10 @@
     <string name="direccion">Dirección</string>
     <string name="direccion_del_evento">Dirección del evento</string>
     <string name="fecha">Fecha</string>
+    <string name="fecha_del_evento">Fecha del evento</string>
+    <string name="guardar">Guardar</string>
+    <string name="fecha_del_evento_description">Fecha del evento</string>
+    <string name="fecha_evento">Fecha</string>
+    <string name="hora_evento">Hora</string>
+    <string name="hora_del_evento">Hora del evento</string>
 </resources>

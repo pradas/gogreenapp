@@ -1,112 +1,151 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="20dp">
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TitleCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/tituloCreateEvent"
-            android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/titleCreateEvent_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/TitleCreateEvent"
-            android:focusable="true"
-            android:hint="@string/titulo_del_evento"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            <TextView
+                android:id="@+id/TitleCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/tituloCreateEvent"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/DescriptionCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/titleCreateEvent_edit_text"
-            android:text="@string/descripcion"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/titleCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/TitleCreateEvent"
+                android:focusable="true"
+                android:hint="@string/titulo_del_evento"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
 
-        <EditText
-            android:id="@+id/DescriptionCreateEvent_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionCreateEvent"
-            android:focusable="true"
-            android:hint="@string/descripci_n_del_evento"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            <TextView
+                android:id="@+id/DescriptionCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleCreateEvent_edit_text"
+                android:text="@string/descripcion"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/PointsCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DescriptionCreateEvent_edit_text"
-            android:text="@string/puntos"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/DescriptionCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/DescriptionCreateEvent"
+                android:focusable="true"
+                android:hint="@string/descripci_n_del_evento"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
 
-        <EditText
-            android:id="@+id/PointsCreateEvent_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000"
-            android:layout_below="@+id/PointsCreateEvent"/>
+            <TextView
+                android:id="@+id/PointsCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DescriptionCreateEvent_edit_text"
+                android:text="@string/puntos"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/DirectionCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/PointsCreateEvent_edit_text"
-            android:text="@string/direccion"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/PointsCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/PointsCreateEvent"
+                android:inputType="number"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
 
-        <EditText
-            android:id="@+id/DirectionCreateEvent_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/direccion_del_evento"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000"
-            android:layout_below="@+id/DirectionCreateEvent"/>
+            <TextView
+                android:id="@+id/DirectionCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/PointsCreateEvent_edit_text"
+                android:text="@string/direccion"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/DateCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DirectionCreateEvent_edit_text"
-            android:text="@string/fecha"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/DirectionCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DirectionCreateEvent"
+                android:hint="@string/direccion_del_evento"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
 
-        <ImageButton
-            android:id="@+id/datePickerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DateCreateEvent"
-            app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+            <TextView
+                android:id="@+id/DateTextCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DirectionCreateEvent_edit_text"
+                android:text="@string/fecha_evento"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/buttonSendEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:layout_below="@+id/datePickerButton"/>
+
+            <LinearLayout
+                android:id="@+id/lineDateCreateEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/DateTextCreateEvent">
+
+                <EditText
+                    android:id="@+id/editTextDateEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/fecha_del_evento"
+                    android:inputType="date" />
+
+                <ImageButton
+                    android:id="@+id/DateCreateEvent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_my_calendar"
+                    android:contentDescription="@string/fecha_del_evento_description" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/TimeTextCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lineDateCreateEvent"
+                android:text="@string/hora_evento"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/TimeCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TimeTextCreateEvent"
+                android:hint="@string/hora_del_evento"
+                android:inputType="time"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
+
+            <Button
+                android:id="@+id/buttonSendEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TimeCreateEvent_edit_text"
+                android:text="@string/guardar" />
 
         </RelativeLayout>
     </ScrollView>
