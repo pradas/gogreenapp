@@ -1,5 +1,6 @@
 package pes.gogreenapp;
 
+import android.os.AsyncTask;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
@@ -20,8 +21,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.concurrent.CountDownLatch;
+
 import pes.gogreenapp.Activities.LoginActivity;
 import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Fragments.RegisterFragment;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -33,10 +37,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 /**
  * Created by Jorge Alvarez on 27/04/2017.
+ *
+ * Checks and validates each functionality of the Register
+ * @see  RegisterFragment
  */
 
 public class RegisterActivityTest {
-
+    /**
+     * Checks if the params parsed are equal to the error returned of the view
+     *
+     * @param expected The error content to match
+     * @return true if error matches, false if View is not an EditText or error dosen't match
+     */
     private static Matcher<View> withError(final String expected) {
         return new TypeSafeMatcher<View>() {
 
@@ -56,6 +68,11 @@ public class RegisterActivityTest {
         };
     }
 
+    /**
+     * Checks if the View has an error or not.
+     *
+     * @return true if View dosen't have any error, false if view is not an EditText or View has error.
+     */
     private static Matcher<View> notHasError() {
         return new TypeSafeMatcher<View>() {
 
