@@ -18,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -43,6 +44,16 @@ public class RewardsExchangedTest {
             onView(withId(R.id.profile_image))
                     .perform(click());
         } catch (NoMatchingViewException e) {
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
+                    .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.profile_image))
+                    .perform(click());
         }
     }
 
@@ -167,5 +178,9 @@ public class RewardsExchangedTest {
                 RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
                 .check(matches(withDrawable(R.mipmap.favorite)));
+    }
+
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
     }
 }
