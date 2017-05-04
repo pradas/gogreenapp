@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -23,6 +24,24 @@ import org.junit.internal.matchers.TypeSafeMatcher;
 public class EspressoTestsMatchers {
     public static Matcher<View> withDrawable(final int resourceId) {
         return new DrawableMatcher(resourceId);
+    }
+    public static Matcher<View> withError(final String expected) {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof EditText)) {
+                    return false;
+                }
+                EditText editText = (EditText) view;
+                return editText.getError().toString().equals(expected);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+
+            }
+        };
     }
 
     public static Matcher<View> noDrawable() {

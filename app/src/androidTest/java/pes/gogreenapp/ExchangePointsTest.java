@@ -43,25 +43,36 @@ public class ExchangePointsTest {
             onView(withId(R.id.nvView))
                     .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         } catch (NoMatchingViewException e) {
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
+                    .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         }
     }
 
     @Test
-    public void exchangeButtonDisplaysAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+    public void exchangeButtonDisplaysAlertDialogWithTitle() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("¿Está seguro de que desea canjear esta promoción?")).check(matches(isDisplayed()));
-        onView(withText("CANJEAR")).check(matches(isDisplayed()));
-        onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    /*
     @Test
-    public void actionExchangeAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        onView(withId(R.id.actionDetailReward)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }*/
+    public void exchangeButtonDisplaysAlertDialogWithButtonExchange() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+        onView(withText("CANJEAR")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void exchangeButtonDisplaysAlertDialogWithButtonCancel() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+        onView(withText("CANCELAR")).check(matches(isDisplayed()));
+    }
 
     @Test
     public void actionCancelAlertDialog() {
