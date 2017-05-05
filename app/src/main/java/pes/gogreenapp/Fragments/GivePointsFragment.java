@@ -1,11 +1,18 @@
 package pes.gogreenapp.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
@@ -18,6 +25,8 @@ import pes.gogreenapp.R;
 public class GivePointsFragment extends Fragment {
 
     private SessionManager session;
+    private ViewGroup v;
+    private RelativeLayout layoutEvents, layoutPoints;
 
     /**
      * Required empty public constructor
@@ -39,7 +48,11 @@ public class GivePointsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.give_points_fragment, container, false);
+        View view = inflater.inflate(R.layout.give_points_fragment, container, false);
+        layoutEvents = (RelativeLayout) inflater.inflate(R.layout.give_points_by_events, null, false);
+        layoutPoints = (RelativeLayout) inflater.inflate(R.layout.give_points_by_points, null, false);
+        v = (ViewGroup) view.findViewById(R.id.givePointsFragment);
+        return view;
     }
 
     /**
@@ -56,5 +69,48 @@ public class GivePointsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = new SessionManager(getActivity().getApplicationContext(),
                 new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        RadioGroup radioButtons = (RadioGroup) getView().findViewById(R.id.radioGroupGivePoints);
+        Button grant = (Button) getView().findViewById(R.id.grantPoints);
+
+        radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                if (checkedId == R.id.eventsRadioButton) {
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
+                    layoutEvents.setLayoutParams(params);
+                    v.removeView(layoutPoints);
+                    v.addView(layoutEvents);
+                }
+                else {
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
+                    layoutPoints.setLayoutParams(params);
+                    v.removeView(layoutEvents);
+                    v.addView(layoutPoints);
+                }
+            }
+        });
+
+        grant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("¿Está seguro de que desea conceder los puntos?")
+                    .setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 }

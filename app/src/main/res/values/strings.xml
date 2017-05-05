@@ -30,8 +30,15 @@
 
     <!-- Hints Give Points -->
     <string name="username">Nombre de usuario</string>
+    <string name="pointsHint">Puntos</string>
 
     <!-- Radio Buttons Give Points -->
     <string name="events">Eventos</string>
     <string name="points">Puntos</string>
+
+    <!-- Buttons Give Points -->
+    <string name="anotherUser">+ Otro Usuario</string>
+    <string name="grantPoints">Conceder Puntos</string>
+    
+    
 </resources>
