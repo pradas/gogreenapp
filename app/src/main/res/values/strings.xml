@@ -42,4 +42,6 @@
     <string name="fecha_evento">Fecha</string>
     <string name="hora_evento">Hora</string>
     <string name="hora_del_evento">Hora del evento</string>
+    <string name="empresa_del_evento">Empresa del evento</string>
+    <string name="empresa">Empresa</string>
 </resources>

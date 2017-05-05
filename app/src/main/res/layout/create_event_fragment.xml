@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,11 +6,6 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="20dp">
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -90,10 +85,27 @@
                 android:textColorHint="#000000" />
 
             <TextView
-                android:id="@+id/DateTextCreateEvent"
+                android:id="@+id/CompanyCreateEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/DirectionCreateEvent_edit_text"
+                android:text="@string/empresa"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/CompanyCreateEvent_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CompanyCreateEvent"
+                android:hint="@string/empresa_del_evento"
+                android:textColorHighlight="#ff7eff15"
+                android:textColorHint="#000000" />
+
+            <TextView
+                android:id="@+id/DateTextCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/CompanyCreateEvent_edit_text"
                 android:text="@string/fecha_evento"
                 android:textSize="20sp" />
 
@@ -148,6 +160,5 @@
                 android:text="@string/guardar" />
 
         </RelativeLayout>
-    </ScrollView>
 
-</RelativeLayout>
+</ScrollView>
