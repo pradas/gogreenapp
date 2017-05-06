@@ -6,4 +6,9 @@
         <item name="colorAccent">#FF4081</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+    <style name="campotextoregistro" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">#fff</item>
+        <item name="colorControlActivated">#fff</item>
+        <item name="android:textColorHighlight">#fff</item>
+    </style>
 </resources>
