@@ -83,8 +83,7 @@ public class UserProfilePrivateFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        session = SessionManager.getInstance();
 
         onAttachToParentFragment(getParentFragment());
 
@@ -98,7 +97,7 @@ public class UserProfilePrivateFragment extends Fragment {
         //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
         initializeUser();
-        userName = session.getUserName();
+        userName = session.getUsername();
         new GetPrivateInfoUser().execute(url + "users/" + userName);
 
         editButton.setOnClickListener(v -> {
