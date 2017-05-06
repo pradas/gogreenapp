@@ -42,7 +42,7 @@ import pes.gogreenapp.R;
 
 public class RegisterFragment extends Fragment {
     private SessionManager session;
-
+    public static boolean testMode = false;
     private static Integer mYear, mMonth, mDay;
     private static final String TAG = "submitUserTag";
     private static final String URLPetition = "http://raichu.fib.upc.edu/api/users";
@@ -130,7 +130,10 @@ public class RegisterFragment extends Fragment {
                 ok = false;
             }
 
-            if(ok) new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
+            if(ok){
+                if(!testMode)
+                    new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
+            }
 
         });
         pickDate.setOnClickListener((View v) -> {

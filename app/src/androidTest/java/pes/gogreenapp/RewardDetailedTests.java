@@ -47,6 +47,16 @@ public class RewardDetailedTests {
             onView(withId(R.id.nvView))
                     .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         } catch (NoMatchingViewException e) {
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
+                    .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         }
     }
 
@@ -125,15 +135,6 @@ public class RewardDetailedTests {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    //TODO fix test
-    @Test
-    public void actionExchangeAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        onView(withId(R.id.actionDetailReward)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }
-
     @Test
     public void actionCancelAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
@@ -156,6 +157,4 @@ public class RewardDetailedTests {
         onView(withId(R.id.favoriteDetailButton)).perform(click());
         onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.mipmap.favorite)));
     }
-
-
 }

@@ -18,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -43,6 +44,16 @@ public class RewardsExchangedTest {
             onView(withId(R.id.profile_image))
                     .perform(click());
         } catch (NoMatchingViewException e) {
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
+                    .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.profile_image))
+                    .perform(click());
         }
     }
 
@@ -53,5 +64,123 @@ public class RewardsExchangedTest {
     public void checkRewardsExchangedsIsDisplayed() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.rewardsExchangedFragment)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void CardViewHasTitle() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardTitle))));
+    }
+
+    @Test
+    public void CardViewHasPoints() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardPoints))));
+    }
+
+    @Test
+    public void CardViewHasCategory() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardCategory))));
+
+    }
+
+    @Test
+    public void CardViewHasEndDate() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
+    }
+
+    @Test
+    public void CardViewHasFavoriteButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.favoriteButton))));
+    }
+
+    @Test
+    public void CardViewHasExchangeButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
+                .check(matches(hasDescendant(withId(R.id.exchangeButton))));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void openRewardDetailed() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void RewardDetailedHasUseButton() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withText("UTILIZAR")).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void UseButtonDisplaysQRCode() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
+        onView(withId(R.id.qrCode)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void UseButtonDisplaysQRCodeInRewardDetaied() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.actionDetailReward)).perform(click());
+        onView(withId(R.id.qrCode)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void FavButtonChangeToFavoriteFilled() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favoritefilled)));
+    }
+
+    /**
+     * Check if the Navigation Drawer is open.
+     */
+    @Test
+    public void FavButtonChangeToFavoriteEmpty() {
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withId(R.id.rvExchanged)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.favoriteButton)));
+        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
+                .check(matches(withDrawable(R.mipmap.favorite)));
+    }
+
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
     }
 }
