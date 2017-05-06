@@ -17,13 +17,10 @@ import android.widget.ImageButton;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import pes.gogreenapp.R;
-
-import static android.R.attr.value;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,7 +80,7 @@ public class CreateEventFragment extends Fragment {
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
         DateText = (EditText) getView().findViewById(R.id.editTextDateEvent);
-        SendButton = (Button) getView().findViewById(R.id.buttonSendEvent);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
         PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
@@ -130,7 +127,7 @@ public class CreateEventFragment extends Fragment {
                     formatter.setLenient(false);
                     date = formatter.parse(inputDate);
                 } catch (ParseException e) {
-                    DateText.setError("Formato invalido (dd -mm-yyyy)");
+                    DateText.setError("Fecha invalida (dd-mm-yyyy)");
                 }
             }
             if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
@@ -147,7 +144,7 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
                 if (Integer.parseInt(MinText.getText().toString()) > 59) {
-                    HourText.setError("Minutos incorrectos");
+                    MinText.setError("Minutos incorrectos");
                     send = false;
                 }
                 FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();

@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ScrollViewCreateEvent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="20dp"
@@ -15,7 +16,6 @@
             android:id="@+id/TitleCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:text="@string/tituloCreateEvent"
             android:textSize="20sp" />
 
@@ -27,7 +27,6 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/TitleCreateEvent"
             android:focusable="true"
-            android:hint="@string/titulo_del_evento"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
@@ -35,6 +34,7 @@
             android:id="@+id/DescriptionCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/titleCreateEvent_edit_text"
             android:text="@string/descripcion"
             android:textSize="20sp" />
@@ -47,7 +47,6 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/DescriptionCreateEvent"
             android:focusable="true"
-            android:hint="@string/descripci_n_del_evento"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
@@ -55,6 +54,7 @@
             android:id="@+id/PointsCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/DescriptionCreateEvent_edit_text"
             android:text="@string/puntos"
             android:textSize="20sp" />
@@ -72,6 +72,7 @@
             android:id="@+id/DirectionCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/PointsCreateEvent_edit_text"
             android:text="@string/direccion"
             android:textSize="20sp" />
@@ -80,8 +81,9 @@
             android:id="@+id/DirectionCreateEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/DirectionCreateEvent"
-            android:hint="@string/direccion_del_evento"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
@@ -89,6 +91,7 @@
             android:id="@+id/CompanyCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/DirectionCreateEvent_edit_text"
             android:text="@string/empresa"
             android:textSize="20sp" />
@@ -97,8 +100,9 @@
             android:id="@+id/CompanyCreateEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/CompanyCreateEvent"
-            android:hint="@string/empresa_del_evento"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
@@ -106,6 +110,7 @@
             android:id="@+id/DateTextCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/CompanyCreateEvent_edit_text"
             android:text="@string/fecha_evento"
             android:textSize="20sp" />
@@ -116,15 +121,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/DateTextCreateEvent"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editTextDateEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/fecha_del_evento"
-                android:inputType="date" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <ImageButton
                 android:id="@+id/DateCreateEvent"
@@ -132,6 +130,14 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/fecha_del_evento_description"
                 app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+            <EditText
+                android:id="@+id/editTextDateEvent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.97"
+                android:ems="10"
+                android:inputType="date" />
 
         </LinearLayout>
 
@@ -143,10 +149,11 @@
             android:text="@string/hora_evento"
             android:textSize="20sp" />
 
+
         <LinearLayout
-            android:id="@+id/lineHourCreateEvent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/linearLayoutHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/TimeTextCreateEvent">
 
             <EditText
@@ -172,16 +179,17 @@
                 android:textColorHighlight="#ff7eff15"
                 android:textColorHint="#000000" />
 
-
         </LinearLayout>
 
+
         <Button
-            android:id="@+id/buttonSendEvent"
+            android:id="@+id/buttonSendCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lineHourCreateEvent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/linearLayoutHour"
             android:text="@string/guardar" />
-
     </RelativeLayout>
 
 </ScrollView>
