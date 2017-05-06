@@ -4,17 +4,19 @@
     android:paddingBottom="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:paddingTop="20dp">
+    android:paddingTop="20dp"
+    android:background="@drawable/gradientbackground">
 
     <TextView
         android:id="@+id/TitleLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="83dp"
         android:text="GoGreen"
         android:textColor="#ff7aff24"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/imageGoGreen"
@@ -33,9 +35,10 @@
         android:layout_below="@+id/imageGoGreen"
         android:layout_marginTop="46dp"
         android:focusable="true"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
         android:hint="Nombre de usuario o email"
-        android:textColorHighlight="#ff7eff15"
-        android:textColorHint="#000000" />
+        android:theme="@style/campotextoregistro"/>
 
     <EditText
         android:id="@+id/password_user_text"
@@ -47,22 +50,31 @@
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:textColorHint="#000000" />
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro" />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="login"
+        android:background="@drawable/buttonregisterloginshape"
+        android:textColor="@drawable/mainbuttontext"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Register" />
+        android:layout_marginRight="0dp"
+        android:background="@null"
+        android:text="Sign Up"
+        android:textColor="@drawable/mainbuttontext"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
