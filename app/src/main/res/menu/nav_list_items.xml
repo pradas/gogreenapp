@@ -8,6 +8,7 @@
             android:id="@+id/rewards_list_fragment"
             android:title="@string/rewards" />
     </group>
+    <!-- This group represents the items of the Switch functionality -->
     <group
         android:id="@+id/menu_switch"
         android:checkableBehavior="single">

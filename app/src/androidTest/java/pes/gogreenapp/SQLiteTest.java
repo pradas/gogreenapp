@@ -126,7 +126,7 @@ public class SQLiteTest {
      */
     @Test(expected = NullParametersException.class)
     public void exceptionOnGetUsernamesAndRoles() throws NullParametersException {
-        UserData.getUsernamesAndRoles(null, null);
+        UserData.getIds(null, null);
     }
 
 }

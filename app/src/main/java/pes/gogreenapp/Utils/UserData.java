@@ -88,42 +88,36 @@ public class UserData {
     }
 
     /**
-     * Method to get all the usernames that don't coincide with the username of the actual
+     * Method to get all the ids of the Users that don't coincide with the username of the actual
      * User logged
      *
      * @param context        context of the Android APP
      * @param actualUsername username of the actual User logged
-     * @return a list of Map<String,String> containing the usernames and roles with
-     * the keys "username" and "role"
+     * @return a list of Integer containing the ids of the Users
      * @throws NullParametersException throws NullParametersException when any parameter desired
      *                                 is null
      */
-    public static List<Map<String, String>> getUsernamesAndRoles(Context context,
-                                                                 String actualUsername)
+    public static List<Integer> getIds(Context context, String actualUsername)
             throws NullParametersException {
 
         if (actualUsername == null || context == null) {
             throw new NullParametersException("The username and context parameters can't be null");
         }
 
-        List<Map<String, String>> usernamesAndRoles = new ArrayList<>();
+        List<Integer> ids = new ArrayList<>();
         SQLiteDatabase db = MySQLiteHelper.getInstance(context).getReadableDatabase();
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_ROLE},
+                new String[]{MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME},
                 null, null, null, null, null);
 
         // Iterate the cursor and fill the usernames list
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            if (!(actualUsername.equals(cursor.getString(0)))) {
-                HashMap<String, String> aux = new HashMap<>();
-                aux.put("username", cursor.getString(0));
-                aux.put("role", cursor.getString(1));
-                usernamesAndRoles.add(aux);
+            if (!(actualUsername.equals(cursor.getString(1)))) {
+                ids.add(cursor.getInt(0));
             }
-
             cursor.moveToNext();
         }
 
@@ -133,7 +127,7 @@ public class UserData {
         // close the database
         db.close();
 
-        return usernamesAndRoles;
+        return ids;
     }
 
     /**

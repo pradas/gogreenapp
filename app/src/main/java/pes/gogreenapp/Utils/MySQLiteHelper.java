@@ -14,12 +14,13 @@ import android.util.Log;
 /**
  * @author Albert
  */
-public class MySQLiteHelper extends SQLiteOpenHelper {
+class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static MySQLiteHelper instance;
     private static final String DATABASE_NAME = "gogreen.db";
     private static final int DATABASE_VERSION = 1;
     static final String TABLE_USERS = "users";
+    static final String COLUMN_ID = "_id";
     static final String COLUMN_USERNAME = "username";
     static final String COLUMN_TOKEN = "token";
     static final String COLUMN_POINTS = "points";
@@ -27,7 +28,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " + TABLE_USERS + "( "
-            + COLUMN_USERNAME + " text primary key, "
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_USERNAME + " text unique, "
             + COLUMN_TOKEN + " text not null, "
             + COLUMN_POINTS + " integer not null, "
             + COLUMN_ROLE + " text not null "

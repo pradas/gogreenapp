@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // On click arrow to use the Switch functionality
         ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
         arrowSwitch.setOnClickListener((click) -> {
             Menu menu = nvDrawer.getMenu();
