@@ -20,7 +20,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "gogreen.db";
     private static final int DATABASE_VERSION = 1;
     static final String TABLE_USERS = "users";
-    static final String COLUMN_ID = "_id";
     static final String COLUMN_USERNAME = "username";
     static final String COLUMN_EMAIL = "email";
     static final String COLUMN_TOKEN = "token";
@@ -28,7 +27,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " + TABLE_USERS + "( "
-            + COLUMN_ID + " integer autoincrement, "
             + COLUMN_USERNAME + " text primary key, "
             + COLUMN_EMAIL + " text, "
             + COLUMN_TOKEN + " text not null, "
