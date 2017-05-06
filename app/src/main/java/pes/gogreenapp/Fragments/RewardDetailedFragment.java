@@ -98,8 +98,7 @@ public class RewardDetailedFragment extends Fragment {
 
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        session = SessionManager.getInstance();
         try {
             new GetReward().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -152,15 +151,15 @@ public class RewardDetailedFragment extends Fragment {
                             if (session.getPoints() < (Integer) reward.getPoints()) {
                                 Toast.makeText(getActivity(), "No tienes suficientes puntos para canjear este reward",
                                         Toast.LENGTH_LONG).show();
-                            }
-                            else {
+                            } else {
                                 new PostReward().execute("http://10.4.41.145/api/users/", "POST",
-                                        session.getUserName(), (String) String.valueOf(reward.getId()));
+                                        session.getUsername(), (String) String.valueOf(reward.getId()));
                                 Integer points = session.getPoints();
                                 points -= (Integer) reward.getPoints();
                                 //no se como se hace el set
 
-                                if (!error) Toast.makeText(getActivity(), "Reward canjeado con exito", Toast.LENGTH_LONG).show();
+                                if (!error)
+                                    Toast.makeText(getActivity(), "Reward canjeado con exito", Toast.LENGTH_LONG).show();
                                 FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new RewardsListFragment();
@@ -178,7 +177,7 @@ public class RewardDetailedFragment extends Fragment {
                     AlertDialog dialog = mBuilder.create();
                     dialog.show();
                 } else { //ACCIÓN UTILIZAR
-                    String url = "http://10.4.41.145/api/users/" + session.getUserName() + "/rewards/" + reward.getId();
+                    String url = "http://10.4.41.145/api/users/" + session.getUsername() + "/rewards/" + reward.getId();
                     Bundle bundle = new Bundle();
                     bundle.putString("url", url);
 
@@ -210,7 +209,7 @@ public class RewardDetailedFragment extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("reward_id", params[3]);
-            String url = params[0] + params [2] + "/rewards";
+            String url = params[0] + params[2] + "/rewards";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             error = true;
