@@ -46,7 +46,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     public RewardsListAdapter(Context context, List<Reward> rewards) {
         this.context = context;
         this.rewards = rewards;
-        this.session = new SessionManager(context, new GlobalPreferences(context).getUser());
+        this.session = SessionManager.getInstance();
     }
 
     /**
@@ -135,7 +135,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUserName(), holder.id.toString());
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favoritefilled);
                 holder.fav.setTag("favoritefilled");
             } else {
@@ -157,7 +157,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                         }
                         else {
                             new PostReward().execute("http://10.4.41.145/api/users/", "POST",
-                                    session.getUserName(), holder.id.toString());
+                                    session.getUsername(), holder.id.toString());
                             Integer points = session.getPoints();
                             points -= (Integer) rewards.get(position).getPoints();
                             //no se como se hace el set
