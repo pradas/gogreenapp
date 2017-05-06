@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
-        session = new SessionManager(getApplicationContext(),
-                new GlobalPreferences(getApplicationContext()).getUser());
+        session = SessionManager.getInstance(getApplicationContext());
         /*
           Call this function whenever you want to check user login_activity
           This will redirect user to LoginActivity is he is not
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the username on the header view
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
-        username.setText(session.getUserName());
+        username.setText(session.getUsername());
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
