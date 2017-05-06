@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,8 +31,7 @@ import java.util.Locale;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 
 /**

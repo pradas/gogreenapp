@@ -1,4 +1,4 @@
-package pes.gogreenapp.Objects;
+package pes.gogreenapp.Utils;
 
 import android.content.Context;
 import android.content.Intent;

@@ -21,8 +21,7 @@ import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 
 public class MainActivity extends AppCompatActivity {

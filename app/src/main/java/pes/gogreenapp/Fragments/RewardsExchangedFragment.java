@@ -27,9 +27,8 @@ import java.util.List;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsExchangedAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.Reward;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 
 /**

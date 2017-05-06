@@ -3,7 +3,6 @@ package pes.gogreenapp.Handlers;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedInputStream;
@@ -18,8 +17,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
-
-import pes.gogreenapp.Objects.SessionManager;
 
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
