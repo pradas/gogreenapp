@@ -10,13 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
+
+import static android.R.attr.id;
 
 /**
  * Created by Adrian on 05/05/2017.
@@ -26,7 +30,8 @@ public class GivePointsFragment extends Fragment {
 
     private SessionManager session;
     private ViewGroup v;
-    private RelativeLayout layoutEvents, layoutPoints;
+    private RelativeLayout spinnerLayoutEvents, buttonLayoutEvents;
+    private RelativeLayout textLayoutPoints, buttonLayoutPoints;
 
     /**
      * Required empty public constructor
@@ -49,8 +54,10 @@ public class GivePointsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.give_points_fragment, container, false);
-        layoutEvents = (RelativeLayout) inflater.inflate(R.layout.give_points_by_events, null, false);
-        layoutPoints = (RelativeLayout) inflater.inflate(R.layout.give_points_by_points, null, false);
+        spinnerLayoutEvents = new RelativeLayout(getContext());
+        buttonLayoutEvents = new RelativeLayout(getContext());
+        textLayoutPoints = new RelativeLayout(getContext());
+        buttonLayoutPoints = new RelativeLayout(getContext());
         v = (ViewGroup) view.findViewById(R.id.givePointsFragment);
         return view;
     }
@@ -72,23 +79,53 @@ public class GivePointsFragment extends Fragment {
         RadioGroup radioButtons = (RadioGroup) getView().findViewById(R.id.radioGroupGivePoints);
         Button grant = (Button) getView().findViewById(R.id.grantPoints);
 
+        Button anotherUser = new Button(getContext());
+        anotherUser.setId(Button.generateViewId());
+        anotherUser.setText(R.string.anotherUser);
+        Spinner spinnerEvents = new Spinner(getContext());
+        spinnerEvents.setId(Spinner.generateViewId());
+        EditText pointsToReceive = new EditText(getContext());
+        pointsToReceive.setId(EditText.generateViewId());
+
         radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
                 if (checkedId == R.id.eventsRadioButton) {
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
-                    layoutEvents.setLayoutParams(params);
-                    v.removeView(layoutPoints);
-                    v.addView(layoutEvents);
+                    RelativeLayout.LayoutParams spinnerParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    spinnerParam.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
+                    spinnerParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    RelativeLayout.LayoutParams buttonParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    buttonParam.addRule(RelativeLayout.BELOW, spinnerEvents.getId());
+                    buttonParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    spinnerLayoutEvents.setLayoutParams(spinnerParam);
+                    buttonLayoutEvents.setLayoutParams(buttonParam);
+                    spinnerLayoutEvents.addView(spinnerEvents);
+                    buttonLayoutEvents.addView(anotherUser);
+                    v.removeView(textLayoutPoints);
+                    v.removeView(buttonLayoutPoints);
+                    v.addView(spinnerLayoutEvents);
+                    v.addView(buttonLayoutEvents);
                 }
                 else {
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
-                    layoutPoints.setLayoutParams(params);
-                    v.removeView(layoutEvents);
-                    v.addView(layoutPoints);
+                    RelativeLayout.LayoutParams textParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    textParam.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
+                    textParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    RelativeLayout.LayoutParams buttonParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    buttonParam.addRule(RelativeLayout.BELOW, pointsToReceive.getId());
+                    buttonParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    textLayoutPoints.setLayoutParams(textParam);
+                    buttonLayoutPoints.setLayoutParams(buttonParam);
+                    textLayoutPoints.addView(pointsToReceive);
+                    //FALLA AQUÍ
+                    buttonLayoutPoints.addView(anotherUser);
+                    v.removeView(spinnerLayoutEvents);
+                    v.removeView(buttonLayoutEvents);
+                    v.addView(textLayoutPoints);
+                    v.addView(buttonLayoutPoints);
                 }
             }
         });
