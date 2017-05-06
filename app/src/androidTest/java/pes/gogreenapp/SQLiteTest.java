@@ -44,7 +44,7 @@ public class SQLiteTest {
         if (testName.getMethodName().equals("checkDataInsert") ||
                 testName.getMethodName().equals("checkDeletedUserTest")) {
             try {
-                UserData.createUser(username, "", "", 0,
+                UserData.createUser(username, "", 0, "",
                         myActivityRule.getActivity().getApplicationContext());
                 if (testName.getMethodName().equals("checkDeletedUserTest")) {
                     UserData.deleteUser(username,
