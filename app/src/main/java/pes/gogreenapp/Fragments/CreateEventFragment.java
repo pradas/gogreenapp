@@ -130,7 +130,7 @@ public class CreateEventFragment extends Fragment {
                     formatter.setLenient(false);
                     date = formatter.parse(inputDate);
                 } catch (ParseException e) {
-                    DateText.setError("Formato invalido (dd-mm-yyyy)");
+                    DateText.setError("Formato invalido (dd -mm-yyyy)");
                 }
             }
             if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
