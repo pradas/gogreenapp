@@ -89,8 +89,7 @@ public class UserProfilePublicFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        session = SessionManager.getInstance();
         userNameLayout = (TextView) getView().findViewById(user_name);
         userNickName = (TextView) getView().findViewById(user_nickname);
         userPoints = (TextView) getView().findViewById(user_points);
@@ -102,7 +101,7 @@ public class UserProfilePublicFragment extends Fragment {
         //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
         initializeUser();
-        userName = session.getUserName();
+        userName = session.getUsername();
         new GetPublicInfoUser().execute(url + "users/" + userName);
 
         /*
