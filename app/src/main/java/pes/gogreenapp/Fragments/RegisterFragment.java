@@ -136,6 +136,16 @@ public class RegisterFragment extends Fragment {
             }
 
         });
+        ((ImageButton) getView().findViewById(R.id.imageBackRegisterToLogin)).setOnClickListener((View v)->{
+            try {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container_login, LoginFragment.class.newInstance())
+                        .commit();
+            } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
         pickDate.setOnClickListener((View v) -> {
             // TODO Auto-generated method stub
             final Calendar c = Calendar.getInstance();
