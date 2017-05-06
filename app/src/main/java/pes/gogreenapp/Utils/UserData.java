@@ -20,7 +20,7 @@ import pes.gogreenapp.Exceptions.NullParametersException;
 /**
  * @author Albert
  */
-public class ActualUserData {
+public class UserData {
 
     /**
      * Method to create a new User on the table Users of gogreen.db
