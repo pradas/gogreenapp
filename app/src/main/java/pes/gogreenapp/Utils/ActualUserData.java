@@ -79,7 +79,7 @@ public class ActualUserData {
 
         // Deleting the User with username = this.username
         db.delete(MySQLiteHelper.TABLE_USERS, MySQLiteHelper.COLUMN_USERNAME
-                + " = " + username, null);
+                + " = \"" + username + "\"", null);
 
         // Close the database
         db.close();

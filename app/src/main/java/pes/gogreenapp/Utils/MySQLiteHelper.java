@@ -30,7 +30,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_USERNAME + " text primary key, "
             + COLUMN_EMAIL + " text, "
             + COLUMN_TOKEN + " text not null, "
-            + COLUMN_POINTS + " integer not null, "
+            + COLUMN_POINTS + " integer not null "
             + ");";
 
     /**
