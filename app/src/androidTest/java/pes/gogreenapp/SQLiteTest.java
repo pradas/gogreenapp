@@ -16,7 +16,7 @@ import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
-import pes.gogreenapp.Utils.ActualUserData;
+import pes.gogreenapp.Utils.UserData;
 
 /**
  * All right reserverd to GoBros Devevelopers team.
@@ -44,13 +44,13 @@ public class SQLiteTest {
         if (testName.getMethodName().equals("checkDataInsert") ||
                 testName.getMethodName().equals("checkDeletedUserTest")) {
             try {
-                ActualUserData.createUser(username, "", "", 0,
+                UserData.createUser(username, "", "", 0,
                         myActivityRule.getActivity().getApplicationContext());
                 if (testName.getMethodName().equals("checkDeletedUserTest")) {
-                    ActualUserData.deleteUser(username,
+                    UserData.deleteUser(username,
                             myActivityRule.getActivity().getApplicationContext());
                 }
-                usernames = ActualUserData.getUsernames(
+                usernames = UserData.getUsernames(
                         myActivityRule.getActivity().getApplicationContext(), "");
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());
@@ -65,7 +65,7 @@ public class SQLiteTest {
     public void afterTests() {
         if (testName.getMethodName().equals("checkDataInsert")) {
             try {
-                ActualUserData.deleteUser(username,
+                UserData.deleteUser(username,
                         myActivityRule.getActivity().getApplicationContext());
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());
@@ -73,11 +73,17 @@ public class SQLiteTest {
         }
     }
 
+    /**
+     * Check if the data inserted on the @before exists
+     */
     @Test
     public void checkDataInsert() {
         Assert.assertEquals(true, usernames.contains(username));
     }
 
+    /**
+     * Check if the user deleted on the @before doesn't exists
+     */
     @Test
     public void checkDeletedUserTest() {
         Assert.assertEquals(false, usernames.contains(username));
@@ -90,7 +96,7 @@ public class SQLiteTest {
      */
     @Test(expected = NullParametersException.class)
     public void exceptionOnInsertData() throws NullParametersException {
-        ActualUserData.createUser(null, null, null, null, null);
+        UserData.createUser(null, null, null, null, null);
     }
 
     /**
@@ -100,7 +106,7 @@ public class SQLiteTest {
      */
     @Test(expected = NullParametersException.class)
     public void exceptionOnGetUsernames() throws NullParametersException {
-        ActualUserData.getUsernames(null, null);
+        UserData.getUsernames(null, null);
     }
 
     /**
@@ -110,6 +116,6 @@ public class SQLiteTest {
      */
     @Test(expected = NullParametersException.class)
     public void exceptionOnDeleteUser() throws NullParametersException {
-        ActualUserData.deleteUser(null, null);
+        UserData.deleteUser(null, null);
     }
 }
