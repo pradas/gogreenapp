@@ -129,12 +129,12 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response != null && !response.equals("500") ) {
+            if (response != null && !response.equals("500")) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
-                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
-                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
+                    session = SessionManager.getInstance(getActivity().getApplicationContext());
+                    session.putInfoLoginSession(params[2], aux.getString("role"),
+                            aux.get("token").toString(), aux.getInt("points"));
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
