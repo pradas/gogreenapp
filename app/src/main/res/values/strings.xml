@@ -27,4 +27,6 @@
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
+    <string name="arrow_switch_down">Arrow to activate Switch Menu</string>
+    <string name="add_account">Add Account</string>
 </resources>

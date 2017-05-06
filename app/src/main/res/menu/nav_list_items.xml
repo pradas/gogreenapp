@@ -8,6 +8,14 @@
             android:id="@+id/rewards_list_fragment"
             android:title="@string/rewards" />
     </group>
+    <group
+        android:id="@+id/menu_switch"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/add_account"
+            android:title="@string/add_account" />
+
+    </group>
     <!-- This group represents the items after the separator -->
     <group
         android:id="@+id/menu_bottom"

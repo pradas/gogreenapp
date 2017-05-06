@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
-    SessionManager session;
+    private boolean switchActive = false;
+    private SessionManager session;
 
     /**
      * onCreate method to initialize the Activity.
@@ -79,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
         username.setText(session.getUsername());
 
+        // Switch menu set to no visible
+        nvDrawer.getMenu().setGroupVisible(R.id.menu_switch, false);
+
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
         profileImage.setOnClickListener(v -> {
@@ -90,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
+        });
+
+        ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
+        arrowSwitch.setOnClickListener((click) -> {
+            Menu menu = nvDrawer.getMenu();
+            if (switchActive) {
+                menu.setGroupVisible(R.id.menu_top, true);
+                menu.setGroupVisible(R.id.menu_switch, false);
+                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+            } else {
+                menu.setGroupVisible(R.id.menu_top, false);
+                menu.setGroupVisible(R.id.menu_switch, true);
+                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            }
+            switchActive = !switchActive;
         });
     }
 
