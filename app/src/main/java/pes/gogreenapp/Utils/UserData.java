@@ -29,14 +29,13 @@ public class UserData {
      * Method to create a new User on the table Users of gogreen.db
      *
      * @param username username of the new User
-     * @param email    email of the new User
      * @param token    API token of the new User
      * @param points   points of the new User
      * @param context  context of the Android APP
      * @throws NullParametersException throws NullParametersException when any parameter desired
      *                                 is null
      */
-    public static void createUser(String username, String email, String token, Integer points,
+    public static void createUser(String username, String token, Integer points,
                                   String role, Context context) throws NullParametersException {
 
         if (username == null || token == null || points == null || context == null) {
@@ -51,7 +50,6 @@ public class UserData {
 
         // Insert data
         values.put(MySQLiteHelper.COLUMN_USERNAME, username);
-        values.put(MySQLiteHelper.COLUMN_EMAIL, email);
         values.put(MySQLiteHelper.COLUMN_TOKEN, token);
         values.put(MySQLiteHelper.COLUMN_POINTS, points);
         values.put(MySQLiteHelper.COLUMN_ROLE, role);

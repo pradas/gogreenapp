@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 
+import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
@@ -23,6 +24,7 @@ import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.UserData;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -145,6 +147,13 @@ public class MainActivity extends AppCompatActivity {
         Class fragmentClass;
         if (menuItem.getItemId() == R.id.log_out) {
             session.logoutUser();
+
+            // Delete the User from the SQLite
+            try {
+                UserData.deleteUser(session.getUsername(), getApplicationContext());
+            } catch (NullParametersException e) {
+                e.printStackTrace();
+            }
         } else {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:

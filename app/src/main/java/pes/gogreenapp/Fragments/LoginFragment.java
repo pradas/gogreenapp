@@ -19,9 +19,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.UserData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -132,9 +134,21 @@ public class LoginFragment extends Fragment {
             if (response != null && !response.equals("500")) {
                 try {
                     JSONObject aux = new JSONObject(response);
+
+                    // put the info of the User logged into the Session Manager
                     session = SessionManager.getInstance(getActivity().getApplicationContext());
-                    session.putInfoLoginSession(params[2], aux.getString("role").toString(),
-                            aux.get("token").toString(), aux.getInt("points"));
+                    session.putInfoLoginSession(params[2], aux.getString("role"),
+                            aux.getString("token"), aux.getInt("points"));
+
+                    // insert the User info into the SQLite
+                    try {
+                        UserData.createUser(params[2], aux.getString("token"),
+                                aux.getInt("points"), aux.getString("role"),
+                                getActivity().getApplicationContext());
+                    } catch (NullParametersException e) {
+                        System.out.println(e.getMessage());
+                    }
+
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
