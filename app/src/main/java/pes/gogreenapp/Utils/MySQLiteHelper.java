@@ -24,13 +24,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     static final String COLUMN_EMAIL = "email";
     static final String COLUMN_TOKEN = "token";
     static final String COLUMN_POINTS = "points";
+    static final String COLUMN_ROLE = "role";
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " + TABLE_USERS + "( "
             + COLUMN_USERNAME + " text primary key, "
             + COLUMN_EMAIL + " text, "
             + COLUMN_TOKEN + " text not null, "
-            + COLUMN_POINTS + " integer not null "
+            + COLUMN_POINTS + " integer not null, "
+            + COLUMN_ROLE + " text not null "
             + ");";
 
     /**

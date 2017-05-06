@@ -118,4 +118,15 @@ public class SQLiteTest {
     public void exceptionOnDeleteUser() throws NullParametersException {
         UserData.deleteUser(null, null);
     }
+
+    /**
+     * Check if it is throwed the NullParametersException getUsernamesAndRoles() method
+     *
+     * @throws NullParametersException exception for test
+     */
+    @Test(expected = NullParametersException.class)
+    public void exceptionOnGetUsernamesAndRoles() throws NullParametersException {
+        UserData.getUsernamesAndRoles(null, null);
+    }
+
 }
