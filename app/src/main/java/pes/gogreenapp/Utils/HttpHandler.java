@@ -1,4 +1,4 @@
-package pes.gogreenapp.Handlers;
+package pes.gogreenapp.Utils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

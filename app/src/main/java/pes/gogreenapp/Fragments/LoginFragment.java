@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 

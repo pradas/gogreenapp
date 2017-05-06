@@ -25,7 +25,7 @@ import java.util.List;
 
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
-import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
