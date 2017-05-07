@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Dani on 13/04/2017.
+ * @author Dani
  */
 
 public class User {
@@ -18,8 +18,13 @@ public class User {
     private Date birthDate;
     private Date creationDate;
     private String userUrlImage;
+
+    // fields of User table on gogreen.db
+    private String role;
+    private String token;
+
     //Calendar cal = GregorianCalendar.getInstance();
-    DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public User(String username, String name, String email, String birthDate, String userUrlImage) {
         this.username = username;
@@ -33,10 +38,11 @@ public class User {
         this.currentPoints = 0;
         this.totalPoints = 0;
         this.creationDate = new Date();
-        this. userUrlImage = userUrlImage;
+        this.userUrlImage = userUrlImage;
     }
 
-    public User(String username, String name, String email, String birthDate, String userUrlImage, int totalPoints, int currentPoints) {
+    public User(String username, String name, String email, String birthDate, String userUrlImage,
+                int totalPoints, int currentPoints) {
         this.username = username;
         this.name = name;
         this.email = email;
@@ -48,38 +54,85 @@ public class User {
         this.currentPoints = currentPoints;
         this.totalPoints = totalPoints;
         this.creationDate = new Date();
-        this. userUrlImage = userUrlImage;
+        this.userUrlImage = userUrlImage;
     }
 
-    public String getUsername() { return username; }
+    /**
+     * Constructor for the User returned by the SQLite DB
+     *
+     * @param username username of the new User
+     * @param token    API token of the new User
+     * @param role     app role of the new User
+     * @param points   current points of the new User
+     */
+    public User(String username, String token, String role, Integer points) {
+        this.username = username;
+        this.token = token;
+        this.role = role;
+        this.currentPoints = points;
+    }
 
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getName() { return name;  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public void setName(String name) { this.name = name;  }
+    public String getName() {
+        return name;
+    }
 
-    public String getEmail() { return email; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public Integer getCurrentPoints() { return currentPoints; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public void setCurrentPoints(Integer currentPoints) { this.currentPoints = currentPoints; }
+    public Integer getCurrentPoints() {
+        return currentPoints;
+    }
 
-    public Integer getTotalPoints() { return totalPoints;  }
+    public void setCurrentPoints(Integer currentPoints) {
+        this.currentPoints = currentPoints;
+    }
 
-    public void setTotalPoints(Integer totalPoints) { this.totalPoints = totalPoints;  }
+    public Integer getTotalPoints() {
+        return totalPoints;
+    }
 
-    public Date getBirthDate() { return birthDate; }
+    public void setTotalPoints(Integer totalPoints) {
+        this.totalPoints = totalPoints;
+    }
 
-    public void setBirthDate(Date birthDate) { this.birthDate = birthDate; }
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-    public Date getCreationDate() { return creationDate; }
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-    public String getUserUrlImage() { return userUrlImage; }
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
-    public void setUserUrlImage(String userUrlImage) { this.userUrlImage = userUrlImage; }
+    public String getUserUrlImage() {
+        return userUrlImage;
+    }
+
+    public void setUserUrlImage(String userUrlImage) {
+        this.userUrlImage = userUrlImage;
+    }
 }
