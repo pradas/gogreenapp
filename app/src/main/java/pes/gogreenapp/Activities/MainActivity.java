@@ -1,3 +1,9 @@
+/*
+ * All right reserverd to GoBros Devevelopers team.
+ * This code is free software; you can redistribute it and/or modify itunder the terms of
+ * the GNU General Public License version 2 only, as published by the Free Software Foundation.
+ */
+
 package pes.gogreenapp.Activities;
 
 import android.content.res.Configuration;
@@ -21,20 +27,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.User;
-import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Utils.UserData;
 
-import static android.R.attr.id;
-import static android.R.attr.subMenuArrow;
-import static pes.gogreenapp.Utils.UserData.getUsernames;
-
+/**
+ * @author Albert
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String ROLE_MANAGER = "manager";
@@ -55,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
      *                           Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
      *                           Otherwise it is null.
      */
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
@@ -109,20 +116,35 @@ public class MainActivity extends AppCompatActivity {
         // On click arrow to use the Switch functionality
         ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
         arrowSwitch.setOnClickListener((click) -> {
+
+            List<Integer> ids = new ArrayList<>();
+
+            try {
+                ids = UserData.getIds(getApplicationContext(), session.getUsername());
+            } catch (NullParametersException e) {
+                System.out.println(e.getMessage());
+            }
+
             if (switchActive) {
                 // Load menu items of the current role
                 onSwitchRefreshMenusVisibility();
+
+                // delete all the menu items that are users on the menu_switch
+                for (int id : ids) {
+                    if (menu.findItem(id) != null) {
+                        menu.removeItem(id);
+                    }
+                }
+
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
 
             } else {
                 // Load menu items of the Switch functionally
                 menu.setGroupVisible(R.id.menu_top, false);
-                List<Integer> ids = new ArrayList<>();
                 List<String> usernames = new ArrayList<>();
 
                 try {
-                    // Get the ids and username of the users
-                    ids = UserData.getIds(getApplicationContext(), session.getUsername());
+                    // Get the username of the users
                     usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
                 } catch (NullParametersException e) {
                     System.out.println(e.getMessage());
@@ -182,7 +204,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return the new Action Bar with all the components added.
      */
-    @Contract(" -> !null") private ActionBarDrawerToggle setupDrawerToggle() {
+    @Contract(" -> !null")
+    private ActionBarDrawerToggle setupDrawerToggle() {
 
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
@@ -204,7 +227,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @see #onCreateOptionsMenu
      */
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
@@ -265,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 // Deactivate the boolean that marks the Switch
                 switchActive = !switchActive;
 
-            } catch (NullParametersException e) {
+            } catch (NullParametersException | UserNotExistException e) {
                 System.out.println(e.getMessage());
             }
         } else {
@@ -315,7 +339,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param savedInstanceState last functional state of this activity.
      */
-    @Override protected void onPostCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
 
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -327,7 +352,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param newConfig the new Configuration.
      */
-    @Override public void onConfigurationChanged(Configuration newConfig) {
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
 
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
