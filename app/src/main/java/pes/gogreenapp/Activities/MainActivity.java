@@ -165,9 +165,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.profile_image:
                     fragmentClass = UserProfileFragment.class;
                     break;
+                /*
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
-                    break;
+                    break;*/
                 default:
                     fragmentClass = RewardsListFragment.class;
             }
