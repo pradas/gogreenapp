@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/headerGivePoints">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutUsername"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="16dp">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameReceivePoints"
+            android:hint="@string/username" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutRadioGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/layoutUsername" >
+        <RadioGroup
+            android:id="@+id/radioGroupGivePoints"
+            android:layout_width="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventsRadioButton"
+                android:text="@string/events" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pointsRadioButton"
+                android:text="@string/points"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+</RelativeLayout>
