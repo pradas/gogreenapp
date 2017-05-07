@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
@@ -26,6 +29,10 @@ import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.UserData;
+
+import static android.R.attr.id;
+import static android.R.attr.subMenuArrow;
+import static pes.gogreenapp.Utils.UserData.getUsernames;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -105,8 +112,26 @@ public class MainActivity extends AppCompatActivity {
                 menu.setGroupVisible(R.id.menu_top, true);
                 menu.setGroupVisible(R.id.menu_switch, false);
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+
             } else {
                 menu.setGroupVisible(R.id.menu_top, false);
+                List<Integer> ids = new ArrayList<>();
+                List<String> usernames = new ArrayList<>();
+
+                try {
+                    ids = UserData.getIds(getApplicationContext(),
+                            session.getUsername());
+                    usernames = UserData.getUsernames(getApplicationContext(),
+                            session.getUsername());
+                } catch (NullParametersException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                for (int i = 0; i < ids.size(); ++i) {
+                    if (menu.findItem(ids.get(i)) == null) {
+                        menu.add(R.id.menu_switch, ids.get(i), i + 50, usernames.get(i));
+                    }
+                }
                 menu.setGroupVisible(R.id.menu_switch, true);
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
             }
@@ -175,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (NullParametersException e) {
                 e.printStackTrace();
             }
+        } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 5) {
+            // The item clicked is a user to Switch
         } else {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
