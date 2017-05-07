@@ -23,9 +23,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class NavigationDrawerTest {
+
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule =
-            new ActivityTestRule<>(MainActivity.class, true, true);
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     /**
      * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
@@ -34,18 +34,14 @@ public class NavigationDrawerTest {
      */
     @Before
     public void setup() {
+
         try {
-            onView(withId(R.id.drawer_layout))
-                    .perform(DrawerActions.open());
+            onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         } catch (NoMatchingViewException e) {
-            onView(withId(R.id.username_edit_text))
-                    .perform(clearText(), typeText("user"));
-            onView(withId(R.id.password_user_text))
-                    .perform(clearText(), typeText("Password12"));
-            onView(withId(R.id.buttonLogin))
-                    .perform(click());
-            onView(withId(R.id.drawer_layout))
-                    .perform(DrawerActions.open());
+            onView(withId(R.id.username_edit_text)).perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text)).perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin)).perform(click());
+            onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         }
     }
 
@@ -54,8 +50,8 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkNavigationDrawerIsOpen() {
-        onView(withId(R.id.nvView))
-                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.nvView)).check(matches(isDisplayed()));
     }
 
     /**
@@ -63,10 +59,9 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkRewardsAccess() {
-        onView(withId(R.id.nvView))
-                .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
-        onView(withId(R.id.rewards_list))
-                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
+        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
     }
 
     /**
@@ -74,10 +69,9 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkAboutUsAccess() {
-        onView(withId(R.id.nvView))
-                .perform(NavigationViewActions.navigateTo(R.id.about_us_fragment));
-        onView(withId(R.id.about_us))
-                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.about_us_fragment));
+        onView(withId(R.id.about_us)).check(matches(isDisplayed()));
     }
 
     /**
@@ -85,10 +79,9 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkSettingsAccess() {
-        onView(withId(R.id.nvView))
-                .perform(NavigationViewActions.navigateTo(R.id.settings_fragment));
-        onView(withId(R.id.settings))
-                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.settings_fragment));
+        onView(withId(R.id.settings)).check(matches(isDisplayed()));
     }
 
     /**
@@ -96,10 +89,9 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkAccountManagerAccess() {
-        onView(withId(R.id.nvView))
-                .perform(NavigationViewActions.navigateTo(R.id.account_manager_fragment));
-        onView(withId(R.id.account_manager))
-                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.account_manager_fragment));
+        onView(withId(R.id.account_manager)).check(matches(isDisplayed()));
     }
 
     /**
@@ -107,8 +99,8 @@ public class NavigationDrawerTest {
      */
     @Test
     public void checkUserProfileAccess() {
+
         onView(withId(R.id.profile_image)).perform(click());
-        onView(withId(R.id.user_profile))
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.user_profile)).check(matches(isDisplayed()));
     }
 }

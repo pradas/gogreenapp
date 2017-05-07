@@ -13,11 +13,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Objects.User;
 
 /**
@@ -108,7 +107,8 @@ public class UserData {
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME}, null, null, null, null, null);
+                new String[]{MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME}, null, null, null, null,
+                MySQLiteHelper.COLUMN_ID + " ASC");
 
         // Iterate the cursor and fill the usernames list
         cursor.moveToFirst();
@@ -172,7 +172,19 @@ public class UserData {
         return usernames;
     }
 
-    public static User getUserByUsername(String username, Context context) throws NullParametersException {
+    /**
+     * Method to return the user instance of the User with username = this.username
+     *
+     * @param username username of the User to retrieve
+     * @param context  context of the Android APP
+     *
+     * @return a User instance
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
+     * @throws UserNotExistException   throws UserNotExistException when the requested user don't exit in the database
+     */
+    public static User getUserByUsername(String username, Context context)
+            throws NullParametersException, UserNotExistException {
 
         if (username == null || context == null) {
             throw new NullParametersException("The username and context parameters can't be null");
@@ -185,6 +197,11 @@ public class UserData {
                 new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN, MySQLiteHelper.COLUMN_ROLE,
                         MySQLiteHelper.COLUMN_POINTS}, MySQLiteHelper.COLUMN_USERNAME + " = ?", new String[]{username},
                 null, null, null);
+
+        // The cursor is empty
+        if (cursor.getCount() == 0) {
+            throw new UserNotExistException("The user doesn't exists");
+        }
 
         // Creates the new User
         cursor.moveToFirst();
@@ -199,4 +216,45 @@ public class UserData {
         return user;
     }
 
+    /**
+     * Method to return the user id of the User with username = this.username
+     *
+     * @param username username of the User to retrieve
+     * @param context  context of the Android APP
+     *
+     * @return the value of the User id in int format
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
+     * @throws UserNotExistException   throws UserNotExistException when the requested user don't exit in the database
+     */
+    public static int getUserIdByUsername(String username, Context context)
+            throws NullParametersException, UserNotExistException {
+
+        if (username == null || context == null) {
+            throw new NullParametersException("The username and context parameters can't be null");
+        }
+
+        SQLiteDatabase db = MySQLiteHelper.getInstance(context).getReadableDatabase();
+
+        // Creates a cursor to iterate the result of the query
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS, new String[]{MySQLiteHelper.COLUMN_ID},
+                MySQLiteHelper.COLUMN_USERNAME + " = ?", new String[]{username}, null, null, null);
+
+        // The cursor is empty
+        if (cursor.getCount() == 0) {
+            throw new UserNotExistException("The user doesn't exists");
+        }
+
+        // Creates the new User
+        cursor.moveToFirst();
+        int id = cursor.getInt(0);
+
+        // close the cursor
+        cursor.close();
+
+        // close the database
+        db.close();
+
+        return id;
+    }
 }

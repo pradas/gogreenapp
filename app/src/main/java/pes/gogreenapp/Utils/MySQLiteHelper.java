@@ -14,10 +14,11 @@ import android.util.Log;
 /**
  * @author Albert
  */
-class MySQLiteHelper extends SQLiteOpenHelper {
+public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static MySQLiteHelper instance;
-    private static final String DATABASE_NAME = "gogreen.db";
+    private static MySQLiteHelper testSavedInstance;
+    private static String DATABASE_NAME = "gogreen.db";
     private static final int DATABASE_VERSION = 1;
     static final String TABLE_USERS = "users";
     static final String COLUMN_ID = "_id";
@@ -27,13 +28,10 @@ class MySQLiteHelper extends SQLiteOpenHelper {
     static final String COLUMN_ROLE = "role";
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table " + TABLE_USERS + "( "
-            + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_USERNAME + " text unique, "
-            + COLUMN_TOKEN + " text not null, "
-            + COLUMN_POINTS + " integer not null, "
-            + COLUMN_ROLE + " text not null "
-            + ");";
+    private static final String DATABASE_CREATE =
+            "create table " + TABLE_USERS + "( " + COLUMN_ID + " integer primary key autoincrement, " +
+                    COLUMN_USERNAME + " text unique, " + COLUMN_TOKEN + " text not null, " + COLUMN_POINTS +
+                    " integer not null, " + COLUMN_ROLE + " text not null " + ");";
 
     /**
      * Create a instance of MySQLiteHelper and create the database if not exist
@@ -41,6 +39,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
      * @param context context of the Android APP
      */
     private MySQLiteHelper(Context context) {
+
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -48,9 +47,11 @@ class MySQLiteHelper extends SQLiteOpenHelper {
      * Return a MySQLiteHelper instance if exists, either create a new one and return it.
      *
      * @param context context of the Android APP
+     *
      * @return a instance of MySQLiteHelper
      */
     public static MySQLiteHelper getInstance(Context context) {
+
         if (instance == null) {
             instance = new MySQLiteHelper(context);
         }
@@ -65,6 +66,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(DATABASE_CREATE);
     }
 
@@ -79,11 +81,34 @@ class MySQLiteHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(MySQLiteHelper.class.getName(),
-                "Upgrading database from version "
-                        + oldVersion + " to "
-                        + newVersion + ", which will destroy all old data");
+
+        Log.w(MySQLiteHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion +
+                ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
+    }
+
+    /**
+     * Method to change to a test database mode
+     *
+     * @param context context of the Android APP
+     */
+    public static void changeToTestDatabase(Context context) {
+
+        DATABASE_NAME = "test.db";
+        testSavedInstance = instance;
+        instance = new MySQLiteHelper(context);
+    }
+
+    /**
+     * Method to change to a development database mode and delete test.db
+     *
+     * @param context context of the Android APP
+     */
+    public static void changeToDevelopmentDatabase(Context context) {
+
+        context.deleteDatabase("test.db");
+        instance = testSavedInstance;
+        DATABASE_NAME = "gogreen.db";
     }
 }

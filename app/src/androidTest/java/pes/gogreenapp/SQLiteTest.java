@@ -3,8 +3,6 @@ package pes.gogreenapp;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,8 +14,13 @@ import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Objects.User;
+import pes.gogreenapp.Utils.MySQLiteHelper;
 import pes.gogreenapp.Utils.UserData;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * All right reserverd to GoBros Devevelopers team.
@@ -25,128 +28,234 @@ import pes.gogreenapp.Utils.UserData;
  * the GNU General Public License version 2 only, as published by the Free Software Foundation.
  */
 
-@RunWith(AndroidJUnit4.class) public class SQLiteTest {
+@RunWith(AndroidJUnit4.class)
+public class SQLiteTest {
 
-    private final String username = "UserTest";
+    private final String username = "user";
+    private final Integer userId = 1;
+    private final int idsSize = 3;
+    private final int usernamesSize = 3;
     private List<String> usernames;
+    private List<Integer> ids;
     private User user;
+    private Integer id;
 
-    @Rule public ActivityTestRule<MainActivity> myActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
+    @Rule
+    public ActivityTestRule<MainActivity> myActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
-    @Rule public TestName testName = new TestName();
+    @Rule
+    public TestName testName = new TestName();
 
     /**
-     * Setup for the checkDataInsert and checkDeletedUser tests
+     * Setup the database to test mode and insert a user
      */
-    @Before public void beforeTests() {
+    @Before
+    public void setUp() {
 
-        if (testName.getMethodName().equals("checkDataInsert") ||
-                testName.getMethodName().equals("checkDeletedUserTest") ||
-                testName.getMethodName().equals("checkGetUserByUsername")) {
-            try {
-                UserData.createUser(username, "", 0, "", myActivityRule.getActivity().getApplicationContext());
+        MySQLiteHelper.changeToTestDatabase(myActivityRule.getActivity().getApplicationContext());
 
-                if (testName.getMethodName().equals("checkDeletedUserTest")) {
-                    UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
-                }
+        try {
+            UserData.createUser(username, "token", 0, "role", myActivityRule.getActivity().getApplicationContext());
 
-                if (testName.getMethodName().equals("checkGetUserByUsername")) {
-                    user = UserData.getUserByUsername(username, myActivityRule.getActivity().getApplicationContext());
-                } else {
-                    usernames = UserData.getUsernames(myActivityRule.getActivity().getApplicationContext(), "");
-                }
-            } catch (NullParametersException e) {
-                System.out.println(e.getMessage());
+            if (testName.getMethodName().equals("checkGetUsernames") ||
+                    testName.getMethodName().equals("checkGetIds")) {
+                UserData.createUser(username + "X", "token", 0, "role",
+                        myActivityRule.getActivity().getApplicationContext());
+                UserData.createUser(username + "Y", "token", 0, "role",
+                        myActivityRule.getActivity().getApplicationContext());
+                UserData.createUser(username + "Z", "token", 0, "role",
+                        myActivityRule.getActivity().getApplicationContext());
             }
+        } catch (NullParametersException e) {
+            System.out.println(e.getMessage());
         }
+
     }
 
     /**
-     * Clean for the checkDataInsert test
+     * Clean the insert done on setUp method
      */
-    @After public void afterTests() {
+    @After
+    public void clean() {
 
-        if (testName.getMethodName().equals("checkDataInsert") ||
-                testName.getMethodName().equals("checkGetUserByUsername")) {
-            try {
-                UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
-            } catch (NullParametersException e) {
-                System.out.println(e.getMessage());
-            }
+        MySQLiteHelper.changeToDevelopmentDatabase(myActivityRule.getActivity().getApplicationContext());
+    }
+
+    /**
+     * Check if the data inserted on the setUp method exists
+     */
+    @Test
+    public void checkCreateUser() {
+
+        try {
+            user = UserData.getUserByUsername(username, myActivityRule.getActivity().getApplicationContext());
+        } catch (NullParametersException | UserNotExistException e) {
+            System.out.println(e.getMessage());
         }
+
+        assertEquals(username, user.getUsername());
     }
 
     /**
-     * Check if the data inserted on the @before exists
+     * Check if the user deleted on the setUp method doesn't exists
      */
-    @Test public void checkDataInsert() {
+    @Test(expected = UserNotExistException.class)
+    public void checkDeleteUser() throws NullParametersException, UserNotExistException {
 
-        Assert.assertEquals(true, usernames.contains(username));
+        UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
+        UserData.getUserByUsername(username, myActivityRule.getActivity().getApplicationContext());
     }
 
     /**
-     * Check if the user deleted on the @before doesn't exists
+     * Check the getter method by username that returns a user instance of the user inserted on the setUp method
      */
-    @Test public void checkDeletedUserTest() {
+    @Test
+    public void checkGetUserByUsername() {
 
-        Assert.assertEquals(false, usernames.contains(username));
-    }
+        try {
+            user = UserData.getUserByUsername(username, myActivityRule.getActivity().getApplicationContext());
+        } catch (NullParametersException | UserNotExistException e) {
+            System.out.println(e.getMessage());
+        }
 
-    @Test public void checkGetUserByUsername() {
-
-        Assert.assertEquals(username, user.getUsername());
+        assertNotNull(user);
     }
 
     /**
-     * Check if it is throwed the NullParametersException on insert data
+     * Check the getter method by username that returns a user id of the user inserted on the setUp method
+     */
+    @Test
+    public void checkGetUserIdByUsername() {
+
+        try {
+            id = UserData.getUserIdByUsername(username, myActivityRule.getActivity().getApplicationContext());
+        } catch (NullParametersException | UserNotExistException e) {
+            System.out.println(e.getMessage());
+        }
+
+        assertEquals(id, userId);
+    }
+
+    /**
+     * Check the getter method getUsernames returns a usernames list that has the size expected
+     */
+    @Test
+    public void checkGetUsernames() {
+
+        try {
+            usernames = UserData.getUsernames(myActivityRule.getActivity().getApplicationContext(), username);
+        } catch (NullParametersException | UserNotExistException e) {
+            System.out.println(e.getMessage());
+        }
+
+        assertEquals(usernamesSize, usernames.size());
+
+
+    }
+
+    /**
+     * Check the getter method getIds returns a ids list that has the size expected
+     */
+    @Test
+    public void checkGetIds() {
+
+        try {
+            ids = UserData.getIds(myActivityRule.getActivity().getApplicationContext(), username);
+        } catch (NullParametersException | UserNotExistException e) {
+            System.out.println(e.getMessage());
+        }
+
+        assertEquals(idsSize, ids.size());
+    }
+
+    /**
+     * Check if throws the UserNotExistException when the getUserByUsername() method is called with a inexistet username
+     * on the database
+     *
+     * @throws UserNotExistException exception for test
+     */
+    @Test(expected = UserNotExistException.class)
+    public void userNotExistsOnGetUserByUsername() throws NullParametersException, UserNotExistException {
+
+        UserData.getUserByUsername("notexists", myActivityRule.getActivity().getApplicationContext());
+    }
+
+    /**
+     * Check if throws the UserNotExistException when the getUserIdByUsername() method is called with a inexistet
+     * username on the database
+     *
+     * @throws UserNotExistException exception for test
+     */
+    @Test(expected = UserNotExistException.class)
+    public void userNotExistsOnGetUserIdByUsername() throws NullParametersException, UserNotExistException {
+
+        UserData.getUserIdByUsername("notexists", myActivityRule.getActivity().getApplicationContext());
+    }
+
+    /**
+     * Check if throws the NullParametersException when the insertUser() method is called with null parameters
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class) public void exceptionOnInsertData() throws NullParametersException {
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnInsertData() throws NullParametersException {
 
         UserData.createUser(null, null, null, null, null);
     }
 
     /**
-     * Check if it is throwed the NullParametersException getUsernames() method
+     * Check if throws the NullParametersException when the getUsernames() method is called with null parameters
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class) public void exceptionOnGetUsernames()
-            throws NullParametersException {
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnGetUsernames() throws NullParametersException, UserNotExistException {
 
         UserData.getUsernames(null, null);
     }
 
     /**
-     * Check if it is throwed the NullParametersException on delete data
+     * Check if throws the NullParametersException when deleteUser() method is called with null parameters
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class) public void exceptionOnDeleteUser() throws NullParametersException {
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnDeleteUser() throws NullParametersException {
 
         UserData.deleteUser(null, null);
     }
 
     /**
-     * Check if it is throwed the NullParametersException getUsernamesAndRoles() method
+     * Check if throws the NullParametersException when the getIds() method is called with null parameters
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class) public void exceptionOnGetUsernamesAndRoles()
-            throws NullParametersException {
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnGetIds() throws NullParametersException, UserNotExistException {
 
         UserData.getIds(null, null);
     }
 
     /**
-     * Check if it is throwed the NullParametersException getUserByUsername() method
+     * Check if throws the NullParametersException when the getUserByUsername() method is called with null parameters
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class) public void exceptionOnGetUser() throws NullParametersException {
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnGetUserByUsername() throws NullParametersException, UserNotExistException {
 
         UserData.getUserByUsername(null, null);
+    }
+
+    /**
+     * Check if throws the NullParametersException when the getUserIdByUsername() method is called with null parameters
+     *
+     * @throws NullParametersException exception for test
+     */
+    @Test(expected = NullParametersException.class)
+    public void nullParametersOnGetUserIdByUsername() throws NullParametersException, UserNotExistException {
+
+        UserData.getUserIdByUsername(null, null);
     }
 
 }
