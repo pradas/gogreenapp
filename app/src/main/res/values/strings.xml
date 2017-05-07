@@ -28,5 +28,7 @@
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
     <string name="arrow_switch_down">Arrow to activate Switch Menu</string>
-    <string name="add_account">Add Account</string>
+    <string name="add_account">Añadir Cuenta</string>
+    <string name="shop">Tienda</string>
+    <string name="give_points">Dar Puntos</string>
 </resources>

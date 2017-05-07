@@ -37,6 +37,9 @@ import static pes.gogreenapp.Utils.UserData.getUsernames;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String ROLE_MANAGER = "manager";
+    private static final String ROLE_SHOPPER = "shopper";
+    private static final String ROLE_USER = "user";
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
@@ -85,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
         TextView username = (TextView) headerView.findViewById(R.id.profile_username);
         username.setText(session.getUsername());
 
-        // Switch menu set to no visible
-        nvDrawer.getMenu().setGroupVisible(R.id.menu_switch, false);
+        // Switch and other roles menu set to no visible
+        Menu menu = nvDrawer.getMenu();
+        menu.setGroupVisible(R.id.menu_switch, false);
+        if (!ROLE_SHOPPER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_shopper, false);
+        if (!ROLE_MANAGER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_manager, false);
+        if (!ROLE_MANAGER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_top, false);
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -103,24 +110,27 @@ public class MainActivity extends AppCompatActivity {
         // On click arrow to use the Switch functionality
         ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
         arrowSwitch.setOnClickListener((click) -> {
-            Menu menu = nvDrawer.getMenu();
             if (switchActive) {
+                // Load menu items of the current role
                 menu.setGroupVisible(R.id.menu_top, true);
                 menu.setGroupVisible(R.id.menu_switch, false);
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
 
             } else {
+                // Load menu items of the Switch functionally
                 menu.setGroupVisible(R.id.menu_top, false);
                 List<Integer> ids = new ArrayList<>();
                 List<String> usernames = new ArrayList<>();
 
                 try {
+                    // Get the ids and username of the users
                     ids = UserData.getIds(getApplicationContext(), session.getUsername());
                     usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
                 } catch (NullParametersException e) {
                     System.out.println(e.getMessage());
                 }
 
+                // Iterate through users and ids and inserts the menu item that didn't exist yet
                 for (int i = 0; i < ids.size(); ++i) {
                     if (menu.findItem(ids.get(i)) == null) {
                         menu.add(R.id.menu_switch, ids.get(i), i + 50, usernames.get(i));
@@ -199,9 +209,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 5) {
             // The item clicked is a user to Switch
             try {
+                // Get the new user data and change the Session Manager info
                 User user = UserData.getUserByUsername(menuItem.getTitle().toString(), getApplicationContext());
                 session.switchInfoLoginSession(user.getUsername(), user.getRole(), user.getToken(),
                         user.getCurrentPoints());
+
+                // Refresh the Main Activity to apply the new role
+                finish();
+                startActivity(getIntent());
 
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());

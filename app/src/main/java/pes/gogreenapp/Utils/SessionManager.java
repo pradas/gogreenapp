@@ -209,4 +209,14 @@ public class SessionManager {
         editor.putInt(KEY_POINTS, points);
         editor.commit();
     }
+
+    /**
+     * Getter of the role property
+     *
+     * @return the role in String format
+     */
+    public String getRole() {
+
+        return pref.getString(KEY_ROLE, "");
+    }
 }
