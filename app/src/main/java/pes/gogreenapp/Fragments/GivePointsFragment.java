@@ -10,11 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
@@ -30,7 +27,6 @@ public class GivePointsFragment extends Fragment {
 
     private SessionManager session;
     private ViewGroup principalView;
-    private View eventsView, pointsView, header;
 
     /**
      * Required empty public constructor
@@ -54,9 +50,6 @@ public class GivePointsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.give_points_fragment, container, false);
         principalView = (ViewGroup) view.findViewById(R.id.givePointsFragment);
-        header = inflater.inflate(R.layout.header_give_points_fragment, container, false);
-        eventsView = inflater.inflate(R.layout.give_points_by_events, container, false);
-        pointsView = inflater.inflate(R.layout.give_points_by_points, container, false);
         return view;
     }
 
@@ -75,27 +68,38 @@ public class GivePointsFragment extends Fragment {
         session = new SessionManager(getActivity().getApplicationContext(),
                 new GlobalPreferences(getActivity().getApplicationContext()).getUser());
         RadioGroup radioButtons = (RadioGroup) getView().findViewById(R.id.radioGroupGivePoints);
+        final Integer[] buttonMode = {0};
         Button grant = (Button) getView().findViewById(R.id.grantPoints);
+        Button anotherUser;
+        View eventsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_events, principalView, false);
+        View pointsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_points, principalView, false);
 
         radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
                 params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
                 if (checkedId == R.id.eventsRadioButton) {
+                    buttonMode[0] = 0;
                     eventsView.setLayoutParams(params);
                     principalView.removeView(pointsView);
                     principalView.addView(eventsView);
                 }
                 else {
+                    buttonMode[0] = 1;
                     pointsView.setLayoutParams(params);
                     principalView.removeView(eventsView);
                     principalView.addView(pointsView);
                 }
             }
         });
+
+        if (buttonMode[0] == 0) anotherUser = (Button) eventsView.findViewById(R.id.anotherUserButton);
+        else anotherUser = (Button) pointsView.findViewById(R.id.anotherUserButton);
 
         grant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +118,31 @@ public class GivePointsFragment extends Fragment {
                     });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        anotherUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View eventsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_events, principalView, false);
+                View pointsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_points, principalView, false);
+                View header = LayoutInflater.from(getContext()).inflate(R.layout.header_give_points_fragment, principalView, false);
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                /*if (buttonMode[0] == 0) params.addRule(RelativeLayout.BELOW,
+                        eventsView.findViewById(R.id.anotherUserButton).getId());
+                else params.addRule(RelativeLayout.BELOW, pointsView.
+                        findViewById(R.id.anotherUserButton).getId());*/                        //NO FUNCIONA
+                params.topMargin = 320;                                                         //TTEMPORAL
+                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                header.setLayoutParams(params);
+                principalView.addView(header);
+
+                params.topMargin = 500;                                                         //TTEMPORAL
+                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                eventsView.setLayoutParams(params);
+                principalView.addView(eventsView);
             }
         });
     }
