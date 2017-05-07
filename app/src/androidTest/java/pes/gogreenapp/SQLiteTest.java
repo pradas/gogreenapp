@@ -144,7 +144,7 @@ public class SQLiteTest {
 
         try {
             usernames = UserData.getUsernames(myActivityRule.getActivity().getApplicationContext(), username);
-        } catch (NullParametersException | UserNotExistException e) {
+        } catch (NullParametersException e) {
             System.out.println(e.getMessage());
         }
 
@@ -161,7 +161,7 @@ public class SQLiteTest {
 
         try {
             ids = UserData.getIds(myActivityRule.getActivity().getApplicationContext(), username);
-        } catch (NullParametersException | UserNotExistException e) {
+        } catch (NullParametersException e) {
             System.out.println(e.getMessage());
         }
 
