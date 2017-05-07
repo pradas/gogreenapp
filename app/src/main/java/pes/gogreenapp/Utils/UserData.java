@@ -32,15 +32,15 @@ public class UserData {
      * @param token    API token of the new User
      * @param points   points of the new User
      * @param context  context of the Android APP
-     * @throws NullParametersException throws NullParametersException when any parameter desired
-     *                                 is null
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
      */
-    public static void createUser(String username, String token, Integer points,
-                                  String role, Context context) throws NullParametersException {
+    public static void createUser(String username, String token, Integer points, String role, Context context)
+            throws NullParametersException {
 
         if (username == null || token == null || points == null || context == null) {
-            throw new NullParametersException("The username, token, points, role and context " +
-                    "parameters can't be null");
+            throw new NullParametersException(
+                    "The username, token, points, role and context " + "parameters can't be null");
         }
 
         SQLiteDatabase db = MySQLiteHelper.getInstance(context).getReadableDatabase();
@@ -66,8 +66,8 @@ public class UserData {
      *
      * @param username the username of the User that wanna be deleted
      * @param context  context of the Android APP
-     * @throws NullParametersException throws NullParametersException when any parameter desired
-     *                                 is null
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
      */
     public static void deleteUser(String username, Context context) throws NullParametersException {
 
@@ -80,8 +80,7 @@ public class UserData {
         Log.d("Deleting", "Username deleted with username: " + username);
 
         // Deleting the User with username = this.username
-        db.delete(MySQLiteHelper.TABLE_USERS, MySQLiteHelper.COLUMN_USERNAME
-                + " = \"" + username + "\"", null);
+        db.delete(MySQLiteHelper.TABLE_USERS, MySQLiteHelper.COLUMN_USERNAME + " = \"" + username + "\"", null);
 
         // Close the database
         db.close();
@@ -93,12 +92,12 @@ public class UserData {
      *
      * @param context        context of the Android APP
      * @param actualUsername username of the actual User logged
+     *
      * @return a list of Integer containing the ids of the Users
-     * @throws NullParametersException throws NullParametersException when any parameter desired
-     *                                 is null
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
      */
-    public static List<Integer> getIds(Context context, String actualUsername)
-            throws NullParametersException {
+    public static List<Integer> getIds(Context context, String actualUsername) throws NullParametersException {
 
         if (actualUsername == null || context == null) {
             throw new NullParametersException("The username and context parameters can't be null");
@@ -109,8 +108,7 @@ public class UserData {
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME},
-                null, null, null, null, null);
+                new String[]{MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_USERNAME}, null, null, null, null, null);
 
         // Iterate the cursor and fill the usernames list
         cursor.moveToFirst();
@@ -136,12 +134,12 @@ public class UserData {
      *
      * @param context        context of the Android APP
      * @param actualUsername username of the actual User logged
+     *
      * @return a list of String containing the usernames
-     * @throws NullParametersException throws NullParametersException when any parameter desired
-     *                                 is null
+     *
+     * @throws NullParametersException throws NullParametersException when any parameter desired is null
      */
-    public static List<String> getUsernames(Context context, String actualUsername)
-            throws NullParametersException {
+    public static List<String> getUsernames(Context context, String actualUsername) throws NullParametersException {
 
         if (actualUsername == null || context == null) {
             throw new NullParametersException("The username and context parameters can't be null");
@@ -152,9 +150,8 @@ public class UserData {
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN,
-                        MySQLiteHelper.COLUMN_ROLE, MySQLiteHelper.COLUMN_POINTS},
-                null, null, null, null, null);
+                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN, MySQLiteHelper.COLUMN_ROLE,
+                        MySQLiteHelper.COLUMN_POINTS}, null, null, null, null, null);
 
         // Iterate the cursor and fill the usernames list
         cursor.moveToFirst();
@@ -175,8 +172,7 @@ public class UserData {
         return usernames;
     }
 
-    public static User getUserByUsername(String username, Context context)
-            throws NullParametersException {
+    public static User getUserByUsername(String username, Context context) throws NullParametersException {
 
         if (username == null || context == null) {
             throw new NullParametersException("The username and context parameters can't be null");
@@ -186,15 +182,13 @@ public class UserData {
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN,
-                        MySQLiteHelper.COLUMN_ROLE, MySQLiteHelper.COLUMN_POINTS},
-                MySQLiteHelper.COLUMN_USERNAME + " = ?",
-                new String[]{username}, null, null, null);
+                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN, MySQLiteHelper.COLUMN_ROLE,
+                        MySQLiteHelper.COLUMN_POINTS}, MySQLiteHelper.COLUMN_USERNAME + " = ?", new String[]{username},
+                null, null, null);
 
         // Creates the new User
         cursor.moveToFirst();
-        User user = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
-                cursor.getInt(3));
+        User user = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
 
         // close the cursor
         cursor.close();

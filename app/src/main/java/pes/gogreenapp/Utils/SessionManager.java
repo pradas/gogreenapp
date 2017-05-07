@@ -60,6 +60,7 @@ public class SessionManager {
      * if not exists, creates the instance
      *
      * @param context context of the Android APP
+     *
      * @return a instance of Session Manager
      */
     public static SessionManager getInstance(Context context) {
@@ -80,8 +81,8 @@ public class SessionManager {
         if (instance != null) {
             return instance;
         }
-        throw new IllegalArgumentException("Should use getInstance(Context) at least " +
-                "once before using this method.");
+        throw new IllegalArgumentException(
+                "Should use getInstance(Context) at least " + "once before using this method.");
     }
 
     /**
@@ -111,6 +112,7 @@ public class SessionManager {
      * @param points   points of the Login Session
      */
     public void switchInfoLoginSession(String username, String role, String token, int points) {
+
         editor.clear();
         putInfoLoginSession(username, role, token, points);
     }
@@ -203,6 +205,7 @@ public class SessionManager {
      * @param points new value of points property
      */
     public void setPoints(Integer points) {
+
         editor.putInt(KEY_POINTS, points);
         editor.commit();
     }

@@ -26,6 +26,7 @@ import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
+import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.UserData;
@@ -35,6 +36,7 @@ import static android.R.attr.subMenuArrow;
 import static pes.gogreenapp.Utils.UserData.getUsernames;
 
 public class MainActivity extends AppCompatActivity {
+
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
@@ -44,21 +46,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * onCreate method to initialize the Activity.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being
-     *                           shut down then this Bundle contains the data it most recently
-     *                           supplied in onSaveInstanceState(Bundle). Otherwise it is null.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this
+     *                           Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Otherwise it is null.
      */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
+        // Get instance of Session Manager and check if user is logged
         session = SessionManager.getInstance(getApplicationContext());
-        /*
-          Call this function whenever you want to check user login_activity
-          This will redirect user to LoginActivity is he is not
-          logged in
-          */
         session.checkLogin();
 
         /* Set main layout */
@@ -96,8 +93,7 @@ public class MainActivity extends AppCompatActivity {
         profileImage.setOnClickListener(v -> {
             try {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.flContent, UserProfileFragment.class.newInstance())
-                        .commit();
+                        .replace(R.id.flContent, UserProfileFragment.class.newInstance()).commit();
                 mDrawer.closeDrawers();
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -119,10 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 List<String> usernames = new ArrayList<>();
 
                 try {
-                    ids = UserData.getIds(getApplicationContext(),
-                            session.getUsername());
-                    usernames = UserData.getUsernames(getApplicationContext(),
-                            session.getUsername());
+                    ids = UserData.getIds(getApplicationContext(), session.getUsername());
+                    usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
                 } catch (NullParametersException e) {
                     System.out.println(e.getMessage());
                 }
@@ -144,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return the new Action Bar with all the components added.
      */
-    @Contract(" -> !null")
-    private ActionBarDrawerToggle setupDrawerToggle() {
+    @Contract(" -> !null") private ActionBarDrawerToggle setupDrawerToggle() {
+
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
@@ -161,12 +155,13 @@ public class MainActivity extends AppCompatActivity {
      * perform the default menu handling.
      *
      * @param item The menu item that was selected.
-     * @return boolean Return false to allow normal menu processing to proceed,
-     * true to consume it here.
+     *
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     *
      * @see #onCreateOptionsMenu
      */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
@@ -176,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
      * @param navigationView view of the Navigation Drawer.
      */
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                menuItem -> {
-                    selectDrawerItem(menuItem);
-                    return true;
-                });
+
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            selectDrawerItem(menuItem);
+            return true;
+        });
     }
 
     /**
@@ -189,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
      * @param menuItem item clicked on the Navigation Drawer
      */
     public void selectDrawerItem(MenuItem menuItem) {
+
         Fragment fragment = null;
         Class fragmentClass;
         if (menuItem.getItemId() == R.id.log_out) {
@@ -202,7 +198,14 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 5) {
             // The item clicked is a user to Switch
+            try {
+                User user = UserData.getUserByUsername(menuItem.getTitle().toString(), getApplicationContext());
+                session.switchInfoLoginSession(user.getUsername(), user.getRole(), user.getToken(),
+                        user.getCurrentPoints());
 
+            } catch (NullParametersException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:
@@ -250,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param savedInstanceState last functional state of this activity.
      */
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    @Override protected void onPostCreate(Bundle savedInstanceState) {
+
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
@@ -262,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param newConfig the new Configuration.
      */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    @Override public void onConfigurationChanged(Configuration newConfig) {
+
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);

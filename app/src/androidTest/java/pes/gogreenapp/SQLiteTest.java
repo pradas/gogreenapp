@@ -25,42 +25,35 @@ import pes.gogreenapp.Utils.UserData;
  * the GNU General Public License version 2 only, as published by the Free Software Foundation.
  */
 
-@RunWith(AndroidJUnit4.class)
-public class SQLiteTest {
+@RunWith(AndroidJUnit4.class) public class SQLiteTest {
+
     private final String username = "UserTest";
     private List<String> usernames;
     private User user;
 
-    @Rule
-    public ActivityTestRule<MainActivity> myActivityRule =
-            new ActivityTestRule<>(MainActivity.class, true, true);
+    @Rule public ActivityTestRule<MainActivity> myActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
-    @Rule
-    public TestName testName = new TestName();
+    @Rule public TestName testName = new TestName();
 
     /**
      * Setup for the checkDataInsert and checkDeletedUser tests
      */
-    @Before
-    public void beforeTests() {
+    @Before public void beforeTests() {
+
         if (testName.getMethodName().equals("checkDataInsert") ||
                 testName.getMethodName().equals("checkDeletedUserTest") ||
                 testName.getMethodName().equals("checkGetUserByUsername")) {
             try {
-                UserData.createUser(username, "", 0, "",
-                        myActivityRule.getActivity().getApplicationContext());
+                UserData.createUser(username, "", 0, "", myActivityRule.getActivity().getApplicationContext());
 
                 if (testName.getMethodName().equals("checkDeletedUserTest")) {
-                    UserData.deleteUser(username,
-                            myActivityRule.getActivity().getApplicationContext());
+                    UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
                 }
 
                 if (testName.getMethodName().equals("checkGetUserByUsername")) {
-                    user = UserData.getUserByUsername(username,
-                            myActivityRule.getActivity().getApplicationContext());
+                    user = UserData.getUserByUsername(username, myActivityRule.getActivity().getApplicationContext());
                 } else {
-                    usernames = UserData.getUsernames(
-                            myActivityRule.getActivity().getApplicationContext(), "");
+                    usernames = UserData.getUsernames(myActivityRule.getActivity().getApplicationContext(), "");
                 }
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());
@@ -71,12 +64,11 @@ public class SQLiteTest {
     /**
      * Clean for the checkDataInsert test
      */
-    @After
-    public void afterTests() {
+    @After public void afterTests() {
+
         if (testName.getMethodName().equals("checkDataInsert")) {
             try {
-                UserData.deleteUser(username,
-                        myActivityRule.getActivity().getApplicationContext());
+                UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());
             }
@@ -86,21 +78,21 @@ public class SQLiteTest {
     /**
      * Check if the data inserted on the @before exists
      */
-    @Test
-    public void checkDataInsert() {
+    @Test public void checkDataInsert() {
+
         Assert.assertEquals(true, usernames.contains(username));
     }
 
     /**
      * Check if the user deleted on the @before doesn't exists
      */
-    @Test
-    public void checkDeletedUserTest() {
+    @Test public void checkDeletedUserTest() {
+
         Assert.assertEquals(false, usernames.contains(username));
     }
 
-    @Test
-    public void checkGetUserByUsername() {
+    @Test public void checkGetUserByUsername() {
+
         Assert.assertEquals(username, user.getUsername());
     }
 
@@ -109,8 +101,8 @@ public class SQLiteTest {
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class)
-    public void exceptionOnInsertData() throws NullParametersException {
+    @Test(expected = NullParametersException.class) public void exceptionOnInsertData() throws NullParametersException {
+
         UserData.createUser(null, null, null, null, null);
     }
 
@@ -119,8 +111,9 @@ public class SQLiteTest {
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class)
-    public void exceptionOnGetUsernames() throws NullParametersException {
+    @Test(expected = NullParametersException.class) public void exceptionOnGetUsernames()
+            throws NullParametersException {
+
         UserData.getUsernames(null, null);
     }
 
@@ -129,8 +122,8 @@ public class SQLiteTest {
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class)
-    public void exceptionOnDeleteUser() throws NullParametersException {
+    @Test(expected = NullParametersException.class) public void exceptionOnDeleteUser() throws NullParametersException {
+
         UserData.deleteUser(null, null);
     }
 
@@ -139,8 +132,9 @@ public class SQLiteTest {
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class)
-    public void exceptionOnGetUsernamesAndRoles() throws NullParametersException {
+    @Test(expected = NullParametersException.class) public void exceptionOnGetUsernamesAndRoles()
+            throws NullParametersException {
+
         UserData.getIds(null, null);
     }
 
@@ -149,8 +143,8 @@ public class SQLiteTest {
      *
      * @throws NullParametersException exception for test
      */
-    @Test(expected = NullParametersException.class)
-    public void exceptionOnGetUser() throws NullParametersException {
+    @Test(expected = NullParametersException.class) public void exceptionOnGetUser() throws NullParametersException {
+
         UserData.getUserByUsername(null, null);
     }
 
