@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
+    private Menu menu;
+    private View headerView;
     private boolean switchActive = false;
     private SessionManager session;
 
@@ -82,18 +84,15 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
         // Get the header view
-        View headerView = nvDrawer.getHeaderView(0);
+        headerView = nvDrawer.getHeaderView(0);
 
         // Set the username on the header view
-        TextView username = (TextView) headerView.findViewById(R.id.profile_username);
+        TextView username = (TextView) headerView.findViewById(R.id.header_username);
         username.setText(session.getUsername());
 
         // Switch and other roles menu set to no visible
-        Menu menu = nvDrawer.getMenu();
-        menu.setGroupVisible(R.id.menu_switch, false);
-        if (!ROLE_SHOPPER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_shopper, false);
-        if (!ROLE_MANAGER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_manager, false);
-        if (!ROLE_MANAGER.equals(session.getRole())) menu.setGroupVisible(R.id.menu_top, false);
+        menu = nvDrawer.getMenu();
+        onSwitchRefreshMenusVisibility();
 
         // On click image go to the profile fragment
         ImageView profileImage = (ImageView) headerView.findViewById(R.id.profile_image);
@@ -112,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
         arrowSwitch.setOnClickListener((click) -> {
             if (switchActive) {
                 // Load menu items of the current role
-                menu.setGroupVisible(R.id.menu_top, true);
-                menu.setGroupVisible(R.id.menu_switch, false);
+                onSwitchRefreshMenusVisibility();
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
 
             } else {
@@ -133,14 +131,50 @@ public class MainActivity extends AppCompatActivity {
                 // Iterate through users and ids and inserts the menu item that didn't exist yet
                 for (int i = 0; i < ids.size(); ++i) {
                     if (menu.findItem(ids.get(i)) == null) {
-                        menu.add(R.id.menu_switch, ids.get(i), i + 50, usernames.get(i));
+                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
                     }
                 }
+
+                // Set the menus visibility accordint to the role
                 menu.setGroupVisible(R.id.menu_switch, true);
+                if (ROLE_USER.equals(session.getRole())) {
+                    menu.setGroupVisible(R.id.menu_top, false);
+                } else if (ROLE_MANAGER.equals(session.getRole())) {
+                    menu.setGroupVisible(R.id.menu_manager, false);
+                } else if (ROLE_SHOPPER.equals(session.getRole())) {
+                    menu.setGroupVisible(R.id.menu_shopper, false);
+                }
+
+                //Change the direction of the arrow icon
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
             }
+
+            // Deactivate the boolean that marks the Switch
             switchActive = !switchActive;
         });
+    }
+
+    /**
+     * Called on switch of role. Change the visibility of the different menus
+     */
+    private void onSwitchRefreshMenusVisibility() {
+
+        menu.setGroupVisible(R.id.menu_switch, false);
+        if (ROLE_SHOPPER.equals(session.getRole())) {
+            menu.setGroupVisible(R.id.menu_shopper, true);
+        } else {
+            menu.setGroupVisible(R.id.menu_shopper, false);
+        }
+        if (ROLE_MANAGER.equals(session.getRole())) {
+            menu.setGroupVisible(R.id.menu_manager, true);
+        } else {
+            menu.setGroupVisible(R.id.menu_manager, false);
+        }
+        if (ROLE_USER.equals(session.getRole())) {
+            menu.setGroupVisible(R.id.menu_top, true);
+        } else {
+            menu.setGroupVisible(R.id.menu_top, false);
+        }
     }
 
     /**
@@ -206,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (NullParametersException e) {
                 e.printStackTrace();
             }
-        } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 5) {
+        } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 20) {
             // The item clicked is a user to Switch
             try {
                 // Get the new user data and change the Session Manager info
@@ -214,9 +248,22 @@ public class MainActivity extends AppCompatActivity {
                 session.switchInfoLoginSession(user.getUsername(), user.getRole(), user.getToken(),
                         user.getCurrentPoints());
 
-                // Refresh the Main Activity to apply the new role
-                finish();
-                startActivity(getIntent());
+                // Refresh the Navigation Drawer menu items to apply the new role
+                onSwitchRefreshMenusVisibility();
+
+                // Refresh the header info of the Navigation Drawer menu
+                TextView usernameHeader = (TextView) headerView.findViewById(R.id.header_username);
+                usernameHeader.setText(session.getUsername());
+
+                // Delete the actual menuitem
+                menu.removeItem(menuItem.getItemId());
+
+                //Change the Switch arrow to down
+                ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
+                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+
+                // Deactivate the boolean that marks the Switch
+                switchActive = !switchActive;
 
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());

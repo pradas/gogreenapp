@@ -66,7 +66,8 @@ import pes.gogreenapp.Utils.UserData;
      */
     @After public void afterTests() {
 
-        if (testName.getMethodName().equals("checkDataInsert")) {
+        if (testName.getMethodName().equals("checkDataInsert") ||
+                testName.getMethodName().equals("checkGetUserByUsername")) {
             try {
                 UserData.deleteUser(username, myActivityRule.getActivity().getApplicationContext());
             } catch (NullParametersException e) {
