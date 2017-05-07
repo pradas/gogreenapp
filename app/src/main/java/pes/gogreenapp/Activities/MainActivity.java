@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (menuItem.getOrder() < 100 && menuItem.getOrder() > 5) {
             // The item clicked is a user to Switch
+
         } else {
             switch (menuItem.getItemId()) {
                 case R.id.rewards_list_fragment:

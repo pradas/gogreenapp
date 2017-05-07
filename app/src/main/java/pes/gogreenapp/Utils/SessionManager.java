@@ -103,6 +103,19 @@ public class SessionManager {
     }
 
     /**
+     * Method to switch all the info of the login session into the Shared Preferences
+     *
+     * @param username username of the Login Session
+     * @param role     role of the Login Session
+     * @param token    API token of the of the Login Session
+     * @param points   points of the Login Session
+     */
+    public void switchInfoLoginSession(String username, String role, String token, int points) {
+        editor.clear();
+        putInfoLoginSession(username, role, token, points);
+    }
+
+    /**
      * Check if the User is logged, if not, redirects to a new Login Activity
      */
     public void checkLogin() {
