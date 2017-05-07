@@ -16,6 +16,7 @@ import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.Utils.UserData;
 
 /**
@@ -28,6 +29,7 @@ import pes.gogreenapp.Utils.UserData;
 public class SQLiteTest {
     private final String username = "UserTest";
     private List<String> usernames;
+    private User user;
 
     @Rule
     public ActivityTestRule<MainActivity> myActivityRule =
@@ -42,16 +44,24 @@ public class SQLiteTest {
     @Before
     public void beforeTests() {
         if (testName.getMethodName().equals("checkDataInsert") ||
-                testName.getMethodName().equals("checkDeletedUserTest")) {
+                testName.getMethodName().equals("checkDeletedUserTest") ||
+                testName.getMethodName().equals("checkGetUserByUsername")) {
             try {
                 UserData.createUser(username, "", 0, "",
                         myActivityRule.getActivity().getApplicationContext());
+
                 if (testName.getMethodName().equals("checkDeletedUserTest")) {
                     UserData.deleteUser(username,
                             myActivityRule.getActivity().getApplicationContext());
                 }
-                usernames = UserData.getUsernames(
-                        myActivityRule.getActivity().getApplicationContext(), "");
+
+                if (testName.getMethodName().equals("checkGetUserByUsername")) {
+                    user = UserData.getUserByUsername(username,
+                            myActivityRule.getActivity().getApplicationContext());
+                } else {
+                    usernames = UserData.getUsernames(
+                            myActivityRule.getActivity().getApplicationContext(), "");
+                }
             } catch (NullParametersException e) {
                 System.out.println(e.getMessage());
             }
@@ -87,6 +97,11 @@ public class SQLiteTest {
     @Test
     public void checkDeletedUserTest() {
         Assert.assertEquals(false, usernames.contains(username));
+    }
+
+    @Test
+    public void checkGetUserByUsername() {
+        Assert.assertEquals(username, user.getUsername());
     }
 
     /**
@@ -127,6 +142,16 @@ public class SQLiteTest {
     @Test(expected = NullParametersException.class)
     public void exceptionOnGetUsernamesAndRoles() throws NullParametersException {
         UserData.getIds(null, null);
+    }
+
+    /**
+     * Check if it is throwed the NullParametersException getUserByUsername() method
+     *
+     * @throws NullParametersException exception for test
+     */
+    @Test(expected = NullParametersException.class)
+    public void exceptionOnGetUser() throws NullParametersException {
+        UserData.getUserByUsername(null, null);
     }
 
 }

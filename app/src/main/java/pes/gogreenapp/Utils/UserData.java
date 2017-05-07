@@ -152,7 +152,9 @@ public class UserData {
 
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
-                new String[]{MySQLiteHelper.COLUMN_USERNAME}, null, null, null, null, null);
+                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN,
+                        MySQLiteHelper.COLUMN_ROLE, MySQLiteHelper.COLUMN_POINTS},
+                null, null, null, null, null);
 
         // Iterate the cursor and fill the usernames list
         cursor.moveToFirst();
@@ -171,6 +173,36 @@ public class UserData {
         db.close();
 
         return usernames;
+    }
+
+    public static User getUserByUsername(String username, Context context)
+            throws NullParametersException {
+
+        if (username == null || context == null) {
+            throw new NullParametersException("The username and context parameters can't be null");
+        }
+
+        SQLiteDatabase db = MySQLiteHelper.getInstance(context).getReadableDatabase();
+
+        // Creates a cursor to iterate the result of the query
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
+                new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN,
+                        MySQLiteHelper.COLUMN_ROLE, MySQLiteHelper.COLUMN_POINTS},
+                MySQLiteHelper.COLUMN_USERNAME + " = ?",
+                new String[]{username}, null, null, null);
+
+        // Creates the new User
+        cursor.moveToFirst();
+        User user = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                cursor.getInt(3));
+
+        // close the cursor
+        cursor.close();
+
+        // close the database
+        db.close();
+
+        return user;
     }
 
 }
