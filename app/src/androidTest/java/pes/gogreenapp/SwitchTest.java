@@ -27,11 +27,13 @@ import pes.gogreenapp.Utils.UserData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.doubleClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.NavigationViewActions.navigateTo;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static pes.gogreenapp.EspressoTestsMatchers.withDrawable;
 
 /**
  * @author Albert
@@ -88,6 +90,12 @@ public class SwitchTest {
 
                 // log as user
                 onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
+            } else if (testName.getMethodName().equals("checkArrowUpOnFirstClick") ||
+                    testName.getMethodName().equals("checkArrowDownOnSecondClick") ||
+                    testName.getMethodName().equals("checkArrowDownOnInitialState")) {
+                //the test check that the arrow is up on first click
+                // log as user
+                onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
             }
         } catch (NullParametersException | UserNotExistException e) {
             System.out.println(e.getMessage());
@@ -131,6 +139,38 @@ public class SwitchTest {
         onView(withId(R.id.arrow_switch)).perform(click());
         onView(withId(R.id.nvView)).perform(navigateTo(idManager));
         onView(withId(R.id.header_username)).check(matches(withText(usernameManager)));
+
+    }
+
+    /**
+     * Check if the icon of the arrow on the header is down on the second click
+     */
+    @Test
+    public void checkArrowDownOnInitialState() {
+
+        onView(withId(R.id.arrow_switch)).check(matches(withDrawable(R.drawable.ic_arrow_drop_down_black_24dp)));
+
+    }
+
+    /**
+     * Check if the icon of the arrow on the header is up on the first click
+     */
+    @Test
+    public void checkArrowUpOnFirstClick() {
+
+        onView(withId(R.id.arrow_switch)).perform(click());
+        onView(withId(R.id.arrow_switch)).check(matches(withDrawable(R.drawable.ic_arrow_drop_up_black_24dp)));
+
+    }
+
+    /**
+     * Check if the icon of the arrow on the header is down on the second click
+     */
+    @Test
+    public void checkArrowDownOnSecondClick() {
+
+        onView(withId(R.id.arrow_switch)).perform(doubleClick());
+        onView(withId(R.id.arrow_switch)).check(matches(withDrawable(R.drawable.ic_arrow_drop_down_black_24dp)));
 
     }
 }
