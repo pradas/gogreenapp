@@ -1,14 +1,18 @@
 package pes.gogreenapp.Fragments;
 
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +55,27 @@ public class CreateEventFragment extends Fragment {
     private EditText CompanyText;
     private Calendar calendar;
     private String FinalTime = null;
+    static private String TAG = "CreateEvent";
 
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
     /**
      * Required empty public constructor
      */
@@ -118,7 +142,7 @@ public class CreateEventFragment extends Fragment {
         });
 
         PhotoButton.setOnClickListener((View v) -> {
-
+            isStoragePermissionGranted();
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             // Start the Intent
@@ -198,13 +222,13 @@ public class CreateEventFragment extends Fragment {
                         filePathColumn, null, null, null);
                 // Move to first row
                 cursor.moveToFirst();
-
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-                ImageSelected.setMaxHeight(PhotoButton.getHeight());
                 ImageSelected.setImageBitmap(BitmapFactory
                         .decodeFile(imgDecodableString));
+                ImageSelected.setMaxHeight(PhotoButton.getHeight());
+                ImageSelected.setPadding(PhotoButton.getPaddingLeft()/2,PhotoButton.getPaddingTop()/2,PhotoButton.getPaddingRight()/2, PhotoButton.getPaddingBottom()/2);
             } else {
                 Toast.makeText(getContext(), "No has escogido ninguna imagen",
                         Toast.LENGTH_LONG).show();
