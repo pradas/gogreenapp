@@ -30,10 +30,9 @@ import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
-import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
+import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 
 import static pes.gogreenapp.R.id.orderDateButton;
@@ -90,13 +89,11 @@ public class RewardsListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        userName = session.getUserName();
         new GetCategories().execute(url + "categories");
         new GetRewards().execute(url + "rewards");
         final Button endDate = (Button) getView().findViewById(orderDateButton);

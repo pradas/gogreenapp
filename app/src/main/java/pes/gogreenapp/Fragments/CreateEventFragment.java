@@ -38,6 +38,7 @@ public class CreateEventFragment extends Fragment {
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
     private ImageButton DateButton;
+    private ImageView ImageSelected;
     private ImageButton PhotoButton;
     private EditText DateText;
     private Button SendButton;
@@ -91,6 +92,7 @@ public class CreateEventFragment extends Fragment {
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
+        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelected);
         DateText = (EditText) getView().findViewById(R.id.editTextDateEvent);
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
@@ -116,14 +118,11 @@ public class CreateEventFragment extends Fragment {
         });
 
         PhotoButton.setOnClickListener((View v) -> {
-            // Create intent to Open Image applications like Gallery, Google Photos
-            Log.d("CreateEvent", "PhotoButton clicked");
+
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             // Start the Intent
-            Log.d("CreateEvent", "Intent fet");
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-            Log.d("CreateEvent", "Start intent");
         });
 
         SendButton.setOnClickListener(v -> {
@@ -181,6 +180,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -202,12 +202,15 @@ public class CreateEventFragment extends Fragment {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-
+                ImageSelected.setMaxHeight(PhotoButton.getHeight());
+                ImageSelected.setImageBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString));
             } else {
                 Toast.makeText(getContext(), "No has escogido ninguna imagen",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
+            Log.d("CreateEvent", e.toString());
             Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
                     .show();
         }

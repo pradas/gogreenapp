@@ -27,6 +27,10 @@
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
+    <string name="arrow_switch_down">Arrow to activate Switch Menu</string>
+    <string name="add_account">Añadir Cuenta</string>
+    <string name="shop">Tienda</string>
+    <string name="give_points">Dar Puntos</string>
     <string name="titulo">Titulo:</string>
     <string name="tituloCreateEvent">Titulo</string>
     <string name="titulo_del_evento">Título del evento</string>

@@ -187,22 +187,31 @@
             android:text="@string/Imagen"
             android:layout_below="@+id/linearLayoutHour"
             android:textSize="20sp" />
+<LinearLayout
+    android:id="@+id/LinearLayoutImage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/ImageCreateEvent">
 
-        <ImageButton
-            android:id="@+id/ImageCreateEventButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ImageCreateEvent"
-            android:contentDescription="@string/imagen_del_evento"
-            app:srcCompat="@android:drawable/ic_menu_gallery"  />
+    <ImageButton
+        android:id="@+id/ImageCreateEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/imagen_del_evento"
+        app:srcCompat="@android:drawable/ic_menu_gallery"  />
+    <ImageView
+        android:id="@+id/ImageSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+</LinearLayout>
         <Button
             android:id="@+id/buttonSendCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ImageCreateEventButton"
+            android:layout_below="@+id/LinearLayoutImage"
             android:text="@string/guardar" />
     </RelativeLayout>
 
