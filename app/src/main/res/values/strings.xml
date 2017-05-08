@@ -45,4 +45,6 @@
     <string name="empresa_del_evento">Empresa del evento</string>
     <string name="empresa">Empresa</string>
     <string name="TwoPoints">:</string>
+    <string name="Imagen">Imagen</string>
+    <string name="imagen_del_evento">Imagen del evento</string>
 </resources>

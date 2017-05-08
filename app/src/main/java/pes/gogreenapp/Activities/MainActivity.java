@@ -1,5 +1,6 @@
 package pes.gogreenapp.Activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Contract;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.CreateEventFragment;
+import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
@@ -165,10 +167,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.profile_image:
                     fragmentClass = UserProfileFragment.class;
                     break;
-                /*
-                case R.id.create_event_fragment:
+                case R.id.edit_event_fragment:
                     fragmentClass = CreateEventFragment.class;
-                    break;*/
+                    break;
                 default:
                     fragmentClass = RewardsListFragment.class;
             }
@@ -217,4 +218,5 @@ public class MainActivity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
 }

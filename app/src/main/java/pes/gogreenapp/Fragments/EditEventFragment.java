@@ -2,12 +2,7 @@ package pes.gogreenapp.Fragments;
 
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,8 +13,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,16 +22,12 @@ import java.util.Date;
 
 import pes.gogreenapp.R;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateEventFragment extends Fragment {
-    private static int RESULT_LOAD_IMG = 1;
-    String imgDecodableString;
+public class EditEventFragment extends Fragment {
+
     private ImageButton DateButton;
-    private ImageButton PhotoButton;
     private EditText DateText;
     private Button SendButton;
     private EditText TitleText;
@@ -54,7 +43,7 @@ public class CreateEventFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public CreateEventFragment() {
+    public EditEventFragment() {
     }
 
     /**
@@ -90,7 +79,6 @@ public class CreateEventFragment extends Fragment {
 
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
-        PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
         DateText = (EditText) getView().findViewById(R.id.editTextDateEvent);
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
@@ -114,18 +102,6 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
-
-        PhotoButton.setOnClickListener((View v) -> {
-            // Create intent to Open Image applications like Gallery, Google Photos
-            Log.d("CreateEvent", "PhotoButton clicked");
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            // Start the Intent
-            Log.d("CreateEvent", "Intent fet");
-            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-            Log.d("CreateEvent", "Start intent");
-        });
-
         SendButton.setOnClickListener(v -> {
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
@@ -181,35 +157,6 @@ public class CreateEventFragment extends Fragment {
             }
         });
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
 
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                // Get the cursor
-                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-
-            } else {
-                Toast.makeText(getContext(), "No has escogido ninguna imagen",
-                        Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
 }

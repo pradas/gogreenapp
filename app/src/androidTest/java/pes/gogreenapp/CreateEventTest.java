@@ -40,7 +40,7 @@ public class CreateEventTest {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
             onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.create_event_fragment));
+                    .perform(NavigationViewActions.navigateTo(R.id.edit_event_fragment));
         } catch (NoMatchingViewException e) {
             onView(withId(R.id.username_edit_text))
                     .perform(clearText(), typeText("user"));
@@ -51,7 +51,7 @@ public class CreateEventTest {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
             onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.create_event_fragment));
+                    .perform(NavigationViewActions.navigateTo(R.id.edit_event_fragment));
         }
     }
 

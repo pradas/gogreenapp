@@ -180,7 +180,21 @@
                 android:textColorHint="#000000" />
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/ImageCreateEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Imagen"
+            android:layout_below="@+id/linearLayoutHour"
+            android:textSize="20sp" />
 
+        <ImageButton
+            android:id="@+id/ImageCreateEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageCreateEvent"
+            android:contentDescription="@string/imagen_del_evento"
+            app:srcCompat="@android:drawable/ic_menu_gallery"  />
 
         <Button
             android:id="@+id/buttonSendCreateEvent"
@@ -188,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayoutHour"
+            android:layout_below="@+id/ImageCreateEventButton"
             android:text="@string/guardar" />
     </RelativeLayout>
 
