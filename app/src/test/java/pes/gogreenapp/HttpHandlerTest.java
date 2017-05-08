@@ -3,9 +3,8 @@ package pes.gogreenapp;
 import org.junit.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Utils.HttpHandler;
 
 import static org.junit.Assert.*;
 

@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +13,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.Reward;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
-
-import static pes.gogreenapp.R.id.buttonLogin;
+import pes.gogreenapp.Utils.UserData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,12 +131,24 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response != null && !response.equals("500") ) {
+            if (response != null && !response.equals("500")) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
-                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
-                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
+
+                    // put the info of the User logged into the Session Manager
+                    session = SessionManager.getInstance(getActivity().getApplicationContext());
+                    session.putInfoLoginSession(params[2], aux.getString("role"),
+                            aux.getString("token"), aux.getInt("points"));
+
+                    // insert the User info into the SQLite
+                    try {
+                        UserData.createUser(params[2], aux.getString("token"),
+                                aux.getInt("points"), aux.getString("role"),
+                                getActivity().getApplicationContext());
+                    } catch (NullParametersException e) {
+                        System.out.println(e.getMessage());
+                    }
+
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();

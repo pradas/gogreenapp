@@ -2,8 +2,6 @@ package pes.gogreenapp.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageInstaller;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,20 +18,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
-import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Objects.Reward;
 
@@ -53,7 +46,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     public RewardsListAdapter(Context context, List<Reward> rewards) {
         this.context = context;
         this.rewards = rewards;
-        this.session = new SessionManager(context, new GlobalPreferences(context).getUser());
+        this.session = SessionManager.getInstance();
     }
 
     /**
@@ -142,7 +135,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUserName(), holder.id.toString());
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favoritefilled);
                 holder.fav.setTag("favoritefilled");
             } else {
@@ -164,7 +157,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                         }
                         else {
                             new PostReward().execute("http://10.4.41.145/api/users/", "POST",
-                                    session.getUserName(), holder.id.toString());
+                                    session.getUsername(), holder.id.toString());
                             Integer points = session.getPoints();
                             points -= (Integer) rewards.get(position).getPoints();
                             //no se como se hace el set

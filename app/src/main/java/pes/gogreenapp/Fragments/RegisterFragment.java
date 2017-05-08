@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,9 +30,8 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.SessionManager;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
 
 /**
@@ -92,46 +90,46 @@ public class RegisterFragment extends Fragment {
             EditText birthdayDate = (EditText) getView().findViewById(R.id.editFechaNacimiento);
             boolean ok = true;
             int passwordok = 0;
-            if(username.getText().toString().isEmpty()){
+            if (username.getText().toString().isEmpty()) {
                 username.setError("Campo necesario");
                 ok = false;
             }
 
-            if(name.getText().toString().isEmpty()){
+            if (name.getText().toString().isEmpty()) {
                 name.setError("Campo necesario");
                 ok = false;
             }
 
-            if(password.getText().toString().isEmpty()){
+            if (password.getText().toString().isEmpty()) {
                 password.setError("Campo necesario");
                 ok = false;
                 passwordok++;
             }
 
-            if(password2.getText().toString().isEmpty()){
+            if (password2.getText().toString().isEmpty()) {
                 password2.setError("Campo necesario");
                 ok = false;
                 passwordok++;
             }
-            if(passwordok == 0 && !password.getText().toString().equals(password2.getText().toString())){
+            if (passwordok == 0 && !password.getText().toString().equals(password2.getText().toString())) {
                 password.setError("La contraseña no es la misma");
             }
 
-            if(email.getText().toString().isEmpty()){
+            if (email.getText().toString().isEmpty()) {
                 email.setError("Campo necesario");
                 ok = false;
-            }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
                 email.setError("Email no valido");
                 ok = false;
             }
 
-            if(birthdayDate.getText().toString().isEmpty()){
+            if (birthdayDate.getText().toString().isEmpty()) {
                 birthdayDate.setError("Campo necesario");
                 ok = false;
             }
 
-            if(ok){
-                if(!testMode)
+            if (ok) {
+                if (!testMode)
                     new PostMethod().execute(URLPetition, username.getText().toString(), name.getText().toString(), email.getText().toString(), password.getText().toString(), birthdayDate.getText().toString());
             }
 
@@ -139,7 +137,7 @@ public class RegisterFragment extends Fragment {
         pickDate.setOnClickListener((View v) -> {
             // TODO Auto-generated method stub
             final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR)-18;
+            mYear = c.get(Calendar.YEAR) - 18;
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
 
@@ -160,8 +158,8 @@ public class RegisterFragment extends Fragment {
 
                             if (dayOfMonth > mDay && year == mYear && monthOfYear == mMonth)
                                 view.updateDate(mYear, mMonth, mDay);
-                            String sDayOfMonth = String.format("%02d",dayOfMonth);
-                            String sMonthOfYear = String.format("%02d",monthOfYear + 1);
+                            String sDayOfMonth = String.format("%02d", dayOfMonth);
+                            String sMonthOfYear = String.format("%02d", monthOfYear + 1);
                             textView.setText(sDayOfMonth + "-"
                                     + sMonthOfYear + "-" + year);
                             textView.setError(null);
@@ -170,7 +168,7 @@ public class RegisterFragment extends Fragment {
                         }
                     }, mYear, mMonth, mDay);
             Calendar calendar = Calendar.getInstance();
-            calendar.set(mYear,mMonth,mDay);
+            calendar.set(mYear, mMonth, mDay);
             dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
             dpd.show();
         });
@@ -236,14 +234,14 @@ public class RegisterFragment extends Fragment {
          */
         protected String doInBackground(String... params) {
             mRequestQueue = Volley.newRequestQueue(getActivity());
-            HashMap<String,String> impl = new HashMap<>();
-            impl.put("username",params[1]);
-            impl.put("name",params[2]);
-            impl.put("email",params[3]);
-            impl.put("password",params[4]);
-            impl.put("birth_date",params[5]);
+            HashMap<String, String> impl = new HashMap<>();
+            impl.put("username", params[1]);
+            impl.put("name", params[2]);
+            impl.put("email", params[3]);
+            impl.put("password", params[4]);
+            impl.put("birth_date", params[5]);
 
-            String result = new HttpHandler().makeServiceCall(params[0],"POST" ,impl,"");
+            String result = new HttpHandler().makeServiceCall(params[0], "POST", impl, "");
             Log.i(TAG, "Response from url: " + result);
 
             return result;
@@ -251,15 +249,15 @@ public class RegisterFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            if(s == null){
-                Toast.makeText(getActivity(),"Error, no se ha podido conectar, intentelo de nuevo más tarde",Toast.LENGTH_LONG).show();
-            }else if(s.equals("409")){
-                Toast.makeText(getActivity(),"Email o nombre de usuario repetido",Toast.LENGTH_LONG).show();
-            }else{
+            if (s == null) {
+                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+            } else if (s.equals("409")) {
+                Toast.makeText(getActivity(), "Email o nombre de usuario repetido", Toast.LENGTH_LONG).show();
+            } else {
                 //Toast.makeText(getActivity(),"Usuario creado",Toast.LENGTH_LONG).show();
                 EditText name = (EditText) getView().findViewById(R.id.editUsername);
                 EditText password = (EditText) getView().findViewById(R.id.editContraseña);
-                new PostLogin().execute("http://10.4.41.145/api/session","POST",name.getText().toString(),password.getText().toString());
+                new PostLogin().execute("http://10.4.41.145/api/session", "POST", name.getText().toString(), password.getText().toString());
             }
         }
     }
@@ -285,9 +283,9 @@ public class RegisterFragment extends Fragment {
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    new GlobalPreferences(getActivity().getApplicationContext()).setUser(params[2]);
-                    session = new SessionManager(getActivity().getApplicationContext(), params[2]);
-                    session.createLoginSession(params[2], aux.get("token").toString(), aux.getInt("points"));
+                    session = SessionManager.getInstance();
+                    session.putInfoLoginSession(params[2], aux.get("role").toString(),
+                            aux.get("token").toString(), aux.getInt("points"));
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
@@ -312,7 +310,6 @@ public class RegisterFragment extends Fragment {
             }
         }
     }
-
 
 
 }
