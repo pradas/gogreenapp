@@ -20,15 +20,18 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class NavigationDrawerTest {
+
+    private final String username = "user";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     /**
-     * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
+     * Before the tests if he Navigation Drawer is open, if cant be open it is because there isn't
      * a valid user logged. Due this, the setup do the Login with the username user
      * and the password Password12
      */
@@ -38,7 +41,7 @@ public class NavigationDrawerTest {
         try {
             onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         } catch (NoMatchingViewException e) {
-            onView(withId(R.id.username_edit_text)).perform(clearText(), typeText("user"));
+            onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(username));
             onView(withId(R.id.password_user_text)).perform(clearText(), typeText("Password12"));
             onView(withId(R.id.buttonLogin)).perform(click());
             onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
@@ -102,5 +105,14 @@ public class NavigationDrawerTest {
 
         onView(withId(R.id.profile_image)).perform(click());
         onView(withId(R.id.user_profile)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if the username is showed at the header
+     */
+    @Test
+    public void checkUsernameShowedOnHeader() {
+
+        onView(withId(R.id.header_username)).check(matches(withText(username)));
     }
 }

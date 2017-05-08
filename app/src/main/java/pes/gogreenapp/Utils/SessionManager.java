@@ -164,7 +164,7 @@ public class SessionManager {
      *
      * @return true if User is logged, either return false
      */
-    private boolean isLoggedIn() {
+    public boolean isLoggedIn() {
 
         return pref.getBoolean(IS_LOGIN, false);
     }

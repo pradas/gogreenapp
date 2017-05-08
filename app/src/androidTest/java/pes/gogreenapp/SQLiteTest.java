@@ -32,9 +32,6 @@ import static junit.framework.Assert.assertNotNull;
 public class SQLiteTest {
 
     private final String username = "user";
-    private final Integer userId = 1;
-    private final int idsSize = 3;
-    private final int usernamesSize = 3;
     private List<String> usernames;
     private List<Integer> ids;
     private User user;
@@ -133,6 +130,7 @@ public class SQLiteTest {
             System.out.println(e.getMessage());
         }
 
+        Integer userId = 1;
         assertEquals(id, userId);
     }
 
@@ -148,6 +146,7 @@ public class SQLiteTest {
             System.out.println(e.getMessage());
         }
 
+        int usernamesSize = 3;
         assertEquals(usernamesSize, usernames.size());
 
 
@@ -165,6 +164,7 @@ public class SQLiteTest {
             System.out.println(e.getMessage());
         }
 
+        int idsSize = 3;
         assertEquals(idsSize, ids.size());
     }
 
