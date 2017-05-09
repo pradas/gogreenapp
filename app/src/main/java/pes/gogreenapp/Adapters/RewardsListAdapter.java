@@ -49,6 +49,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
      * Constructor that set the List of Rewards.
      *
      * @param rewards non-null List of the Rewards.
+     * @param context non-null context of the application.
      */
     public RewardsListAdapter(Context context, List<Reward> rewards) {
         this.context = context;

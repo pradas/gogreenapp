@@ -195,6 +195,9 @@ public class RewardDetailedFragment extends Fragment {
         });
     }
 
+    /**
+     * Asynchronous Task for the petition POST of a Reward.
+     */
     private class PostReward extends AsyncTask<String, Void, String> {
 
         /**
@@ -203,8 +206,8 @@ public class RewardDetailedFragment extends Fragment {
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
          *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
-         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         *               params[3] is the id of the reward to post
+         * @return "Error" si no es un login correcte o "Correct" si ha funcionat
          */
         @Override
         protected String doInBackground(String... params) {
@@ -221,7 +224,7 @@ public class RewardDetailedFragment extends Fragment {
         /**
          * Called when doInBackground is finished, Toast an error if there is an error.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result If is "Error" makes the toast.
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {

@@ -38,13 +38,24 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     private Context context;
     private String userName;
 
-
+    /**
+     * Constructor that set the List of Rewards.
+     *
+     * @param rewards non-null List of the Rewards.
+     * @param context non-null context of the application.
+     * @param userName non-null userName of the user of the applciation.
+     */
     public RewardsExchangedAdapter(Context context, List<Reward> rewards, String userName) {
         this.context = context;
         this.rewards = rewards;
         this.userName = userName;
     }
 
+    /**
+     * Setter of the Rewards List.
+     *
+     * @param rewards non-null List of the Rewards.
+     */
     public void setRewards(List<Reward> rewards) { this.rewards = rewards; }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +69,11 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         public ImageButton fav;
         public Integer id;
 
+        /**
+         * Constructor of the View Holder that sets all the items.
+         *
+         * @param itemView valid View where to construct.
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.rewardTitle);
@@ -87,6 +103,14 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         }
     }
 
+    /**
+     * Obtains the LayoutInflater from the given context and usse it to create a new ViewHolder.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to
+     *                 an adapter position.
+     * @param viewType The view type of the new View.
+     * @return A new ViewHolder that holds a View of the given view type.
+     */
     @Override
     public RewardsExchangedAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewards_list_cardview, parent, false);
@@ -94,6 +118,15 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         return viewHolder;
     }
 
+    /**
+     * Called by RecyclerView to display the data at the specified position. This method should
+     * update the contents of the {@link RewardsListAdapter.ViewHolder#itemView} to reflect the item at the given
+     * position.
+     *
+     * @param holder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(RewardsExchangedAdapter.ViewHolder holder, int position) {
         holder.id = rewards.get(position).getId();
