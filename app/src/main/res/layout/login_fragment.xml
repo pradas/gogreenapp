@@ -1,22 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:paddingTop="20dp"
+    android:paddingTop="30dp"
     android:background="@drawable/gradientbackground">
 
     <TextView
         android:id="@+id/TitleLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="83dp"
-        android:text="GoGreen"
-        android:textColor="#ff7aff24"
-        android:textSize="35sp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="83dp"
+        android:elevation="1dp"
+        android:fontFamily="Roboto"
+        android:text="GoGreen"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="35sp" />
 
     <ImageView
         android:id="@+id/imageGoGreen"
@@ -35,10 +38,11 @@
         android:layout_below="@+id/imageGoGreen"
         android:layout_marginTop="46dp"
         android:focusable="true"
+        android:fontFamily="Roboto"
+        android:hint="Nombre de usuario o email"
         android:textColor="@drawable/mainbuttontext"
         android:textColorHint="@drawable/mainbuttontext"
-        android:hint="Nombre de usuario o email"
-        android:theme="@style/campotextoregistro"/>
+        android:theme="@style/campotextoregistro" />
 
     <EditText
         android:id="@+id/password_user_text"
@@ -48,6 +52,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/username_edit_text"
         android:ems="10"
+        android:fontFamily="Roboto"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:textColor="@drawable/mainbuttontext"
@@ -70,7 +75,7 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="0dp"
+        android:layout_marginRight="-10dp"
         android:background="@null"
         android:text="Sign Up"
         android:textColor="@drawable/mainbuttontext"
