@@ -2,6 +2,7 @@ package pes.gogreenapp.Fragments;
 
 
 import android.app.DatePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,19 +15,28 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import pes.gogreenapp.Objects.Event;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EditEventFragment extends Fragment {
-
+    private SessionManager session;
     private ImageButton DateButton;
     private EditText DateText;
     private Button SendButton;
@@ -39,6 +49,9 @@ public class EditEventFragment extends Fragment {
     private EditText CompanyText;
     private Calendar calendar;
     private String FinalTime = null;
+    static private String TAG = "EditEvent";
+    private Event event;
+    private String url = "http://10.4.41.145/api/events/1";
 
     /**
      * Required empty public constructor
@@ -61,6 +74,12 @@ public class EditEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        /*
+        View view = inflater.inflate(R.layout.create_edit_event_fragment, container, false);
+        id = getArguments().getInt("id");
+        url += id;
+        return view;
+         */
         return inflater.inflate(R.layout.create_edit_event_fragment, container, false);
     }
 
@@ -76,6 +95,12 @@ public class EditEventFragment extends Fragment {
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        session = SessionManager.getInstance();
+        try {
+            new GetEvent().execute(url).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
@@ -88,6 +113,16 @@ public class EditEventFragment extends Fragment {
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
+
+        //initialize
+        TitleText.setText(event.getTitulo());
+        DescriptionText.setText(event.getDescripcion());
+        PointsText.setText(event.getPuntos());
+        DirectionText.setText(event.getDireccion());
+        CompanyText.setText(event.getEmpresa());
+        DateText.setText(event.getFecha().toString());
+        HourText.setText(event.getHora());
+        MinText.setText(event.getMin());
 
         //events
         DateButton.setOnClickListener((View v) -> {
@@ -156,6 +191,44 @@ public class EditEventFragment extends Fragment {
                 //        textName.getText().toString(), textPassword.getText().toString());
             }
         });
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class GetEvent extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    event = new Event((Integer) jsonObject.get("id"),
+                            (String) jsonObject.get("title"),
+                            (String) jsonObject.get("description"),
+                            (Integer) jsonObject.get("points"),
+                            (String) jsonObject.get("adress"),
+                            (String) jsonObject.get("company"),
+                            df.parse((String) jsonObject.get("date")),
+                            (String) jsonObject.get("time"),
+                            null);
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
     }
 
 

@@ -6,14 +6,17 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +28,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,6 +51,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class CreateEventFragment extends Fragment {
     private static int RESULT_LOAD_IMG = 1;
+    private SessionManager session;
     String imgDecodableString;
     private ImageButton DateButton;
     private ImageView ImageSelected;
@@ -56,26 +68,32 @@ public class CreateEventFragment extends Fragment {
     private Calendar calendar;
     private String FinalTime = null;
     static private String TAG = "CreateEvent";
+    static private final String URLPetition = "http://10.4.41.145/api/events";
 
-
-    public  boolean isStoragePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted");
+                Log.v(TAG, "Permission is granted");
                 return true;
             } else {
 
-                Log.v(TAG,"Permission is revoked");
+                Log.v(TAG, "Permission is revoked");
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted");
             return true;
         }
     }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
+
     /**
      * Required empty public constructor
      */
@@ -100,7 +118,6 @@ public class CreateEventFragment extends Fragment {
         return inflater.inflate(R.layout.create_edit_event_fragment, container, false);
     }
 
-
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -112,6 +129,7 @@ public class CreateEventFragment extends Fragment {
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        session = SessionManager.getInstance();
 
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
@@ -199,10 +217,71 @@ public class CreateEventFragment extends Fragment {
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
-                //new LoginFragment.PostLogin().execute("http://10.4.41.145/api/session", "POST",
-                //        textName.getText().toString(), textPassword.getText().toString());
+                String imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+
+                new PostEvent().execute(URLPetition, "POST",
+                        TitleText.getText().toString(),
+                        DescriptionText.getText().toString(),
+                        PointsText.getText().toString(),
+                        DirectionText.getText().toString(),
+                        CompanyText.getText().toString(),
+                        DateText.getText().toString(),
+                        HourText.getText().toString() + ":" + MinText.getText().toString(),
+                        imgString
+                );
             }
         });
+    }
+
+
+    /**
+     * Asynchronous Task for the petition POST to send a petition of register an User
+     */
+    private class PostEvent extends AsyncTask<String, Void, String> {
+        @Override
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the title,
+         *               params[2] is the description
+         *               params[3] is the points
+         *               params[4] is the adress
+         *               params[5] is the company
+         *               params[6] is the date
+         *               params[7] is the time
+         *               params[8] is the image
+         * @return void when finished
+         */
+        protected String doInBackground(String... params) {
+            HashMap<String, String> BodyParams = new HashMap<>();
+            BodyParams.put("title", params[2]);
+            BodyParams.put("description", params[3]);
+            BodyParams.put("points", params[4]);
+            BodyParams.put("adress", params[5]);
+            BodyParams.put("company", params[6]);
+            BodyParams.put("date", params[7]);
+            BodyParams.put("time", params[8]);
+            BodyParams.put("image", params[9]);
+
+            String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + result);
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s == null) {
+                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+            } else if (s.equals("200")) {
+                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -212,23 +291,16 @@ public class CreateEventFragment extends Fragment {
             // When an Image is picked
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                     && null != data) {
-                // Get the Image from data
-
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                // Get the cursor
                 Cursor cursor = getActivity().getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
-                // Move to first row
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
                 ImageSelected.setImageBitmap(BitmapFactory
                         .decodeFile(imgDecodableString));
-                ImageSelected.setMaxHeight(PhotoButton.getHeight());
-                ImageSelected.setPadding(PhotoButton.getPaddingLeft()/2,PhotoButton.getPaddingTop()/2,PhotoButton.getPaddingRight()/2, PhotoButton.getPaddingBottom()/2);
+                cursor.close();
             } else {
                 Toast.makeText(getContext(), "No has escogido ninguna imagen",
                         Toast.LENGTH_LONG).show();
