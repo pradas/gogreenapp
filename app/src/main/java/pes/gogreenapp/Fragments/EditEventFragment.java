@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ public class EditEventFragment extends Fragment {
     private String FinalTime = null;
     static private String TAG = "EditEvent";
     private Event event;
-    private String url = "http://10.4.41.145/api/events/1";
+    private String url = "http://10.4.41.145/api/events";
 
     /**
      * Required empty public constructor
@@ -97,6 +98,7 @@ public class EditEventFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         try {
+            Log.d(TAG, "execute");
             new GetEvent().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -211,8 +213,10 @@ public class EditEventFragment extends Fragment {
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("events");
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    JSONObject jsonObject = jsonArray.getJSONObject(3);
                     event = new Event((Integer) jsonObject.get("id"),
                             (String) jsonObject.get("title"),
                             (String) jsonObject.get("description"),
