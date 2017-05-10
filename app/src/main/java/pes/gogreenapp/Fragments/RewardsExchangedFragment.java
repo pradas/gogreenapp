@@ -83,13 +83,12 @@ public class RewardsExchangedFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+        session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvExchanged);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerExchanged);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        userName = session.getUserName();
+        userName = session.getUsername();
         new GetCategories().execute(url + "categories");
         new GetRewards().execute(url + "users/" + userName + "/rewards");
 
