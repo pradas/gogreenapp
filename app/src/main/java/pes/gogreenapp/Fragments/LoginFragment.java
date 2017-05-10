@@ -79,13 +79,6 @@ public class LoginFragment extends Fragment {
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
 
-        /*
-        TextView tx = (TextView) getView().findViewById(R.id.TitleLogIn);
-
-        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/Raleway-Regular.ttf");
-
-        tx.setTypeface(custom_font);
-*/
 
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
