@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- This group represents the items after the Header and before the separator -->
     <group
         android:id="@+id/menu_top"
@@ -14,12 +15,16 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/settings_fragment"
-            android:title="@string/settings" />
+            android:icon="@android:drawable/ic_delete"
+            android:title="@string/settings"
+            android:visible="false"
+            app:showAsAction="always" />
         <item
             android:id="@+id/account_manager_fragment"
             android:title="@string/account_manager" />
         <item
             android:id="@+id/about_us_fragment"
+            android:icon="@android:drawable/ic_menu_info_details"
             android:title="@string/about_us" />
         <item
             android:id="@+id/log_out"
