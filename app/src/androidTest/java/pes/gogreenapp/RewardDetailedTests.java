@@ -46,8 +46,8 @@ public class RewardDetailedTests {
         try {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
-            onView(withId(R.id.profile_image))
-                    .perform(click());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         } catch (NoMatchingViewException e) {
             onView(withId(R.id.username_edit_text))
                     .perform(clearText(), typeText("user"));
@@ -57,8 +57,8 @@ public class RewardDetailedTests {
                     .perform(click());
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
-            onView(withId(R.id.profile_image))
-                    .perform(click());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
         }
     }
 
@@ -180,14 +180,12 @@ public class RewardDetailedTests {
      * Check if clicking in a card_view and clicking in the exchange button and clicking on the
      * exchange button of the Alert Dialog display the rewards_list fragment
      */
-    //TODO fix test
     @Test
     public void actionExchangeAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-        //no lo canjea porque no tiene coins para ello
     }
 
     /**
