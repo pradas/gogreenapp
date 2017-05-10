@@ -34,7 +34,7 @@ import static android.support.test.espresso.contrib.NavigationViewActions.naviga
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static pes.gogreenapp.EspressoTestsMatchers.withDrawable;
+import static pes.gogreenapp.Utils.EspressoTestsMatchers.withDrawable;
 
 /**
  * @author Albert
