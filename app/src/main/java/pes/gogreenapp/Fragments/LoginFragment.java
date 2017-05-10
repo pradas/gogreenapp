@@ -2,11 +2,11 @@ package pes.gogreenapp.Fragments;
 
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Handlers.HttpHandler;
 import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
-
-import static pes.gogreenapp.R.id.buttonLogin;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,11 +73,20 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        AssetManager am = getActivity().getApplicationContext().getAssets();
         Button buttonLogin = (Button) getView().findViewById(R.id.buttonLogin);
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
+
+        /*
+        TextView tx = (TextView) getView().findViewById(R.id.TitleLogIn);
+
+        Typeface custom_font = Typeface.createFromAsset(getActivity().getAssets(),  "fonts/Raleway-Regular.ttf");
+
+        tx.setTypeface(custom_font);
+*/
+
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
             if (textName.getText().toString().length() <= 0) {
