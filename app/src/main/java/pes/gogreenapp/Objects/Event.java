@@ -1,5 +1,7 @@
 package pes.gogreenapp.Objects;
 
+import android.util.Base64;
+
 import java.util.Date;
 
 
@@ -12,9 +14,10 @@ public class Event {
     private String empresa;
     private Date fecha;
     private String hora;
-    private Byte[] imagen;
+    private String min;
+    private byte[] imagen;
 
-    public Event(Integer id, String titulo, String descripcion, Integer puntos, String direccion,String empresa, Date fecha, String hora, Byte[] imagen) {
+    public Event(Integer id, String titulo, String descripcion, Integer puntos, String direccion,String empresa, Date fecha, String imagen) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -22,8 +25,10 @@ public class Event {
         this.direccion = direccion;
         this.empresa = empresa;
         this.fecha = fecha;
-        this.hora = hora;
-        this.imagen = imagen;
+        this.hora = String.valueOf(fecha.getHours());
+        this.min = String.valueOf(fecha.getMinutes());
+        this.imagen = Base64.decode(imagen, 0);
+
     }
     public String getTitulo() {
         return titulo;
@@ -73,25 +78,23 @@ public class Event {
         this.fecha = fecha;
     }
 
-    public String getHora() {
-        String[] split = hora.split(":");
-        return split[0];
-    }
+    public String getHora() { return this.hora; }
 
-    public String getMin() {
-        String[] split = hora.split(":");
-        return split[1];
-    }
+    public String getMin() { return this.min; }
 
     public void setHora(String hora) {
         this.hora = hora;
     }
 
-    public Byte[] getImagen() {
+    public void setMin(String min) {
+        this.min = min;
+    }
+
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(Byte[] imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 

@@ -2,6 +2,7 @@ package pes.gogreenapp.Fragments;
 
 
 import android.app.DatePickerDialog;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +44,7 @@ public class EditEventFragment extends Fragment {
     private EditText DateText;
     private Button SendButton;
     private EditText TitleText;
+    private ImageView ImageSelected;
     private EditText DescriptionText;
     private EditText PointsText;
     private EditText DirectionText;
@@ -115,16 +118,20 @@ public class EditEventFragment extends Fragment {
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
+        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelected);
 
         //initialize
         TitleText.setText(event.getTitulo());
         DescriptionText.setText(event.getDescripcion());
-        PointsText.setText(event.getPuntos());
+        PointsText.setText(event.getPuntos().toString());
         DirectionText.setText(event.getDireccion());
         CompanyText.setText(event.getEmpresa());
-        DateText.setText(event.getFecha().toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        DateText.setText(sdf.format(event.getFecha()));
         HourText.setText(event.getHora());
         MinText.setText(event.getMin());
+        byte[] decodedBytes = event.getImagen();
+        ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
 
         //events
         DateButton.setOnClickListener((View v) -> {
@@ -215,7 +222,7 @@ public class EditEventFragment extends Fragment {
                 try {
                     JSONObject aux = new JSONObject(response);
                     JSONArray jsonArray = aux.getJSONArray("events");
-                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd H:m:s");
                     JSONObject jsonObject = jsonArray.getJSONObject(3);
                     event = new Event((Integer) jsonObject.get("id"),
                             (String) jsonObject.get("title"),
@@ -224,8 +231,7 @@ public class EditEventFragment extends Fragment {
                             (String) jsonObject.get("adress"),
                             (String) jsonObject.get("company"),
                             df.parse((String) jsonObject.get("date")),
-                            (String) jsonObject.get("time"),
-                            null);
+                            (String) jsonObject.get("image"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
