@@ -35,8 +35,8 @@ public class ListRewardTest {
             MainActivity.class);
 
     /**
-     * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
-     * a valid user logged. Due this, the setup do the Login with
+     * Before the tests the Navigation Drawer is open, to enter to the rewards_list if cant be open
+     * it is because there isn't a valid user logged. Due this, the setup do the Login with
      * the username user and the password Password12
      */
     @Before
@@ -60,54 +60,81 @@ public class ListRewardTest {
         }
     }
 
+    /**
+     * Check if the rewards_list is displayed
+     */
     @Test
     public void showsAllRewards() {
         onView(withId(R.id.rewards_list))
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have title
+     */
     @Test
     public void rewardHasCorrectAttributes() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardTitle))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have points
+     */
     @Test
     public void rewardHasPoints() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardPoints))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have category
+     */
     @Test
     public void rewardHasCategory() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardCategory))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have end_date
+     */
     @Test
     public void rewardHasEndDate() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have favorite button
+     */
     @Test
     public void rewardHasFavoriteButton() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.favoriteButton))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list have exchange button
+     */
     @Test
     public void rewardHasExchangeButton() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.exchangeButton))));
     }
 
+    /**
+     * Check if the rewards_list have a card view
+     */
     @Test
     public void eachRewardInACardView() {
         onView(withId(R.id.rv))
                 .check(matches(hasDescendant(withId(R.id.card_view))));
     }
 
+    /**
+     * Check if clicking in a card_view displays RewardDetailedFragment
+     */
     @Test
     public void clickInRewardGoesToRewardDetail() {
         onView(withId(R.id.rv))
@@ -115,6 +142,9 @@ public class ListRewardTest {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view favorite button displays the favorite button filled
+     */
     @Test
     public void FavButtonChangeToFavoriteFilled() {
         onView(withId(R.id.rv)).perform(
@@ -123,6 +153,9 @@ public class ListRewardTest {
                 .check(matches(withDrawable(R.mipmap.favoritefilled)));
     }
 
+    /**
+     * Check if clicking in a card_view favorite button two times displays the favorite button
+     */
     @Test
     public void FavButtonChangeToFavoriteEmpty() {
         onView(withId(R.id.rv)).perform(

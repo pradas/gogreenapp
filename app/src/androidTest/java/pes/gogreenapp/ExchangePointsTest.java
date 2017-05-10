@@ -33,7 +33,9 @@ public class ExchangePointsTest {
             MainActivity.class);
 
     /**
-     * Enter in rewards_list
+     * Before the tests the Navigation Drawer is open, to enter to the rewards_list if cant be open
+     * it is because there isn't a valid user logged. Due this, the setup do the Login with
+     * the username user and the password Password12
      */
     @Before
     public void setup() {
@@ -56,24 +58,47 @@ public class ExchangePointsTest {
         }
     }
 
+    /**
+     * Check if clicking in the exchange button shows an Alert Dialog
+     */
     @Test
     public void exchangeButtonDisplaysAlertDialogWithTitle() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("¿Está seguro de que desea canjear esta promoción?")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in the exchange button shows a button "Canjear"
+     */
     @Test
     public void exchangeButtonDisplaysAlertDialogWithButtonExchange() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("CANJEAR")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in the exchange button shows a button "Cancelar"
+     */
     @Test
     public void exchangeButtonDisplaysAlertDialogWithButtonCancel() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.exchangeButton)));
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in the exchange button of the Alert Dialog, the rewards_list is displayed
+     */
+    @Test
+    public void actionExchangeAlertDialog() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.actionDetailReward)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if clicking in the cancel button of the Alert Dialog, the RewardsDetailed is displayed
+     */
     @Test
     public void actionCancelAlertDialog() {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
