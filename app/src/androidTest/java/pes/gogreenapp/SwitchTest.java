@@ -31,9 +31,10 @@ import static android.support.test.espresso.action.ViewActions.doubleClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.NavigationViewActions.navigateTo;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static pes.gogreenapp.EspressoTestsMatchers.withDrawable;
+import static pes.gogreenapp.Utils.EspressoTestsMatchers.withDrawable;
 
 /**
  * @author Albert
@@ -41,8 +42,9 @@ import static pes.gogreenapp.EspressoTestsMatchers.withDrawable;
 @RunWith(AndroidJUnit4.class)
 public class SwitchTest {
 
-    private final String usernameShopper = "shopper";
+    private final String usernameShopper = "shoper";
     private final String usernameManager = "manager";
+    private final String password = "Password12";
     private Integer idShopper = 0;
     private Integer idManager = 0;
 
@@ -92,7 +94,10 @@ public class SwitchTest {
                 onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
             } else if (testName.getMethodName().equals("checkArrowUpOnFirstClick") ||
                     testName.getMethodName().equals("checkArrowDownOnSecondClick") ||
-                    testName.getMethodName().equals("checkArrowDownOnInitialState")) {
+                    testName.getMethodName().equals("checkArrowDownOnInitialState") ||
+                    testName.getMethodName().equals("checkActivityLoginOnClickAddAccount") ||
+                    testName.getMethodName().equals("checkAddShopperAccount") ||
+                    testName.getMethodName().equals("checkAddManagerAccount")) {
                 //the test check that the arrow is up on first click
                 // log as user
                 onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
@@ -102,7 +107,6 @@ public class SwitchTest {
         }
 
         // log in and opend the Drawer Layout
-        String password = "Password12";
         onView(withId(R.id.password_user_text)).perform(clearText(), typeText(password));
         onView(withId(R.id.buttonLogin)).perform(click());
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
@@ -114,8 +118,10 @@ public class SwitchTest {
     @After
     public void clean() {
 
-        onView(withId(R.id.nvView)).perform(navigateTo(R.id.log_out));
-        MySQLiteHelper.changeToDevelopmentDatabase(myActivityRule.getActivity().getApplicationContext());
+        if (!(testName.getMethodName().equals("checkActivityLoginOnClickAddAccount"))) {
+            onView(withId(R.id.nvView)).perform(navigateTo(R.id.log_out));
+            MySQLiteHelper.changeToDevelopmentDatabase(myActivityRule.getActivity().getApplicationContext());
+        }
     }
 
     /**
@@ -139,6 +145,7 @@ public class SwitchTest {
         onView(withId(R.id.arrow_switch)).perform(click());
         onView(withId(R.id.nvView)).perform(navigateTo(idManager));
         onView(withId(R.id.header_username)).check(matches(withText(usernameManager)));
+
 
     }
 
@@ -172,5 +179,46 @@ public class SwitchTest {
         onView(withId(R.id.arrow_switch)).perform(doubleClick());
         onView(withId(R.id.arrow_switch)).check(matches(withDrawable(R.drawable.ic_arrow_drop_down_black_24dp)));
 
+    }
+
+    /**
+     * Check if on click Add Acount the activity loaded is Login Activity
+     */
+    @Test
+    public void checkActivityLoginOnClickAddAccount() {
+
+        onView(withId(R.id.arrow_switch)).perform(click());
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.add_account));
+        onView(withId(R.id.container_login)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if an account of role Shopper can be added
+     */
+    @Test
+    public void checkAddShopperAccount() {
+
+        onView(withId(R.id.arrow_switch)).perform(click());
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.add_account));
+        onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameShopper));
+        onView(withId(R.id.password_user_text)).perform(clearText(), typeText(password));
+        onView(withId(R.id.buttonLogin)).perform(click());
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.header_username)).check(matches(withText(usernameShopper)));
+    }
+
+    /**
+     * Check if an account of role Manager can be added
+     */
+    @Test
+    public void checkAddManagerAccount() {
+
+        onView(withId(R.id.arrow_switch)).perform(click());
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.add_account));
+        onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameManager));
+        onView(withId(R.id.password_user_text)).perform(clearText(), typeText(password));
+        onView(withId(R.id.buttonLogin)).perform(click());
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.header_username)).check(matches(withText(usernameManager)));
     }
 }
