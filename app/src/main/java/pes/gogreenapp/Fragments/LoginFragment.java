@@ -16,10 +16,13 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
@@ -36,6 +39,7 @@ public class LoginFragment extends Fragment {
     private EditText textName;
     private EditText textPassword;
     private Button buttonRegister;
+    private List<String> usernames = new ArrayList<>();
 
     /**
      * Required empty public constructor
@@ -89,6 +93,7 @@ public class LoginFragment extends Fragment {
 
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
+
             if (textName.getText().toString().length() <= 0) {
                 textName.setError("Nombre necesario");
                 send = false;
@@ -97,9 +102,29 @@ public class LoginFragment extends Fragment {
                 textPassword.setError("Contraseña necesaria");
                 send = false;
             }
+
+            // Check if you're trying to add an existing user
+            if (send && calledForAddAccount) {
+                try {
+                    session = SessionManager.getInstance();
+                    usernames = UserData.getUsernames(getActivity().getApplicationContext(), session.getUsername());
+                } catch (NullParametersException e) {
+                    e.printStackTrace();
+                }
+                if (usernames.size() > 0 && usernames.contains(textName.getText().toString())) {
+                    send = false;
+                    Toast.makeText(getActivity(), "No se puede añadir un usuario ya existente", Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+
             if (send) {
                 new PostLogin().execute("http://10.4.41.145/api/session", "POST", textName.getText().toString(),
                         textPassword.getText().toString());
+                if (calledForAddAccount) {
+                    Toast.makeText(getActivity(), "user: " + textName.getText().toString() + " añadido",
+                            Toast.LENGTH_LONG).show();
+                }
             }
             // Staring MainActivity
         });
