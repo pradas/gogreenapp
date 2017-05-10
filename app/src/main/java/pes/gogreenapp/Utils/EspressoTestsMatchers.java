@@ -1,10 +1,12 @@
-package pes.gogreenapp;
+package pes.gogreenapp.Utils;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,9 +27,9 @@ import static android.R.attr.description;
  * Created by Adrian on 27/04/2017.
  */
 
-class EspressoTestsMatchers {
+public class EspressoTestsMatchers {
 
-    static Matcher<View> withDrawable(final int resourceId) {
+    public static Matcher<View> withDrawable(final int resourceId) {
 
         return new DrawableMatcher(resourceId);
     }
@@ -37,7 +39,7 @@ class EspressoTestsMatchers {
         return new DrawableMatcher(-1);
     }
 
-    static Matcher<View> withError(final String expected) {
+    public static Matcher<View> withError(final String expected) {
 
         return new TypeSafeMatcher<View>() {
 
@@ -145,5 +147,29 @@ class EspressoTestsMatchers {
             drawable.draw(canvas);
             return bitmap;
         }
+    }
+
+    public static ViewAction clickChildViewWithId(final int id) {
+
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+
+                View v = view.findViewById(id);
+                v.performClick();
+            }
+        };
     }
 }
