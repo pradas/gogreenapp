@@ -3,82 +3,88 @@
     tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:paddingTop="30dp"
     android:background="@drawable/gradientbackground">
 
-    <TextView
-        android:id="@+id/TitleLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="83dp"
-        android:elevation="1dp"
-        android:fontFamily="monospace"
-        android:text="GoGreen"
-        android:textSize="30sp"
-        fontPath="fonts/Raleway-Light.ttf" />
-
-    <ImageView
-        android:id="@+id/imageGoGreen"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/TitleLogIn"
-        android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher_round" />
-
-    <EditText
-        android:id="@+id/username_edit_text"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageGoGreen"
-        android:layout_marginTop="46dp"
-        android:focusable="true"
-        android:fontFamily="serif"
-        android:hint="Nombre de usuario o email"
-        android:textColor="@drawable/mainbuttontext"
-        android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:id="@+id/relativeLayout2">
+        <TextView
+            android:id="@+id/TitleLogIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="83dp"
+            android:elevation="1dp"
+            android:fontFamily="monospace"
+            android:text="GoGreen"
+            android:textSize="30sp"
+            fontPath="fonts/Raleway-Light.ttf" />
 
-    <EditText
-        android:id="@+id/password_user_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/username_edit_text"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/username_edit_text"
-        android:ems="10"
-        android:fontFamily="Roboto"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:textColor="@drawable/mainbuttontext"
-        android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
+        <ImageView
+            android:id="@+id/imageGoGreen"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/TitleLogIn"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_launcher_round" />
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonregisterloginshape"
-        android:text="login"
-        android:textColor="@drawable/mainbuttontext"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:id="@+id/username_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imageGoGreen"
+            android:layout_marginTop="46dp"
+            android:focusable="true"
+            android:fontFamily="serif"
+            android:hint="Nombre de usuario o email"
+            android:textColor="@drawable/mainbuttontext"
+            android:textColorHint="@drawable/mainbuttontext"
+            android:theme="@style/campotextoregistro" />
 
+        <EditText
+            android:id="@+id/password_user_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/username_edit_text"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/username_edit_text"
+            android:ems="10"
+            android:fontFamily="Roboto"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textColor="@drawable/mainbuttontext"
+            android:textColorHint="@drawable/mainbuttontext"
+            android:theme="@style/campotextoregistro" />
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttonregisterloginshape"
+            android:text="login"
+            android:textColor="@drawable/mainbuttontext"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="-10dp"
         android:background="@null"
         android:text="Sign Up"
         android:textColor="@drawable/mainbuttontext"
-        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/relativeLayout2"
+        android:layout_alignBottom="@+id/relativeLayout2"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
