@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This group represents the items after the Header and before the separator -->
+    <!-- This group represents the items of a normal User -->
     <group
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
             android:id="@+id/rewards_list_fragment"
+            android:orderInCategory="1"
             android:title="@string/rewards" />
     </group>
-    <!-- This group represents the items after the separator -->
+    <!-- This group represents the items of a role Manager -->
+    <group
+        android:id="@+id/menu_manager"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/shop_view_fragment"
+            android:orderInCategory="11"
+            android:title="@string/shop" />
+    </group>
+    <!-- This group represents the items of a role Shopper -->
+    <group
+        android:id="@+id/menu_shopper"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/give_points_fragment"
+            android:orderInCategory="16"
+            android:title="@string/give_points" />
+    </group>
+    <!-- This group represents the items of the Switch functionality -->
+    <group
+        android:id="@+id/menu_switch"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/add_account"
+            android:orderInCategory="100"
+            android:title="@string/add_account" />
+        <item
+            android:id="@+id/account_manager_fragment"
+            android:orderInCategory="101"
+            android:title="@string/account_manager" />
+    </group>
+    <!-- This group represents the items fixed in every Role -->
     <group
         android:id="@+id/menu_bottom"
         android:checkableBehavior="single">
         <item
             android:id="@+id/settings_fragment"
+            android:orderInCategory="102"
             android:title="@string/settings" />
         <item
-            android:id="@+id/account_manager_fragment"
-            android:title="@string/account_manager" />
-        <item
             android:id="@+id/about_us_fragment"
+            android:orderInCategory="103"
             android:title="@string/about_us" />
         <item
             android:id="@+id/log_out"
+            android:orderInCategory="104"
             android:title="@string/log_out" />
     </group>
 </menu>
