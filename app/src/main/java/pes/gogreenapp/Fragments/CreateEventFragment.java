@@ -28,11 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,7 +111,7 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.create_edit_event_fragment, container, false);
+        return inflater.inflate(R.layout.create_event_fragment, container, false);
     }
 
     /**
@@ -134,8 +130,8 @@ public class CreateEventFragment extends Fragment {
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
-        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelected);
-        DateText = (EditText) getView().findViewById(R.id.editTextDateEvent);
+        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedCreateEvent);
+        DateText = (EditText) getView().findViewById(R.id.editTextDateCreateEvent);
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
@@ -217,8 +213,11 @@ public class CreateEventFragment extends Fragment {
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
-                String imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+                String imgString = null;
+                if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
+                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
+                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+                }
 
                 new PostEvent().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
@@ -259,11 +258,11 @@ public class CreateEventFragment extends Fragment {
             BodyParams.put("title", params[2]);
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
-            BodyParams.put("adress", params[5]);
-            BodyParams.put("company", params[6]);
+            if (params[5] != null && !params[5].isEmpty())  BodyParams.put("adress", params[5]);
+            if (params[6] != null && !params[6].isEmpty())  BodyParams.put("company", params[6]);
             BodyParams.put("date", params[7]);
-            BodyParams.put("time", params[8]);
-            BodyParams.put("image", params[9]);
+            if (!params[8].equals(":")) BodyParams.put("time", params[8]);
+            if (params[9] != null) BodyParams.put("image", params[9]);
 
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());

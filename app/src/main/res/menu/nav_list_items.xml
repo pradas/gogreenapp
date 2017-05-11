@@ -10,6 +10,9 @@
             android:title="@string/rewards" />
         <item
             android:id="@+id/edit_event_fragment"
+            android:title="Edit event" />
+        <item
+            android:id="@+id/create_event_fragment"
             android:title="Create event" />
     </group>
     <!-- This group represents the items of a role Manager -->

@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import pes.gogreenapp.Objects.Event;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -79,12 +78,12 @@ public class EditEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         /*
-        View view = inflater.inflate(R.layout.create_edit_event_fragment, container, false);
+        View view = inflater.inflate(R.layout.create_event_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
         return view;
          */
-        return inflater.inflate(R.layout.create_edit_event_fragment, container, false);
+        return inflater.inflate(R.layout.edit_event_fragment, container, false);
     }
 
 
@@ -108,17 +107,17 @@ public class EditEventFragment extends Fragment {
         }
 
         //elements
-        DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
-        DateText = (EditText) getView().findViewById(R.id.editTextDateEvent);
-        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
-        TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
-        DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
-        PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
-        DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
-        HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
-        MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
-        CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
-        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelected);
+        DateButton = (ImageButton) getView().findViewById(R.id.DateEditEvent);
+        DateText = (EditText) getView().findViewById(R.id.editTextDateEditEvent);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendEditEvent);
+        TitleText = (EditText) getView().findViewById(R.id.titleEditEvent_edit_text);
+        DescriptionText = (EditText) getView().findViewById(R.id.DescriptionEditEvent_edit_text);
+        PointsText = (EditText) getView().findViewById(R.id.PointsEditEvent_edit_text);
+        DirectionText = (EditText) getView().findViewById(R.id.DirectionEditEvent_edit_text);
+        HourText = (EditText) getView().findViewById(R.id.HourEditEvent_edit_text);
+        MinText = (EditText) getView().findViewById(R.id.MinEditEvent_edit_text);
+        CompanyText = (EditText) getView().findViewById(R.id.CompanyEditEvent_edit_text);
+        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedEditEvent);
 
         //initialize
         TitleText.setText(event.getTitulo());
@@ -223,15 +222,16 @@ public class EditEventFragment extends Fragment {
                     JSONObject aux = new JSONObject(response);
                     JSONArray jsonArray = aux.getJSONArray("events");
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-                    JSONObject jsonObject = jsonArray.getJSONObject(3);
-                    event = new Event((Integer) jsonObject.get("id"),
-                            (String) jsonObject.get("title"),
-                            (String) jsonObject.get("description"),
-                            (Integer) jsonObject.get("points"),
-                            (String) jsonObject.get("adress"),
-                            (String) jsonObject.get("company"),
-                            df.parse((String) jsonObject.get("date")),
-                            (String) jsonObject.get("image"));
+                    JSONObject jsonObject = jsonArray.getJSONObject(4);
+                    event = new Event(jsonObject.getInt("id"),
+                            jsonObject.getString("title"),
+                            jsonObject.getString("description"),
+                            jsonObject.getInt("points"),
+                            jsonObject.getString("adress"),
+                            jsonObject.getString("company"),
+                            df.parse(jsonObject.getString("date")),
+                            jsonObject.getString("image"));
+                    Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
