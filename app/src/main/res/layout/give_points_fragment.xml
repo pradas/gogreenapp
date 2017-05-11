@@ -1,60 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/givePointsFragment"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/layoutUsername"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="16dp">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/usernameReceivePoints"
-                android:hint="@string/username" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/layoutRadioGroup"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/layoutUsername" >
-            <RadioGroup
-                android:id="@+id/radioGroupGivePoints"
-                android:layout_width="wrap_content"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/eventsRadioButton"
-                    android:text="@string/events" />
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pointsRadioButton"
-                    android:text="@string/points"/>
-            </RadioGroup>
-        </RelativeLayout>
-
-    <RelativeLayout
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:id="@+id/listViewGivePoints">
+
+    </ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listViewGivePoints"
+        android:layout_centerHorizontal="true"
+        android:text="@string/anotherUser"
+        android:id="@+id/anotherUserToGive"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="16dp"
-        android:paddingRight="16dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/grantPoints"
-            android:id="@+id/grantPoints"/>
-    </RelativeLayout>
-
+        android:layout_alignParentRight="true"
+        android:text="@string/grantPoints"
+        android:id="@+id/grantPointsToUsers"/>
 
 </RelativeLayout>

@@ -1,36 +1,31 @@
 package pes.gogreenapp.Fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 
-import pes.gogreenapp.Objects.GlobalPreferences;
-import pes.gogreenapp.Objects.SessionManager;
+import java.util.ArrayList;
+import java.util.List;
+
+import pes.gogreenapp.Adapters.GivePointsAdapter;
 import pes.gogreenapp.R;
 
-import static android.R.attr.id;
-
 /**
- * Created by Adrian on 05/05/2017.
+ * Created by Adrian on 11/05/2017.
  */
 
 public class GivePointsFragment extends Fragment {
 
-    private SessionManager session;
-    private ViewGroup principalView;
+    ListView listToGivePoints;
+    List<String> users;
+    Button anotherUser;
+    GivePointsAdapter adapter;
 
-    /**
-     * Required empty public constructor
-     */
     public GivePointsFragment() {
     }
 
@@ -48,9 +43,11 @@ public class GivePointsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.give_points_fragment, container, false);
-        principalView = (ViewGroup) view.findViewById(R.id.givePointsFragment);
-        return view;
+        // Inflate the layout for this fragment
+        users = new ArrayList<String>();
+        users.add("Usuario nº1");
+        adapter = new GivePointsAdapter(getContext(), users);
+        return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
     /**
@@ -62,87 +59,20 @@ public class GivePointsFragment extends Fragment {
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.
      */
-
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        session = new SessionManager(getActivity().getApplicationContext(),
-                new GlobalPreferences(getActivity().getApplicationContext()).getUser());
-        RadioGroup radioButtons = (RadioGroup) getView().findViewById(R.id.radioGroupGivePoints);
-        final Integer[] buttonMode = {0};
-        Button grant = (Button) getView().findViewById(R.id.grantPoints);
-        Button anotherUser;
-        View eventsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_events, principalView, false);
-        View pointsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_points, principalView, false);
 
-        radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
 
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.addRule(RelativeLayout.BELOW, R.id.layoutRadioGroup);
-                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-
-                if (checkedId == R.id.eventsRadioButton) {
-                    buttonMode[0] = 0;
-                    eventsView.setLayoutParams(params);
-                    principalView.removeView(pointsView);
-                    principalView.addView(eventsView);
-                }
-                else {
-                    buttonMode[0] = 1;
-                    pointsView.setLayoutParams(params);
-                    principalView.removeView(eventsView);
-                    principalView.addView(pointsView);
-                }
-            }
-        });
-
-        if (buttonMode[0] == 0) anotherUser = (Button) eventsView.findViewById(R.id.anotherUserButton);
-        else anotherUser = (Button) pointsView.findViewById(R.id.anotherUserButton);
-
-        grant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("¿Está seguro de que desea conceder los puntos?")
-                    .setPositiveButton(R.string.exchange, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+        listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
+        listToGivePoints.setAdapter(adapter);
 
         anotherUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View eventsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_events, principalView, false);
-                View pointsView = LayoutInflater.from(getContext()).inflate(R.layout.give_points_by_points, principalView, false);
-                View header = LayoutInflater.from(getContext()).inflate(R.layout.header_give_points_fragment, principalView, false);
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                        (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                /*if (buttonMode[0] == 0) params.addRule(RelativeLayout.BELOW,
-                        eventsView.findViewById(R.id.anotherUserButton).getId());
-                else params.addRule(RelativeLayout.BELOW, pointsView.
-                        findViewById(R.id.anotherUserButton).getId());*/                        //NO FUNCIONA
-                params.topMargin = 320;                                                         //TTEMPORAL
-                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                header.setLayoutParams(params);
-                principalView.addView(header);
-
-                params.topMargin = 500;                                                         //TTEMPORAL
-                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                eventsView.setLayoutParams(params);
-                principalView.addView(eventsView);
+                users.add("Usuario nº" + (users.size()+1));
+                adapter.notifyDataSetChanged();
             }
         });
     }
