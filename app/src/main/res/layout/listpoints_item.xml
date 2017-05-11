@@ -31,4 +31,11 @@
             android:id="@+id/radioButtonPoints"
             android:text="@string/points"/>
     </RadioGroup>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerEvents"
+        android:layout_below="@+id/radioGroupGivePoints"
+        android:layout_centerHorizontal="true">
+    </Spinner>
 </RelativeLayout>

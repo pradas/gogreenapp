@@ -23,7 +23,7 @@ public class GivePointsFragment extends Fragment {
 
     ListView listToGivePoints;
     List<String> users;
-    Button anotherUser;
+    Button anotherUser, grantPoints;
     GivePointsAdapter adapter;
 
     public GivePointsFragment() {
@@ -64,6 +64,7 @@ public class GivePointsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
+        grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
 
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         listToGivePoints.setAdapter(adapter);
@@ -73,6 +74,13 @@ public class GivePointsFragment extends Fragment {
             public void onClick(View v) {
                 users.add("Usuario nº" + (users.size()+1));
                 adapter.notifyDataSetChanged();
+            }
+        });
+        grantPoints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> userNames = adapter.getUserNames();
+                userNames.add("papo");
             }
         });
     }
