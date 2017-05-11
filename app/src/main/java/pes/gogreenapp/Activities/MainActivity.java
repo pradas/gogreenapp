@@ -25,7 +25,6 @@ import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setting on default the custom font added to the project
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/OpenSans-Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         //-------------- Comprobar si esta logejat i fer login_activity sino ------------------
         session = new SessionManager(getApplicationContext(),
