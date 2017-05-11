@@ -4,22 +4,23 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginBottom="5dp"
     android:clickable="true"
     android:foreground="?selectableItemBackground"
     card_view:cardBackgroundColor="#A8FFAE"
-    card_view:cardCornerRadius="10dp"
     card_view:cardElevation="3dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:padding="15dp">
+        android:layout_height="150dp">
 
         <ImageView
+            android:alpha="0.4"
             android:id="@+id/rewardImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/motos_ecooltra"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/rewardTitle"
