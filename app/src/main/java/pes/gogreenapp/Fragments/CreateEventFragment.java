@@ -154,7 +154,28 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
-
+        HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    if (Integer.parseInt(HourText.getText().toString()) < 10){
+                        String text = "0" + HourText.getText().toString();
+                        HourText.setText(text);
+                    }
+                }
+            }
+        });
+        MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    if (Integer.parseInt(MinText.getText().toString()) < 10){
+                        String text = "0" + MinText.getText().toString();
+                        MinText.setText(text);
+                    }
+                }
+            }
+        });
         PhotoButton.setOnClickListener((View v) -> {
             isStoragePermissionGranted();
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -162,7 +183,6 @@ public class CreateEventFragment extends Fragment {
             // Start the Intent
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
-
         SendButton.setOnClickListener(v -> {
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
@@ -209,7 +229,7 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
                 FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-                Log.d("CreateEvent", FinalTime);
+
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
@@ -226,7 +246,7 @@ public class CreateEventFragment extends Fragment {
                         DirectionText.getText().toString(),
                         CompanyText.getText().toString(),
                         DateText.getText().toString(),
-                        HourText.getText().toString() + ":" + MinText.getText().toString(),
+                        FinalTime,
                         imgString
                 );
             }

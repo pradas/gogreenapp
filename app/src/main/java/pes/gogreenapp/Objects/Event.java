@@ -27,7 +27,9 @@ public class Event {
         this.fecha = fecha;
         this.hora = String.valueOf(fecha.getHours());
         this.min = String.valueOf(fecha.getMinutes());
-        this.imagen = Base64.decode(imagen, 0);
+        if (imagen != null) {
+            this.imagen = Base64.decode(imagen, 0);
+        }
 
     }
     public String getTitulo() {
