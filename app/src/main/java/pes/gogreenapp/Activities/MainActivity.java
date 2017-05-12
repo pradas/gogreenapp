@@ -315,22 +315,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.edit_event_fragment:
                     fragmentClass = EditEventFragment.class;
                     break;
-                case R.id.add_account:
-                    // user is not logged in redirect him to Login Activity
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    i.putExtra("ADD_ACCOUNT", true);
-                    // Closing all the Activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    // Add new Flag to start new Activity
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    // Staring LoginActivity Activity
-                    getApplicationContext().startActivity(i);
-                /*
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
-                    break;*/
+                    break;
                 default:
                     fragmentClass = RewardsListFragment.class;
             }

@@ -1,13 +1,11 @@
 package pes.gogreenapp;
 
 import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -61,26 +59,26 @@ public class CreateEventTest {
      */
     @Test
     public void IncorrectHour() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("25"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .check(matches(withError("Hora incorrecta")));
     }
 
@@ -89,26 +87,26 @@ public class CreateEventTest {
      */
     @Test
     public void IncorrectMin() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("70"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .check(matches(withError("Minutos incorrectos")));
     }
     /**
@@ -116,24 +114,24 @@ public class CreateEventTest {
      */
     @Test
     public void MinButNotHour() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .check(matches(withError("Hora necesaria")));
     }
 
@@ -142,24 +140,24 @@ public class CreateEventTest {
      */
     @Test
     public void HourButNotMin() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .check(matches(withError("Minutos necesarios")));
     }
 
@@ -168,26 +166,26 @@ public class CreateEventTest {
      */
     @Test
     public void IncorrectDate() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-19-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .check(matches(withError("Fecha invalida (dd-mm-yyyy)")));
     }
     /**
@@ -195,24 +193,24 @@ public class CreateEventTest {
      */
     @Test
     public void NoDate() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .check(matches(withError("Fecha necesaria")));
     }
     /**
@@ -220,24 +218,24 @@ public class CreateEventTest {
      */
     @Test
     public void NoPoints() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .check(matches(withError("Puntos necesarios")));
     }
 
@@ -246,24 +244,24 @@ public class CreateEventTest {
      */
     @Test
     public void NoDescription() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(), click());
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .check(matches(withError("Descripción necesaria")));
     }
 
@@ -272,24 +270,24 @@ public class CreateEventTest {
      */
     @Test
     public void NoTitle() {
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .perform(clearText(), typeText("Green Peace"));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .perform(clearText(), typeText("30"));
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
+        onView(withId(R.id.buttonSendEditEvent))
                 .perform(scrollTo(),click());
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .check(matches(withError("Título necesario")));
     }
 
@@ -299,11 +297,11 @@ public class CreateEventTest {
      */
     @Test
     public void CheckTimeIsDisplayed(){
-        onView(withId(R.id.TimeTextCreateEvent))
+        onView(withId(R.id.TimeTextEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.HourCreateEvent_edit_text))
+        onView(withId(R.id.HourEditEvent_edit_text))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.MinCreateEvent_edit_text))
+        onView(withId(R.id.MinEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
@@ -312,11 +310,11 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDateIsDisplayed(){
-        onView(withId(R.id.DateTextCreateEvent))
+        onView(withId(R.id.DateTextEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.editTextDateEvent))
+        onView(withId(R.id.editTextDateEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.DateCreateEvent))
+        onView(withId(R.id.DateEditEvent))
                 .check(matches(isDisplayed()));
     }
 
@@ -325,9 +323,9 @@ public class CreateEventTest {
      */
     @Test
     public void CheckCompanyIsDisplayed(){
-        onView(withId(R.id.CompanyCreateEvent))
+        onView(withId(R.id.CompanyEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
+        onView(withId(R.id.CompanyEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
@@ -336,9 +334,9 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDirectionIsDisplayed(){
-        onView(withId(R.id.DirectionCreateEvent))
+        onView(withId(R.id.DirectionEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
+        onView(withId(R.id.DirectionEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
@@ -348,7 +346,7 @@ public class CreateEventTest {
     @Test
     public void CheckImageIsDisplayed(){
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.ImageCreateEventButton))
+        onView(withId(R.id.ImageEditEventButton))
                 .check(matches(isDisplayed()));
     }
     /**
@@ -356,9 +354,9 @@ public class CreateEventTest {
      */
     @Test
     public void CheckPointsAreDisplayed(){
-        onView(withId(R.id.PointsCreateEvent))
+        onView(withId(R.id.PointsEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
+        onView(withId(R.id.PointsEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
@@ -367,9 +365,9 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDescriptionIsDisplayed(){
-        onView(withId(R.id.DescriptionCreateEvent))
+        onView(withId(R.id.DescriptionEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+        onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
@@ -378,9 +376,9 @@ public class CreateEventTest {
      */
     @Test
     public void CheckTitleIsDisplayed(){
-        onView(withId(R.id.TitleCreateEvent))
+        onView(withId(R.id.TitleEditEvent))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.titleCreateEvent_edit_text))
+        onView(withId(R.id.titleEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 
