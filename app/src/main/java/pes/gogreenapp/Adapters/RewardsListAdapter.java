@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,10 +24,10 @@ import java.util.List;
 
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
+import pes.gogreenapp.Objects.Reward;
+import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-import pes.gogreenapp.R;
-import pes.gogreenapp.Objects.Reward;
 
 /**
  * Created by Albert on 19/03/2017.
@@ -65,7 +64,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         TextView date;
         TextView category;
         ImageButton fav;
-        Button exchange;
+        ImageButton exchange;
         public Integer id;
 
         /**
@@ -80,8 +79,8 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
             date = (TextView) itemView.findViewById(R.id.rewardEndDate);
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
-            exchange = (Button) itemView.findViewById(R.id.exchangeButton);
-            exchange.setText("Canjear");
+            exchange = (ImageButton) itemView.findViewById(R.id.exchangeButton);
+            //exchange.setText("Canjear");
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
