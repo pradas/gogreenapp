@@ -32,7 +32,9 @@ public class RewardDetailedTests {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     /**
-     * Navigate to rewards_list_fragment.
+     * Before the tests the Navigation Drawer is open, to enter to the profile of the user if cant
+     * be open it is because there isn't a valid user logged. Due this, the setup do the Login
+     * with the username user and the password Password12
      */
     @Before
     public void setup() {
@@ -49,6 +51,9 @@ public class RewardDetailedTests {
         }
     }
 
+    /**
+     * Check if clicking in a card_view displays of RewardDetailedFragment
+     */
     @Test
     public void openRewardDetailedCorrectInRewardsList() {
 
@@ -56,6 +61,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the title RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasTitle() {
 
@@ -63,6 +71,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.titleDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the description of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasDescription() {
 
@@ -70,6 +81,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.descriptionDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the date of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasDateValid() {
 
@@ -77,6 +91,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.dateValidDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the web of consult of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasConsultWeb() {
 
@@ -84,6 +101,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.consultWebDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the advert of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasAdverts() {
 
@@ -91,6 +111,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.advertDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the instructions of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasInstructions() {
 
@@ -98,6 +121,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.instructionsDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the favorite button of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasFavoriteButton() {
 
@@ -105,6 +131,9 @@ public class RewardDetailedTests {
         onView(withId(R.id.favoriteDetailButton)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view displays the action button of RewardDetailedFragment
+     */
     @Test
     public void rewardDetailedHasButtonAction() {
 
@@ -112,6 +141,10 @@ public class RewardDetailedTests {
         onView(withId(R.id.actionDetailReward)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the exchange button shows an Alert Dialog
+     * with text
+     */
     @Test
     public void exchangeButtonDisplayAlertDialogWithMessage() {
 
@@ -120,6 +153,10 @@ public class RewardDetailedTests {
         onView(withText("¿Está seguro de que desea canjear esta promoción?")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the exchange button shows an Alert Dialog
+     * with exchange button
+     */
     @Test
     public void exchangeButtonDisplayAlertDialogWithButtonExchange() {
 
@@ -128,6 +165,10 @@ public class RewardDetailedTests {
         onView(withText("CANJEAR")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the exchange button shows an Alert Dialog
+     * with cancel button
+     */
     @Test
     public void exchangeButtonDisplayAlertDialogWithButtonCancel() {
 
@@ -136,6 +177,22 @@ public class RewardDetailedTests {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the Alert Dialog display the rewards_list fragment
+     */
+    @Test
+    public void actionExchangeAlertDialog() {
+        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.actionDetailReward)).perform(click());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the Alert Dialog display the Rewards Detailed fragment
+     */
     @Test
     public void actionCancelAlertDialog() {
 
@@ -145,6 +202,10 @@ public class RewardDetailedTests {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the favorite button displays the
+     * favorite button filled
+     */
     @Test
     public void actionFavButtonMatchFavoriteFilled() {
 
@@ -153,6 +214,10 @@ public class RewardDetailedTests {
         onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.mipmap.favoritefilled)));
     }
 
+    /**
+     * Check if clicking in a card_view and clicking in the favorite button two times displays the
+     * favorite button normal
+     */
     @Test
     public void actionFavButtonMatchFavoriteEmpty() {
 

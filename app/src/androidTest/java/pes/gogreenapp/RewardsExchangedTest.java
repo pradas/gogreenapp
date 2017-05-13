@@ -30,9 +30,9 @@ public class RewardsExchangedTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     /**
-     * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
-     * a valid user logged. Due this, the setup do the Login with
-     * the username user and the password Password12
+     * Before the tests the Navigation Drawer is open, to enter to the profile of the user if cant
+     * be open it is because there isn't a valid user logged. Due this, the setup do the Login
+     * with the username user and the password Password12
      */
     @Before
     public void setup() {
@@ -50,7 +50,7 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if the rewards exchanged is displayed
      */
     @Test
     public void checkRewardsExchangedsIsDisplayed() {
@@ -60,7 +60,7 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if the card_view of the rewards_list_exchanged have title
      */
     @Test
     public void CardViewHasTitle() {
@@ -70,6 +70,9 @@ public class RewardsExchangedTest {
                 .check(matches(hasDescendant(withId(R.id.rewardTitle))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list_exchanged have points
+     */
     @Test
     public void CardViewHasPoints() {
 
@@ -78,6 +81,9 @@ public class RewardsExchangedTest {
                 .check(matches(hasDescendant(withId(R.id.rewardPoints))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list_exchanged have category
+     */
     @Test
     public void CardViewHasCategory() {
 
@@ -87,6 +93,9 @@ public class RewardsExchangedTest {
 
     }
 
+    /**
+     * Check if the card_view of the rewards_list_exchanged have end date
+     */
     @Test
     public void CardViewHasEndDate() {
 
@@ -95,6 +104,9 @@ public class RewardsExchangedTest {
                 .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list_exchanged have favorite button
+     */
     @Test
     public void CardViewHasFavoriteButton() {
 
@@ -103,6 +115,9 @@ public class RewardsExchangedTest {
                 .check(matches(hasDescendant(withId(R.id.favoriteButton))));
     }
 
+    /**
+     * Check if the card_view of the rewards_list_exchanged have exchange button
+     */
     @Test
     public void CardViewHasExchangeButton() {
 
@@ -112,7 +127,9 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the card_view of the recycler view of the rewards exchanged display the
+     * Rewards Detailed fragment
      */
     @Test
     public void openRewardDetailed() {
@@ -123,7 +140,9 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the card_view of the recycler view of the rewards exchanged display the
+     * use button
      */
     @Test
     public void RewardDetailedHasUseButton() {
@@ -134,7 +153,9 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the card_view of the recycler view of the rewards exchanged display the
+     * QR Code
      */
     @Test
     public void UseButtonDisplaysQRCode() {
@@ -146,7 +167,9 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
+     * exchange button of the card_view of the recycler view of the rewards exchanged and clicking
+     * in the use button display the QR Code
      */
     @Test
     public void UseButtonDisplaysQRCodeInRewardDetaied() {
@@ -158,7 +181,8 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a favorite button of the card_view of the recycler view of the rewards
+     * exchanged and clicking in the favorite button displays the favorite button filled
      */
     @Test
     public void FavButtonChangeToFavoriteFilled() {
@@ -171,7 +195,8 @@ public class RewardsExchangedTest {
     }
 
     /**
-     * Check if the Navigation Drawer is open.
+     * Check if clicking in a favorite button of the card_view of the recycler view of the rewards
+     * exchanged two times and clicking in the favorite button displays the favorite button normal
      */
     @Test
     public void FavButtonChangeToFavoriteEmpty() {
