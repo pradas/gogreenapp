@@ -209,6 +209,7 @@ public class CreateEventFragment extends Fragment {
                     date = formatter.parse(inputDate);
                 } catch (ParseException e) {
                     DateText.setError("Fecha invalida (dd-mm-yyyy)");
+                    send = false;
                 }
             }
             if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {

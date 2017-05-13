@@ -20,7 +20,7 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static pes.gogreenapp.EspressoTestsMatchers.withError;
+import static pes.gogreenapp.Utils.EspressoTestsMatchers.withError;
 
 public class CreateEventTest {
     @Rule

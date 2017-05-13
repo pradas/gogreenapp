@@ -59,6 +59,30 @@ public class EspressoTestsMatchers {
             }
         };
     }
+    /**
+     * Checks if the View has an error or not.
+     *
+     * @return true if View dosen't have any error, false if view is not an EditText or View has error.
+     */
+    public static Matcher<View> notHasError() {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof EditText)) {
+                    return false;
+                }
+                EditText editText = (EditText) view;
+                return editText.getError() == null;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+
+            }
+        };
+    }
+
 
     private static class DrawableMatcher extends TypeSafeMatcher<View> {
 
