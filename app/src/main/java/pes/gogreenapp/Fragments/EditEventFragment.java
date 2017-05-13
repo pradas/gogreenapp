@@ -100,7 +100,6 @@ public class EditEventFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         try {
-            Log.d(TAG, "execute");
             new GetEvent().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -127,10 +126,18 @@ public class EditEventFragment extends Fragment {
         CompanyText.setText(event.getEmpresa());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         DateText.setText(sdf.format(event.getFecha()));
-        HourText.setText(event.getHora());
-        MinText.setText(event.getMin());
-        byte[] decodedBytes = event.getImagen();
-        ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
+        if (Integer.parseInt(event.getHora()) < 10){
+            String text = "0" + event.getHora();
+            HourText.setText(text);
+        }
+        if (Integer.parseInt(event.getMin()) < 10){
+            String text = "0" + event.getMin();
+            MinText.setText(text);
+        }
+        if (event.getImagen() != null) {
+            byte[] decodedBytes = event.getImagen();
+            ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
+        }
 
         //events
         DateButton.setOnClickListener((View v) -> {
@@ -221,16 +228,22 @@ public class EditEventFragment extends Fragment {
                 try {
                     JSONObject aux = new JSONObject(response);
                     JSONArray jsonArray = aux.getJSONArray("events");
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-                    JSONObject jsonObject = jsonArray.getJSONObject(4);
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    JSONObject jsonObject = jsonArray.getJSONObject(8);
+                    String address = null;
+                    if (!jsonObject.isNull("adress")) address = jsonObject.getString("adress");
+                    String company = null;
+                    if (!jsonObject.isNull("company")) address = jsonObject.getString("company");
+                    String image = null;
+                    if (!jsonObject.isNull("image")) address = jsonObject.getString("image");
                     event = new Event(jsonObject.getInt("id"),
                             jsonObject.getString("title"),
                             jsonObject.getString("description"),
                             jsonObject.getInt("points"),
-                            jsonObject.getString("adress"),
-                            jsonObject.getString("company"),
+                            address,
+                            company,
                             df.parse(jsonObject.getString("date")),
-                            jsonObject.getString("image"));
+                            image);
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
