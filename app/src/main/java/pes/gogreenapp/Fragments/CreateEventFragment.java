@@ -282,7 +282,7 @@ public class CreateEventFragment extends Fragment {
             if (params[5] != null && !params[5].isEmpty())  BodyParams.put("adress", params[5]);
             if (params[6] != null && !params[6].isEmpty())  BodyParams.put("company", params[6]);
             BodyParams.put("date", params[7]);
-            if (!params[8].equals(":")) BodyParams.put("time", params[8]);
+            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
             if (params[9] != null) BodyParams.put("image", params[9]);
 
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,

@@ -32,6 +32,7 @@ import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.CreateEventFragment;
+import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
@@ -323,10 +324,13 @@ public class MainActivity extends AppCompatActivity {
 
                     // Staring LoginActivity Activity
                     getApplicationContext().startActivity(i);
-                /*
+
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
-                    break;*/
+                    break;
+                case R.id.edit_event_fragment:
+                    fragmentClass = EditEventFragment.class;
+                    break;
                 default:
                     fragmentClass = RewardsListFragment.class;
             }
