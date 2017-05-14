@@ -328,9 +328,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
                     break;
-                case R.id.edit_event_fragment:
+                /*case R.id.edit_event_fragment:
                     fragmentClass = EditEventFragment.class;
-                    break;
+                    break;*/
                 default:
                     fragmentClass = RewardsListFragment.class;
             }

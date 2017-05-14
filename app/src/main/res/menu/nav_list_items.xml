@@ -8,9 +8,9 @@
             android:id="@+id/rewards_list_fragment"
             android:orderInCategory="1"
             android:title="@string/rewards" />
-        <item
+        <!--<item
             android:id="@+id/edit_event_fragment"
-            android:title="Edit event" />
+            android:title="Edit event" />-->
         <item
             android:id="@+id/create_event_fragment"
             android:title="Create event" />

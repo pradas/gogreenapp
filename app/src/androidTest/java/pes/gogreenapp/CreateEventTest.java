@@ -346,7 +346,7 @@ public class CreateEventTest {
     @Test
     public void CheckImageIsDisplayed(){
         onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.ImageCreateEventButton))
+        onView(withId(R.id.ImageCreateEvent))
                 .check(matches(isDisplayed()));
     }
     /**
