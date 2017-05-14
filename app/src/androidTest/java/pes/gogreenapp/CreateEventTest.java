@@ -8,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,6 +21,9 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static pes.gogreenapp.Utils.EspressoTestsMatchers.withError;
 
 public class CreateEventTest {
@@ -41,7 +45,7 @@ public class CreateEventTest {
                     .perform(NavigationViewActions.navigateTo(R.id.create_event_fragment));
         } catch (NoMatchingViewException e) {
             onView(withId(R.id.username_edit_text))
-                    .perform(clearText(), typeText("user"));
+                    .perform(clearText(), typeText("manager"));
             onView(withId(R.id.password_user_text))
                     .perform(clearText(), typeText("Password12"));
             onView(withId(R.id.buttonLogin))
@@ -53,6 +57,35 @@ public class CreateEventTest {
         }
     }
 
+
+    /**
+     * Check if it is send if is correct
+     */
+    @Test
+    public void Send() {
+        onView(withId(R.id.titleCreateEvent_edit_text))
+                .perform(clearText(), typeText("Title"));
+        onView(withId(R.id.DescriptionCreateEvent_edit_text))
+                .perform(clearText(), typeText("Description"));
+        onView(withId(R.id.PointsCreateEvent_edit_text))
+                .perform(clearText(), typeText("100"));
+        onView(withId(R.id.DirectionCreateEvent_edit_text))
+                .perform(clearText(), typeText("C/ Mayor 1"));
+        onView(withId(R.id.CompanyCreateEvent_edit_text))
+                .perform(clearText(), typeText("Green Peace"));
+        onView(withId(R.id.editTextDateCreateEvent))
+                .perform(clearText(), typeText("22-09-2017"));
+        onView(withId(R.id.HourCreateEvent_edit_text))
+                .perform(clearText(), typeText("22"));
+        onView(withId(R.id.MinCreateEvent_edit_text))
+                .perform(clearText(), typeText("30"));
+        onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
+        onView(withId(R.id.buttonSendCreateEvent))
+                .perform(scrollTo(), click());
+        onView(withText("Creado perfectamente."))
+                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+    }
 
     /**
      * Check error if the hour is incorrect

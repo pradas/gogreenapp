@@ -11,9 +11,6 @@
         <!--<item
             android:id="@+id/edit_event_fragment"
             android:title="Edit event" />-->
-        <item
-            android:id="@+id/create_event_fragment"
-            android:title="Create event" />
     </group>
     <!-- This group represents the items of a role Manager -->
     <group
@@ -23,6 +20,9 @@
             android:id="@+id/shop_view_fragment"
             android:orderInCategory="11"
             android:title="@string/shop" />
+        <item
+            android:id="@+id/create_event_fragment"
+            android:title="Create event" />
     </group>
     <!-- This group represents the items of a role Shopper -->
     <group
