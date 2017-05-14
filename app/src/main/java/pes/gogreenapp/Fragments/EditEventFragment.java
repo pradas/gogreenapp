@@ -119,23 +119,23 @@ public class EditEventFragment extends Fragment {
         ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedEditEvent);
 
         //initialize
-        TitleText.setText(event.getTitulo());
-        DescriptionText.setText(event.getDescripcion());
-        PointsText.setText(event.getPuntos().toString());
-        DirectionText.setText(event.getDireccion());
-        CompanyText.setText(event.getEmpresa());
+        TitleText.setText(event.getTitle());
+        DescriptionText.setText(event.getDescription());
+        PointsText.setText(event.getPoints().toString());
+        DirectionText.setText(event.getDirection());
+        CompanyText.setText(event.getCompany());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        DateText.setText(sdf.format(event.getFecha()));
-        if (Integer.parseInt(event.getHora()) < 10){
-            String text = "0" + event.getHora();
+        DateText.setText(sdf.format(event.getDate()));
+        if (Integer.parseInt(event.getHour()) < 10){
+            String text = "0" + event.getHour();
             HourText.setText(text);
         }
         if (Integer.parseInt(event.getMin()) < 10){
             String text = "0" + event.getMin();
             MinText.setText(text);
         }
-        if (event.getImagen() != null) {
-            byte[] decodedBytes = event.getImagen();
+        if (event.getImage() != null) {
+            byte[] decodedBytes = event.getImage();
             ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
 

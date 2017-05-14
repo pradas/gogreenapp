@@ -8,9 +8,9 @@
             android:id="@+id/rewards_list_fragment"
             android:orderInCategory="1"
             android:title="@string/rewards" />
-        <!--<item
-            android:id="@+id/edit_event_fragment"
-            android:title="Edit event" />-->
+        <item
+            android:id="@+id/list_events_fragment"
+            android:title="@string/eventos" />
     </group>
     <!-- This group represents the items of a role Manager -->
     <group
@@ -22,7 +22,10 @@
             android:title="@string/shop" />
         <item
             android:id="@+id/create_event_fragment"
-            android:title="Create event" />
+            android:title="@string/crear_eventos" />
+        <!--<item
+            android:id="@+id/edit_event_fragment"
+            android:title="Edit event" />-->
     </group>
     <!-- This group represents the items of a role Shopper -->
     <group

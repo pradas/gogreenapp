@@ -21,26 +21,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 import static android.app.Activity.RESULT_OK;
+import static pes.gogreenapp.R.id.CategoriesCreateEventSpinner;
+import static pes.gogreenapp.R.id.showCategoriesButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,9 +73,12 @@ public class CreateEventFragment extends Fragment {
     private EditText MinText;
     private EditText CompanyText;
     private Calendar calendar;
+    private List<String> categories = new ArrayList<>();
     private String FinalTime = null;
+    private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
     static private final String URLPetition = "http://10.4.41.145/api/events";
+    static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -126,6 +140,7 @@ public class CreateEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
+        new GetCategories().execute(URLcategories);
 
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
@@ -140,7 +155,11 @@ public class CreateEventFragment extends Fragment {
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
+        categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesCreateEventSpinner);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, categories);
+        categoriesSpinner.setAdapter(adapter);
         //events
         DateButton.setOnClickListener((View v) -> {
             calendar = Calendar.getInstance();
@@ -157,8 +176,8 @@ public class CreateEventFragment extends Fragment {
         HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    if (Integer.parseInt(HourText.getText().toString()) < 10){
+                if (!hasFocus) {
+                    if (Integer.parseInt(HourText.getText().toString()) < 10) {
                         String text = "0" + HourText.getText().toString();
                         HourText.setText(text);
                     }
@@ -168,8 +187,8 @@ public class CreateEventFragment extends Fragment {
         MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    if (Integer.parseInt(MinText.getText().toString()) < 10){
+                if (!hasFocus) {
+                    if (Integer.parseInt(MinText.getText().toString()) < 10) {
                         String text = "0" + MinText.getText().toString();
                         MinText.setText(text);
                     }
@@ -184,6 +203,10 @@ public class CreateEventFragment extends Fragment {
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
         SendButton.setOnClickListener(v -> {
+            if (categoriesSpinner.getSelectedItem() != null){
+                Toast.makeText(getContext(),"HOLA", Toast.LENGTH_LONG).show();
+                categoriesSpinner.getSelectedItem().toString();
+            }
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -279,10 +302,11 @@ public class CreateEventFragment extends Fragment {
             BodyParams.put("title", params[2]);
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
-            if (params[5] != null && !params[5].isEmpty())  BodyParams.put("adress", params[5]);
-            if (params[6] != null && !params[6].isEmpty())  BodyParams.put("company", params[6]);
+            if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
+            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
             BodyParams.put("date", params[7]);
             if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
+            else BodyParams.put("time", "00:00");
             if (params[9] != null) BodyParams.put("image", params[9]);
 
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
@@ -331,4 +355,39 @@ public class CreateEventFragment extends Fragment {
                     .show();
         }
     }
+
+
+    /**
+     * Asynchronous Task for the petition GET of all the Categories.
+     */
+    private class GetCategories extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                JSONObject aux;
+                try {
+                    aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("categories");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        categories.add((String) jsonObject.get("name"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+    }
+
 }

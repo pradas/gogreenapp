@@ -7,97 +7,97 @@ import java.util.Date;
 
 public class Event {
     private Integer id;
-    private String titulo;
-    private String descripcion;
-    private Integer puntos;
-    private String direccion;
-    private String empresa;
-    private Date fecha;
-    private String hora;
+    private String title;
+    private String description;
+    private Integer points;
+    private String direction;
+    private String company;
+    private Date date;
+    private String hour;
     private String min;
-    private byte[] imagen;
+    private byte[] image;
 
-    public Event(Integer id, String titulo, String descripcion, Integer puntos, String direccion,String empresa, Date fecha, String imagen) {
+    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image) {
         this.id = id;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.puntos = puntos;
-        this.direccion = direccion;
-        this.empresa = empresa;
-        this.fecha = fecha;
-        this.hora = String.valueOf(fecha.getHours());
-        this.min = String.valueOf(fecha.getMinutes());
-        if (imagen != null) {
-            this.imagen = Base64.decode(imagen, 0);
+        this.title = title;
+        this.description = description;
+        this.points = points;
+        this.direction = direction;
+        this.company = company;
+        this.date = date;
+        this.hour = String.valueOf(date.getHours());
+        this.min = String.valueOf(date.getMinutes());
+        if (image != null) {
+            this.image = Base64.decode(image, 0);
         }
 
     }
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getPuntos() {
-        return puntos;
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setPuntos(Integer puntos) {
-        this.puntos = puntos;
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public String getCompany() {
+        return company;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getDate() {
+        return date;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public String getHora() { return this.hora; }
+    public String getHour() { return this.hour; }
 
     public String getMin() { return this.min; }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
     public void setMin(String min) {
         this.min = min;
     }
 
-    public byte[] getImagen() {
-        return imagen;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Integer getId() {

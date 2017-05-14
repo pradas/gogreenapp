@@ -34,12 +34,12 @@
     <string name="titulo">Titulo:</string>
     <string name="tituloCreateEvent">Titulo</string>
     <string name="titulo_del_evento">Título del evento</string>
-    <string name="descripcion">Descripción</string>
+    <string name="description">Descripción</string>
     <string name="descripci_n_del_evento">Descripción del evento</string>
-    <string name="puntos">Puntos:</string>
-    <string name="direccion">Dirección</string>
+    <string name="points">Puntos:</string>
+    <string name="direction">Dirección</string>
     <string name="direccion_del_evento">Dirección del evento</string>
-    <string name="fecha">Fecha</string>
+    <string name="date">Fecha</string>
     <string name="fecha_del_evento">Fecha del evento</string>
     <string name="guardar">Guardar</string>
     <string name="fecha_del_evento_description">Fecha del evento</string>
@@ -47,8 +47,11 @@
     <string name="hora_evento">Hora</string>
     <string name="hora_del_evento">Hora del evento</string>
     <string name="empresa_del_evento">Empresa del evento</string>
-    <string name="empresa">Empresa</string>
+    <string name="company">Empresa</string>
     <string name="TwoPoints">:</string>
     <string name="Imagen">Imagen</string>
     <string name="imagen_del_evento">Imagen del evento</string>
+    <string name="crear_eventos">Crear eventos</string>
+    <string name="eventos">Eventos</string>
+    <string name="categoria">Categoria</string>
 </resources>
