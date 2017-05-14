@@ -1,8 +1,6 @@
 package pes.gogreenapp;
 
-import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -71,6 +69,17 @@ public class NavigationDrawerTest {
             }
             if (!instance.isLoggedIn()) {
                 onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameShopper));
+            }
+        } else if (testName.getMethodName().equals("checkUsernameManagerShowedOnHeader") ||
+                testName.getMethodName().equals("checkCreateEventAccess") ||
+                testName.getMethodName().equals("checkEmployeeManagerAccess") ||
+                testName.getMethodName().equals("checkNewDealAccess")) {
+            if (instance.isLoggedIn() && !usernameManager.equals(instance.getUsername())) {
+                onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+                onView(withId(R.id.nvView)).perform(navigateTo(R.id.log_out));
+            }
+            if (!instance.isLoggedIn()) {
+                onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameManager));
             }
         }
 
@@ -177,4 +186,44 @@ public class NavigationDrawerTest {
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.give_points_fragment));
         onView(withId(R.id.give_points_view)).check(matches(isDisplayed()));
     }
+
+    /**
+     * Check if the username of the Manager is showed at the header
+     */
+    @Test
+    public void checkUsernameManagerShowedOnHeader() {
+
+        onView(withId(R.id.header_username)).check(matches(withText(usernameManager)));
+    }
+
+    /**
+     * Check if on New Deal menu item click the View new_deal is displayed
+     */
+    @Test
+    public void checkNewDealAccess() {
+
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.new_deal_fragment));
+        onView(withId(R.id.new_deal_view)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if on Create Event menu item click the View create_event is displayed
+     */
+    @Test
+    public void checkCreateEventAccess() {
+
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.create_event_fragment));
+        onView(withId(R.id.ScrollViewCreateEvent)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if on Gestor Empleados menu item click the View employee_manager is displayed
+     */
+    @Test
+    public void checkEmployeeManagerAccess() {
+
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.employee_manager_fragment));
+        onView(withId(R.id.employee_manager_view)).check(matches(isDisplayed()));
+    }
+
 }

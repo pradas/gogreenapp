@@ -32,7 +32,7 @@ import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.CreateEventFragment;
-import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.EmployeeManagerFragment;
 import pes.gogreenapp.Fragments.GivePointsFragment;
 import pes.gogreenapp.Fragments.NewDealFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
@@ -338,6 +338,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.give_points_fragment:
                     fragmentClass = GivePointsFragment.class;
+                    break;
+                case R.id.employee_manager_fragment:
+                    fragmentClass = EmployeeManagerFragment.class;
                     break;
                 default:
                     fragmentClass = RewardsListFragment.class;

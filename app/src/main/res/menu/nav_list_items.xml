@@ -32,6 +32,10 @@
             android:id="@+id/give_points_fragment"
             android:orderInCategory="13"
             android:title="@string/give_points"/>
+        <item
+            android:id="@+id/employee_manager_fragment"
+            android:orderInCategory="14"
+            android:title="@string/employee_manager"/>
     </group>
     <!-- This group represents the items of the Switch functionality -->
     <group
