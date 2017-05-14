@@ -51,4 +51,6 @@
     <string name="TwoPoints">:</string>
     <string name="Imagen">Imagen</string>
     <string name="imagen_del_evento">Imagen del evento</string>
+    <string name="create_event">Crear Evento</string>
+    <string name="new_deal">Nueva Oferta</string>
 </resources>
