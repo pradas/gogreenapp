@@ -9,15 +9,18 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 
 import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Utils.SessionManager;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.NavigationViewActions.navigateTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -25,10 +28,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class NavigationDrawerTest {
 
-    private final String username = "user";
+    private final String usernameUser = "user";
+    private final String usernameShopper = "shoper";
+    private final String usernameManager = "manager";
+    private final String password = "Password12";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
+    public ActivityTestRule<MainActivity> myActivityRule = new ActivityTestRule<>(MainActivity.class, true, true);
+
+    @Rule
+    public TestName testName = new TestName();
 
     /**
      * Before the tests if he Navigation Drawer is open, if cant be open it is because there isn't
@@ -38,14 +47,38 @@ public class NavigationDrawerTest {
     @Before
     public void setup() {
 
-        try {
-            onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        } catch (NoMatchingViewException e) {
-            onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(username));
-            onView(withId(R.id.password_user_text)).perform(clearText(), typeText("Password12"));
-            onView(withId(R.id.buttonLogin)).perform(click());
-            onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        SessionManager instance = SessionManager.getInstance(myActivityRule.getActivity().getApplicationContext());
+
+        if (testName.getMethodName().equals("checkNavigationDrawerIsOpen") ||
+                testName.getMethodName().equals("checkAboutUsAccess") ||
+                testName.getMethodName().equals("checkRewardsAccess") ||
+                testName.getMethodName().equals("checkSettingsAccess") ||
+                testName.getMethodName().equals("checkUserProfileAccess") ||
+                testName.getMethodName().equals("checkUsernameUserShowedOnHeader")) {
+            if (instance.isLoggedIn() && !usernameUser.equals(instance.getUsername())) {
+                onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+                onView(withId(R.id.nvView)).perform(navigateTo(R.id.log_out));
+            }
+            if (!instance.isLoggedIn()) {
+                onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
+            }
+        } else if (testName.getMethodName().equals("checkUsernameShopperShowedOnHeader") ||
+                testName.getMethodName().equals("checkShopAccess") ||
+                testName.getMethodName().equals("checkGivePointsAccess")) {
+            if (instance.isLoggedIn() && !usernameShopper.equals(instance.getUsername())) {
+                onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+                onView(withId(R.id.nvView)).perform(navigateTo(R.id.log_out));
+            }
+            if (!instance.isLoggedIn()) {
+                onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameShopper));
+            }
         }
+
+        if (!instance.isLoggedIn()) {
+            onView(withId(R.id.password_user_text)).perform(clearText(), typeText(password));
+            onView(withId(R.id.buttonLogin)).perform(click());
+        }
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
     }
 
     /**
@@ -63,7 +96,7 @@ public class NavigationDrawerTest {
     @Test
     public void checkRewardsAccess() {
 
-        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.rewards_list_fragment));
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.rewards_list_fragment));
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
     }
 
@@ -73,7 +106,7 @@ public class NavigationDrawerTest {
     @Test
     public void checkAboutUsAccess() {
 
-        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.about_us_fragment));
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.about_us_fragment));
         onView(withId(R.id.about_us)).check(matches(isDisplayed()));
     }
 
@@ -83,7 +116,7 @@ public class NavigationDrawerTest {
     @Test
     public void checkSettingsAccess() {
 
-        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.settings_fragment));
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.settings_fragment));
         onView(withId(R.id.settings)).check(matches(isDisplayed()));
     }
 
@@ -93,7 +126,7 @@ public class NavigationDrawerTest {
     @Test
     public void checkAccountManagerAccess() {
 
-        onView(withId(R.id.nvView)).perform(NavigationViewActions.navigateTo(R.id.account_manager_fragment));
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.account_manager_fragment));
         onView(withId(R.id.account_manager)).check(matches(isDisplayed()));
     }
 
@@ -108,11 +141,40 @@ public class NavigationDrawerTest {
     }
 
     /**
-     * Check if the username is showed at the header
+     * Check if the username of the User is showed at the header
      */
     @Test
-    public void checkUsernameShowedOnHeader() {
+    public void checkUsernameUserShowedOnHeader() {
 
-        onView(withId(R.id.header_username)).check(matches(withText(username)));
+        onView(withId(R.id.header_username)).check(matches(withText(usernameUser)));
+    }
+
+    /**
+     * Check if the username of the Shopper is showed at the header
+     */
+    @Test
+    public void checkUsernameShopperShowedOnHeader() {
+
+        onView(withId(R.id.header_username)).check(matches(withText(usernameShopper)));
+    }
+
+    /**
+     * Check if on Shop menu item click the View shop_view is displayed
+     */
+    @Test
+    public void checkShopAccess() {
+
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.shop_view_fragment));
+        onView(withId(R.id.shop_view)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Check if on Give Points menu item click the View give_points is displayed
+     */
+    @Test
+    public void checkGivePointsAccess() {
+
+        onView(withId(R.id.nvView)).perform(navigateTo(R.id.give_points_fragment));
+        onView(withId(R.id.give_points_view)).check(matches(isDisplayed()));
     }
 }

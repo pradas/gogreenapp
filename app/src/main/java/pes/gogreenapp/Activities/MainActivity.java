@@ -33,8 +33,11 @@ import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.CreateEventFragment;
 import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.GivePointsFragment;
+import pes.gogreenapp.Fragments.NewDealFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
+import pes.gogreenapp.Fragments.ShopFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
@@ -164,10 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 menu.setGroupVisible(R.id.menu_switch, true);
                 if (ROLE_USER.equals(session.getRole())) {
                     menu.setGroupVisible(R.id.menu_top, false);
-                } else if (ROLE_MANAGER.equals(session.getRole())) {
-                    menu.setGroupVisible(R.id.menu_manager, false);
-                } else if (ROLE_SHOPPER.equals(session.getRole())) {
-                    menu.setGroupVisible(R.id.menu_shopper, false);
+                } else if (ROLE_MANAGER.equals(session.getRole()) || ROLE_SHOPPER.equals(session.getRole())) {
+                    menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
                 }
 
                 //Change the direction of the arrow icon
@@ -186,14 +187,15 @@ public class MainActivity extends AppCompatActivity {
 
         menu.setGroupVisible(R.id.menu_switch, false);
         if (ROLE_SHOPPER.equals(session.getRole())) {
-            menu.setGroupVisible(R.id.menu_shopper, true);
+            menu.setGroupVisible(R.id.menu_manager_and_shopper, true);
+            MenuItem item = menu.findItem(R.id.create_event_fragment);
+            item.setVisible(false);
+            item = menu.findItem(R.id.new_deal_fragment);
+            item.setVisible(false);
+        } else if (ROLE_MANAGER.equals(session.getRole())) {
+            menu.setGroupVisible(R.id.menu_manager_and_shopper, true);
         } else {
-            menu.setGroupVisible(R.id.menu_shopper, false);
-        }
-        if (ROLE_MANAGER.equals(session.getRole())) {
-            menu.setGroupVisible(R.id.menu_manager, true);
-        } else {
-            menu.setGroupVisible(R.id.menu_manager, false);
+            menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
         }
         if (ROLE_USER.equals(session.getRole())) {
             menu.setGroupVisible(R.id.menu_top, true);
@@ -328,9 +330,15 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
                     break;
-                /*case R.id.edit_event_fragment:
-                    fragmentClass = EditEventFragment.class;
-                    break;*/
+                case R.id.new_deal_fragment:
+                    fragmentClass = NewDealFragment.class;
+                    break;
+                case R.id.shop_view_fragment:
+                    fragmentClass = ShopFragment.class;
+                    break;
+                case R.id.give_points_fragment:
+                    fragmentClass = GivePointsFragment.class;
+                    break;
                 default:
                     fragmentClass = RewardsListFragment.class;
             }
