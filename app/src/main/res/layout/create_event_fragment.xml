@@ -76,20 +76,17 @@
             android:layout_below="@+id/PointsCreateEvent_edit_text"
             android:text="@string/categoria"
             android:textSize="20sp" />
-
         <Spinner
-            android:id="@+id/CategoriesCreateEventSpinner"
-            android:layout_width="match_parent"
+            android:id="@+id/CategoriesSpinner"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/CategoriesCreateEvent"
-            android:layout_centerHorizontal="true"
-            android:textColor="#000000" />
+            android:layout_below="@+id/CategoriesCreateEvent"/>
         <TextView
             android:id="@+id/DirectionCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/CategoriesCreateEventSpinner"
+            android:layout_below="@+id/CategoriesSpinner"
             android:text="@string/direction"
             android:textSize="20sp" />
 

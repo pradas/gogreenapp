@@ -50,8 +50,6 @@ import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 import static android.app.Activity.RESULT_OK;
-import static pes.gogreenapp.R.id.CategoriesCreateEventSpinner;
-import static pes.gogreenapp.R.id.showCategoriesButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,7 +71,7 @@ public class CreateEventFragment extends Fragment {
     private EditText MinText;
     private EditText CompanyText;
     private Calendar calendar;
-    private List<String> categories = new ArrayList<>();
+    private List<String> categories = new ArrayList<String>();
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
@@ -155,11 +153,8 @@ public class CreateEventFragment extends Fragment {
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
-        categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesCreateEventSpinner);
+        categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, categories);
-        categoriesSpinner.setAdapter(adapter);
         //events
         DateButton.setOnClickListener((View v) -> {
             calendar = Calendar.getInstance();
@@ -203,10 +198,7 @@ public class CreateEventFragment extends Fragment {
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
         SendButton.setOnClickListener(v -> {
-            if (categoriesSpinner.getSelectedItem() != null){
-                Toast.makeText(getContext(),"HOLA", Toast.LENGTH_LONG).show();
-                categoriesSpinner.getSelectedItem().toString();
-            }
+            Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -360,7 +352,7 @@ public class CreateEventFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Categories.
      */
-    private class GetCategories extends AsyncTask<String, Void, Void> {
+    private class GetCategories extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
@@ -368,7 +360,7 @@ public class CreateEventFragment extends Fragment {
          * @param urls The parameters of the task.
          */
         @Override
-        protected Void doInBackground(String... urls) {
+        protected String doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
                     session.getToken());
@@ -385,9 +377,24 @@ public class CreateEventFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                return "correcte";
             }
-            return null;
+            return "falla";
         }
+
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Falla" makes the toast.
+         */
+        protected void onPostExecute(String result) {
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_spinner_item, categories);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            categoriesSpinner.setAdapter(dataAdapter);
+            Toast.makeText(getActivity(), "adapter", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }
