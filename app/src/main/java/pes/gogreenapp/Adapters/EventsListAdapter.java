@@ -67,6 +67,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         TextView points;
         TextView date;
         TextView hour;
+        ImageButton fav;
         public Integer id;
 
         /**
@@ -81,6 +82,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             points = (TextView) itemView.findViewById(R.id.eventPoints);
             date = (TextView) itemView.findViewById(R.id.eventEndDate);
             hour = (TextView) itemView.findViewById(R.id.eventHour);
+            fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButton);
         }
     }
 
@@ -116,10 +118,46 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         Date d = events.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy").format(d));
         holder.hour.setText(new SimpleDateFormat("HH:mm").format(d));
-        //holder.image.setImageResource(R.mipmap.ic_launcher_round);
        if (events.get(position).getImage() != null) {
             byte[] decodedBytes = events.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
+        }
+        holder.fav.setOnClickListener(v -> {
+            if (holder.fav.getTag().equals("favorite")) {
+                /*new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                        session.getUsername(), holder.id.toString());*/
+                holder.fav.setImageResource(R.mipmap.favoritefilled);
+                holder.fav.setTag("favoritefilled");
+            } else {
+                holder.fav.setImageResource(R.mipmap.favorite);
+                holder.fav.setTag("favorite");
+            }
+        });
+    }
+
+
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-evemts";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 

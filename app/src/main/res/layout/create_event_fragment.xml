@@ -80,7 +80,9 @@
             android:id="@+id/CategoriesSpinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/CategoriesCreateEvent"/>
+            android:layout_below="@+id/CategoriesCreateEvent"
+            android:textColorHighlight="#ff7eff15"
+            android:textColorHint="#000000"/>
         <TextView
             android:id="@+id/DirectionCreateEvent"
             android:layout_width="wrap_content"

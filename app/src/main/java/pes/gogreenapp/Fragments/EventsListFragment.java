@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -65,9 +67,14 @@ public class EventsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.events_list_fragment, container, false);
     }
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.events_list_items, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -92,7 +99,6 @@ public class EventsListFragment extends Fragment {
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
-
     /**
      * On swipe, refresh all the items of the screen.
      */

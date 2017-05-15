@@ -198,7 +198,7 @@ public class CreateEventFragment extends Fragment {
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
         SendButton.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -263,7 +263,8 @@ public class CreateEventFragment extends Fragment {
                         CompanyText.getText().toString(),
                         DateText.getText().toString(),
                         FinalTime,
-                        imgString
+                        imgString,
+                        String.valueOf(categoriesSpinner.getSelectedItem())
                 );
             }
         });
@@ -279,14 +280,16 @@ public class CreateEventFragment extends Fragment {
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
          * @param params params[0] is the petition url,
-         *               params[1] is the title,
-         *               params[2] is the description
-         *               params[3] is the points
-         *               params[4] is the adress
-         *               params[5] is the company
-         *               params[6] is the date
-         *               params[7] is the time
-         *               params[8] is the image
+         *               params[1] is the method,
+         *               params[2] is the title,
+         *               params[3] is the description
+         *               params[4] is the points
+         *               params[5] is the adress
+         *               params[6] is the company
+         *               params[7] is the date
+         *               params[8] is the time
+         *               params[9] is the image
+         *               params[10] is the category
          * @return void when finished
          */
         protected String doInBackground(String... params) {
@@ -300,7 +303,7 @@ public class CreateEventFragment extends Fragment {
             if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
             else BodyParams.put("time", "00:00");
             if (params[9] != null) BodyParams.put("image", params[9]);
-
+            //BodyParams.put("category", params[10]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);
