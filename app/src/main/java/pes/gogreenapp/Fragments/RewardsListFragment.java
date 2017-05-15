@@ -1,15 +1,18 @@
 package pes.gogreenapp.Fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,10 +33,10 @@ import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
-import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
-import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 import static pes.gogreenapp.R.id.orderDateButton;
 import static pes.gogreenapp.R.id.orderPointsButton;
@@ -74,7 +77,27 @@ public class RewardsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        inflater.inflate(R.menu.menu_filters, menu);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener( v -> {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+            mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
+            mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
+
+            });
+            AlertDialog dialog = mBuilder.create();
+            dialog.show();
+            return true;
+        });
+
     }
 
     /**
@@ -101,6 +124,7 @@ public class RewardsListFragment extends Fragment {
         final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
         final Button allRewards = (Button) getView().findViewById(showAllButton);
         TextView warning = (TextView) getView().findViewById(R.id.warningNoResult);
+
 
         // Listener for the Date order button
         endDate.setOnClickListener(v -> {
@@ -188,6 +212,8 @@ public class RewardsListFragment extends Fragment {
             adapter = new RewardsListAdapter(getContext(), rewards);
             recyclerView.setAdapter(adapter);
         });
+
+
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);

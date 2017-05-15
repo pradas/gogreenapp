@@ -1,16 +1,15 @@
 package pes.gogreenapp.Adapters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,7 +60,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         public TextView points;
         public TextView endDate;
         public ImageView rewardImage;
-        public Button use;
+        public ImageButton use;
         public ImageButton fav;
         public Integer id;
 
@@ -77,8 +76,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             points = (TextView) itemView.findViewById(R.id.rewardPoints);
             endDate = (TextView) itemView.findViewById(R.id.rewardEndDate);
             rewardImage = (ImageView) itemView.findViewById(R.id.rewardImage);
-            use = (Button) itemView.findViewById(R.id.exchangeButton);
-            use.setText("Utilizar");
+            use = (ImageButton) itemView.findViewById(R.id.exchangeButton);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
