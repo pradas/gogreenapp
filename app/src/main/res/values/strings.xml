@@ -24,8 +24,12 @@
     <string name="profile_image_description">Profile image of the user</string>
     <string name="categories">Categorias</string>
 
+    <!-- Alert Dialog Messages -->
+    <string name="givePoints">¿Está seguro que desea entregar los puntos a esos usuarios"</string>
+
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
+    <string name="givePointsAlertButton">ENTREGAR PUNTOS</string>
     <string name="cancel">CANCELAR</string>
 
     <!-- Hints Give Points -->

@@ -9,13 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +28,18 @@ public class GivePointsAdapter extends BaseAdapter {
     private List<String> users;
     private List<String> userNames;
     private List<String> events;
+    private Integer position;
 
     class ListViewHolder {
+        RelativeLayout itemEvents;
+        RelativeLayout itemPoints;
         TextView userNumber;
         EditText userNameText;
         RadioGroup radioButtons;
 
         ListViewHolder (View v) {
+            itemEvents = (RelativeLayout) v.findViewById(R.id.givePointsByEvents);
+            itemPoints = (RelativeLayout) v.findViewById(R.id.givePointsByPoints);
             userNumber = (TextView) v.findViewById(R.id.userNumber);
             userNameText = (EditText) v.findViewById(R.id.userNameToGive);
             radioButtons = (RadioGroup) v.findViewById(R.id.radioGroupGivePoints);
@@ -50,6 +51,7 @@ public class GivePointsAdapter extends BaseAdapter {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
+        this.position = 0;
     }
 
     @Override
@@ -69,31 +71,20 @@ public class GivePointsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
         ListViewHolder viewHolder = null;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final int[] buttonMode = {0};
 
         if (convertView == null) {
-            row = inflater.inflate(R.layout.listpoints_item, parent, false);
-            viewHolder = new ListViewHolder(row);
-            row.setTag(viewHolder);
+            convertView = inflater.inflate(R.layout.list_points_item_events, parent, false);
+            viewHolder = new ListViewHolder(convertView);
+            convertView.setTag(viewHolder);
         }
         else {
-            viewHolder = (ListViewHolder) row.getTag();
+            viewHolder = (ListViewHolder) convertView.getTag();
         }
+
         viewHolder.userNumber.setText(users.get(position));
-        viewHolder.radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if (checkedId == R.id.radioButtonEvents) {
-
-                }
-                else if (checkedId == R.id.radioButtonPoints) {
-
-                }
-            }
-        });
-
         viewHolder.userNameText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -105,10 +96,34 @@ public class GivePointsAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (userNames.size() <= position) userNames.add(position, s.toString());
+                else userNames.set(position, s.toString());
             }
         });
-        return row;
+        viewHolder.radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if (checkedId == R.id.radioButtonEvents) {
+                    selectedItem(position);
+                }
+                else if (checkedId == R.id.radioButtonPoints) {
+                    selectedItem(position);
+                }
+            }
+        });
+
+        if (this.position == position) {
+            View view2 = convertView;
+            view2 = inflater.inflate(R.layout.list_points_item_points, parent, false);
+            TextView title = (TextView) view2.findViewById(R.id.userNumber);
+            title.setText(users.get(position));
+            return view2;
+        }
+        return convertView;
+    }
+
+    public void selectedItem (int position) {
+        this.position = position;
     }
 
     public List <String> getUserNames () {

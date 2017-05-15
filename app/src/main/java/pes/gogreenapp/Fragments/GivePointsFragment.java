@@ -1,11 +1,15 @@
 package pes.gogreenapp.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.AsyncLayoutInflater;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -69,18 +73,32 @@ public class GivePointsFragment extends Fragment {
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         listToGivePoints.setAdapter(adapter);
 
+
         anotherUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                users.add("Usuario nº" + (users.size()+1));
+                users.add("Usuario nº" + (users.size() + 1));
                 adapter.notifyDataSetChanged();
             }
         });
         grantPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> userNames = adapter.getUserNames();
-                userNames.add("papo");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.givePoints)
+                        .setPositiveButton(R.string.givePointsAlertButton, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                List<String> userNames = adapter.getUserNames();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }
