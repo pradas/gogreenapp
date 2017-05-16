@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_list_items" />
 </android.support.v4.widget.DrawerLayout>
