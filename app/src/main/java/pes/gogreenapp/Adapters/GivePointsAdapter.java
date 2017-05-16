@@ -34,16 +34,29 @@ public class GivePointsAdapter extends BaseAdapter {
     private Integer positionGlobal;
 
     class ListViewHolder {
-        TextView userNumber;
-        EditText userNameText;
-        RadioGroup radioButtons;
+        TextView userNumberByEvents;
+        EditText userNameTextByEvents;
+        RadioGroup radioButtonsByEvents;
         Spinner spinnerEvents;
 
+        TextView userNumberByPoints;
+        EditText userNameTextByPoints;
+        RadioGroup radioButtonsByPoints;
+        EditText pointsToGive;
+
         ListViewHolder (View v) {
-            userNumber = (TextView) v.findViewById(R.id.userNumberByEvents);
-            userNameText = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
-            radioButtons = (RadioGroup) v.findViewById(R.id.radioGroupGivePointsByEvents);
+            userNumberByEvents = (TextView) v.findViewById(R.id.userNumberByEvents);
+            userNameTextByEvents = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
+            radioButtonsByEvents = (RadioGroup) v.findViewById(R.id.radioGroupGivePointsByEvents);
             spinnerEvents = (Spinner) v.findViewById(R.id.spinnerEvents);
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view2 = inflater.inflate(R.layout.list_points_item_points, null);
+
+            userNumberByPoints = (TextView) view2.findViewById(R.id.userNumberByPoints);
+            userNameTextByPoints = (EditText) view2.findViewById(R.id.userNameToGiveByPoints);
+            radioButtonsByPoints = (RadioGroup) view2.findViewById(R.id.radioGroupGivePointsByPoints);
+            pointsToGive = (EditText) view2.findViewById(R.id.pointsToGive);
         }
     }
 
@@ -73,70 +86,101 @@ public class GivePointsAdapter extends BaseAdapter {
         return position;
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewHolder viewHolder = null;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View eventsView = inflater.inflate(R.layout.list_points_item_events, parent, false);
+        View pointsView = inflater.inflate(R.layout.list_points_item_points, parent, false);
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_points_item_events, parent, false);
-            viewHolder = new ListViewHolder(convertView);
-            convertView.setTag(viewHolder);
+            if (states.get(position).equals("Events")) convertView = eventsView;
+            else convertView = pointsView;
         }
         else {
             viewHolder = (ListViewHolder) convertView.getTag();
         }
 
-        viewHolder.userNumber.setText(users.get(position));
-        viewHolder.userNameText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        if (states.get(position).equals("Events")) {
+            viewHolder = new ListViewHolder(eventsView);
+            convertView.setTag(viewHolder);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            viewHolder.userNumberByEvents.setText(users.get(position));
+            viewHolder.userNameTextByEvents.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (userNames.size() <= position) userNames.add(position, s.toString());
-                else userNames.set(position, s.toString());
-            }
-        });
-        viewHolder.radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if (checkedId == R.id.radioButtonEvents) {
-                    selectedItem(position, "Events");
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
-                else if (checkedId == R.id.radioButtonPoints) {
-                    selectedItem(position, "Points");
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (userNames.size() <= position) userNames.add(position, s.toString());
+                    else userNames.set(position, s.toString());
                 }
-            }
-        });
+            });
+            viewHolder.radioButtonsByEvents.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                    if (checkedId == R.id.radioButtonEvents) {
+                        selectedItem(position, "Events");
+                    } else if (checkedId == R.id.radioButtonPoints) {
+                        selectedItem(position, "Points");
+                    }
+                }
+            });
+        }
+        else {
+            viewHolder = new ListViewHolder(pointsView);
+            convertView.setTag(viewHolder);
+
+            viewHolder.userNumberByPoints.setText(users.get(position));
+            viewHolder.userNameTextByPoints.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (userNames.size() <= position) userNames.add(position, s.toString());
+                    else userNames.set(position, s.toString());
+                }
+            });
+            viewHolder.radioButtonsByPoints.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                    if (checkedId == R.id.radioButtonEvents) {
+                        selectedItem(position, "Events");
+                    } else if (checkedId == R.id.radioButtonPoints) {
+                        selectedItem(position, "Points");
+                    }
+                }
+            });
+        }
 
         if (positionGlobal == position) {
-            View view2 = convertView;
             TextView title = null;
             if (states.get(position).equals("Events")) {
-                view2 = inflater.inflate(R.layout.list_points_item_events, parent, false);
-                title = (TextView) view2.findViewById(R.id.userNumberByEvents);
+                title = (TextView) eventsView.findViewById(R.id.userNumberByEvents);
+                title.setText(users.get(position));
+                return eventsView;
             }
-            if (states.get(position).equals("Points")) {
-                view2 = inflater.inflate(R.layout.list_points_item_points, parent, false);
-                title = (TextView) view2.findViewById(R.id.userNumberByPoints);
+            else {
+                title = (TextView) pointsView.findViewById(R.id.userNumberByPoints);
+                title.setText(users.get(position));
+                return pointsView;
             }
-
-
-            title.setText(users.get(position));
-            return view2;
         }
         return convertView;
     }
 
-    public void selectedItem (int position, String newState) {
+    private void selectedItem (int position, String newState) {
         positionGlobal = position;
         states.set(position,newState);
         notifyDataSetChanged();

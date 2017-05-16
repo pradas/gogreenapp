@@ -11,7 +11,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userNumber"
+        android:layout_below="@+id/userNumberByEvents"
         android:id="@+id/userNameToGiveByEvents"
         android:hint="@string/usernameHint"
         android:layout_centerHorizontal="true" />
