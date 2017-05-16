@@ -14,6 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:backgroundTint="@color/zxing_possible_result_points"
+        android:backgroundTintMode="src_over"
         android:contentDescription="@string/profile_image_description"
         android:src="@android:drawable/sym_def_app_icon" />
 

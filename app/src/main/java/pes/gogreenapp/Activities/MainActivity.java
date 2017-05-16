@@ -8,6 +8,9 @@ package pes.gogreenapp.Activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +27,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
@@ -39,16 +52,20 @@ import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.ShopFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
+import pes.gogreenapp.Fragments.UserProfilePublicFragment;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Utils.UserData;
+
+import static pes.gogreenapp.R.id.profile_image;
 
 /**
  * @author Albert
  */
 public class MainActivity extends AppCompatActivity {
-
+    private static final String url = "http://10.4.41.145/api/";
     private static final String ROLE_MANAGER = "manager";
     private static final String ROLE_SHOPPER = "shopper";
     private static final String ROLE_USER = "user";
@@ -59,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private View headerView;
     private boolean switchActive = false;
     private SessionManager session;
-
+    private CircleImageView main_profile_image;
     /**
      * onCreate method to initialize the Activity.
      *
@@ -284,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
                 TextView usernameHeader = (TextView) headerView.findViewById(R.id.header_username);
                 usernameHeader.setText(session.getUsername());
 
+                new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
+
                 // Delete the actual menuitem
                 menu.removeItem(menuItem.getItemId());
 
@@ -392,4 +411,54 @@ public class MainActivity extends AppCompatActivity {
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
+    private class GetPublicInfoUser extends AsyncTask<String, Void, Void> {
+        Bitmap b_image_user;
+
+        private Bitmap getRemoteImage(final URL aURL) {
+            try {
+                final URLConnection conn = aURL.openConnection();
+                conn.connect();
+                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                final Bitmap bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bm;
+            } catch (IOException e) {}
+            return null;
+        }
+
+
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
+                    session.getToken());
+            //TODO Implementar TAG
+            Log.i("AAAAAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
+
+            URL imageUrl = null;
+            try {
+                JSONObject jsonArray = new JSONObject(response);
+                imageUrl = new URL(jsonArray.getString("image"));
+                //JSONArray jsonArray = aux.getJSONArray("rewards");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
+            //testUser.setUserImage();
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void result) {
+            main_profile_image = (CircleImageView) findViewById(profile_image);
+            main_profile_image.setImageBitmap(b_image_user);
+        }
+
+    }
+
 }
