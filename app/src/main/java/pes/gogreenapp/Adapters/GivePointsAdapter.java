@@ -2,6 +2,7 @@ package pes.gogreenapp.Adapters;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
+import android.support.v4.util.Pair;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,21 +30,20 @@ public class GivePointsAdapter extends BaseAdapter {
     private List<String> users;
     private List<String> userNames;
     private List<String> events;
-    private Integer position;
+    private List<String> states;
+    private Integer positionGlobal;
 
     class ListViewHolder {
-        RelativeLayout itemEvents;
-        RelativeLayout itemPoints;
         TextView userNumber;
         EditText userNameText;
         RadioGroup radioButtons;
+        Spinner spinnerEvents;
 
         ListViewHolder (View v) {
-            itemEvents = (RelativeLayout) v.findViewById(R.id.givePointsByEvents);
-            itemPoints = (RelativeLayout) v.findViewById(R.id.givePointsByPoints);
-            userNumber = (TextView) v.findViewById(R.id.userNumber);
-            userNameText = (EditText) v.findViewById(R.id.userNameToGive);
-            radioButtons = (RadioGroup) v.findViewById(R.id.radioGroupGivePoints);
+            userNumber = (TextView) v.findViewById(R.id.userNumberByEvents);
+            userNameText = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
+            radioButtons = (RadioGroup) v.findViewById(R.id.radioGroupGivePointsByEvents);
+            spinnerEvents = (Spinner) v.findViewById(R.id.spinnerEvents);
         }
     }
 
@@ -51,7 +52,10 @@ public class GivePointsAdapter extends BaseAdapter {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
-        this.position = 0;
+        this.events = new ArrayList<String>();
+        this.states = new ArrayList<String>();
+        states.add("Events");
+        this.positionGlobal = 100;
     }
 
     @Override
@@ -69,11 +73,12 @@ public class GivePointsAdapter extends BaseAdapter {
         return position;
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewHolder viewHolder = null;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final int[] buttonMode = {0};
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_points_item_events, parent, false);
@@ -104,26 +109,41 @@ public class GivePointsAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radioButtonEvents) {
-                    selectedItem(position);
+                    selectedItem(position, "Events");
                 }
                 else if (checkedId == R.id.radioButtonPoints) {
-                    selectedItem(position);
+                    selectedItem(position, "Points");
                 }
             }
         });
 
-        if (this.position == position) {
+        if (positionGlobal == position) {
             View view2 = convertView;
-            view2 = inflater.inflate(R.layout.list_points_item_points, parent, false);
-            TextView title = (TextView) view2.findViewById(R.id.userNumber);
+            TextView title = null;
+            if (states.get(position).equals("Events")) {
+                view2 = inflater.inflate(R.layout.list_points_item_events, parent, false);
+                title = (TextView) view2.findViewById(R.id.userNumberByEvents);
+            }
+            if (states.get(position).equals("Points")) {
+                view2 = inflater.inflate(R.layout.list_points_item_points, parent, false);
+                title = (TextView) view2.findViewById(R.id.userNumberByPoints);
+            }
+
+
             title.setText(users.get(position));
             return view2;
         }
         return convertView;
     }
 
-    public void selectedItem (int position) {
-        this.position = position;
+    public void selectedItem (int position, String newState) {
+        positionGlobal = position;
+        states.set(position,newState);
+        notifyDataSetChanged();
+    }
+
+    public void addState () {
+        states.add(states.size(), "Events");
     }
 
     public List <String> getUserNames () {

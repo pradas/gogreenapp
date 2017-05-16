@@ -2,25 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/givePointsByEvents">
+    android:id="@+id/givePointsByEvents"
+    android:clickable="true">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/userNumber" />
+        android:id="@+id/userNumberByEvents" />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userNumber"
-        android:id="@+id/userNameToGive"
+        android:id="@+id/userNameToGiveByEvents"
         android:hint="@string/usernameHint"
         android:layout_centerHorizontal="true" />
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/radioGroupGivePoints"
+        android:id="@+id/radioGroupGivePointsByEvents"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/userNameToGive">
+        android:layout_below="@+id/userNameToGiveByEvents">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerEvents"
-        android:layout_below="@+id/radioGroupGivePoints"
+        android:layout_below="@+id/radioGroupGivePointsByEvents"
         android:layout_centerHorizontal="true">
     </Spinner>
 </RelativeLayout>

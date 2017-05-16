@@ -73,11 +73,11 @@ public class GivePointsFragment extends Fragment {
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         listToGivePoints.setAdapter(adapter);
 
-
         anotherUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 users.add("Usuario nº" + (users.size() + 1));
+                adapter.addState();
                 adapter.notifyDataSetChanged();
             }
         });
