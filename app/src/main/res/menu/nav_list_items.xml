@@ -1,36 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This group represents the items after the Header and before the separator -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This group represents the items of a normal User -->
     <group
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
             android:id="@+id/rewards_list_fragment"
-            android:icon="@mipmap/ic_local_play_black_24dp"
-            android:title="@string/rewards" />
+            android:orderInCategory="1"
+            android:title="@string/rewards"/>
+        <!--<item
+            android:id="@+id/edit_event_fragment"
+            android:title="Edit event" />-->
     </group>
-    <!-- This group represents the items after the separator -->
+    <!-- This group represents the items of a role Manager and the Shopper -->
+    <group
+        android:id="@+id/menu_manager_and_shopper"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/shop_view_fragment"
+            android:orderInCategory="10"
+            android:title="@string/shop"/>
+        <item
+            android:id="@+id/create_event_fragment"
+            android:orderInCategory="11"
+            android:title="@string/create_event"/>
+        <item
+            android:id="@+id/new_deal_fragment"
+            android:orderInCategory="12"
+            android:title="@string/new_deal"/>
+        <item
+            android:id="@+id/give_points_fragment"
+            android:orderInCategory="13"
+            android:title="@string/give_points"/>
+        <item
+            android:id="@+id/employee_manager_fragment"
+            android:orderInCategory="14"
+            android:title="@string/employee_manager"/>
+    </group>
+    <!-- This group represents the items of the Switch functionality -->
+    <group
+        android:id="@+id/menu_switch"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/add_account"
+            android:orderInCategory="100"
+            android:title="@string/add_account"/>
+    </group>
+    <!-- This group represents the items fixed in every Role -->
     <group
         android:id="@+id/menu_bottom"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/settings_fragment"
-            android:icon="@mipmap/ic_settings_black_24dp"
-            android:title="@string/settings"
-            android:visible="false"
-            app:showAsAction="always" />
-        <item
             android:id="@+id/account_manager_fragment"
-            android:icon="@mipmap/ic_verified_user_black_24dp"
-            android:title="@string/account_manager" />
+            android:orderInCategory="101"
+            android:title="@string/account_manager"/>
+        <item
+            android:id="@+id/settings_fragment"
+            android:orderInCategory="102"
+            android:title="@string/settings"/>
         <item
             android:id="@+id/about_us_fragment"
-            android:icon="@mipmap/ic_info_black_24dp"
-            android:title="@string/about_us" />
+            android:orderInCategory="103"
+            android:title="@string/about_us"/>
         <item
             android:id="@+id/log_out"
-            android:icon="@mipmap/ic_power_settings_new_black_24dp"
-            android:title="@string/log_out" />
+            android:orderInCategory="104"
+            android:title="@string/log_out"/>
     </group>
 </menu>

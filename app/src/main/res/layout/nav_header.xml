@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="@mipmap/imagennavbackground"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    android:id="@+id/header"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -17,11 +17,27 @@
         android:contentDescription="@string/profile_image_description"
         android:src="@android:drawable/sym_def_app_icon" />
 
-    <TextView
-        android:id="@+id/profile_username"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/darker_gray" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/header_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".90"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/arrow_switch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".10"
+            android:contentDescription="@string/arrow_switch_down"
+            android:src="@drawable/ic_arrow_drop_down_black_24dp" />
+    </LinearLayout>
+
 
 </LinearLayout>

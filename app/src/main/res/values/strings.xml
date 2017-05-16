@@ -27,4 +27,31 @@
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="cancel">CANCELAR</string>
+    <string name="arrow_switch_down">Arrow to activate Switch Menu</string>
+    <string name="add_account">Añadir Cuenta</string>
+    <string name="shop">Tienda</string>
+    <string name="give_points">Dar Puntos</string>
+    <string name="titulo">Titulo:</string>
+    <string name="tituloCreateEvent">Titulo</string>
+    <string name="titulo_del_evento">Título del evento</string>
+    <string name="descripcion">Descripción</string>
+    <string name="descripci_n_del_evento">Descripción del evento</string>
+    <string name="puntos">Puntos:</string>
+    <string name="direccion">Dirección</string>
+    <string name="direccion_del_evento">Dirección del evento</string>
+    <string name="fecha">Fecha</string>
+    <string name="fecha_del_evento">Fecha del evento</string>
+    <string name="guardar">Guardar</string>
+    <string name="fecha_del_evento_description">Fecha del evento</string>
+    <string name="fecha_evento">Fecha</string>
+    <string name="hora_evento">Hora</string>
+    <string name="hora_del_evento">Hora del evento</string>
+    <string name="empresa_del_evento">Empresa del evento</string>
+    <string name="empresa">Empresa</string>
+    <string name="TwoPoints">:</string>
+    <string name="Imagen">Imagen</string>
+    <string name="imagen_del_evento">Imagen del evento</string>
+    <string name="create_event">Crear Evento</string>
+    <string name="new_deal">Nueva Oferta</string>
+    <string name="employee_manager">Gestor Empleados</string>
 </resources>

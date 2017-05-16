@@ -86,26 +86,4 @@ public class PrivateProfileTest {
         onView(withId(R.id.user_points))
                 .check(matches(isDisplayed()));
     }
-
-
-    /**
-     * Check if the user birth date is displayed
-     */
-    @Test
-    public void checkBirthDateIsShown(){
-        onView(withId(R.id.user_birthdate))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the user current points are displayed
-     */
-
-    @Test
-    public void checkCurrentPointsAreShown(){
-        onView(withId(R.id.user_birthdate))
-                .check(matches(isDisplayed()));
-    }
-
-    
 }

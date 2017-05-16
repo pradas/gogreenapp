@@ -1,9 +1,8 @@
-package pes.gogreenapp.Handlers;
+package pes.gogreenapp.Utils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedInputStream;
@@ -19,8 +18,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 
-import pes.gogreenapp.Objects.SessionManager;
-
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
 
@@ -30,15 +27,15 @@ public class HttpHandler {
     /**
      * Method to do a Http GET petition.
      *
-     * @param reqUrl is the url of the service
+     * @param reqUrl         is the url of the service
      * @param method
      * @param bodyParameters
-     * @param  token
+     * @param token
      * @return the response of the service called in String format.
      */
     public String makeServiceCall(String reqUrl, String method,
                                   HashMap<String, String> bodyParameters, String token) {
-        String response = null;
+        String response;
         String resCode = "300";
         try {
             URL url = new URL(reqUrl);
@@ -57,10 +54,11 @@ public class HttpHandler {
             Log.i(TAG, resCode);
 
             /* Read the response */
-            if(resCode.equals("200")) {
+            if (resCode.equals("200")) {
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 response = convertStreamToString(in);
-            }else{
+                if (response.isEmpty()) response = "200";
+            } else {
                 response = resCode;
             }
         } catch (MalformedURLException e) {
