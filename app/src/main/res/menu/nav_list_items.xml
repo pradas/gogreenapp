@@ -6,8 +6,9 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/rewards_list_fragment"
+            android:icon="@mipmap/ic_local_play_black_24dp"
             android:orderInCategory="1"
-            android:title="@string/rewards"/>
+            android:title="@string/rewards" />
         <!--<item
             android:id="@+id/edit_event_fragment"
             android:title="Edit event" />-->
@@ -22,8 +23,9 @@
             android:title="@string/shop"/>
         <item
             android:id="@+id/create_event_fragment"
+            android:icon="@android:drawable/ic_menu_add"
             android:orderInCategory="11"
-            android:title="@string/create_event"/>
+            android:title="@string/create_event" />
         <item
             android:id="@+id/new_deal_fragment"
             android:orderInCategory="12"
@@ -52,19 +54,23 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/account_manager_fragment"
+            android:icon="@mipmap/ic_verified_user_black_24dp"
             android:orderInCategory="101"
-            android:title="@string/account_manager"/>
+            android:title="@string/account_manager" />
         <item
             android:id="@+id/settings_fragment"
+            android:icon="@mipmap/ic_settings_black_24dp"
             android:orderInCategory="102"
-            android:title="@string/settings"/>
+            android:title="@string/settings" />
         <item
             android:id="@+id/about_us_fragment"
+            android:icon="@mipmap/ic_info_black_24dp"
             android:orderInCategory="103"
-            android:title="@string/about_us"/>
+            android:title="@string/about_us" />
         <item
             android:id="@+id/log_out"
+            android:icon="@mipmap/ic_power_settings_new_black_24dp"
             android:orderInCategory="104"
-            android:title="@string/log_out"/>
+            android:title="@string/log_out" />
     </group>
 </menu>
