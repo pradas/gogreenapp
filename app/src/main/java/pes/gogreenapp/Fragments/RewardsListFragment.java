@@ -83,12 +83,17 @@ public class RewardsListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        final Button endDate = (Button) getView().findViewById(orderDateButton);
+        final Button points = (Button) getView().findViewById(orderPointsButton);
+        final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
+        final Button allRewards = (Button) getView().findViewById(showAllButton);
         inflater.inflate(R.menu.menu_filters, menu);
         final MenuItem filterButton = menu.findItem(R.id.filter_icon);
-
+        LayoutInflater lInflater = getActivity().getLayoutInflater();
         //Listener for the filter menuIcon
         filterButton.setOnMenuItemClickListener( v -> {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+            mBuilder.setView(lInflater.inflate(R.layout.rewards_filter_dialog, null));
             mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
             mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
 
@@ -97,6 +102,69 @@ public class RewardsListFragment extends Fragment {
             dialog.show();
             return true;
         });
+
+        endDate.setOnClickListener(v -> {
+            points.setText(R.string.points_order_button);
+            if ("FECHA ↓".equals(endDate.getText())) {
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsListAdapter(getContext(), rewards);
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
+                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
+                }
+                endDate.setText(R.string.date_ascendant_order_button);
+            } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsListAdapter(getContext(), rewards);
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
+                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
+                }
+                endDate.setText(R.string.date_descendent_order_button);
+            }
+            recyclerView.setAdapter(adapter);
+        });
+
+        // Listener for the Points order button.
+        points.setOnClickListener(v -> {
+            endDate.setText(R.string.date_order_button);
+            if ("PUNTOS ↓".equals(points.getText())) {
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsListAdapter(getContext(), rewards);
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
+                }
+                points.setText(R.string.points_ascendent_order_button);
+            } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
+                if (categorySelected.equals("")) {
+                    Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsListAdapter(getContext(), rewards);
+                } else {
+                    List<Reward> filteredRewards = filterRewardsByCategories();
+                    Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
+                }
+                points.setText(R.string.points_descendent_order_button);
+            }
+            recyclerView.setAdapter(adapter);
+        });
+
+        //Listener for the All Rewards filter button.
+        allRewards.setOnClickListener(v -> {
+            categorySelected = "";
+            adapter = new RewardsListAdapter(getContext(), rewards);
+            recyclerView.setAdapter(adapter);
+        });
+
+
+
 
     }
 
