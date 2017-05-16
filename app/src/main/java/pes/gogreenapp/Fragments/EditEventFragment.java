@@ -243,7 +243,8 @@ public class EditEventFragment extends Fragment {
                             address,
                             company,
                             df.parse(jsonObject.getString("date")),
-                            image);
+                            image,
+                            "otros");
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

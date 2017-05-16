@@ -67,6 +67,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         TextView points;
         TextView date;
         TextView hour;
+        TextView category;
         ImageButton fav;
         public Integer id;
 
@@ -80,6 +81,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             image = (ImageView) itemView.findViewById(R.id.eventImage);
             title = (TextView) itemView.findViewById(R.id.eventTitle);
             points = (TextView) itemView.findViewById(R.id.eventPoints);
+            category = (TextView) itemView.findViewById(R.id.eventCategory);
             date = (TextView) itemView.findViewById(R.id.eventEndDate);
             hour = (TextView) itemView.findViewById(R.id.eventHour);
             fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButton);
@@ -114,6 +116,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
     public void onBindViewHolder(final EventsListAdapter.ViewHolder holder, int position) {
         holder.id = events.get(position).getId();
         holder.title.setText(events.get(position).getTitle());
+        holder.category.setText(events.get(position).getCategory());
         holder.points.setText(String.valueOf(events.get(position).getPoints()));
         Date d = events.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy").format(d));

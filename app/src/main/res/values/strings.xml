@@ -54,4 +54,8 @@
     <string name="crear_eventos">Crear eventos</string>
     <string name="eventos">Eventos</string>
     <string name="categoria">Categoria</string>
+    <string name="ordenar_por_fecha">Ordenar por fecha</string>
+    <string name="ordenar_por_puntos">Ordenar por puntos</string>
+    <string name="todos">Todos</string>
+    <string name="fitrar_por_categoria">Fitrar por categoria</string>
 </resources>

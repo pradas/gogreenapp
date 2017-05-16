@@ -15,9 +15,10 @@ public class Event {
     private Date date;
     private String hour;
     private String min;
+    private String category;
     private byte[] image;
 
-    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image) {
+    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -27,6 +28,7 @@ public class Event {
         this.date = date;
         this.hour = String.valueOf(date.getHours());
         this.min = String.valueOf(date.getMinutes());
+        this.category = category;
         if (image != null) {
             this.image = Base64.decode(image, 0);
         }
@@ -46,6 +48,14 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Integer getPoints() {

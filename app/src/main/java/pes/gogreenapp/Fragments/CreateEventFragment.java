@@ -395,7 +395,6 @@ public class CreateEventFragment extends Fragment {
                     android.R.layout.simple_spinner_item, categories);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categoriesSpinner.setAdapter(dataAdapter);
-            Toast.makeText(getActivity(), "adapter", Toast.LENGTH_LONG).show();
         }
 
     }

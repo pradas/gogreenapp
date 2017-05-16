@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,13 +31,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.EventsListAdapter;
-import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Event;
+import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
+
+import static pes.gogreenapp.R.id.filtrarCategoriaEventos;
+import static pes.gogreenapp.R.id.filtrarTodosEventos;
+import static pes.gogreenapp.R.id.ordenarFechaEventos;
+import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListFragment extends Fragment {
@@ -45,6 +53,9 @@ public class EventsListFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private String TAG = "EventsList";
     private List<Event> events = new ArrayList<>();
+    private List<String> categories = new ArrayList<>();
+    String categorySelected = "";
+    private TextView warning;
     private SessionManager session;
 
     /**
@@ -72,9 +83,79 @@ public class EventsListFragment extends Fragment {
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events_list_items, menu);
+        inflater.inflate(R.menu.events_list_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch (menuItem.getItemId()) {
+            case ordenarFechaEventos:
+                ordenarFecha();
+                return true;
+            case ordenarPuntosEventos:
+                ordenarPuntos();
+                return true;
+            case filtrarTodosEventos:
+                filtrarTodos();
+                return true;
+            case filtrarCategoriaEventos:
+                filtrarCategoria();
+                return true;
+        }
+        return false;
+    }
+
+    private void filtrarCategoria() {
+        String pastCategory = categorySelected;
+        categorySelected = "Conciertos";
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+        mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
+        int checkeds = 0;
+        mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]),
+                checkeds, (dialog, which) -> {
+                    categorySelected = categories.toArray(new String[categories.size()])[which];
+                }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
+            // User clicked OK button
+            List<Event> filteredEvents = filterEventsByCategories();
+            if (filteredEvents.size() == 0)
+                warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
+            else warning.setText("");
+            adapter = new EventsListAdapter(getContext(), filteredEvents);
+            recyclerView.setAdapter(adapter);
+        });
+        mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
+            categorySelected = pastCategory; // User cancelled the dialog
+        });
+        AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+    }
+
+    private List<Event> filterEventsByCategories() {
+        List<Event> rewardsFiltered = new ArrayList<>();
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getCategory().equals(categorySelected))
+                rewardsFiltered.add(events.get(i));
+        }
+        return rewardsFiltered;
+    }
+
+    private void filtrarTodos() {
+        categorySelected = "";
+        warning.setText("");
+        adapter = new EventsListAdapter(getContext(), events);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    private void ordenarPuntos() {
+
+    }
+
+    private void ordenarFecha() {
+
+    }
+
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -91,11 +172,11 @@ public class EventsListFragment extends Fragment {
         session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv_events);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerEvents);
+        warning = (TextView) getView().findViewById(R.id.warningNoResultEvents);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         new GetEvents().execute(url + "events");
-        TextView warning = (TextView) getView().findViewById(R.id.warningNoResultEvents);
-        Log.d(TAG, "onActivityCreated");
+        new GetCategories().execute(url + "categories");
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
@@ -105,7 +186,7 @@ public class EventsListFragment extends Fragment {
     void refreshItems() {
         // Load items
         events.clear();
-
+        warning.setText("");
         // Get items
         new GetEvents().execute("http://10.4.41.145/api/events");
         Log.d(TAG, "setting events");
@@ -168,7 +249,8 @@ public class EventsListFragment extends Fragment {
                                 address,
                                 company,
                                 date,
-                                image)
+                                image,
+                                jsonObject.getString("category"))
                         );
                     }
                 } catch (JSONException | ParseException e) {
@@ -191,4 +273,36 @@ public class EventsListFragment extends Fragment {
     }
 
 
+    /**
+     * Asynchronous Task for the petition GET of all the Categories.
+     */
+    private class GetCategories extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                JSONObject aux;
+                try {
+                    aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("categories");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        categories.add((String) jsonObject.get("name"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+    }
 }
