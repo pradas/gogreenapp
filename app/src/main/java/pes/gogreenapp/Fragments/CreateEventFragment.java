@@ -303,7 +303,7 @@ public class CreateEventFragment extends Fragment {
             if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
             else BodyParams.put("time", "00:00");
             if (params[9] != null) BodyParams.put("image", params[9]);
-            //BodyParams.put("category", params[10]);
+            BodyParams.put("category", params[10]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);

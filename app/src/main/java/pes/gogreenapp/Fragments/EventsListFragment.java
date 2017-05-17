@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,17 +20,18 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.EventsListAdapter;
+import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
@@ -45,7 +45,6 @@ import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListFragment extends Fragment {
-    public static String ARG_EVENTS_LIST_NUMBER = "events_list_number";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EventsListAdapter adapter;
@@ -57,6 +56,8 @@ public class EventsListFragment extends Fragment {
     String categorySelected = "";
     private TextView warning;
     private SessionManager session;
+    private String pointsFilter = "nada";
+    private String dateFilter = "nada";
 
     /**
      * Required empty public constructor
@@ -149,10 +150,54 @@ public class EventsListFragment extends Fragment {
     }
 
     private void ordenarPuntos() {
+        if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
+            if (categorySelected.equals("")) {
+                Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                adapter = new EventsListAdapter(getContext(), events);
+            } else {
+                List<Event> filteredEvents = filterEventsByCategories();
+                Collections.sort(filteredEvents, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                adapter = new EventsListAdapter(getContext(), filteredEvents);
+            }
+            pointsFilter = "ascendente";
+        } else if (pointsFilter.equals("ascendente")) {
+            if (categorySelected.equals("")) {
+                Collections.sort(events, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                adapter = new EventsListAdapter(getContext(), events);
+            } else {
+                List<Event> filteredEvents = filterEventsByCategories();
+                Collections.sort(filteredEvents, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                adapter = new EventsListAdapter(getContext(), filteredEvents);
+            }
+            pointsFilter = "descendente";
+        }
+        recyclerView.setAdapter(adapter);
 
     }
 
     private void ordenarFecha() {
+        if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
+            if (categorySelected.equals("")) {
+                Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
+                adapter = new EventsListAdapter(getContext(), events);
+            } else {
+                List<Event> filteredEvents = filterEventsByCategories();
+                Collections.sort(filteredEvents, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
+                adapter = new EventsListAdapter(getContext(), filteredEvents);
+            }
+            dateFilter = "ascendente";
+        } else if (dateFilter.equals("ascendente")) {
+            if (categorySelected.equals("")) {
+                Collections.sort(events, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
+                adapter = new EventsListAdapter(getContext(), events);
+            } else {
+                List<Event> filteredEvents = filterEventsByCategories();
+                Collections.sort(filteredEvents, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
+                adapter = new EventsListAdapter(getContext(), filteredEvents);
+            }
+            dateFilter = "descendente";
+        }
+        recyclerView.setAdapter(adapter);
 
     }
 

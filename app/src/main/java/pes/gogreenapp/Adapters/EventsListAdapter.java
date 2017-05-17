@@ -127,8 +127,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         }
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
-                /*new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUsername(), holder.id.toString());*/
+                new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favoritefilled);
                 holder.fav.setTag("favoritefilled");
             } else {
@@ -149,8 +149,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("reward_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-evemts";
+            bodyParams.put("event_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
