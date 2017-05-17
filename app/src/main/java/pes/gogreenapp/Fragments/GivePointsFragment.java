@@ -4,19 +4,20 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.AsyncLayoutInflater;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pes.gogreenapp.Adapters.GivePointsAdapter;
+import pes.gogreenapp.Adapters.GivePointsByEventsAdapter;
+import pes.gogreenapp.Adapters.GivePointsByPointsAdapter;
 import pes.gogreenapp.R;
 
 /**
@@ -25,10 +26,13 @@ import pes.gogreenapp.R;
 
 public class GivePointsFragment extends Fragment {
 
+    String modeItems;
     ListView listToGivePoints;
     List<String> users;
+    Switch mode;
     Button anotherUser, grantPoints;
-    GivePointsAdapter adapter;
+    GivePointsByEventsAdapter adapterEvents;
+    GivePointsByPointsAdapter adapterPoints;
 
     public GivePointsFragment() {
     }
@@ -48,9 +52,10 @@ public class GivePointsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        modeItems = "Eventos";
         users = new ArrayList<String>();
         users.add("Usuario nº1");
-        adapter = new GivePointsAdapter(getContext(), users);
+        adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
@@ -67,20 +72,39 @@ public class GivePointsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
-
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
-        listToGivePoints.setAdapter(adapter);
+
+        mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (! isChecked) { //EVENTOS
+                    modeItems = "Eventos";
+                    listToGivePoints.setAdapter(adapterEvents);
+                }
+                else { //PUNTOS
+                    modeItems = "Puntos";
+                    listToGivePoints.setAdapter(adapterPoints);
+                }
+            }
+        });
 
         anotherUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                users.add("Usuario nº" + (users.size() + 1));
-                adapter.addState();
-                adapter.notifyDataSetChanged();
+                if (modeItems.equals("Eventos")) {
+                    users.add("Usuario nº" + (users.size() + 1));
+                    adapterEvents.notifyDataSetChanged();
+                }
+                else {
+                    users.add("Usuario nº" + (users.size() + 1));
+                    adapterPoints.notifyDataSetChanged();
+                }
             }
         });
+
         grantPoints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +112,12 @@ public class GivePointsFragment extends Fragment {
                 builder.setMessage(R.string.givePoints)
                         .setPositiveButton(R.string.givePointsAlertButton, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                List<String> userNames = adapter.getUserNames();
+                                if (modeItems.equals("Eventos")) {
+                                    List<String> userNames = adapterEvents.getUserNames();
+                                }
+                                else {
+                                    List<String> userNames = adapterPoints.getUserNames();
+                                }
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

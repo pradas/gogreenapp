@@ -36,9 +36,9 @@
     <string name="usernameHint">Nombre de usuario</string>
     <string name="pointsHint">Puntos</string>
 
-    <!-- Radio Buttons Give Points -->
-    <string name="events">Eventos</string>
-    <string name="points">Puntos</string>
+    <!-- Switch Give Points -->
+    <string name="eventsSwitch">Eventos</string>
+    <string name="pointsSwitch">Puntos</string>
 
     <!-- Buttons Give Points -->
     <string name="anotherUser">+ Otro Usuario</string>

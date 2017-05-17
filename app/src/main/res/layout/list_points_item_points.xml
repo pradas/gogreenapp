@@ -15,28 +15,10 @@
         android:id="@+id/userNameToGiveByPoints"
         android:hint="@string/usernameHint"
         android:layout_centerHorizontal="true" />
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioGroupGivePointsByPoints"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/userNameToGiveByPoints">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButtonEvents"
-            android:text="@string/events"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButtonPoints"
-            android:text="@string/points"/>
-    </RadioGroup>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroupGivePointsByPoints"
+        android:layout_below="@+id/userNameToGiveByPoints"
         android:id="@+id/pointsToGive"
         android:hint="@string/pointsHint"
         android:layout_centerHorizontal="true" />
