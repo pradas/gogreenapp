@@ -47,7 +47,7 @@ public class HttpHandler {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Authorization", "Bearer {" + token + "}");
 
-            if ("POST".equals(method)) {
+            if ("POST".equals(method) || "PUT".equals(method)) {
                 conn.setDoOutput(true);
                 conn.setChunkedStreamingMode(0);
                 OutputStream out = new BufferedOutputStream(conn.getOutputStream());

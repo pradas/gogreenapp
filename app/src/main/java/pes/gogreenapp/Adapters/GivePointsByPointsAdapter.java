@@ -23,6 +23,8 @@ public class GivePointsByPointsAdapter extends BaseAdapter {
     Context context;
     private List<String> users;
     private List<String> userNames;
+    private List<String> points;
+
 
     class ListViewHolder {
 
@@ -41,6 +43,7 @@ public class GivePointsByPointsAdapter extends BaseAdapter {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
+        this.points = new ArrayList<String>();
     }
 
     @Override
@@ -74,17 +77,28 @@ public class GivePointsByPointsAdapter extends BaseAdapter {
         viewHolder.userNumberByPoints.setText(users.get(position));
         viewHolder.userNameTextByPoints.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (userNames.size() <= position) userNames.add(position, s.toString());
                 else userNames.set(position, s.toString());
+            }
+        });
+        viewHolder.pointsToGive.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (points.size() <= position) points.add(position, s.toString());
+                else points.set(position, s.toString());
             }
         });
         return convertView;
@@ -93,4 +107,6 @@ public class GivePointsByPointsAdapter extends BaseAdapter {
     public List <String> getUserNames () {
         return userNames;
     }
+
+    public List<String> getPoints() { return points;  }
 }

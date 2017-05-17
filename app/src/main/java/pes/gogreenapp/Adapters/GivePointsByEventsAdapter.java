@@ -6,10 +6,16 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +31,10 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     Context context;
     private List<String> users;
     private List<String> userNames;
-    private List<String> events;
+    private JSONArray events;
+    private List<String> eventsSelected;
+
+
 
     class ListViewHolder {
         TextView userNumberByEvents;
@@ -36,15 +45,29 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
             userNumberByEvents = (TextView) v.findViewById(R.id.userNumberByEvents);
             userNameTextByEvents = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
             spinnerEvents = (Spinner) v.findViewById(R.id.spinnerEvents);
+
+            List <String> eventsToSpinner = new ArrayList<String>();
+            for (int i = 0; i < events.length(); ++ i) {
+                try {
+                    JSONObject jsonObject = events.getJSONObject(i);
+                    eventsToSpinner.add((String) jsonObject.get("title"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                    android.R.layout.simple_spinner_dropdown_item, eventsToSpinner);
+            spinnerEvents.setAdapter(adapter);
         }
     }
 
 
-    public GivePointsByEventsAdapter(Context context, List<String> users) {
+    public GivePointsByEventsAdapter(Context context, List<String> users, JSONArray events) {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
-        this.events = new ArrayList<String>();
+        this.eventsSelected = new ArrayList<String>();
+        this.events = events;
     }
 
     @Override
@@ -90,11 +113,24 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
                 else userNames.set(position, s.toString());
             }
         });
+        ListViewHolder finalViewHolder = viewHolder;
+        viewHolder.spinnerEvents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                if (eventsSelected.size() <= position) eventsSelected.add(position, finalViewHolder.spinnerEvents.getSelectedItem().toString());
+                else eventsSelected.set(position, finalViewHolder.spinnerEvents.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return convertView;
     }
 
-    public List <String> getUserNames () {
-        return userNames;
-    }
+    public List <String> getUserNames () { return userNames; }
+
+    public List <String> getEvents() { return eventsSelected; }
 }

@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.GivePointsByEventsAdapter;
 import pes.gogreenapp.Adapters.GivePointsByPointsAdapter;
 import pes.gogreenapp.Handlers.HttpHandler;
+import pes.gogreenapp.Objects.Events;
 import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.SessionManager;
 import pes.gogreenapp.R;
@@ -42,6 +44,7 @@ public class GivePointsFragment extends Fragment {
     private String modeItems;
     private ListView listToGivePoints;
     private List<String> users;
+    private List<Events> events;
     private Switch mode;
     private Button anotherUser, grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
@@ -67,6 +70,7 @@ public class GivePointsFragment extends Fragment {
         // Inflate the layout for this fragment
         modeItems = "Eventos";
         users = new ArrayList<String>();
+        events = new ArrayList<Events>();
         users.add("Usuario nº1");
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
@@ -84,30 +88,79 @@ public class GivePointsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        JSONArray eventsHard = new JSONArray();
+
+        JSONObject event = new JSONObject();
+        JSONObject event2 = new JSONObject();
+        JSONObject event3 = new JSONObject();
+        JSONObject event4 = new JSONObject();
+        try {
+            event.put("title","Evento 1");
+            event.put("points",100);
+            event2.put("title","Evento 2");
+            event2.put("points",100);
+            event3.put("title","Evento 3");
+            event3.put("points",100);
+            event4.put("title","Evento 4");
+            event4.put("points",100);
+            eventsHard.put(event);
+            eventsHard.put(event2);
+            eventsHard.put(event3);
+            eventsHard.put(event4);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < eventsHard.length(); ++ i) {
+            try {
+                JSONObject jsonObject = eventsHard.getJSONObject(i);
+                events.add(new Events((String) jsonObject.get("title"), (Integer) jsonObject.get("points")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
-        adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
+        adapterEvents = new GivePointsByEventsAdapter(getContext(), users, eventsHard);
         listToGivePoints.setAdapter(adapterEvents);
+
 
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.switchModeGive);
                 if (!isChecked) {
-                    modeItems = "Eventos";
-                    users.clear();
-                    users.add("Usuario nº1");
-                    adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
-                    listToGivePoints.setAdapter(adapterEvents);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            modeItems = "Eventos";
+                            users.clear();
+                            users.add("Usuario nº1");
+                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, eventsHard);
+                            listToGivePoints.setAdapter(adapterEvents);
+                        }
+                    });
                 }
                 else {
-                    modeItems = "Puntos";
-                    users.clear();
-                    users.add("Usuario nº1");
-                    adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
-                    listToGivePoints.setAdapter(adapterPoints);
+                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            modeItems = "Puntos";
+                            users.clear();
+                            users.add("Usuario nº1");
+                            adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
+                            listToGivePoints.setAdapter(adapterPoints);
+                        }
+                    });
                 }
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
@@ -132,22 +185,21 @@ public class GivePointsFragment extends Fragment {
                 builder.setMessage(R.string.givePoints)
                         .setPositiveButton(R.string.givePointsAlertButton, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                String url = "http://10.4.41.145/api/users/";
                                 if (modeItems.equals("Eventos")) {
-                                    /*List<String> userNames = adapterEvents.getUserNames();
-                                    List<String> events = adapterEvents.getEvents();
-                                    url += userNames.get(i);
+                                    List<String> userNames = adapterEvents.getUserNames();
+                                    List<String> eventsSpinneds = adapterEvents.getEvents();
                                     for (int i = 0; i < userNames.size(); ++ i) {
-                                        new PutUser().execute(url, "PUT", events.get(i).getPoints());
-                                    }*/
+                                        new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
+                                                 , userNames.get(i));
+                                    }
                                 }
                                 else {
-                                    /*List<String> userNames = adapterPoints.getUserNames();
-                                    List<Integer> points = adapterPoints.getPoints();
-                                    url += userNames.get(i);
+                                    List<String> userNames = adapterPoints.getUserNames();
+                                    List<String> points = adapterPoints.getPoints();
                                     for (int i = 0; i < userNames.size(); ++ i) {
-                                        new PutUser().execute(url, "PUT", points.get(i));
-                                    }*/
+                                        new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
+                                                points.get(i), userNames.get(i));
+                                    }
                                 }
                             }
                         })
@@ -182,7 +234,8 @@ public class GivePointsFragment extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("points", params[2]);
-            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
+            String url = params [0] + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, "");
             if (response != null && !response.equals("500") ) {
                 return "Correct";
             }
