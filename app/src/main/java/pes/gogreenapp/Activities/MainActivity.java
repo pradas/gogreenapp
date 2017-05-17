@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Contract(" -> !null")
     private ActionBarDrawerToggle setupDrawerToggle() {
-
+        new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 

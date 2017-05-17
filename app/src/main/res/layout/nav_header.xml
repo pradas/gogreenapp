@@ -3,7 +3,7 @@
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@mipmap/bocetonavback2"
+    android:background="@mipmap/bamboo"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
