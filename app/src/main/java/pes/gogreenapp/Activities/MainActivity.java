@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -163,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 // Load menu items of the Switch functionally
-                menu.setGroupVisible(R.id.menu_top, false);
+                new GetPublicInfoOtherUsers().execute();
+                /*menu.setGroupVisible(R.id.menu_top, false);
                 List<String> usernames = new ArrayList<>();
 
                 try {
@@ -177,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < ids.size(); ++i) {
                     if (menu.findItem(ids.get(i)) == null) {
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
+                        //TODO Meter imagenes
                     }
                 }
 
@@ -189,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //Change the direction of the arrow icon
-                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);*/
             }
 
             // Deactivate the boolean that marks the Switch
@@ -460,4 +463,99 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class GetPublicInfoOtherUsers extends AsyncTask<String, Void, List<URL>> {
+        Bitmap b_image_user;
+
+        private Bitmap getRemoteImage(final URL aURL) {
+            try {
+                final URLConnection conn = aURL.openConnection();
+                conn.connect();
+                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                final Bitmap bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bm;
+            } catch (IOException e) {}
+            return null;
+        }
+
+
+        protected List<URL> doInBackground(String...urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String aUrl = url + "users/";
+
+            List<String> usernames = new ArrayList<>();
+            try {
+                // Get the username of the users
+                usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
+            } catch (NullParametersException e) {
+                System.out.println(e.getMessage());
+            }
+
+            List<URL> imgurlname = new ArrayList<>();
+
+            for(int i = 0; i < usernames.size(); i++){
+                String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
+                        session.getToken());
+                Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
+                URL imageUrl = null;
+                try {
+                    JSONObject jsonArray = new JSONObject(response);
+                    imageUrl = new URL(jsonArray.getString("image"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                imgurlname.add(imageUrl);
+            }
+            return imgurlname;
+        }
+
+
+        @Override
+        protected void onPostExecute(List<URL> ImageURLNameList) {
+
+            List<Integer> ids = new ArrayList<>();
+
+            try {
+                ids = UserData.getIds(getApplicationContext(), session.getUsername());
+            } catch (NullParametersException e) {
+                System.out.println(e.getMessage());
+            }
+
+            ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
+
+
+            menu.setGroupVisible(R.id.menu_top, false);
+            List<String> usernames = new ArrayList<>();
+
+            try {
+                // Get the username of the users
+                usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
+            } catch (NullParametersException e) {
+                System.out.println(e.getMessage());
+            }
+            // Iterate through users and ids and inserts the menu item that didn't exist yet
+            for (int i = 0; i < ids.size(); ++i) {
+                if (menu.findItem(ids.get(i)) == null) {
+                    //TODO Meter las imagenes
+                    menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(R.drawable.ic_menu);
+                    if(ImageURLNameList.get(i) != null)
+                        this.getRemoteImage(ImageURLNameList.get(i));
+                }
+            }
+
+            // Set the menus visibility accordint to the role
+            menu.setGroupVisible(R.id.menu_switch, true);
+            if (ROLE_USER.equals(session.getRole())) {
+                menu.setGroupVisible(R.id.menu_top, false);
+            } else if (ROLE_MANAGER.equals(session.getRole()) || ROLE_SHOPPER.equals(session.getRole())) {
+                menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
+            }
+
+            //Change the direction of the arrow icon
+            arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+
+        }
+    }
 }
