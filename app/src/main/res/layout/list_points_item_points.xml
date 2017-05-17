@@ -40,4 +40,5 @@
         android:id="@+id/pointsToGive"
         android:hint="@string/pointsHint"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

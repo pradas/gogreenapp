@@ -2,6 +2,7 @@ package pes.gogreenapp.Adapters;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +35,9 @@ public class GivePointsAdapter extends BaseAdapter {
     private Integer positionGlobal;
 
     class ListViewHolder {
+        View eventsView;
+        View pointsView;
+
         TextView userNumberByEvents;
         EditText userNameTextByEvents;
         RadioGroup radioButtonsByEvents;
@@ -82,9 +86,15 @@ public class GivePointsAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position) { return 0; }
+
+    @Override
+    public int getItemViewType(int position) {
         return position;
     }
+
+    @Override
+    public int getViewTypeCount() { return super.getViewTypeCount(); }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -132,7 +142,9 @@ public class GivePointsAdapter extends BaseAdapter {
                 }
             });
         }
+
         else {
+
             viewHolder = new ListViewHolder(pointsView);
             convertView.setTag(viewHolder);
 
