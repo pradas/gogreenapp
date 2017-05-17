@@ -88,12 +88,7 @@ public class RewardsListFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-       /*
-        final Button endDate = (Button) getView().findViewById(orderDateButton);
-        final Button points = (Button) getView().findViewById(orderPointsButton);
-        final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
-        final Button allRewards = (Button) getView().findViewById(showAllButton);
-        */
+
         inflater.inflate(R.menu.menu_filters, menu);
         final MenuItem filterButton = menu.findItem(R.id.filter_icon);
 
@@ -102,67 +97,7 @@ public class RewardsListFragment extends Fragment
            showFilterDialog();
             return true;
         });
-        /*
-        endDate.setOnClickListener(v -> {
-            points.setText(R.string.points_order_button);
-            if ("FECHA ↓".equals(endDate.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                endDate.setText(R.string.date_ascendant_order_button);
-            } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                endDate.setText(R.string.date_descendent_order_button);
-            }
-            recyclerView.setAdapter(adapter);
-        });
 
-        // Listener for the Points order button.
-        points.setOnClickListener(v -> {
-            endDate.setText(R.string.date_order_button);
-            if ("PUNTOS ↓".equals(points.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                points.setText(R.string.points_ascendent_order_button);
-            } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                points.setText(R.string.points_descendent_order_button);
-            }
-            recyclerView.setAdapter(adapter);
-        });
-
-        //Listener for the All Rewards filter button.
-        allRewards.setOnClickListener(v -> {
-            categorySelected = "";
-            adapter = new RewardsListAdapter(getContext(), rewards);
-            recyclerView.setAdapter(adapter);
-        });
-        */
 
 
 
@@ -188,103 +123,8 @@ public class RewardsListFragment extends Fragment
         new GetCategories().execute(url + "categories");
         new GetRewards().execute(url + "rewards");
 
-        /*
-        final Button endDate = (Button) getView().findViewById(orderDateButton);
-        final Button points = (Button) getView().findViewById(orderPointsButton);
-        final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
-        final Button allRewards = (Button) getView().findViewById(showAllButton);*/
+
         TextView warning = (TextView) getView().findViewById(R.id.warningNoResult);
-
-
-        // Listener for the Date order button
-
-        /*
-        endDate.setOnClickListener(v -> {
-            points.setText(R.string.points_order_button);
-            if ("FECHA ↓".equals(endDate.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s1.getEndDate().compareTo(s2.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                endDate.setText(R.string.date_ascendant_order_button);
-            } else if ("FECHA".equals(endDate.getText()) || "FECHA ↑".equals(endDate.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s2.getEndDate().compareTo(s1.getEndDate()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                endDate.setText(R.string.date_descendent_order_button);
-            }
-            recyclerView.setAdapter(adapter);
-        });
-
-        // Listener for the Points order button.
-        points.setOnClickListener(v -> {
-            endDate.setText(R.string.date_order_button);
-            if ("PUNTOS ↓".equals(points.getText())) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                points.setText(R.string.points_ascendent_order_button);
-            } else if (("PUNTOS".equals(points.getText())) || ("PUNTOS ↑".equals(points.getText()))) {
-                if (categorySelected.equals("")) {
-                    Collections.sort(rewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), rewards);
-                } else {
-                    List<Reward> filteredRewards = filterRewardsByCategories();
-                    Collections.sort(filteredRewards, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                    adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                }
-                points.setText(R.string.points_descendent_order_button);
-            }
-            recyclerView.setAdapter(adapter);
-        });
-
-        //Listener for the Categories filer button.
-        categoriesButton.setOnClickListener(v -> {
-            String pastCategory = categorySelected;
-            categorySelected = "Conciertos";
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-            mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-            int checkeds = 0;
-            mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]),
-                    checkeds, (dialog, which) -> {
-                        categorySelected = categories.toArray(new String[categories.size()])[which];
-                    }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
-                // User clicked OK button
-                List<Reward> filteredRewards = filterRewardsByCategories();
-                if (filteredRewards.size() == 0)
-                    warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
-                else warning.setText("");
-                adapter = new RewardsListAdapter(getContext(), filteredRewards);
-                recyclerView.setAdapter(adapter);
-            });
-            mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
-                categorySelected = pastCategory; // User cancelled the dialog
-            });
-            AlertDialog dialog = mBuilder.create();
-            dialog.show();
-        });
-
-        //Listener for the All Rewards filter button.
-        allRewards.setOnClickListener(v -> {
-            categorySelected = "";
-            adapter = new RewardsListAdapter(getContext(), rewards);
-            recyclerView.setAdapter(adapter);
-        });*/
-
 
 
         // Refresh items

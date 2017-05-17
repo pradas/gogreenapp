@@ -52,10 +52,6 @@ public class RewardsFilterDialogFragment extends DialogFragment {
         LayoutInflater lInflater = getActivity().getLayoutInflater();
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         mBuilder.setView(lInflater.inflate(R.layout.rewards_filter_dialog, null));
-        mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-        mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
-
-        });
 
         AlertDialog dialog = mBuilder.create();
 
