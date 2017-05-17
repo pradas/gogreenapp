@@ -59,4 +59,8 @@
     <string name="todos">Todos</string>
     <string name="fitrar_por_categoria">Fitrar por categoria</string>
     <string name="editar_evento">Editar evento</string>
+    <string name="create_event">Crear Evento</string>
+    <string name="new_deal">Nueva Oferta</string>
+    <string name="employee_manager">Gestor Empleados</string>
+    <string name="delete">Eliminar</string>
 </resources>
