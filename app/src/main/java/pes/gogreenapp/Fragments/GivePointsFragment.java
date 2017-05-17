@@ -68,7 +68,6 @@ public class GivePointsFragment extends Fragment {
         modeItems = "Eventos";
         users = new ArrayList<String>();
         users.add("Usuario nº1");
-        adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
@@ -89,16 +88,24 @@ public class GivePointsFragment extends Fragment {
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
+        adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
+        listToGivePoints.setAdapter(adapterEvents);
 
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) { //EVENTOS
+                if (!isChecked) {
                     modeItems = "Eventos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterEvents = new GivePointsByEventsAdapter(getContext(), users);
                     listToGivePoints.setAdapter(adapterEvents);
                 }
-                else { //PUNTOS
+                else {
                     modeItems = "Puntos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
                     listToGivePoints.setAdapter(adapterPoints);
                 }
             }

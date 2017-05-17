@@ -25,11 +25,14 @@
     <string name="categories">Categorias</string>
 
     <!-- Alert Dialog Messages -->
-    <string name="givePoints">¿Está seguro que desea entregar los puntos a esos usuarios"</string>
+    <string name="givePoints">¿Está seguro que desea entregar los puntos a esos usuarios?</string>
+    <string name="switchModeGive">¿Está seguro que desea cambiar el modo de entregar puntos?
+        Se perderán los datos introducidos</string>
 
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
     <string name="givePointsAlertButton">ENTREGAR PUNTOS</string>
+    <string name="accept">ACEPTAR</string>
     <string name="cancel">CANCELAR</string>
 
     <!-- Hints Give Points -->
