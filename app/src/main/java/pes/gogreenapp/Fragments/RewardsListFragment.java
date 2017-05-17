@@ -53,7 +53,7 @@ public class RewardsListFragment extends Fragment {
     private List<String> categories = new ArrayList<>();
     private SessionManager session;
     private String userName;
-
+    private TextView warning;
     /**
      * Required empty public constructor
      */
@@ -100,7 +100,7 @@ public class RewardsListFragment extends Fragment {
         final Button points = (Button) getView().findViewById(orderPointsButton);
         final Button categoriesButton = (Button) getView().findViewById(showCategoriesButton);
         final Button allRewards = (Button) getView().findViewById(showAllButton);
-        TextView warning = (TextView) getView().findViewById(R.id.warningNoResult);
+        warning = (TextView) getView().findViewById(R.id.warningNoResult);
 
         // Listener for the Date order button
         endDate.setOnClickListener(v -> {
@@ -199,7 +199,8 @@ public class RewardsListFragment extends Fragment {
     void refreshItems() {
         // Load items
         rewards.clear();
-
+        categorySelected = "";
+        warning.setText("");
         // Get items
         new GetRewards().execute("http://10.4.41.145/api/rewards");
 

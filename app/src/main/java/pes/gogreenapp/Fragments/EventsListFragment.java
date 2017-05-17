@@ -232,6 +232,7 @@ public class EventsListFragment extends Fragment {
         // Load items
         events.clear();
         warning.setText("");
+        categorySelected = "";
         // Get items
         new GetEvents().execute("http://10.4.41.145/api/events");
         Log.d(TAG, "setting events");
