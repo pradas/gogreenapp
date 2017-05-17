@@ -60,6 +60,7 @@ public class CreateEventTest {
 
     /**
      * Check if it is send if is correct
+     * Fail until HtttpHandler is changed
      */
     @Test
     public void Send() {
