@@ -434,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
             String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
                     session.getToken());
             //TODO Implementar TAG
-            Log.i("AAAAAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
+            Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
 
             URL imageUrl = null;
             try {
@@ -458,7 +458,6 @@ public class MainActivity extends AppCompatActivity {
             main_profile_image = (CircleImageView) findViewById(profile_image);
             main_profile_image.setImageBitmap(b_image_user);
         }
-
     }
 
 }

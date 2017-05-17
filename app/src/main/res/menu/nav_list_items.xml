@@ -19,8 +19,9 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/shop_view_fragment"
+            android:icon="@mipmap/ic_store_black_24dp"
             android:orderInCategory="10"
-            android:title="@string/shop"/>
+            android:title="@string/shop" />
         <item
             android:id="@+id/create_event_fragment"
             android:icon="@android:drawable/ic_menu_add"
@@ -33,12 +34,14 @@
             android:title="@string/new_deal" />
         <item
             android:id="@+id/give_points_fragment"
+            android:icon="@mipmap/ic_fiber_smart_record_black_24dp"
             android:orderInCategory="13"
-            android:title="@string/give_points"/>
+            android:title="@string/give_points" />
         <item
             android:id="@+id/employee_manager_fragment"
+            android:icon="@mipmap/ic_account_box_black_24dp"
             android:orderInCategory="14"
-            android:title="@string/employee_manager"/>
+            android:title="@string/employee_manager" />
     </group>
     <!-- This group represents the items of the Switch functionality -->
     <group
