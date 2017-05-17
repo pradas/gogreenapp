@@ -374,15 +374,6 @@ public class CreateEventTest {
     }
 
     /**
-     * Check if the the image button is displayed
-     */
-    @Test
-    public void CheckImageIsDisplayed(){
-        onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.ImageCreateEvent))
-                .check(matches(isDisplayed()));
-    }
-    /**
      * Check if the the title is displayed
      */
     @Test
