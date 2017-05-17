@@ -58,4 +58,5 @@
     <string name="ordenar_por_puntos">Ordenar por puntos</string>
     <string name="todos">Todos</string>
     <string name="fitrar_por_categoria">Fitrar por categoria</string>
+    <string name="editar_evento">Editar evento</string>
 </resources>

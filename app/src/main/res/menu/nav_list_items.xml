@@ -23,9 +23,9 @@
         <item
             android:id="@+id/create_event_fragment"
             android:title="@string/crear_eventos" />
-        <!--<item
+        <item
             android:id="@+id/edit_event_fragment"
-            android:title="Edit event" />-->
+            android:title="@string/editar_evento" />
     </group>
     <!-- This group represents the items of a role Shopper -->
     <group
