@@ -11,9 +11,11 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.test.espresso.core.deps.guava.io.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -460,16 +462,18 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             main_profile_image = (CircleImageView) findViewById(profile_image);
             main_profile_image.setImageBitmap(b_image_user);
+            main_profile_image.
         }
     }
 
-    private class GetPublicInfoOtherUsers extends AsyncTask<String, Void, List<URL>> {
+    private class GetPublicInfoOtherUsers extends AsyncTask<String, Void, List<Bitmap>> {
         Bitmap b_image_user;
 
         private Bitmap getRemoteImage(final URL aURL) {
             try {
                 final URLConnection conn = aURL.openConnection();
                 conn.connect();
+                Log.i("ABC", "Response from url: " + conn.getInputStream().toString());
                 final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
                 final Bitmap bm = BitmapFactory.decodeStream(bis);
                 bis.close();
@@ -479,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        protected List<URL> doInBackground(String...urls) {
+        protected List<Bitmap> doInBackground(String...urls) {
             HttpHandler httpHandler = new HttpHandler();
             String aUrl = url + "users/";
 
@@ -491,7 +495,8 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(e.getMessage());
             }
 
-            List<URL> imgurlname = new ArrayList<>();
+            List<Bitmap> imgurlname = new ArrayList<>();
+
 
             for(int i = 0; i < usernames.size(); i++){
                 String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
@@ -506,14 +511,17 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                imgurlname.add(imageUrl);
+                if(imageUrl == null)
+                    imgurlname.add(null);
+                else
+                    imgurlname.add(getRemoteImage(imageUrl));
             }
             return imgurlname;
         }
 
 
         @Override
-        protected void onPostExecute(List<URL> ImageURLNameList) {
+        protected void onPostExecute(List<Bitmap> ImageURL) {
 
             List<Integer> ids = new ArrayList<>();
 
@@ -538,10 +546,13 @@ public class MainActivity extends AppCompatActivity {
             // Iterate through users and ids and inserts the menu item that didn't exist yet
             for (int i = 0; i < ids.size(); ++i) {
                 if (menu.findItem(ids.get(i)) == null) {
-                    //TODO Meter las imagenes
-                    menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(R.drawable.ic_menu);
-                    if(ImageURLNameList.get(i) != null)
-                        this.getRemoteImage(ImageURLNameList.get(i));
+                    //TODO Meter las imagenen
+                    if(ImageURL.get(i) != null) {
+                        Log.i("PINGAS", "PINGAS");
+                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(new BitmapDrawable(,ImageURL.get(i)));
+                    }else{
+                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
+                    }
                 }
             }
 
