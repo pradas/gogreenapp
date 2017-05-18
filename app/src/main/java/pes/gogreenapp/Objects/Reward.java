@@ -41,7 +41,7 @@ public class Reward {
 
     public Reward(Integer id, String title, Integer points, Date endDate, String description,
                   String info, String contactWeb, String contactInfo, Double exchangeLatitude,
-                  Double exchangeLenght) {
+                  Double exchangeLenght, Boolean favorite) {
         this.id = id;
         this.title = title;
         this.points = points;
@@ -52,6 +52,7 @@ public class Reward {
         this.contactInfo = contactInfo;
         this.exchangeLatitude = exchangeLatitude;
         this.exchangeLenght = exchangeLenght;
+        this.favorite = favorite;
     }
 
     /**

@@ -258,11 +258,9 @@ public class RewardsListFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         Date d = df.parse((String) jsonObject.get("end_date"));
-                        Boolean favorite = false;
                         rewards.add(new Reward((Integer) jsonObject.get("id"),
                                 (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
-                                d, (String) jsonObject.get("category"), favorite));
-
+                                d, (String) jsonObject.get("category"), (Boolean) jsonObject.get("favourite")));
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

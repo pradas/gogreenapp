@@ -165,7 +165,7 @@ public class RewardsExchangedFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new RewardsExchangedAdapter(getContext(), rewards, userName);
+            adapter = new RewardsExchangedAdapter(getContext(), rewards);
             recyclerView.setAdapter(adapter);
         }
     }
