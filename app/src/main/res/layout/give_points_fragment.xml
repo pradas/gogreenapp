@@ -1,14 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/give_points_view"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="pes.gogreenapp.Fragments.GivePointsFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+    <Switch
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/switchModeItem"
+        android:textOn="@string/pointsSwitch"
+        android:textOff="@string/eventsSwitch"
+        android:showText="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
 
-</FrameLayout>
+    </Switch>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewGivePoints"
+        android:layout_below="@+id/switchModeItem">
+
+    </ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listViewGivePoints"
+        android:layout_centerHorizontal="true"
+        android:text="@string/anotherUser"
+        android:id="@+id/anotherUserToGive"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/grantPoints"
+        android:id="@+id/grantPointsToUsers"/>
+
+</RelativeLayout>

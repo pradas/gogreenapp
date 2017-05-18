@@ -31,6 +31,12 @@ import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
+import pes.gogreenapp.Fragments.CreateEventFragment;
+import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.EventsListFragment;
+import pes.gogreenapp.Fragments.EmployeeManagerFragment;
+import pes.gogreenapp.Fragments.GivePointsFragment;
+import pes.gogreenapp.Fragments.NewDealFragment;
 import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.ShopFragment;
@@ -39,7 +45,6 @@ import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Utils.UserData;
-
 /**
  * @author Albert
  */
