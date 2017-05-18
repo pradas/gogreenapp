@@ -315,7 +315,7 @@ public class CreateEventFragment extends Fragment {
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.equals("200")) {
+            } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();

@@ -471,7 +471,7 @@ public class EditEventFragment extends Fragment {
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.equals("Response from url: {\"message\":\"Event created successfully.\"}")) {
+            } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Modificado perfectamente.", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido modificar.", Toast.LENGTH_LONG).show();
