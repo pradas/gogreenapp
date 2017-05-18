@@ -146,6 +146,8 @@ public class RewardDetailedFragment extends Fragment {
                     fav.setImageResource(R.mipmap.favoritefilled);
                     fav.setTag("favoritefilled");
                 } else {
+                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
+                            session.getUserName(), reward.getId().toString());
                     fav.setImageResource(R.mipmap.favorite);
                     fav.setTag("favorite");
                 }
@@ -262,6 +264,29 @@ public class RewardDetailedFragment extends Fragment {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al canjear el Reward. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params [2] + "/favourite-rewards/" + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(getActivity(), "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(getActivity(), "Reward eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 
