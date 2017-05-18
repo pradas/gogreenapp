@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -462,7 +463,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             main_profile_image = (CircleImageView) findViewById(profile_image);
             main_profile_image.setImageBitmap(b_image_user);
-            main_profile_image.
         }
     }
 
@@ -473,7 +473,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 final URLConnection conn = aURL.openConnection();
                 conn.connect();
-                Log.i("ABC", "Response from url: " + conn.getInputStream().toString());
                 final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
                 final Bitmap bm = BitmapFactory.decodeStream(bis);
                 bis.close();
@@ -501,6 +500,7 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < usernames.size(); i++){
                 String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
                         session.getToken());
+                // TODO Implementar tag
                 Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
                 URL imageUrl = null;
                 try {
@@ -548,8 +548,10 @@ public class MainActivity extends AppCompatActivity {
                 if (menu.findItem(ids.get(i)) == null) {
                     //TODO Meter las imagenen
                     if(ImageURL.get(i) != null) {
-                        Log.i("PINGAS", "PINGAS");
-                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(new BitmapDrawable(,ImageURL.get(i)));
+                        Drawable drawable = new BitmapDrawable(getResources(),ImageURL.get(i));
+                        drawable.setBounds(0,0,25,25);
+                        Log.i("ASD",drawable.getBounds().toString());
+                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(drawable);
                     }else{
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
                     }
@@ -562,6 +564,7 @@ public class MainActivity extends AppCompatActivity {
                 menu.setGroupVisible(R.id.menu_top, false);
             } else if (ROLE_MANAGER.equals(session.getRole()) || ROLE_SHOPPER.equals(session.getRole())) {
                 menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
+
             }
 
             //Change the direction of the arrow icon
