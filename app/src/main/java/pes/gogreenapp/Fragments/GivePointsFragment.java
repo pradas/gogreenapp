@@ -98,11 +98,11 @@ public class GivePointsFragment extends Fragment {
             event.put("title","Evento 1");
             event.put("points",100);
             event2.put("title","Evento 2");
-            event2.put("points",100);
+            event2.put("points",200);
             event3.put("title","Evento 3");
-            event3.put("points",100);
+            event3.put("points",300);
             event4.put("title","Evento 4");
-            event4.put("points",100);
+            event4.put("points",400);
             eventsHard.put(event);
             eventsHard.put(event2);
             eventsHard.put(event3);
@@ -125,7 +125,7 @@ public class GivePointsFragment extends Fragment {
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
-        adapterEvents = new GivePointsByEventsAdapter(getContext(), users, eventsHard);
+        adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
         listToGivePoints.setAdapter(adapterEvents);
 
 
@@ -140,7 +140,7 @@ public class GivePointsFragment extends Fragment {
                             modeItems = "Eventos";
                             users.clear();
                             users.add("Usuario nº1");
-                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, eventsHard);
+                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
                             listToGivePoints.setAdapter(adapterEvents);
                         }
                     });
@@ -187,10 +187,11 @@ public class GivePointsFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (modeItems.equals("Eventos")) {
                                     List<String> userNames = adapterEvents.getUserNames();
-                                    List<String> eventsSpinneds = adapterEvents.getEvents();
+                                    List<Events> eventsSpinneds = adapterEvents.getEvents();
                                     for (int i = 0; i < userNames.size(); ++ i) {
-                                        /*new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
-                                                 , userNames.get(i));*/
+                                        new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
+                                                (String) String.valueOf(eventsSpinneds.get(i).getPoints()),
+                                                userNames.get(i));
                                     }
                                 }
                                 else {
