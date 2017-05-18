@@ -189,8 +189,8 @@ public class GivePointsFragment extends Fragment {
                                     List<String> userNames = adapterEvents.getUserNames();
                                     List<String> eventsSpinneds = adapterEvents.getEvents();
                                     for (int i = 0; i < userNames.size(); ++ i) {
-                                        new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
-                                                 , userNames.get(i));
+                                        /*new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
+                                                 , userNames.get(i));*/
                                     }
                                 }
                                 else {
@@ -235,7 +235,9 @@ public class GivePointsFragment extends Fragment {
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("points", params[2]);
             String url = params [0] + params[3];
-            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, "");
+            session = new SessionManager(getActivity().getApplicationContext(),
+                    new GlobalPreferences(getActivity().getApplicationContext()).getUser());
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null && !response.equals("500") ) {
                 return "Correct";
             }
