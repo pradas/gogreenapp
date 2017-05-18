@@ -1,5 +1,7 @@
 package pes.gogreenapp.Objects;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 /**
@@ -20,6 +22,7 @@ public class Reward {
     private Double exchangeLatitude;
     private Double exchangeLenght;
     private boolean favorite;
+    private Bitmap image;
 
     /**
      * Constructor of the Reward Object.
@@ -30,13 +33,14 @@ public class Reward {
      * @param endDate  of the Reward.
      * @param category of the Reward.
      */
-    public Reward(Integer id, String title, Integer points, Date endDate, String category, Boolean favorite) {
+    public Reward(Integer id, String title, Integer points, Date endDate, String category, Boolean favorite, Bitmap image) {
         this.id = id;
         this.title = title;
         this.points = points;
         this.endDate = endDate;
         this.category = category;
         this.favorite = favorite;
+        this.image = image;
     }
 
     public Reward(Integer id, String title, Integer points, Date endDate, String description,
@@ -198,4 +202,26 @@ public class Reward {
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }
+
+
+    /**
+     * Getter of the Reward image
+     *
+     * @return the Reward image
+     */
+    public Bitmap getImage() {
+        return image;
+    }
+
+
+    /**
+     * Setter of the Reward image
+     *
+     * @param image new category of the Reward.
+     */
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
 }
+

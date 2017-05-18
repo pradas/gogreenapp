@@ -75,7 +75,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             points = (TextView) itemView.findViewById(R.id.rewardPoints);
             endDate = (TextView) itemView.findViewById(R.id.rewardEndDate);
-            rewardImage = (ImageView) itemView.findViewById(R.id.rewardImage);
+            rewardImage = (ImageView) itemView.findViewById(R.id.rewardBackgroundImage);
             use = (ImageButton) itemView.findViewById(R.id.exchangeButton);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
 
