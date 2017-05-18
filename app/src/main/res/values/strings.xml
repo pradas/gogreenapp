@@ -24,8 +24,15 @@
     <string name="profile_image_description">Profile image of the user</string>
     <string name="categories">Categorias</string>
 
+    <!-- Alert Dialog Messages -->
+    <string name="givePoints">¿Está seguro que desea entregar los puntos a esos usuarios?</string>
+    <string name="switchModeGive">¿Está seguro que desea cambiar el modo de entregar puntos?
+        Se perderán los datos introducidos</string>
+
     <!-- Alert Dialog Buttons -->
     <string name="exchange">CANJEAR</string>
+    <string name="givePointsAlertButton">ENTREGAR PUNTOS</string>
+    <string name="accept">ACEPTAR</string>
     <string name="cancel">CANCELAR</string>
     <string name="arrow_switch_down">Arrow to activate Switch Menu</string>
     <string name="add_account">Añadir Cuenta</string>
@@ -63,4 +70,18 @@
     <string name="new_deal">Nueva Oferta</string>
     <string name="employee_manager">Gestor Empleados</string>
     <string name="delete">Eliminar</string>
+
+    <!-- Hints Give Points -->
+    <string name="usernameHint">Nombre de usuario</string>
+    <string name="pointsHint">Puntos</string>
+
+    <!-- Switch Give Points -->
+    <string name="eventsSwitch">Eventos</string>
+    <string name="pointsSwitch">Puntos</string>
+
+    <!-- Buttons Give Points -->
+    <string name="anotherUser">+ Otro Usuario</string>
+    <string name="grantPoints">Conceder Puntos</string>
+
+
 </resources>
