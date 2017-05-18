@@ -24,10 +24,10 @@ import java.util.List;
 
 import pes.gogreenapp.Fragments.QRCodeFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
-import pes.gogreenapp.Handlers.HttpHandler;
-import pes.gogreenapp.Objects.GlobalPreferences;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * Created by Adry on 07/04/2017.
@@ -50,8 +50,8 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     public RewardsExchangedAdapter(Context context, List<Reward> rewards, String userName) {
         this.context = context;
         this.rewards = rewards;
-        this.session = new SessionManager(context, new GlobalPreferences(context).getUser());
-        userName = session.getUserName();
+        this.session = SessionManager.getInstance();
+        userName = session.getUsername();
     }
 
     /**
@@ -151,12 +151,12 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             public void onClick(View v) {
                 if (holder.fav.getTag().equals("favorite")) {
                     new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUserName(), holder.id.toString());
+                            session.getUsername(), holder.id.toString());
                     holder.fav.setImageResource(R.mipmap.favoritefilled);
                     holder.fav.setTag("favoritefilled");
                 } else {
                     new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUserName(), holder.id.toString());
+                            session.getUsername(), holder.id.toString());
                     holder.fav.setImageResource(R.mipmap.favorite);
                     holder.fav.setTag("favorite");
                 }

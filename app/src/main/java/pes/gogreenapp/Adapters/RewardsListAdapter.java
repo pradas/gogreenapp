@@ -149,7 +149,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                 holder.fav.setTag("favoritefilled");
             } else {
                 new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                        session.getUserName(), holder.id.toString());
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.mipmap.favorite);
                 holder.fav.setTag("favorite");
             }

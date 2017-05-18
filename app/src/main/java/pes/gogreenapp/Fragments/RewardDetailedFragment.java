@@ -33,8 +33,8 @@ import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Utils.HttpHandler;
 
 import pes.gogreenapp.Objects.Reward;
-import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * Created by Adrian on 17/04/2017.
@@ -140,12 +140,12 @@ public class RewardDetailedFragment extends Fragment {
             public void onClick(View v) {
                 if (fav.getTag().equals("favorite")) {
                     new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUserName(), reward.getId().toString());
+                            session.getUsername(), reward.getId().toString());
                     fav.setImageResource(R.mipmap.favoritefilled);
                     fav.setTag("favoritefilled");
                 } else {
                     new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUserName(), reward.getId().toString());
+                            session.getUsername(), reward.getId().toString());
                     fav.setImageResource(R.mipmap.favorite);
                     fav.setTag("favorite");
                 }
