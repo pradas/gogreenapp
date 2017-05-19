@@ -7,10 +7,10 @@
         <item
             android:id="@+id/rewards_list_fragment"
             android:orderInCategory="1"
-            android:title="@string/rewards" />
+            android:title="@string/rewards"/>
         <item
             android:id="@+id/list_events_fragment"
-            android:title="@string/eventos" />
+            android:title="@string/eventos"/>
     </group>
     <!-- This group represents the items of a role Manager and the Shopper -->
     <group
@@ -19,27 +19,23 @@
         <item
             android:id="@+id/shop_view_fragment"
             android:orderInCategory="10"
-            android:title="@string/shop" />
+            android:title="@string/shop"/>
         <item
             android:id="@+id/create_event_fragment"
             android:orderInCategory="11"
-            android:title="@string/crear_eventos" />
-        <item
-            android:id="@+id/edit_event_fragment"
-            android:orderInCategory="12"
-            android:title="@string/editar_evento" />
+            android:title="@string/crear_eventos"/>
         <item
             android:id="@+id/new_deal_fragment"
             android:orderInCategory="12"
-            android:title="@string/new_deal" />
+            android:title="@string/new_deal"/>
         <item
             android:id="@+id/give_points_fragment"
             android:orderInCategory="13"
-            android:title="@string/give_points" />
+            android:title="@string/give_points"/>
         <item
             android:id="@+id/employee_manager_fragment"
             android:orderInCategory="14"
-            android:title="@string/employee_manager" />
+            android:title="@string/employee_manager"/>
     </group>
     <!-- This group represents the items of the Switch functionality -->
     <group
@@ -48,7 +44,7 @@
         <item
             android:id="@+id/add_account"
             android:orderInCategory="100"
-            android:title="@string/add_account" />
+            android:title="@string/add_account"/>
     </group>
     <!-- This group represents the items fixed in every Role -->
     <group
@@ -57,18 +53,18 @@
         <item
             android:id="@+id/account_manager_fragment"
             android:orderInCategory="101"
-            android:title="@string/account_manager" />
+            android:title="@string/account_manager"/>
         <item
             android:id="@+id/settings_fragment"
             android:orderInCategory="102"
-            android:title="@string/settings" />
+            android:title="@string/settings"/>
         <item
             android:id="@+id/about_us_fragment"
             android:orderInCategory="103"
-            android:title="@string/about_us" />
+            android:title="@string/about_us"/>
         <item
             android:id="@+id/log_out"
             android:orderInCategory="104"
-            android:title="@string/log_out" />
+            android:title="@string/log_out"/>
     </group>
 </menu>
