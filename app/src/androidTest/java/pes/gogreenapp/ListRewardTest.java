@@ -1,7 +1,6 @@
 package pes.gogreenapp;
 
 import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -144,7 +143,7 @@ public class ListRewardTest {
         onView(withId(R.id.rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.mipmap.favoritefilled)));
+                .check(matches(withDrawable(R.drawable.ic_fav_filled)));
     }
 
     /**
@@ -158,7 +157,7 @@ public class ListRewardTest {
         onView(withId(R.id.rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.mipmap.favorite)));
+                .check(matches(withDrawable(R.drawable.ic_fav_void)));
     }
 
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

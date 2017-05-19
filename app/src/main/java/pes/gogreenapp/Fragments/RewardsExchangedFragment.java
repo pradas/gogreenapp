@@ -170,8 +170,9 @@ public class RewardsExchangedFragment extends Fragment {
                         Date d = df.parse((String) jsonObject.get("end_date"));
                         Bitmap b_image_user = null;
                         String imageStringLink = null;
-                        imageStringLink =jsonObject.getString("image");
-                        if(imageStringLink != "null"){
+
+                        if(jsonObject.has("image")){
+                            imageStringLink = jsonObject.getString("image");
                             imageUrl = new URL(urlStorage + imageStringLink);
                             b_image_user = this.getRemoteImage(imageUrl);
                         }

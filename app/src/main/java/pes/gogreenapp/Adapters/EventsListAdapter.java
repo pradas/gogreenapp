@@ -1,21 +1,12 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,8 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Fragments.RewardDetailedFragment;
-import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -129,10 +118,10 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
                         session.getUsername(), holder.id.toString());
-                holder.fav.setImageResource(R.mipmap.favoritefilled);
+                holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
-                holder.fav.setImageResource(R.mipmap.favorite);
+                holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
         });

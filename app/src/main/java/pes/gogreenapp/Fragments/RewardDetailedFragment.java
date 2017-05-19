@@ -128,10 +128,10 @@ public class RewardDetailedFragment extends Fragment {
 
         if (reward.isFavorite()) {
             fav.setTag("favoritefilled");
-            fav.setImageResource(R.mipmap.favoritefilled);
+            fav.setImageResource(R.drawable.ic_fav_filled);
         }
         else {
-            fav.setImageResource(R.mipmap.favorite);
+            fav.setImageResource(R.drawable.ic_fav_void);
             fav.setTag("favorite");
         }
 
@@ -141,12 +141,12 @@ public class RewardDetailedFragment extends Fragment {
                 if (fav.getTag().equals("favorite")) {
                     new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
                             session.getUsername(), reward.getId().toString());
-                    fav.setImageResource(R.mipmap.favoritefilled);
+                    fav.setImageResource(R.drawable.ic_fav_filled);
                     fav.setTag("favoritefilled");
                 } else {
                     new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
                             session.getUsername(), reward.getId().toString());
-                    fav.setImageResource(R.mipmap.favorite);
+                    fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
             }
