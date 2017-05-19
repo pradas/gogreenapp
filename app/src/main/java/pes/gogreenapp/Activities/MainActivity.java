@@ -8,11 +8,6 @@ package pes.gogreenapp.Activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,24 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.Exceptions.UserNotExistException;
 import pes.gogreenapp.Fragments.AboutUsFragment;
 import pes.gogreenapp.Fragments.AccountManagerFragment;
 import pes.gogreenapp.Fragments.CreateEventFragment;
+import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.EventsListFragment;
 import pes.gogreenapp.Fragments.EmployeeManagerFragment;
 import pes.gogreenapp.Fragments.GivePointsFragment;
 import pes.gogreenapp.Fragments.NewDealFragment;
@@ -56,17 +43,13 @@ import pes.gogreenapp.Fragments.ShopFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
-import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Utils.UserData;
-
-import static pes.gogreenapp.R.id.profile_image;
-
 /**
  * @author Albert
  */
 public class MainActivity extends AppCompatActivity {
-    private static final String url = "http://10.4.41.145/api/";
+
     private static final String ROLE_MANAGER = "manager";
     private static final String ROLE_SHOPPER = "shopper";
     private static final String ROLE_USER = "user";
@@ -77,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private View headerView;
     private boolean switchActive = false;
     private SessionManager session;
-    private CircleImageView main_profile_image;
+
     /**
      * onCreate method to initialize the Activity.
      *
@@ -164,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 // Load menu items of the Switch functionally
-                new GetPublicInfoOtherUsers().execute();
-
                 menu.setGroupVisible(R.id.menu_top, false);
                 List<String> usernames = new ArrayList<>();
 
@@ -180,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < ids.size(); ++i) {
                     if (menu.findItem(ids.get(i)) == null) {
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
-                        //TODO Meter imagenes
                     }
                 }
 
@@ -232,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Contract(" -> !null")
     private ActionBarDrawerToggle setupDrawerToggle() {
-        //new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
+
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
@@ -305,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
                 TextView usernameHeader = (TextView) headerView.findViewById(R.id.header_username);
                 usernameHeader.setText(session.getUsername());
 
-                new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
-
                 // Delete the actual menuitem
                 menu.removeItem(menuItem.getItemId());
 
@@ -352,6 +330,12 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.create_event_fragment:
                     fragmentClass = CreateEventFragment.class;
+                    break;
+                case R.id.list_events_fragment:
+                    fragmentClass = EventsListFragment.class;
+                    break;
+                case R.id.edit_event_fragment:
+                    fragmentClass = EditEventFragment.class;
                     break;
                 case R.id.new_deal_fragment:
                     fragmentClass = NewDealFragment.class;
@@ -414,147 +398,5 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private class GetPublicInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
-
-        @Override
-        protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
-                    session.getToken());
-            //TODO Implementar TAG
-            Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
-
-            URL imageUrl = null;
-            try {
-                JSONObject jsonArray = new JSONObject(response);
-                imageUrl = new URL(jsonArray.getString("image"));
-                //JSONArray jsonArray = aux.getJSONArray("rewards");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
-            //testUser.setUserImage();
-
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Void result) {
-            main_profile_image = (CircleImageView) findViewById(profile_image);
-            main_profile_image.setImageBitmap(b_image_user);
-        }
-    }
-
-    private class GetPublicInfoOtherUsers extends AsyncTask<String, Void, List<Bitmap>> {
-        Bitmap b_image_user;
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
-
-        protected List<Bitmap> doInBackground(String...urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String aUrl = url + "users/";
-
-            List<String> usernames = new ArrayList<>();
-            try {
-                // Get the username of the users
-                usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
-            } catch (NullParametersException e) {
-                System.out.println(e.getMessage());
-            }
-
-            List<Bitmap> imgurlname = new ArrayList<>();
-
-
-            for(int i = 0; i < usernames.size(); i++){
-                String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
-                        session.getToken());
-                // TODO Implementar tag
-
-
-            }
-            return imgurlname;
-        }
-
-
-        @Override
-        protected void onPostExecute(List<Bitmap> ImageURL) {
-
-            List<Integer> ids = new ArrayList<>();
-
-            try {
-                ids = UserData.getIds(getApplicationContext(), session.getUsername());
-            } catch (NullParametersException e) {
-                System.out.println(e.getMessage());
-            }
-
-            ImageView arrowSwitch = (ImageView) headerView.findViewById(R.id.arrow_switch);
-
-
-            menu.setGroupVisible(R.id.menu_top, false);
-            List<String> usernames = new ArrayList<>();
-
-            try {
-                // Get the username of the users
-                usernames = UserData.getUsernames(getApplicationContext(), session.getUsername());
-            } catch (NullParametersException e) {
-                System.out.println(e.getMessage());
-            }
-            // Iterate through users and ids and inserts the menu item that didn't exist yet
-            for (int i = 0; i < ids.size(); ++i) {
-                if (menu.findItem(ids.get(i)) == null) {
-                    //TODO Meter las imagenen
-                    if(ImageURL.get(i) != null) {
-                        Drawable drawable = new BitmapDrawable(getResources(),ImageURL.get(i));
-                        drawable.setBounds(0,0,25,25);
-                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(drawable);
-                    }else{
-                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
-                    }
-                }
-            }
-
-            // Set the menus visibility accordint to the role
-            menu.setGroupVisible(R.id.menu_switch, true);
-            if (ROLE_USER.equals(session.getRole())) {
-                menu.setGroupVisible(R.id.menu_top, false);
-            } else if (ROLE_MANAGER.equals(session.getRole()) || ROLE_SHOPPER.equals(session.getRole())) {
-                menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
-
-            }
-
-            //Change the direction of the arrow icon
-            arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
-
-        }
     }
 }
