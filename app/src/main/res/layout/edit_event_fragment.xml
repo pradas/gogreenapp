@@ -13,126 +13,126 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/TitleCreateEvent"
+            android:id="@+id/TitleEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tituloCreateEvent"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/titleCreateEvent_edit_text"
+            android:id="@+id/titleEditEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/TitleCreateEvent"
+            android:layout_below="@+id/TitleEditEvent"
             android:focusable="true"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/DescriptionCreateEvent"
+            android:id="@+id/DescriptionEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/titleCreateEvent_edit_text"
+            android:layout_below="@+id/titleEditEvent_edit_text"
             android:text="@string/descripcion"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/DescriptionCreateEvent_edit_text"
+            android:id="@+id/DescriptionEditEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionCreateEvent"
+            android:layout_below="@+id/DescriptionEditEvent"
             android:focusable="true"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/PointsCreateEvent"
+            android:id="@+id/PointsEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionCreateEvent_edit_text"
+            android:layout_below="@+id/DescriptionEditEvent_edit_text"
             android:text="@string/puntos"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/PointsCreateEvent_edit_text"
+            android:id="@+id/PointsEditEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/PointsCreateEvent"
+            android:layout_below="@+id/PointsEditEvent"
             android:inputType="number"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/DirectionCreateEvent"
+            android:id="@+id/DirectionEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/PointsCreateEvent_edit_text"
+            android:layout_below="@+id/PointsEditEvent_edit_text"
             android:text="@string/direccion"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/DirectionCreateEvent_edit_text"
+            android:id="@+id/DirectionEditEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/DirectionCreateEvent"
+            android:layout_below="@+id/DirectionEditEvent"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/CompanyCreateEvent"
+            android:id="@+id/CompanyEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/DirectionCreateEvent_edit_text"
+            android:layout_below="@+id/DirectionEditEvent_edit_text"
             android:text="@string/empresa"
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/CompanyCreateEvent_edit_text"
+            android:id="@+id/CompanyEditEvent_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/CompanyCreateEvent"
+            android:layout_below="@+id/CompanyEditEvent"
             android:textColorHighlight="#ff7eff15"
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/DateTextCreateEvent"
+            android:id="@+id/DateTextEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/CompanyCreateEvent_edit_text"
+            android:layout_below="@+id/CompanyEditEvent_edit_text"
             android:text="@string/fecha_evento"
             android:textSize="20sp" />
 
 
         <LinearLayout
-            android:id="@+id/lineDateCreateEvent"
+            android:id="@+id/lineDateEditEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/DateTextCreateEvent"
+            android:layout_below="@+id/DateTextEditEvent"
             android:orientation="horizontal"
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/DateCreateEvent"
+                android:id="@+id/DateEditEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/fecha_del_evento_description"
                 app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
             <EditText
-                android:id="@+id/editTextDateCreateEvent"
+                android:id="@+id/editTextDateEditEvent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.97"
@@ -142,22 +142,22 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/TimeTextCreateEvent"
+            android:id="@+id/TimeTextEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lineDateCreateEvent"
+            android:layout_below="@+id/lineDateEditEvent"
             android:text="@string/hora_evento"
             android:textSize="20sp" />
 
 
         <LinearLayout
-            android:id="@+id/linearLayoutHourCreateEvent"
+            android:id="@+id/linearLayoutHourEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/TimeTextCreateEvent">
+            android:layout_below="@+id/TimeTextEditEvent">
 
             <EditText
-                android:id="@+id/HourCreateEvent_edit_text"
+                android:id="@+id/HourEditEvent_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -165,14 +165,14 @@
                 android:textColorHint="#000000" />
 
             <TextView
-                android:id="@+id/TwoPointsCreateEvent"
+                android:id="@+id/TwoPointsEditEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/TwoPoints"
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/MinCreateEvent_edit_text"
+                android:id="@+id/MinEditEvent_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -180,42 +180,38 @@
                 android:textColorHint="#000000" />
 
         </LinearLayout>
-
         <TextView
-            android:id="@+id/ImageCreateEvent"
+            android:id="@+id/ImageEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayoutHourCreateEvent"
             android:text="@string/Imagen"
+            android:layout_below="@+id/linearLayoutHourEditEvent"
             android:textSize="20sp" />
+<LinearLayout
+    android:id="@+id/LinearLayoutImageEditEvent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/ImageEditEvent">
 
-        <LinearLayout
-            android:id="@+id/LinearLayoutImageCreateEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ImageCreateEvent">
+    <ImageButton
+        android:id="@+id/ImageEditEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/imagen_del_evento"
+        app:srcCompat="@android:drawable/ic_menu_gallery"  />
+    <ImageView
+        android:id="@+id/ImageSelectedEditEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-            <ImageButton
-                android:id="@+id/ImageCreateEventButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/imagen_del_evento"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-            <ImageView
-                android:id="@+id/ImageSelectedCreateEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
+</LinearLayout>
         <Button
-            android:id="@+id/buttonSendCreateEvent"
+            android:id="@+id/buttonSendEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/LinearLayoutImageCreateEvent"
+            android:layout_below="@+id/LinearLayoutImageEditEvent"
             android:text="@string/guardar" />
     </RelativeLayout>
 

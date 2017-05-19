@@ -27,15 +27,15 @@ public class HttpHandler {
     /**
      * Method to do a Http GET petition.
      *
-     * @param reqUrl is the url of the service
+     * @param reqUrl         is the url of the service
      * @param method
      * @param bodyParameters
-     * @param  token
+     * @param token
      * @return the response of the service called in String format.
      */
     public String makeServiceCall(String reqUrl, String method,
                                   HashMap<String, String> bodyParameters, String token) {
-        String response = null;
+        String response;
         String resCode = "300";
         try {
             URL url = new URL(reqUrl);
@@ -54,10 +54,11 @@ public class HttpHandler {
             Log.i(TAG, resCode);
 
             /* Read the response */
-            if(resCode.equals("200")) {
+            if (resCode.equals("200")) {
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 response = convertStreamToString(in);
-            }else{
+                if (response.isEmpty()) response = "200";
+            } else {
                 response = resCode;
             }
         } catch (MalformedURLException e) {
