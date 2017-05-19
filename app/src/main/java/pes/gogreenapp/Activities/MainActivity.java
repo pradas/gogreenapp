@@ -12,11 +12,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.test.espresso.core.deps.guava.io.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -56,7 +54,6 @@ import pes.gogreenapp.Fragments.RewardsListFragment;
 import pes.gogreenapp.Fragments.SettingsFragment;
 import pes.gogreenapp.Fragments.ShopFragment;
 import pes.gogreenapp.Fragments.UserProfileFragment;
-import pes.gogreenapp.Fragments.UserProfilePublicFragment;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -168,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Load menu items of the Switch functionally
                 new GetPublicInfoOtherUsers().execute();
-                /*menu.setGroupVisible(R.id.menu_top, false);
+
+                menu.setGroupVisible(R.id.menu_top, false);
                 List<String> usernames = new ArrayList<>();
 
                 try {
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //Change the direction of the arrow icon
-                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);*/
+                arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
             }
 
             // Deactivate the boolean that marks the Switch
@@ -234,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @Contract(" -> !null")
     private ActionBarDrawerToggle setupDrawerToggle() {
-        new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
+        //new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
@@ -501,20 +499,8 @@ public class MainActivity extends AppCompatActivity {
                 String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
                         session.getToken());
                 // TODO Implementar tag
-                Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
-                URL imageUrl = null;
-                try {
-                    JSONObject jsonArray = new JSONObject(response);
-                    imageUrl = new URL(jsonArray.getString("image"));
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if(imageUrl == null)
-                    imgurlname.add(null);
-                else
-                    imgurlname.add(getRemoteImage(imageUrl));
+
+
             }
             return imgurlname;
         }
@@ -550,7 +536,6 @@ public class MainActivity extends AppCompatActivity {
                     if(ImageURL.get(i) != null) {
                         Drawable drawable = new BitmapDrawable(getResources(),ImageURL.get(i));
                         drawable.setBounds(0,0,25,25);
-                        Log.i("ASD",drawable.getBounds().toString());
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(drawable);
                     }else{
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
