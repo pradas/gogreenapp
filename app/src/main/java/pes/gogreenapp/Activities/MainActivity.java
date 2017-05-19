@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private Menu menu;
     private View headerView;
     private boolean switchActive = false;
+    private static boolean drawerImageInit = false;
     private SessionManager session;
     private CircleImageView main_profile_image;
     /**
@@ -89,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         // Get instance of Session Manager and check if user is logged
         session = SessionManager.getInstance(getApplicationContext());
         session.checkLogin();
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 // Load menu items of the Switch functionally
                 new GetPublicInfoOtherUsers().execute();
 
-                menu.setGroupVisible(R.id.menu_top, false);
+                /*menu.setGroupVisible(R.id.menu_top, false);
                 List<String> usernames = new ArrayList<>();
 
                 try {
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                     menu.setGroupVisible(R.id.menu_top, false);
                 } else if (ROLE_MANAGER.equals(session.getRole()) || ROLE_SHOPPER.equals(session.getRole())) {
                     menu.setGroupVisible(R.id.menu_manager_and_shopper, false);
-                }
+                }*/
 
                 //Change the direction of the arrow icon
                 arrowSwitch.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
@@ -232,7 +232,10 @@ public class MainActivity extends AppCompatActivity {
      */
     @Contract(" -> !null")
     private ActionBarDrawerToggle setupDrawerToggle() {
-        //new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
+        if(!drawerImageInit){
+            new GetPublicInfoUser().execute(url + "users/" + session.getUsername());
+            drawerImageInit = true;
+        }
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
@@ -499,8 +502,7 @@ public class MainActivity extends AppCompatActivity {
                 String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
                         session.getToken());
                 // TODO Implementar tag
-
-
+                imgurlname.add(null);
             }
             return imgurlname;
         }
