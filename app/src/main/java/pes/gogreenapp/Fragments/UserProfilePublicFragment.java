@@ -180,6 +180,7 @@ public class UserProfilePublicFragment extends Fragment {
         protected void onPostExecute(Void result) {
             ImageView userImage = (ImageView) getView().findViewById(user_image);
             if(userInfo.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
+            else userImage.setImageBitmap(null);
             userNameLayout.setText(userInfo.getName());
             userNickName.setText(userInfo.getUsername());
             userPoints.setText(String.valueOf(userInfo.getTotalPoints()));

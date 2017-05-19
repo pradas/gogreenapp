@@ -453,7 +453,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
+            if (imageUrl != null) b_image_user = this.getRemoteImage(imageUrl);
+            else b_image_user = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    android.R.drawable.sym_def_app_icon);
             //testUser.setUserImage();
 
             return null;
@@ -502,6 +504,20 @@ public class MainActivity extends AppCompatActivity {
                 String response = httpHandler.makeServiceCall(aUrl+usernames.get(i).toString(), "GET" , new HashMap<>(),
                         session.getToken());
                 // TODO Implementar tag
+                Log.i("AAAAAAAAAAAAAAAAAAAAAAA", "Response from url: " + response);
+                URL imageUrl = null;
+                try {
+                    JSONObject jsonArray = new JSONObject(response);
+                    imageUrl = new URL(jsonArray.getString("image"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(imageUrl == null)
+                    imgurlname.add(null);
+                else
+                    imgurlname.add(getRemoteImage(imageUrl));
                 imgurlname.add(null);
             }
             return imgurlname;
@@ -532,15 +548,15 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(e.getMessage());
             }
             // Iterate through users and ids and inserts the menu item that didn't exist yet
-            for (int i = 0; i < ids.size(); ++i) {
+            for (int i = 0; i < ids.size(); ++i)  {
                 if (menu.findItem(ids.get(i)) == null) {
                     //TODO Meter las imagenen
                     if(ImageURL.get(i) != null) {
                         Drawable drawable = new BitmapDrawable(getResources(),ImageURL.get(i));
-                        drawable.setBounds(0,0,25,25);
+                        drawable.setTintList(null);
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(drawable);
                     }else{
-                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i));
+                        menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(android.R.drawable.sym_def_app_icon);
                     }
                 }
             }
