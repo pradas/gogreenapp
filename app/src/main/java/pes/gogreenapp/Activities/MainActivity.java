@@ -10,6 +10,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -110,11 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Find our drawer view
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nvView);
-
+        nvDrawer.setItemIconTintList(null);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
 
         // Get the header view
+        nvDrawer.setBackgroundTintList(null);
         headerView = nvDrawer.getHeaderView(0);
 
         // Set the username on the header view
@@ -469,6 +475,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static Bitmap getCircularBitmap(Bitmap bitmap)
+    {
+        Bitmap output;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        } else {
+            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        float r = 0;
+
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            r = bitmap.getHeight() / 2;
+        } else {
+            r = bitmap.getWidth() / 2;
+        }
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(r, r, r, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+
     private class GetPublicInfoOtherUsers extends AsyncTask<String, Void, List<Bitmap>> {
         Bitmap b_image_user;
 
@@ -516,9 +557,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(imageUrl == null)
                     imgurlname.add(null);
-                else
+                else {
                     imgurlname.add(getRemoteImage(imageUrl));
-                imgurlname.add(null);
+                }
             }
             return imgurlname;
         }
@@ -552,8 +593,7 @@ public class MainActivity extends AppCompatActivity {
                 if (menu.findItem(ids.get(i)) == null) {
                     //TODO Meter las imagenen
                     if(ImageURL.get(i) != null) {
-                        Drawable drawable = new BitmapDrawable(getResources(),ImageURL.get(i));
-                        drawable.setTintList(null);
+                        Drawable drawable = new BitmapDrawable(getResources(),getCircularBitmap(ImageURL.get(i)));
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(drawable);
                     }else{
                         menu.add(R.id.menu_switch, ids.get(i), i + 21, usernames.get(i)).setIcon(android.R.drawable.sym_def_app_icon);
