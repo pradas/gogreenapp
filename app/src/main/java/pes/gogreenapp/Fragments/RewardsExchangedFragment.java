@@ -1,5 +1,7 @@
 package pes.gogreenapp.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +48,7 @@ public class RewardsExchangedFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     RewardsExchangedAdapter adapter;
     String url = "http://10.4.41.145/api/";
+    String urlStorage = "http://10.4.41.145/storage/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
@@ -127,6 +135,18 @@ public class RewardsExchangedFragment extends Fragment {
      */
     private class GetRewards extends AsyncTask<String, Void, Void> {
 
+        private Bitmap getRemoteImage(final URL aURL) {
+            try {
+                final URLConnection conn = aURL.openConnection();
+                conn.connect();
+                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                final Bitmap bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bm;
+            } catch (IOException e) {}
+            return null;
+        }
+
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
@@ -138,6 +158,7 @@ public class RewardsExchangedFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
+            URL imageUrl = null;
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
@@ -147,11 +168,19 @@ public class RewardsExchangedFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         Date d = df.parse((String) jsonObject.get("end_date"));
+                        Bitmap b_image_user = null;
+                        String imageStringLink = null;
+
+                        if(jsonObject.has("image")){
+                            imageStringLink = jsonObject.getString("image");
+                            imageUrl = new URL(urlStorage + imageStringLink);
+                            b_image_user = this.getRemoteImage(imageUrl);
+                        }
                         rewards.add(new Reward((Integer) jsonObject.get("id"),
                                 (String) jsonObject.get("title"), (Integer) jsonObject.get("points"),
-                                d, (String) jsonObject.get("category"), (Boolean) jsonObject.get("favourite")));
+                                d, (String) jsonObject.get("category"), (Boolean) jsonObject.get("favourite"),  b_image_user));
                     }
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException | ParseException | MalformedURLException e) {
                     e.printStackTrace();
                 }
             }

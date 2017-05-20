@@ -184,7 +184,7 @@ public class NavigationDrawerTest {
     public void checkGivePointsAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.give_points_fragment));
-        onView(withId(R.id.give_points_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.give_points_fragment)).check(matches(isDisplayed()));
     }
 
     /**

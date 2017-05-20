@@ -1,28 +1,34 @@
 package pes.gogreenapp.Adapters;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Fragments.QRCodeFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * Created by Adry on 07/04/2017.
@@ -33,6 +39,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     private List<Reward> rewards;
     private Context context;
     private String userName;
+    private SessionManager session;
 
     /**
      * Constructor that set the List of Rewards.
@@ -44,7 +51,8 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     public RewardsExchangedAdapter(Context context, List<Reward> rewards, String userName) {
         this.context = context;
         this.rewards = rewards;
-        this.userName = userName;
+        this.session = SessionManager.getInstance();
+        userName = session.getUsername();
     }
 
     /**
@@ -61,7 +69,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         public TextView points;
         public TextView endDate;
         public ImageView rewardImage;
-        public Button use;
+        public ImageButton use;
         public ImageButton fav;
         public Integer id;
 
@@ -76,9 +84,8 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             category = (TextView) itemView.findViewById(R.id.rewardCategory);
             points = (TextView) itemView.findViewById(R.id.rewardPoints);
             endDate = (TextView) itemView.findViewById(R.id.rewardEndDate);
-            rewardImage = (ImageView) itemView.findViewById(R.id.rewardImage);
-            use = (Button) itemView.findViewById(R.id.exchangeButton);
-            use.setText("Utilizar");
+            rewardImage = (ImageView) itemView.findViewById(R.id.rewardBackgroundImage);
+            use = (ImageButton) itemView.findViewById(R.id.exchangeButton);
             fav = (ImageButton) itemView.findViewById(R.id.favoriteButton);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -131,14 +138,34 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         Date d = rewards.get(position).getEndDate();
         holder.endDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(d));
         holder.points.setText(String.valueOf(rewards.get(position).getPoints()));
+        if(rewards.get(position).getImage() != null){
+            holder.rewardImage.setImageBitmap(rewards.get(position).getImage());
+        }
+        else {
+            Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.default_card_background);
+            holder.rewardImage.setImageBitmap(icon);
+        }
+        if (rewards.get(position).isFavorite()) {
+            holder.fav.setTag("favoritefilled");
+            holder.fav.setImageResource(R.drawable.ic_fav_filled);
+        }
+        else {
+            holder.fav.setImageResource(R.drawable.ic_fav_void);
+            holder.fav.setTag("favorite");
+        }
         holder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.fav.getTag().equals("favorite")) {
-                    holder.fav.setImageResource(R.mipmap.favoritefilled);
+                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
+                            session.getUsername(), holder.id.toString());
+                    holder.fav.setImageResource(R.drawable.ic_fav_filled);
                     holder.fav.setTag("favoritefilled");
                 } else {
-                    holder.fav.setImageResource(R.mipmap.favorite);
+                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
+                            session.getUsername(), holder.id.toString());
+                    holder.fav.setImageResource(R.drawable.ic_fav_void);
                     holder.fav.setTag("favorite");
                 }
             }
@@ -163,5 +190,52 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     @Override
     public int getItemCount() {
         return rewards.size();
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class PostFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("reward_id", params[3]);
+            String url = params[0] + params [2] + "/favourite-rewards";
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params [2] + "/favourite-rewards/" + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Reward eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
     }
 }

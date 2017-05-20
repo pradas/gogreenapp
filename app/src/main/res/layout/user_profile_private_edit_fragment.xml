@@ -43,7 +43,7 @@
         android:layout_height="60dp"
         android:ems="10"
         android:inputType="date"
-        android:text="edita fecha"/>
+        android:text="edita date"/>
 
     <TextView
         android:id="@+id/textView2"

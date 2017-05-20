@@ -142,7 +142,10 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response != null && !response.equals("500")) {
+            if (response.equals("401")){
+                return "Falla";
+            }
+            else{
                 try {
                     JSONObject aux = new JSONObject(response);
 
@@ -164,10 +167,8 @@ public class LoginFragment extends Fragment {
                     getActivity().finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    return "FallaServer";
                 }
-            } else {
-                return "Falla";
-
             }
             return "Correcte";
         }
@@ -181,6 +182,9 @@ public class LoginFragment extends Fragment {
 
             if (result.equalsIgnoreCase("Falla")) {
                 Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
+            }
+            else if (result.equalsIgnoreCase("FallaServer")) {
+                Toast.makeText(getActivity(), "No esta disponible el servidor", Toast.LENGTH_LONG).show();
             }
         }
     }

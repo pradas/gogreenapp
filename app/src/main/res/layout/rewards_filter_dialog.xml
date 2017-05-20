@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:padding="30dp">
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:baselineAlignBottom="true"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/editText"
+        fontPath="fonts/Raleway-light.tff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Filtrar por"
+        android:textSize="24sp"
+        android:layout_alignBottom="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton"
+        android:layout_marginEnd="14dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_below="@+id/imageButton"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout3">
+
+    <Button
+        android:id="@+id/showAllButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Todos"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/showCategoriesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categories"
+        android:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/showRedeemablesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/showAllButton"
+        android:text="Canjeables"
+        android:textAllCaps="true" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout3"
+        android:layout_marginBottom="21dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <Button
+            android:id="@+id/orderPointsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PUNTOS"
+            android:textAllCaps="true" />
+
+        <Button
+            android:id="@+id/orderDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FECHA ↓"
+            android:textAllCaps="true" />
+    </LinearLayout>
+
+</RelativeLayout>

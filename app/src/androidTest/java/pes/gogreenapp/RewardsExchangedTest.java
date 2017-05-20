@@ -191,7 +191,7 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rvExchanged))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.mipmap.favoritefilled)));
+                .check(matches(withDrawable(R.drawable.ic_fav_filled)));
     }
 
     /**
@@ -207,7 +207,7 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rvExchanged))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.mipmap.favorite)));
+                .check(matches(withDrawable(R.drawable.ic_fav_void)));
     }
 
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

@@ -211,7 +211,7 @@ public class RewardDetailedTests {
 
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.favoriteDetailButton)).perform(click());
-        onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.mipmap.favoritefilled)));
+        onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.drawable.ic_fav_filled)));
     }
 
     /**
@@ -224,6 +224,6 @@ public class RewardDetailedTests {
         onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.favoriteDetailButton)).perform(click());
         onView(withId(R.id.favoriteDetailButton)).perform(click());
-        onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.mipmap.favorite)));
+        onView(withId(R.id.favoriteDetailButton)).check(matches(withDrawable(R.drawable.ic_fav_void)));
     }
 }

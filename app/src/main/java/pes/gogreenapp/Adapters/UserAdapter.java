@@ -63,10 +63,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (holder.fav.getTag().equals("favorite")) {
-                    holder.fav.setImageResource(R.mipmap.favoritefilled);
+                    holder.fav.setImageResource(R.drawable.ic_fav_filled);
                     holder.fav.setTag("favoritefilled");
                 } else {
-                    holder.fav.setImageResource(R.mipmap.favorite);
+                    holder.fav.setImageResource(R.drawable.ic_fav_void);
                     holder.fav.setTag("favorite");
                 }
             }
