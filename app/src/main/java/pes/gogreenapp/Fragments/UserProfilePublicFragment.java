@@ -97,21 +97,10 @@ public class UserProfilePublicFragment extends Fragment {
         userImage = (ImageView) getView().findViewById(user_image);
 
 
-        //a la espera de tener la petición de la API hecha
-        //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
         initializeUser();
         userName = session.getUsername();
         new GetPublicInfoUser().execute(url + "users/" + userName);
 
-        /*
-        userNameLayout.setText(testUser.getName());
-        userNickName.setText(testUser.getUsername());
-        userPoints.setText(String.valueOf(testUser.getTotalPoints()));
-        userCreationDate.setText((String) sourceFormat.format(testUser.getCreationDate()));
-        //userCreationDate.setText(date);
-        */
-        //userImage.setImageResource();
 
 
 
@@ -163,14 +152,12 @@ public class UserProfilePublicFragment extends Fragment {
 
                 imageUrl = new URL(jsonArray.getString("image"));
 
-                //JSONArray jsonArray = aux.getJSONArray("rewards");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
-            //testUser.setUserImage();
 
             return null;
         }
