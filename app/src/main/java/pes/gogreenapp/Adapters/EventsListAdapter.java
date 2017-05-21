@@ -1,6 +1,7 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -114,6 +115,12 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             byte[] decodedBytes = events.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
+        else {
+            Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.event);
+            holder.image.setImageBitmap(icon);
+        }
+
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",

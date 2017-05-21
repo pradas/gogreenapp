@@ -31,9 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.EventsListAdapter;
-import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Event;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -82,9 +80,23 @@ public class EventsListFragment extends Fragment {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.events_list_fragment, container, false);
     }
+
+    public void showFilterDialog(){
+        //Creamos una instancia del FilterDialog y la mostramos
+        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.events_list_menu, menu);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener( v -> {
+            showFilterDialog();
+            return true;
+        });
         super.onCreateOptionsMenu(menu,inflater);
     }
     @Override
