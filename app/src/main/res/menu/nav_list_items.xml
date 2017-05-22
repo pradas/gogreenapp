@@ -24,6 +24,10 @@
             android:orderInCategory="10"
             android:title="@string/shop" />
         <item
+            android:id="@+id/list_events_shop_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="@string/eventos" />
+        <item
             android:id="@+id/create_event_fragment"
             android:icon="@android:drawable/ic_menu_add"
             android:orderInCategory="11"

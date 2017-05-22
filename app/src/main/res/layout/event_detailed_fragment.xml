@@ -1,0 +1,60 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ScrollViewCreateEvent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/titleEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/imageEventDetailed"/>
+        <TextView
+            android:id="@+id/descriptionEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/titleEventDetailed" />
+        <TextView
+            android:id="@+id/pointsEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/descriptionEventDetailed" />
+        <TextView
+            android:id="@+id/categoryEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/pointsEventDetailed" />
+        <TextView
+            android:id="@+id/directionEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/categoryEventDetailed" />
+        <TextView
+            android:id="@+id/companyEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/directionEventDetailed" />
+        <TextView
+            android:id="@+id/dateEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/companyEventDetailed" />
+        <TextView
+            android:id="@+id/hourEventDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/dateEventDetailed" />
+    </RelativeLayout>
+
+</ScrollView>
