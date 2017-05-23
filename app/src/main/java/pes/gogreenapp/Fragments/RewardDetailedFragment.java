@@ -115,13 +115,13 @@ public class RewardDetailedFragment extends Fragment {
         action = (ImageButton) getView().findViewById(R.id.actionDetailReward);
         if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
         else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
-        //TODO Imagen Para rewards compreadas
+        //TODO Imagen Para rewards compradas
             // action.setText("UTILIZAR");
-        title.setText(reward.getTitle());
+        title.setText(reward.getTitle() +" ("+reward.getPoints()+" pts)");
         description.setText(reward.getDescription());
         Date finalDate = reward.getEndDate();
-        endDate.setText("Promoción valida hasta el " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
-        web.setText("Consulta mas información en " + reward.getContactWeb());
+        endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
+        web.setText("Más información en " + reward.getContactWeb());
         advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
                 "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y " +
                 "titular.");
