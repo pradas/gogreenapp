@@ -2,6 +2,7 @@ package pes.gogreenapp.Fragments;
 
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -94,7 +95,7 @@ public class RewardDetailedFragment extends Fragment {
         TextView advert;
         TextView instructions;
         ImageButton fav;
-        Button action;
+        ImageButton action;
 
 
         super.onActivityCreated(savedInstanceState);
@@ -111,10 +112,11 @@ public class RewardDetailedFragment extends Fragment {
         advert = (TextView) getView().findViewById(R.id.advertDetailReward);
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButton);
-        action = (Button) getView().findViewById(R.id.actionDetailReward);
-
-        if (getArguments().getString("parent").equals("list")) action.setText("CANJEAR");
-        else action.setText("UTILIZAR");
+        action = (ImageButton) getView().findViewById(R.id.actionDetailReward);
+        if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
+        else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
+        //TODO Imagen Para rewards compreadas
+            // action.setText("UTILIZAR");
         title.setText(reward.getTitle());
         description.setText(reward.getDescription());
         Date finalDate = reward.getEndDate();

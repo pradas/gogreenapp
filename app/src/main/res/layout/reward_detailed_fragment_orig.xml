@@ -7,18 +7,6 @@
     android:layout_height="match_parent"
     tools:context="pes.gogreenapp.Fragments.RewardDetailedFragment">
 
-    <ImageView
-        android:id="@+id/rewardBackgroundImageProfile"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:alpha="1.0"
-        android:scaleType="centerCrop"
-        android:tint="#88212121"
-        android:layout_above="@+id/barraHorizontal" />
-
 
 <TextView
         android:layout_width="570px"
@@ -111,14 +99,12 @@
         android:background="?android:selectableItemBackground"
         android:src="@mipmap/favorite" />
 
-    <ImageButton
-        android:id="@+id/actionDetailReward"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/ic_cart" />
+        android:id="@+id/actionDetailReward" />
 
 </RelativeLayout>
