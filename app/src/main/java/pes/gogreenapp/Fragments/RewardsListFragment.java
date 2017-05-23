@@ -106,10 +106,6 @@ public class RewardsListFragment extends Fragment {
             showFilterDialog();
             return true;
         });
-
-
-
-
     }
 
     /**
