@@ -13,6 +13,10 @@
             android:id="@+id/list_events_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
             android:title="@string/eventos" />
+        <item
+            android:id="@+id/list_ofertas_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="@string/ofertas" />
     </group>
     <!-- This group represents the items of a role Manager and the Shopper -->
     <group
@@ -32,6 +36,10 @@
             android:icon="@android:drawable/ic_menu_add"
             android:orderInCategory="11"
             android:title="@string/create_event" />
+        <item
+            android:id="@+id/create_oferta_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="@string/crear_oferta" />
         <item
             android:id="@+id/new_deal_fragment"
             android:icon="@android:drawable/ic_menu_add"
