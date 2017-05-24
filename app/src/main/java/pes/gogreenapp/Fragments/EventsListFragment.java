@@ -299,6 +299,8 @@ public class EventsListFragment extends Fragment {
                             image = jsonObject.getString("image");
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        Boolean favorite = false;
+                        if (jsonObject.get("favourite") == "true") favorite = true;
                         events.add(
                                 new Event(jsonObject.getInt("id"),
                                 jsonObject.getString("title"),
@@ -308,7 +310,9 @@ public class EventsListFragment extends Fragment {
                                 company,
                                 date,
                                 image,
-                                jsonObject.getString("category"))
+                                jsonObject.getString("category"),
+                                favorite)
+
                         );
                     }
                 } catch (JSONException | ParseException e) {
