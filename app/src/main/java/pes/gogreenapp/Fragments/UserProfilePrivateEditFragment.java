@@ -31,19 +31,12 @@ public class UserProfilePrivateEditFragment extends Fragment {
     private static Integer mYear, mMonth, mDay;
     OnEditSelectionEventListener mOnEditSelectionEventListener;
 
-    public UserProfilePrivateEditFragment() {
-        // Required empty public constructor
-    }
+
 
     public interface OnEditSelectionEventListener{
         void onEditSelectionEvent(boolean userEdit);
     }
 
-
-    private void initializeUser(){
-        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
-    }
 
     public void onAttachToParentFragment(Fragment fragment) {
         try{
@@ -56,12 +49,7 @@ public class UserProfilePrivateEditFragment extends Fragment {
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_profile_private_edit_fragment, container, false);
-    }
+
 
     public void onActivityCreated(Bundle savedInstanceState) {
 

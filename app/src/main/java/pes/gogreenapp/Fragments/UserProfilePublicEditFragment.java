@@ -37,14 +37,6 @@ public class UserProfilePublicEditFragment extends Fragment {
     User testUser;
 
 
-    private void initializeUser(){
-        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-    }
-
-    public UserProfilePublicEditFragment() {
-        // Required empty public constructor
-    }
-
 
 
     /**
@@ -93,7 +85,7 @@ public class UserProfilePublicEditFragment extends Fragment {
         //new GetUserImage().execute("http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
 
         initializeUser();
-        new UserProfilePublicEditFragment.GetInfoUser().execute();
+        new GetInfoUser().execute();
 
         userName.setText(testUser.getName());
         userNickName.setText(testUser.getUsername());
