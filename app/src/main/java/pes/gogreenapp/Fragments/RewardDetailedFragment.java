@@ -1,6 +1,7 @@
 package pes.gogreenapp.Fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,7 @@ import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.SessionManager;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Adrian on 17/04/2017.
@@ -132,7 +134,7 @@ public class RewardDetailedFragment extends Fragment {
         img.setImageBitmap(bmp);
         ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
         if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
-        else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
+        else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_play_for_work_black_24dp,null));
         //TODO Imagen Para rewards compradas
             // action.setText("UTILIZAR");
         title.setText(reward.getTitle() +" ("+reward.getPoints()+" pts)");
@@ -141,7 +143,7 @@ public class RewardDetailedFragment extends Fragment {
 
         endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
         web.setText("Más información en " + reward.getContactWeb());
-        advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
+        advert.setText("Promoción válida hasta el " +  new SimpleDateFormat("dd/MM/yyyy").format(reward.getEndDate()) + " y no acumulable a otras ofertas," +
                 "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y " +
                 "titular.");
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
@@ -272,7 +274,6 @@ public class RewardDetailedFragment extends Fragment {
             else Toast.makeText(getActivity(), "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
-
     private class PostReward extends AsyncTask<String, Void, String> {
 
         /**
