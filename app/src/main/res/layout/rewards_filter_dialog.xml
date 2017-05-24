@@ -11,9 +11,9 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:baselineAlignBottom="true"
         android:layout_alignParentRight="true"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        android:baselineAlignBottom="true"
+        app:srcCompat="@drawable/ic_close" />
 
     <TextView
         android:id="@+id/editText"
