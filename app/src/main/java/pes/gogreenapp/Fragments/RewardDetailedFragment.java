@@ -2,6 +2,8 @@ package pes.gogreenapp.Fragments;
 
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,12 +13,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +53,7 @@ public class RewardDetailedFragment extends Fragment {
     private String TAG = MainActivity.class.getSimpleName();
     private String url = "http://10.4.41.145/api/rewards/";
     private Reward reward;
-
+    private Bitmap bmp;
 
     /**
      * Required empty public constructor
@@ -74,7 +78,19 @@ public class RewardDetailedFragment extends Fragment {
         View view = inflater.inflate(R.layout.reward_detailed_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        byte[] b = getArguments().getByteArray("image");
+        //Crear imagen
+        bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     /**
@@ -97,7 +113,6 @@ public class RewardDetailedFragment extends Fragment {
         ImageButton fav;
         ImageButton action;
 
-
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         try {
@@ -113,6 +128,9 @@ public class RewardDetailedFragment extends Fragment {
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButton);
         action = (ImageButton) getView().findViewById(R.id.actionDetailReward);
+        ImageView img = (ImageView) getView().findViewById(R.id.rewardBackgroundImageProfile);
+        img.setImageBitmap(bmp);
+        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
         if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
         else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
         //TODO Imagen Para rewards compradas
@@ -120,6 +138,7 @@ public class RewardDetailedFragment extends Fragment {
         title.setText(reward.getTitle() +" ("+reward.getPoints()+" pts)");
         description.setText(reward.getDescription());
         Date finalDate = reward.getEndDate();
+
         endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
         web.setText("Más información en " + reward.getContactWeb());
         advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
@@ -127,6 +146,8 @@ public class RewardDetailedFragment extends Fragment {
                 "titular.");
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
                 "que el propietario o empleado de la tienda escanee el código.");
+
+
 
         if (reward.isFavorite()) {
             fav.setTag("favoritefilled");
@@ -151,6 +172,23 @@ public class RewardDetailedFragment extends Fragment {
                     fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
+            }
+        });
+
+        imgback.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment;
+                if (getArguments().getString("parent").equals("list")) {
+                    fragment = (Fragment) new RewardsListFragment();
+                }else{
+                    fragment = (Fragment) new UserProfileFragment();
+                }
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+
             }
         });
 
