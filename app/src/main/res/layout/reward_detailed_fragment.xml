@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/titleDetailReward"
-            fontPath="fonts/Roboto-Bold.ttf"
+            fontPath="fonts/Raleway-Bold.ttf"
             android:layout_width="570px"
             android:layout_height="wrap_content"
             android:layout_above="@+id/actionDetailReward"
@@ -106,6 +106,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:tint="@android:color/darker_gray"
             app:srcCompat="@drawable/ic_description_black_24dp" />
 
         <TextView
@@ -135,6 +136,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:tint="@android:color/darker_gray"
             app:srcCompat="@mipmap/ic_info_black_24dp" />
 
         <TextView
@@ -164,6 +166,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:tint="@android:color/darker_gray"
             app:srcCompat="@drawable/ic_web_black_24dp" />
 
         <TextView
@@ -192,6 +195,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:tint="@android:color/darker_gray"
             app:srcCompat="@drawable/ic_warning_black_24dp" />
 
         <TextView
