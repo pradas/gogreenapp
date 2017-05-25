@@ -1,14 +1,20 @@
 package pes.gogreenapp.Fragments;
 
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,37 +31,38 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Utils.HttpHandler;
-import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
-import static pes.gogreenapp.R.id.user_creation_date;
 import static pes.gogreenapp.R.id.user_image;
-import static pes.gogreenapp.R.id.user_name;
-import static pes.gogreenapp.R.id.user_nickname;
-import static pes.gogreenapp.R.id.user_points;
 
+/**
+ * Created by Adrian on 24/05/2017.
+ */
 
-public class UserProfilePublicFragment extends Fragment {
-    User testUser;
-    User userInfo;
-    SessionManager session;
-    String url = "http://10.4.41.145/api/";
+public class UserProfileInfoFragment extends Fragment {
+
+    private SessionManager session;
     private String TAG = MainActivity.class.getSimpleName();
-    private String userName;
-    TextView userNameLayout;
-    TextView userNickName;
-    TextView userPoints;
-    TextView userCreationDate;
-    ImageView userImage;
+    private ImageView userImage;
+    private TextView userName;
+    private TextView userNickName;
+    private TextView userTotalPoints;
+    private TextView userActualPoints;
+    private TextView userCreationDate;
+    private TextView userBirthDate;
+    private TextView userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    private User user;
 
 
-
-    public UserProfilePublicFragment() {
-        // Required empty public constructor
+    /**
+     *  Required empty public constructor
+     */
+    public UserProfileInfoFragment(){
     }
 
     /**
@@ -72,8 +79,7 @@ public class UserProfilePublicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_profile_public_fragment, container, false);
+        return inflater.inflate(R.layout.user_profile_info_fragment, container, false);
     }
 
     /**
@@ -86,33 +92,36 @@ public class UserProfilePublicFragment extends Fragment {
      *                           a previous saved state, this is the state.
      */
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        userNameLayout = (TextView) getView().findViewById(user_name);
-        userNickName = (TextView) getView().findViewById(user_nickname);
-        userPoints = (TextView) getView().findViewById(user_points);
-        userCreationDate = (TextView) getView().findViewById(user_creation_date);
-        userImage = (ImageView) getView().findViewById(user_image);
 
+        userImage = (ImageView) getView().findViewById(R.id.user_image);
+        userName = (TextView) getView().findViewById(R.id.user_name);
+        userNickName = (TextView) getView().findViewById(R.id.user_nickname);
+        userTotalPoints = (TextView) getView().findViewById(R.id.user_total_points);
+        userActualPoints = (TextView) getView().findViewById(R.id.user_actual_points);
+        userCreationDate = (TextView) getView().findViewById(R.id.gobro_since);
+        userBirthDate = (TextView) getView().findViewById(R.id.user_birthdate);
+        userEmail = (TextView) getView().findViewById(R.id.user_email);
+        Button editUser = (Button) getView().findViewById(R.id.edit_profile_button);
 
-        initializeUser();
-        userName = session.getUsername();
-        new GetPublicInfoUser().execute(url + "users/" + userName);
+        editUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new UserProfileEditFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+            }
+        });
 
-
-
+        new GetInfoUser().execute("http://10.4.41.145/api/users/" + session.getUsername());
 
     }
 
-
-    private void initializeUser(){
-        testUser = new User("realPepeViyuela", "Pepe Viyuela", "viyuela@gmail.com", "12-10-1983", "http://ep01.epimg.net/verne/imagenes/2015/09/28/articulo/1443439253_452315_1443439404_sumario_normal.jpg");
-
-    }
-
-    private class GetPublicInfoUser extends AsyncTask<String, Void, Void> {
+    private class GetInfoUser extends AsyncTask<String, Void, Void> {
         Bitmap b_image_user;
 
 
@@ -142,13 +151,14 @@ public class UserProfilePublicFragment extends Fragment {
 
                 JSONObject jsonArray = new JSONObject(response);
 
-                userInfo = new User(jsonArray.getString("username"),
+                user = new User(jsonArray.getString("username"),
                         jsonArray.getString("name"),
                         jsonArray.getString("email"),
                         jsonArray.getString("birth_date"),
                         jsonArray.getString("image"),
                         jsonArray.getInt("total_points"),
-                        jsonArray.getInt("points"));
+                        jsonArray.getInt("points"),
+                        jsonArray.getString("created_at"));
 
                 imageUrl = new URL(jsonArray.getString("image"));
 
@@ -165,13 +175,16 @@ public class UserProfilePublicFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            ImageView userImage = (ImageView) getView().findViewById(user_image);
-            if(userInfo.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
+            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
             else userImage.setImageBitmap(null);
-            userNameLayout.setText(userInfo.getName());
-            userNickName.setText(userInfo.getUsername());
-            userPoints.setText(String.valueOf(userInfo.getTotalPoints()));
-            userCreationDate.setText((String) sourceFormat.format(userInfo.getCreationDate()));
+
+            userName.setText("Nombre real: " + user.getName());
+            userNickName.setText("Nombre de usuario: " + user.getUsername());
+            userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
+            userActualPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
+            userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
+            userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
+            userEmail.setText("Email: " + user.getEmail());
 
         }
 
