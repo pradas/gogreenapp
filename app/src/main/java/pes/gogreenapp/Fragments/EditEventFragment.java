@@ -72,12 +72,13 @@ public class EditEventFragment extends Fragment {
     private EditText MinText;
     private EditText CompanyText;
     private Calendar calendar;
+    private Integer id;
     private String FinalTime = null;
     private List<String> categories = new ArrayList<String>();
     private Spinner categoriesSpinner;
     static private String TAG = "EditEvent";
     private Event event;
-    private String url = "http://10.4.41.145/api/events/4";
+    private String url = "http://10.4.41.145/api/events/";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -124,13 +125,10 @@ public class EditEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        /*
-        View view = inflater.inflate(R.layout.create_event_fragment, container, false);
+        View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
         return view;
-         */
-        return inflater.inflate(R.layout.edit_event_fragment, container, false);
     }
 
 
@@ -307,6 +305,8 @@ public class EditEventFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
+                    Boolean favorite = false;
+                    if (jsonObject.get("favourite") == "true") favorite = true;
                     event = new Event(jsonObject.getInt("id"),
                             jsonObject.getString("title"),
                             jsonObject.getString("description"),
@@ -315,7 +315,8 @@ public class EditEventFragment extends Fragment {
                             company,
                             df.parse(jsonObject.getString("date")),
                             image,
-                            jsonObject.getString("category"));
+                            jsonObject.getString("category"),
+                            favorite);
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

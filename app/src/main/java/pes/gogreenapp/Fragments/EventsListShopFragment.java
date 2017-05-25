@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Adapters.EventsListAdapter;
+import pes.gogreenapp.Adapters.EventsListShopAdapter;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -42,10 +42,10 @@ import static pes.gogreenapp.R.id.ordenarFechaEventos;
 import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
-public class EventsListFragment extends Fragment {
+public class EventsListShopFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    EventsListAdapter adapter;
+    EventsListShopAdapter adapter;
     String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = "EventsList";
@@ -60,7 +60,7 @@ public class EventsListFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public EventsListFragment() {
+    public EventsListShopFragment() {
     }
 
     /**
@@ -78,25 +78,11 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.events_list_fragment, container, false);
+        return inflater.inflate(R.layout.events_list_shop_fragment, container, false);
     }
-
-    public void showFilterDialog(){
-        //Creamos una instancia del FilterDialog y la mostramos
-        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.events_list_menu, menu);
-        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
-
-        //Listener for the filter menuIcon
-        filterButton.setOnMenuItemClickListener( v -> {
-            showFilterDialog();
-            return true;
-        });
         super.onCreateOptionsMenu(menu,inflater);
     }
     @Override
@@ -118,6 +104,31 @@ public class EventsListFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+        session = SessionManager.getInstance();
+        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_events_shop);
+        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerEventsShop);
+        warning = (TextView) getView().findViewById(R.id.warningNoResultEventsShop);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        new GetEvents().execute(url + "events");
+        new GetCategories().execute(url + "categories");
+        // Refresh items
+        swipeContainer.setOnRefreshListener(this::refreshItems);
+    }
+
     private void filtrarCategoria() {
         String pastCategory = categorySelected;
         categorySelected = "Conciertos";
@@ -133,7 +144,7 @@ public class EventsListFragment extends Fragment {
             if (filteredEvents.size() == 0)
                 warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
             else warning.setText("");
-            adapter = new EventsListAdapter(getContext(), filteredEvents);
+            adapter = new EventsListShopAdapter(getContext(), filteredEvents);
             recyclerView.setAdapter(adapter);
         });
         mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
@@ -156,7 +167,7 @@ public class EventsListFragment extends Fragment {
     private void filtrarTodos() {
         categorySelected = "";
         warning.setText("");
-        adapter = new EventsListAdapter(getContext(), events);
+        adapter = new EventsListShopAdapter(getContext(), events);
         recyclerView.setAdapter(adapter);
 
     }
@@ -165,21 +176,21 @@ public class EventsListFragment extends Fragment {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
+                adapter = new EventsListShopAdapter(getContext(), events);
             } else {
                 List<Event> filteredEvents = filterEventsByCategories();
                 Collections.sort(filteredEvents, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
+                adapter = new EventsListShopAdapter(getContext(), filteredEvents);
             }
             pointsFilter = "ascendente";
         } else if (pointsFilter.equals("ascendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
+                adapter = new EventsListShopAdapter(getContext(), events);
             } else {
                 List<Event> filteredEvents = filterEventsByCategories();
                 Collections.sort(filteredEvents, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
+                adapter = new EventsListShopAdapter(getContext(), filteredEvents);
             }
             pointsFilter = "descendente";
         }
@@ -191,51 +202,26 @@ public class EventsListFragment extends Fragment {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
+                adapter = new EventsListShopAdapter(getContext(), events);
             } else {
                 List<Event> filteredEvents = filterEventsByCategories();
                 Collections.sort(filteredEvents, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
+                adapter = new EventsListShopAdapter(getContext(), filteredEvents);
             }
             dateFilter = "ascendente";
         } else if (dateFilter.equals("ascendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
+                adapter = new EventsListShopAdapter(getContext(), events);
             } else {
                 List<Event> filteredEvents = filterEventsByCategories();
                 Collections.sort(filteredEvents, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
+                adapter = new EventsListShopAdapter(getContext(), filteredEvents);
             }
             dateFilter = "descendente";
         }
         recyclerView.setAdapter(adapter);
 
-    }
-
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
-     */
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-        session = SessionManager.getInstance();
-        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_events);
-        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerEvents);
-        warning = (TextView) getView().findViewById(R.id.warningNoResultEvents);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        new GetEvents().execute(url + "events");
-        new GetCategories().execute(url + "categories");
-        // Refresh items
-        swipeContainer.setOnRefreshListener(this::refreshItems);
     }
     /**
      * On swipe, refresh all the items of the screen.
@@ -246,6 +232,7 @@ public class EventsListFragment extends Fragment {
         warning.setText("");
         categorySelected = "";
         // Get items
+        /* TODO fer crida a API només de events id tenda*/
         new GetEvents().execute("http://10.4.41.145/api/events");
         Log.d(TAG, "setting events");
 
@@ -311,8 +298,7 @@ public class EventsListFragment extends Fragment {
                                 date,
                                 image,
                                 jsonObject.getString("category"),
-                                favorite)
-
+                                        favorite)
                         );
                     }
                 } catch (JSONException | ParseException e) {
@@ -329,7 +315,7 @@ public class EventsListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new EventsListAdapter(getContext(), events);
+            adapter = new EventsListShopAdapter(getContext(), events);
             recyclerView.setAdapter(adapter);
         }
     }

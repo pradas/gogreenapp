@@ -1,7 +1,6 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,14 +22,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 
-public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.ViewHolder> {
+public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAdapter.ViewHolder> {
     private List<Event> events;
     private Context context;
     private SessionManager session;
@@ -39,10 +40,10 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
     /**
      * Constructor that set the List of Rewards.
      *
-     * @param events non-null List of the Rewards.
+     * @param events  non-null List of the Rewards.
      * @param context non-null context of the application.
      */
-    public EventsListAdapter(Context context, List<Event> events) {
+    public EventsListShopAdapter(Context context, List<Event> events) {
         this.context = context;
         this.events = events;
         this.session = SessionManager.getInstance();
@@ -65,6 +66,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         TextView hour;
         TextView category;
         ImageButton fav;
+        ImageButton edit;
         public Integer id;
 
         /**
@@ -74,13 +76,14 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
          */
         ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.eventImage);
-            title = (TextView) itemView.findViewById(R.id.eventTitle);
-            points = (TextView) itemView.findViewById(R.id.eventPoints);
-            category = (TextView) itemView.findViewById(R.id.eventCategory);
-            date = (TextView) itemView.findViewById(R.id.eventEndDate);
-            hour = (TextView) itemView.findViewById(R.id.eventHour);
-            fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButton);
+            image = (ImageView) itemView.findViewById(R.id.eventImageShop);
+            title = (TextView) itemView.findViewById(R.id.eventTitleShop);
+            points = (TextView) itemView.findViewById(R.id.eventPointsShop);
+            category = (TextView) itemView.findViewById(R.id.eventCategoryShop);
+            date = (TextView) itemView.findViewById(R.id.eventEndDateShop);
+            hour = (TextView) itemView.findViewById(R.id.eventHourShop);
+            fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButtonShop);
+            edit = (ImageButton) itemView.findViewById(R.id.eventEditButtonShop);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,8 +112,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
      * @return A new ViewHolder that holds a View of the given view type.
      */
     @Override
-    public EventsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.events_list_cardview, parent, false);
+    public EventsListShopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.events_list_shop_cardview, parent, false);
         return new ViewHolder(v);
     }
 
@@ -124,7 +127,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(final EventsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final EventsListShopAdapter.ViewHolder holder, int position) {
         holder.id = events.get(position).getId();
         holder.title.setText(events.get(position).getTitle());
         holder.category.setText(events.get(position).getCategory());
@@ -132,25 +135,10 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         Date d = events.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy").format(d));
         holder.hour.setText(new SimpleDateFormat("HH:mm").format(d));
-       if (events.get(position).getImage() != null) {
+        if (events.get(position).getImage() != null) {
             byte[] decodedBytes = events.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
-        else {
-            Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.event);
-            holder.image.setImageBitmap(icon);
-        }
-
-        if (events.get(position).isFavorite()) {
-            holder.fav.setTag("favoritefilled");
-            holder.fav.setImageResource(R.drawable.ic_fav_filled);
-        }
-        else {
-            holder.fav.setImageResource(R.drawable.ic_fav_void);
-            holder.fav.setTag("favorite");
-        }
-
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
@@ -162,8 +150,20 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                 holder.fav.setTag("favorite");
             }
         });
-    }
+        holder.edit.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", holder.id);
+            bundle.putString("parent", "list");
 
+            FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            Fragment fragment = (Fragment) new EditEventFragment();
+            fragment.setArguments(bundle);
+            transaction.replace(R.id.flContent, fragment);
+            transaction.commit();
+        });
+
+    }
 
 
     /**
@@ -176,7 +176,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-events";
+            String url = params[0] + params[2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
@@ -185,8 +185,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            }
-            else Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 
