@@ -1,6 +1,8 @@
 package pes.gogreenapp.Fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +49,7 @@ import pes.gogreenapp.Utils.SessionManager;
 public class UserProfileEditFragment extends Fragment {
 
     private User user;
+    private Activity activity;
     private String TAG = MainActivity.class.getSimpleName();
     private SessionManager session;
     private ImageView userImage;
@@ -74,6 +78,7 @@ public class UserProfileEditFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.activity = getActivity();
 
         session = SessionManager.getInstance();
 
@@ -93,13 +98,28 @@ public class UserProfileEditFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PutUser().execute("http://10.4.41.145/api/users/", "PUT", userName.getText().toString(),
-                        userBirthDate.getText().toString(), userEmail.getText().toString());
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment = (Fragment) new UserProfileFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("¿Está seguro de que desea modificar su perfil?").
+                        setPositiveButton("MODIFICAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new PutUser().execute("http://10.4.41.145/api/users/", "PUT", userName.getText().toString(),
+                                        userBirthDate.getText().toString(), userEmail.getText().toString());
+                                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                                FragmentTransaction transaction = manager.beginTransaction();
+                                Fragment fragment = (Fragment) new UserProfileFragment();
+                                transaction.replace(R.id.flContent, fragment);
+                                transaction.commit();
+                            }
+                        })
+                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
@@ -132,7 +152,7 @@ public class UserProfileEditFragment extends Fragment {
                                 String sDayOfMonth = String.format("%02d",dayOfMonth);
                                 String sMonthOfYear = String.format("%02d",monthOfYear + 1);
 
-                                userBirthDate.setText(sDayOfMonth + "/" + sMonthOfYear + "/" + year);
+                                userBirthDate.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -206,7 +226,7 @@ public class UserProfileEditFragment extends Fragment {
             userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
             userCurrentPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
-            userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
+            userBirthDate.setText((String) sourceFormat.format(user.getBirthDate()));
             userEmail.setText(user.getEmail());
 
         }
@@ -250,11 +270,11 @@ public class UserProfileEditFragment extends Fragment {
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
-                //Toast.makeText(getActivity(), "Error al editar el perfil. Intentelo de nuevo mas tarde",
-                        //Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "Error al editar el perfil. Intentelo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
             }
             else {
-                //Toast.makeText(getActivity(), "Perfil actualizado", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "Perfil actualizado", Toast.LENGTH_LONG).show();
             }
         }
     }
