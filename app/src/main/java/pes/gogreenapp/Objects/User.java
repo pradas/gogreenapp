@@ -27,7 +27,8 @@ public class User {
     //Calendar cal = GregorianCalendar.getInstance();
     private DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    public User(String username, String name, String email, String birthDate, String userUrlImage) {
+    public User(String username, String name, String email, String birthDate, String userUrlImage,
+                Integer totalPoints, Integer currentPoints, String creationDate) {
 
         this.username = username;
         this.name = name;
@@ -37,9 +38,13 @@ public class User {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.currentPoints = 0;
-        this.totalPoints = 0;
-        this.creationDate = new Date();
+        this.currentPoints = currentPoints;
+        this.totalPoints = totalPoints;
+        try {
+            this.creationDate = sourceFormat.parse((String) creationDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.userUrlImage = userUrlImage;
     }
 

@@ -3,21 +3,19 @@
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@mipmap/ndheader_2"
+    android:background="@mipmap/ndheader_4"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:clickable="true"
-        android:backgroundTint="@color/zxing_possible_result_points"
-        android:backgroundTintMode="src_over"
         android:contentDescription="@string/profile_image_description"
-        android:src="@android:drawable/sym_def_app_icon" />
+        android:src="@android:drawable/sym_def_app_icon"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".90"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"/>
 
         <ImageView
             android:id="@+id/arrow_switch"
@@ -38,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".10"
             android:contentDescription="@string/arrow_switch_down"
-            android:src="@drawable/ic_arrow_drop_down_black_24dp" />
+            android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
     </LinearLayout>
 
 

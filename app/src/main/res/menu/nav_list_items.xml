@@ -33,7 +33,7 @@
             android:title="@string/eventos" />
         <item
             android:id="@+id/create_event_fragment"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="11"
             android:title="@string/create_event" />
         <item
@@ -42,7 +42,7 @@
             android:title="@string/crear_oferta" />
         <item
             android:id="@+id/new_deal_fragment"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="12"
             android:title="@string/new_deal" />
         <item
@@ -62,7 +62,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/add_account"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="100"
             android:title="@string/add_account" />
     </group>

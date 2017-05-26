@@ -15,15 +15,12 @@ import pes.gogreenapp.R;
 /**
  * Created by Daniel on 17/04/2017.
  */
-public class UserProfileFragment extends Fragment
-        implements UserProfilePrivateEditFragment.OnEditSelectionEventListener,
-                    UserProfilePrivateFragment.OnEditSelectionEventListener{
+public class UserProfileFragment extends Fragment {
 
     /**
      *  Required empty public constructor
      */
     public UserProfileFragment(){
-
     }
 
 
@@ -44,38 +41,6 @@ public class UserProfileFragment extends Fragment
         return inflater.inflate(R.layout.user_profile_fragment, container, false);
     }
 
-
-    /**
-     * when pressing the "edit" button, replace the fragments shown on the profile
-     */
-    @Override
-    public void onEditSelectionEvent(boolean editUser){
-
-        if(editUser){
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            UserProfilePublicEditFragment uPublicEditFrag = new UserProfilePublicEditFragment();
-            UserProfilePrivateEditFragment uPrivateEditFrag = new UserProfilePrivateEditFragment();
-            transaction
-                    .replace(R.id.user_profile_c1, uPublicEditFrag)
-                    .replace(R.id.user_profile_c2, uPrivateEditFrag)
-                    .addToBackStack(null)
-                    .commit();
-
-        }
-        else {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
-            UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
-            transaction
-                    .replace(R.id.user_profile_c1, uPublicFrag)
-                    .replace(R.id.user_profile_c2, uPrivateFrag)
-                    .addToBackStack(null)
-                    .commit();
-
-        }
-
-    }
-
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -94,17 +59,16 @@ public class UserProfileFragment extends Fragment
         if (savedInstanceState == null) {
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            UserProfilePublicFragment uPublicFrag = new UserProfilePublicFragment();
-            UserProfilePrivateFragment uPrivateFrag = new UserProfilePrivateFragment();
+            UserProfileInfoFragment uInfoFrag = new UserProfileInfoFragment();
 
             transaction
-                    .add(R.id.user_profile_c1, uPublicFrag)
-                    .add(R.id.user_profile_c2, uPrivateFrag)
+                    .add(R.id.user_profile_c1, uInfoFrag)
                     .add(R.id.rewards_exchanged_fragment, rExFrag)
                     .commit();
         }
     }
-
-
-
 }
+
+
+
+
