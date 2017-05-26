@@ -153,6 +153,9 @@ public class LoginFragment extends Fragment {
                     session = SessionManager.getInstance(getActivity().getApplicationContext());
                     session.putInfoLoginSession(params[2], aux.getString("role"), aux.getString("token"),
                             aux.getInt("points"));
+                    /*if ("manager".equals(aux.getString("role"))){
+                        session.setShopId(aux.getInt("shopId"));
+                    }*/
 
                     // insert the User info into the SQLite
                     try {

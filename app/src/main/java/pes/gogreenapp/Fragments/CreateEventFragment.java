@@ -69,7 +69,6 @@ public class CreateEventFragment extends Fragment {
     private EditText DirectionText;
     private EditText HourText;
     private EditText MinText;
-    private EditText CompanyText;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
     private String FinalTime = null;
@@ -152,7 +151,6 @@ public class CreateEventFragment extends Fragment {
         DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
-        CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
 
         //events
@@ -191,11 +189,12 @@ public class CreateEventFragment extends Fragment {
             }
         });
         PhotoButton.setOnClickListener((View v) -> {
-            isStoragePermissionGranted();
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            // Start the Intent
-            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+            if(isStoragePermissionGranted()) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Start the Intent
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+            }
         });
         SendButton.setOnClickListener(v -> {
             //Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
@@ -260,7 +259,6 @@ public class CreateEventFragment extends Fragment {
                         DescriptionText.getText().toString(),
                         PointsText.getText().toString(),
                         DirectionText.getText().toString(),
-                        CompanyText.getText().toString(),
                         DateText.getText().toString(),
                         FinalTime,
                         imgString,
@@ -298,7 +296,6 @@ public class CreateEventFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
             if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
             BodyParams.put("date", params[7]);
             if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
             else BodyParams.put("time", "00:00");

@@ -100,15 +100,41 @@
                 android:layout_weight="0.97"
                 android:ems="10"
                 android:inputType="date" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/ImageCreateOferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lineDateCreateOferta"
+            android:text="@string/Imagen"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:id="@+id/LinearLayoutImageCreateOferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageCreateOferta">
+
+            <ImageButton
+                android:id="@+id/ImageCreateOfertaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/imagen_de_la_oferta"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+            <ImageView
+                android:id="@+id/ImageSelectedCreateOferta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
         <Button
             android:id="@+id/buttonSendCreateOferta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/lineDateCreateOferta"
+            android:layout_below="@+id/LinearLayoutImageCreateOferta"
             android:text="@string/guardar" />
     </RelativeLayout>
 
