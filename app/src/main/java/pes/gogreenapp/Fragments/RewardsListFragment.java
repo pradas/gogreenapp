@@ -31,6 +31,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -123,7 +124,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     // Fragment.onAttach() callback, which it uses to call the following methods
     // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId) {
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId) {
 
         List<Reward> auxRewards = rewards;
 
@@ -144,6 +145,25 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
                 break;
         }
 
+        switch (sorterId) {
+            case R.id.radio_sorter_date:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r1.getEndDate().compareTo(r2.getEndDate()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r2.getEndDate().compareTo(r1.getEndDate()));
+                }
+                break;
+            case R.id.radio_sorter_points:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r1.getPoints().compareTo(r2.getPoints()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r2.getPoints().compareTo(r1.getPoints()));
+                }
+                break;
+            default:
+                break;
+        }
+
         // change the rewards list info of the adapter
         adapter.setRewards(auxRewards);
         adapter.notifyDataSetChanged();
@@ -153,7 +173,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog, int filterCheckedId, int sorterId) {
+    public void onDialogNegativeClick(DialogFragment dialog, int filterCheckedId, int sorterId, int directionId) {
         // User touched the dialog's negative button
         dialog.getDialog().cancel();
     }

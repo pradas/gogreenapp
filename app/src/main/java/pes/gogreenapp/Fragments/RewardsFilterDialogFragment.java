@@ -13,16 +13,16 @@ import pes.gogreenapp.R;
 
 public class RewardsFilterDialogFragment extends DialogFragment {
 
-    private int filterCheckedId, sorterCheckedId;
+    private int filterCheckedId, sorterCheckedId, directionsCheckedId;
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     interface RewardsFilterDialogListener {
 
-        void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId);
+        void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId);
 
-        void onDialogNegativeClick(DialogFragment dialog, int filterId, int sorterId);
+        void onDialogNegativeClick(DialogFragment dialog, int filterId, int sorterId, int directionId);
     }
 
     // Use this instance of the interface to deliver action events
@@ -41,10 +41,10 @@ public class RewardsFilterDialogFragment extends DialogFragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         mListener = (RewardsFilterDialogListener) getTargetFragment();
         mBuilder.setView(inflate).setPositiveButton("Filtrar", (dialogLambda, which) -> mListener
-                .onDialogPositiveClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId))
-                .setNegativeButton(R.string.cancel, (dialogLambda, which) -> mListener
-                        .onDialogNegativeClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId))
-                .setTitle("Filtros");
+                .onDialogPositiveClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
+                        directionsCheckedId)).setNegativeButton(R.string.cancel, (dialogLambda, which) -> mListener
+                .onDialogNegativeClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
+                        directionsCheckedId));
 
         // listeners for the radio group of filters
         RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters_rewards);
@@ -56,6 +56,20 @@ public class RewardsFilterDialogFragment extends DialogFragment {
                 default:
                     filterCheckedId = checkedId;
             }
+        });
+
+        RadioGroup radioSorters = (RadioGroup) inflate.findViewById(R.id.radio_sorter_rewards);
+        RadioGroup radioSorterDirections = (RadioGroup) inflate.findViewById(R.id.radio_sorter_directions);
+        radioSorters.setOnCheckedChangeListener((group, checkedId) -> {
+
+            sorterCheckedId = checkedId;
+            radioSorterDirections.clearCheck();
+            radioSorterDirections.setVisibility(View.VISIBLE);
+
+        });
+
+        radioSorterDirections.setOnCheckedChangeListener((group, checkedId) -> {
+            directionsCheckedId = checkedId;
         });
 
         return mBuilder.create();
