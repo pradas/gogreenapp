@@ -9,6 +9,9 @@ import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,7 +51,7 @@ public class GivePointsFragment extends Fragment {
     private List<String> users;
     private List<Events> events;
     private Switch mode;
-    private Button anotherUser, grantPoints;
+    private Button grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
     private GivePointsByPointsAdapter adapterPoints;
 
@@ -73,7 +76,8 @@ public class GivePointsFragment extends Fragment {
         modeItems = "Eventos";
         users = new ArrayList<String>();
         events = new ArrayList<Events>();
-        users.add("Usuario nº1");
+        users.add("");
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
@@ -125,7 +129,7 @@ public class GivePointsFragment extends Fragment {
 
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
-        anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
+        //anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
         adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
         listToGivePoints.setAdapter(adapterEvents);
@@ -141,7 +145,7 @@ public class GivePointsFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             modeItems = "Eventos";
                             users.clear();
-                            users.add("Usuario nº1");
+                            users.add("");
                             adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
                             listToGivePoints.setAdapter(adapterEvents);
                         }
@@ -152,7 +156,7 @@ public class GivePointsFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             modeItems = "Puntos";
                             users.clear();
-                            users.add("Usuario nº1");
+                            users.add("");
                             adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
                             listToGivePoints.setAdapter(adapterPoints);
                         }
@@ -166,19 +170,19 @@ public class GivePointsFragment extends Fragment {
             }
         });
 
-        anotherUser.setOnClickListener(new View.OnClickListener() {
+        /*anotherUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (modeItems.equals("Eventos")) {
-                    users.add("Usuario nº" + (users.size() + 1));
+                    users.add("");
                     adapterEvents.notifyDataSetChanged();
                 }
                 else {
-                    users.add("Usuario nº" + (users.size() + 1));
+                    users.add("");
                     adapterPoints.notifyDataSetChanged();
                 }
             }
-        });
+        });*/
 
         grantPoints.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,6 +220,27 @@ public class GivePointsFragment extends Fragment {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_give_points, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_user:
+                users.add("");
+                if (modeItems.equals("Eventos"))
+                    adapterEvents.notifyDataSetChanged();
+                else
+                    adapterPoints.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
