@@ -84,36 +84,6 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.menu_filters, menu);
-        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
-
-        //Listener for the filter menuIcon
-        filterButton.setOnMenuItemClickListener(v -> {
-            RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-            dialog.setTargetFragment(this, 200);
-            dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
-            return true;
-        });
-    }
-
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-
-        dialog.getDialog().cancel();
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // User touched the dialog's negative button
-        dialog.getDialog().cancel();
-    }
-
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -137,6 +107,36 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_filters, menu);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener(v -> {
+            RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+            dialog.setTargetFragment(this, 200);
+            dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
+            return true;
+        });
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId) {
+
+        dialog.getDialog().cancel();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog, int filterCheckedId, int sorterId) {
+        // User touched the dialog's negative button
+        dialog.getDialog().cancel();
     }
 
     /**

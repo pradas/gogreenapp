@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/dialog_filters_rewards"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:ignore="MissingPrefix">
+
+    <RadioGroup
+        android:id="@+id/radio_filters_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_filter_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all"/>
+
+        <RadioButton
+            android:id="@+id/radio_filter_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/categories"/>
+
+        <RadioButton
+            android:id="@+id/radio_filter_canjeables"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/canjeables"/>
+    </RadioGroup>
 
 </RelativeLayout>
