@@ -14,6 +14,9 @@
         android:layout_below="@+id/userNumberByPoints"
         android:id="@+id/userNameToGiveByPoints"
         android:hint="@string/usernameHint"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro"
         android:layout_centerHorizontal="true" />
     <EditText
         android:layout_width="wrap_content"
@@ -21,6 +24,9 @@
         android:layout_below="@+id/userNameToGiveByPoints"
         android:id="@+id/pointsToGive"
         android:hint="@string/pointsHint"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

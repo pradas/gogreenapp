@@ -8,18 +8,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/userNumberByEvents" />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/userNumberByEvents"
         android:id="@+id/userNameToGiveByEvents"
-        android:hint="@string/usernameHint"
-        android:layout_centerHorizontal="true" />
-    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/userNumberByEvents"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:hint="@string/usernameHint"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro" />
+
+    <Spinner
         android:id="@+id/spinnerEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/userNameToGiveByEvents"
-        android:layout_centerHorizontal="true">
-    </Spinner>
+        android:layout_centerHorizontal="true"
+        android:theme="@style/comboboxestilo"/>
 </RelativeLayout>

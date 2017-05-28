@@ -56,7 +56,8 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
                 eventsToSpinner.add(events.get(i).getTitle());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                    android.R.layout.simple_spinner_dropdown_item, eventsToSpinner);
+                    R.layout.spinner_dropdown, eventsToSpinner);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerEvents.setAdapter(adapter);
         }
     }
