@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
@@ -45,20 +45,15 @@ import pes.gogreenapp.Utils.SessionManager;
 
 public class RewardsListFragment extends Fragment implements RewardsFilterDialogFragment.RewardsFilterDialogListener {
 
-    public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RewardsListAdapter adapter;
-    String categorySelected = "";
     String url = "http://10.4.41.145/api/";
     String urlStorage = "http://10.4.41.145/storage/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
-    private List<String> categories = new ArrayList<>();
     private SessionManager session;
-    private String userName;
-    private TextView warning;
 
     /**
      * Required empty public constructor
@@ -130,6 +125,30 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId) {
 
+        List<Reward> auxRewards = rewards;
+
+        switch (filterId) {
+            case R.id.radio_filter_canjeables:
+                int points = session.getPoints();
+
+                // remove the rewards that user can't exchange
+                Iterator<Reward> it = auxRewards.iterator();
+                while (it.hasNext()) {
+                    if (it.next().getPoints() > points) it.remove();
+                }
+
+                break;
+            case R.id.radio_filter_category:
+                break;
+            default:
+                break;
+        }
+
+        // change the rewards list info of the adapter
+        adapter.setRewards(auxRewards);
+        adapter.notifyDataSetChanged();
+
+        //close the dialog
         dialog.getDialog().cancel();
     }
 
