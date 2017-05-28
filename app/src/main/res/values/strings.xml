@@ -82,6 +82,7 @@
     <!-- Buttons Give Points -->
     <string name="anotherUser">+ Otro Usuario</string>
     <string name="grantPoints">Conceder Puntos</string>
+    <string name="button_for_close_the_dialog">Button for close the dialog</string>
 
 
 </resources>

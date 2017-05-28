@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +43,7 @@ import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-public class RewardsListFragment extends Fragment {
+public class RewardsListFragment extends Fragment implements RewardsFilterDialogFragment.RewardsFilterDialogListener {
 
     public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
@@ -83,12 +84,6 @@ public class RewardsListFragment extends Fragment {
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
-    public void showFilterDialog() {
-        //Creamos una instancia del FilterDialog y la mostramos
-        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -97,11 +92,26 @@ public class RewardsListFragment extends Fragment {
 
         //Listener for the filter menuIcon
         filterButton.setOnMenuItemClickListener(v -> {
-            showFilterDialog();
+            RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+            dialog.setTargetFragment(this, 200);
+            dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
             return true;
         });
+    }
 
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
 
+        dialog.getDialog().cancel();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+        dialog.getDialog().cancel();
     }
 
     /**
@@ -157,6 +167,7 @@ public class RewardsListFragment extends Fragment {
                 bis.close();
                 return bm;
             } catch (IOException e) {
+                e.printStackTrace();
             }
             return null;
         }
