@@ -74,7 +74,7 @@ public class CreateEventFragment extends Fragment {
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    static private final String URLPetition = "http://10.4.41.145/api/events";
+    static private String URLPetition = "http://10.4.41.145/api/shops/";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     public boolean isStoragePermissionGranted() {
@@ -137,6 +137,7 @@ public class CreateEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
+        URLPetition = URLPetition + String.valueOf(session.getShopId()) + "/events";
         new GetCategories().execute(URLcategories);
 
         //elements
@@ -253,7 +254,7 @@ public class CreateEventFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
-
+                Log.d(TAG, URLPetition);
                 new PostEvent().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
@@ -283,11 +284,10 @@ public class CreateEventFragment extends Fragment {
          *               params[3] is the description
          *               params[4] is the points
          *               params[5] is the adress
-         *               params[6] is the company
-         *               params[7] is the date
-         *               params[8] is the time
-         *               params[9] is the image
-         *               params[10] is the category
+         *               params[6] is the date
+         *               params[7] is the time
+         *               params[8] is the image
+         *               params[9] is the category
          * @return void when finished
          */
         protected String doInBackground(String... params) {
@@ -296,11 +296,11 @@ public class CreateEventFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
             if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            BodyParams.put("date", params[7]);
-            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
+            BodyParams.put("date", params[6]);
+            if (params[7] != null && !params[7].equals(":")) BodyParams.put("time", params[7]);
             else BodyParams.put("time", "00:00");
-            if (params[9] != null) BodyParams.put("image", params[9]);
-            BodyParams.put("category", params[10]);
+            if (params[9] != null) BodyParams.put("image", params[8]);
+            BodyParams.put("category", params[9]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);

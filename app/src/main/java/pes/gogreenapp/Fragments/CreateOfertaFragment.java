@@ -59,7 +59,7 @@ public class CreateOfertaFragment extends Fragment {
     private EditText DiscountText;
     private Calendar calendar;
     static private String TAG = "CreateOferta";
-    static private final String URLPetition = "http://10.4.41.145/api/deals";
+    static private final String URLPetition = "http://10.4.41.145/api/shops/1/deals";
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -272,7 +272,7 @@ public class CreateOfertaFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Log.d("CreateEvent", e.toString());
+            Log.d(TAG, e.toString());
             Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
                     .show();
         }

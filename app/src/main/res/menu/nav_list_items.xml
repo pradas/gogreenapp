@@ -37,10 +37,6 @@
             android:orderInCategory="11"
             android:title="@string/create_event" />
         <item
-            android:id="@+id/create_oferta_fragment"
-            android:icon="@mipmap/ic_view_list_black_24dp"
-            android:title="@string/crear_oferta" />
-        <item
             android:id="@+id/new_deal_fragment"
             android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="12"

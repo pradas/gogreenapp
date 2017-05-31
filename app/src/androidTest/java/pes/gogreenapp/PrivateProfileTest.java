@@ -80,10 +80,10 @@ public class PrivateProfileTest {
 
     /**
      * Check if the current points are displayed
-     */
+     *//*
     @Test
     public void checkUserCurrentPointsIsShown(){
         onView(withId(R.id.user_points))
                 .check(matches(isDisplayed()));
-    }
+    }*/
 }
