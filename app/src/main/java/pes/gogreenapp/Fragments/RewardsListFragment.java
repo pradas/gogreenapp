@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,11 +38,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.AsyncHttpHandler;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
@@ -54,6 +59,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     private SwipeRefreshLayout swipeContainer;
     private String TAG = MainActivity.class.getSimpleName();
     private List<Reward> rewards = new ArrayList<>();
+    private List<String> categories = new ArrayList<>();
     private SessionManager session;
 
     /**
@@ -100,6 +106,27 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
         adapter = new RewardsListAdapter(getContext(), rewards);
         recyclerView.setAdapter(adapter);
         new GetRewards().execute(url + "rewards");
+        AsyncHttpHandler.get("categories", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // Handle resulting parsed JSON response here
+                JSONArray jsonArray;
+                try {
+                    jsonArray = response.getJSONArray("categories");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        categories.add(jsonArray.getJSONObject(i).getString("name"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                // called when response HTTP status is "4XX"
+                Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+            }
+        });
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
@@ -114,6 +141,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
         //Listener for the filter menuIcon
         filterButton.setOnMenuItemClickListener(v -> {
             RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+            dialog.setCategories(categories);
             dialog.setTargetFragment(this, 200);
             dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
             return true;
@@ -222,7 +250,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
-            URL imageUrl = null;
+            URL imageUrl;
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
@@ -232,9 +260,9 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         Date d = df.parse((String) jsonObject.get("end_date"));
                         Bitmap b_image_user = null;
-                        String imageStringLink = null;
+                        String imageStringLink;
                         imageStringLink = jsonObject.getString("image");
-                        if (imageStringLink != "null") {
+                        if (!Objects.equals(imageStringLink, "null")) {
                             imageUrl = new URL(urlStorage + imageStringLink);
                             b_image_user = this.getRemoteImage(imageUrl);
                         }

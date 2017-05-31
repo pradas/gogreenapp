@@ -7,13 +7,18 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+
+import java.util.List;
 
 import pes.gogreenapp.R;
 
 public class RewardsFilterDialogFragment extends DialogFragment {
 
     private int filterCheckedId, sorterCheckedId, directionsCheckedId;
+    private List<String> categories;
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -46,15 +51,25 @@ public class RewardsFilterDialogFragment extends DialogFragment {
                 .onDialogNegativeClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
                         directionsCheckedId));
 
+        // set the items to the spinner
+        Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item,
+                        categories);
+        categoriesSpinner.setAdapter(arrayAdapter);
+
+
         // listeners for the radio group of filters
         RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters_rewards);
         radioFilters.setOnCheckedChangeListener((group, checkedId) -> {
-
             switch (checkedId) {
-                case R.id.radio_filter_all:
+                case R.id.radio_filter_category:
+                    categoriesSpinner.setVisibility(View.VISIBLE);
                     filterCheckedId = checkedId;
+                    break;
                 default:
                     filterCheckedId = checkedId;
+                    break;
             }
         });
 
@@ -73,5 +88,10 @@ public class RewardsFilterDialogFragment extends DialogFragment {
         });
 
         return mBuilder.create();
+    }
+
+    public void setCategories(List<String> categories) {
+
+        this.categories = categories;
     }
 }

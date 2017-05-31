@@ -39,11 +39,18 @@
             android:text="@string/canjeables"/>
     </RadioGroup>
 
+    <Spinner
+        android:id="@+id/categories_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radio_filters_rewards"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/sorter_by_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radio_filters_rewards"
+        android:layout_below="@id/categories_spinner"
         android:text="@string/order_by"/>
 
     <RadioGroup

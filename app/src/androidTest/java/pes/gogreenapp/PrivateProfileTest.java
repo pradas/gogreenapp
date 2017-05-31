@@ -83,7 +83,7 @@ public class PrivateProfileTest {
      */
     @Test
     public void checkUserCurrentPointsIsShown(){
-        onView(withId(R.id.user_points))
+        onView(withId(R.id.user_actual_points))
                 .check(matches(isDisplayed()));
     }
 }
