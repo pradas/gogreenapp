@@ -37,6 +37,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:textColor="@android:color/white"
         android:background="@drawable/buttonregisterloginshape"
         android:text="@string/grantPoints"/>
 

@@ -17,9 +17,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="5dp"
         android:hint="@string/usernameHint"
-        android:textColor="@drawable/mainbuttontext"
-        android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
+        android:textColor="#212121"
+        android:textColorHint="#757575"
+        android:theme="@style/campotextoregistrohard"
+        />
 
     <Spinner
         android:id="@+id/spinnerEvents"
