@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -60,10 +61,9 @@ public class AccountManagerAdapter extends BaseAdapter implements ListAdapter {
         //Handle TextView and display string from your list
         TextView listItemText = (TextView) view.findViewById(R.id.list_item_account);
         listItemText.setText(users.get(position));
-        listItemText.setTextColor(Color.BLACK);
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button) view.findViewById(R.id.list_item_delete_btn);
+        ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.list_item_delete_btn);
         deleteBtn.setOnClickListener(v -> {
             try {
                 UserData.deleteUser(users.get(position), context);
