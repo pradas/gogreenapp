@@ -14,8 +14,6 @@
     <style name="comboboxestilo" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlActivated">@android:color/white</item>
-
         <item name="android:textColor">@android:color/black</item>
-
     </style>
 </resources>
