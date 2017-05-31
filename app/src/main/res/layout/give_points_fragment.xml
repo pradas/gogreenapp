@@ -15,6 +15,8 @@
         android:showText="true"
         android:textOff="@string/eventsSwitch"
         android:textOn="@string/pointsSwitch"
+        android:thumb="@drawable/switchholoper_switch_thumb_holo_light"
+        android:track="@drawable/switchholoper_switch_track_holo_light"
         android:theme="@android:style/Theme.Holo.Light"></Switch>
 
     <ListView
