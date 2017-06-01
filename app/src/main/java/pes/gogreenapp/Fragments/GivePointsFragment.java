@@ -1,7 +1,6 @@
 package pes.gogreenapp.Fragments;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,11 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.MainActivity;
+
 import pes.gogreenapp.Adapters.GivePointsByEventsAdapter;
 import pes.gogreenapp.Adapters.GivePointsByPointsAdapter;
 
-import pes.gogreenapp.Objects.Events;
+import pes.gogreenapp.Objects.Event;
 
 
 import pes.gogreenapp.R;
@@ -46,7 +45,7 @@ public class GivePointsFragment extends Fragment {
     private String modeItems;
     private ListView listToGivePoints;
     private List<String> users;
-    private List<Events> events;
+    private List<Event> events;
     private Switch mode;
     private Button anotherUser, grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
@@ -72,7 +71,7 @@ public class GivePointsFragment extends Fragment {
         // Inflate the layout for this fragment
         modeItems = "Eventos";
         users = new ArrayList<String>();
-        events = new ArrayList<Events>();
+        events = new ArrayList<Event>();
         users.add("Usuario nº1");
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
@@ -116,7 +115,7 @@ public class GivePointsFragment extends Fragment {
         for (int i = 0; i < eventsHard.length(); ++ i) {
             try {
                 JSONObject jsonObject = eventsHard.getJSONObject(i);
-                events.add(new Events((String) jsonObject.get("title"), (Integer) jsonObject.get("points")));
+                events.add(new Event((String) jsonObject.get("title"), (Integer) jsonObject.get("points")));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -189,7 +188,7 @@ public class GivePointsFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (modeItems.equals("Eventos")) {
                                     List<String> userNames = adapterEvents.getUserNames();
-                                    List<Events> eventsSpinneds = adapterEvents.getEvents();
+                                    List<Event> eventsSpinneds = adapterEvents.getEvents();
                                     for (int i = 0; i < userNames.size(); ++ i) {
                                         new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
                                                 (String) String.valueOf(eventsSpinneds.get(i).getPoints()),

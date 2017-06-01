@@ -292,12 +292,8 @@ public class EventsListFragment extends Fragment {
                                 jsonObject.getString("title"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("points"),
-                                address,
-                                company,
-                                date,
-                                image,
-                                jsonObject.getString("category"))
-                        );
+                                address, company, date, image, jsonObject.getString("category"),
+                                jsonObject.getBoolean("favourite")));
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

@@ -305,15 +305,10 @@ public class EditEventFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
-                    event = new Event(jsonObject.getInt("id"),
-                            jsonObject.getString("title"),
-                            jsonObject.getString("description"),
-                            jsonObject.getInt("points"),
-                            address,
-                            company,
-                            df.parse(jsonObject.getString("date")),
-                            image,
-                            jsonObject.getString("category"));
+                    event = new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
+                            jsonObject.getString("description"), jsonObject.getInt("points"),
+                            address, company, df.parse(jsonObject.getString("date")), image,
+                            jsonObject.getString("category"), jsonObject.getBoolean("favourite"));
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

@@ -17,8 +17,14 @@ public class Event {
     private String min;
     private String category;
     private byte[] image;
+    private Boolean favorite;
 
-    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category) {
+    public Event(String title, Integer points) {
+        this.title = title;
+        this.points = points;
+    }
+
+    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category, Boolean favorite) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -32,8 +38,9 @@ public class Event {
         if (image != null) {
             this.image = Base64.decode(image, 0);
         }
-
+        this.favorite = favorite;
     }
+
     public String getTitle() {
         return title;
     }
@@ -116,6 +123,14 @@ public class Event {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 }
 

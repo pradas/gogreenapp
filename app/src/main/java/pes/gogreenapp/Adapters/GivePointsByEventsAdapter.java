@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import pes.gogreenapp.Objects.Events;
+import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 
 /**
@@ -36,7 +36,7 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     Context context;
     private List<String> users;
     private List<String> userNames;
-    private List<Events> events;
+    private List<Event> events;
     private List<Integer> eventsSelected;
 
 
@@ -62,7 +62,7 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     }
 
 
-    public GivePointsByEventsAdapter(Context context, List<String> users, List <Events> events) {
+    public GivePointsByEventsAdapter(Context context, List<String> users, List <Event> events) {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
@@ -131,8 +131,8 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
 
     public List <String> getUserNames () { return userNames; }
 
-    public List <Events> getEvents() {
-        List <Events> result = new ArrayList<Events>();
+    public List <Event> getEvents() {
+        List <Event> result = new ArrayList<Event>();
         for (int i = 0; i < eventsSelected.size(); ++ i) {
             result.add(events.get(eventsSelected.get(i)));
         }

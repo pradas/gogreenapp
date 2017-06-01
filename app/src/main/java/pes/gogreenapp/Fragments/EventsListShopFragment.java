@@ -288,16 +288,10 @@ public class EventsListShopFragment extends Fragment {
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
                         events.add(
-                                new Event(jsonObject.getInt("id"),
-                                jsonObject.getString("title"),
-                                jsonObject.getString("description"),
-                                jsonObject.getInt("points"),
-                                address,
-                                company,
-                                date,
-                                image,
-                                jsonObject.getString("category"))
-                        );
+                                new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
+                                jsonObject.getString("description"), jsonObject.getInt("points"),
+                                address, company, date, image, jsonObject.getString("category"),
+                                jsonObject.getBoolean("favourite")));
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

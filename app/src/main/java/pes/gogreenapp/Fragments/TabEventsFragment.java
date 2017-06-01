@@ -160,8 +160,8 @@ public class TabEventsFragment extends Fragment {
                         events.add(
                                 new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
                                         jsonObject.getString("description"), jsonObject.getInt("points"),
-                                        address, company, date, image, jsonObject.getString("category"))
-                        );
+                                        address, company, date, image, jsonObject.getString("category"),
+                                        jsonObject.getBoolean("favourite")));
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
