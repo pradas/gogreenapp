@@ -3,6 +3,7 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,6 +20,9 @@ import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -70,10 +75,12 @@ public class CreateEventFragment extends Fragment {
     private EditText HourText;
     private EditText MinText;
     private EditText CompanyText;
+    private EditText TextTime;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
     private String FinalTime = null;
     private Spinner categoriesSpinner;
+    private ImageButton imageTextTime;
     static private String TAG = "CreateEvent";
     static private final String URLPetition = "http://10.4.41.145/api/events";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
@@ -123,6 +130,7 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.create_event_fragment, container, false);
     }
 
@@ -154,6 +162,34 @@ public class CreateEventFragment extends Fragment {
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
+        TextTime = (EditText) getView().findViewById(R.id.editTextTime);
+        imageTextTime = (ImageButton) getView().findViewById(R.id.imageHourCreateEvent);
+
+        TextTime.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                calendar = calendar.getInstance();
+                TimePickerDialog time = new TimePickerDialog(getActivity(),
+                       (TimePicker view, int hourOfDay, int minute) -> {
+                            String sHourOfDay = String.format("%02d",hourOfDay);
+                            String sMinutes = String.format("%02d",minute);
+                            TextTime.setText(sHourOfDay+":"+sMinutes);
+                            TextTime.clearFocus();
+                        }, calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true);
+                time.show();
+            }
+        });
+
+        imageTextTime.setOnClickListener((v) -> {
+                calendar = calendar.getInstance();
+                TimePickerDialog time = new TimePickerDialog(getActivity(),
+                        (TimePicker view, int hourOfDay, int minute) -> {
+                            String sHourOfDay = String.format("%02d",hourOfDay);
+                            String sMinutes = String.format("%02d",minute);
+                            TextTime.setText(sHourOfDay+":"+sMinutes);
+                            TextTime.clearFocus();
+                        }, calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true);
+                time.show();
+        });
 
         //events
         DateButton.setOnClickListener((View v) -> {
@@ -268,6 +304,22 @@ public class CreateEventFragment extends Fragment {
                 );
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.create_event_list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_user:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

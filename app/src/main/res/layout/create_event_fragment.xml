@@ -3,10 +3,10 @@
     android:id="@+id/ScrollViewCreateEvent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp">
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -193,7 +193,20 @@
                 android:inputType="number"
                 android:textColorHighlight="#ff7eff15"
                 android:textColorHint="#000000" />
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="time"
+                android:maxLength="5" />
 
+            <ImageButton
+                android:id="@+id/imageHourCreateEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/fecha_del_evento_description"
+                app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
         </LinearLayout>
 
         <TextView
@@ -222,6 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+
         </LinearLayout>
 
         <Button
@@ -232,6 +246,9 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/LinearLayoutImageCreateEvent"
             android:text="@string/guardar" />
+
+
+
     </RelativeLayout>
 
 </ScrollView>
