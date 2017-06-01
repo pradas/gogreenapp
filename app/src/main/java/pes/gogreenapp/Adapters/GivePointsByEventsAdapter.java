@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pes.gogreenapp.Objects.Event;
-import pes.gogreenapp.Objects.Events;
 import pes.gogreenapp.R;
 
 /**
