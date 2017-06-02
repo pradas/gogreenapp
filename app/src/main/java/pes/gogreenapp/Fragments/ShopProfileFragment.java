@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,12 +39,16 @@ import pes.gogreenapp.Utils.SessionManager;
 public class ShopProfileFragment extends Fragment {
 
     private SessionManager session;
+    private static final String ROLE_MANAGER = "manager";
+    private static final String ROLE_SHOPPER = "shopper";
+    private static final String ROLE_USER = "user";
     private String TAG = MainActivity.class.getSimpleName();
     private Shop shop;
     private ImageView shopImage;
     private TextView shopName;
     private TextView shopEmail;
     private TextView shopAddress;
+    private Button editProfile;
 
     /**
      * Required empty public constructor
@@ -85,6 +90,17 @@ public class ShopProfileFragment extends Fragment {
         shopName = (TextView) getView().findViewById(R.id.shop_name);
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
+        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
+        if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
+        else {
+            editProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
 
         new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
     }
