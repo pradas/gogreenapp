@@ -105,11 +105,11 @@ public class ShopEditProfileFragment extends Fragment {
                         setPositiveButton("MODIFICAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new PutShop().execute("http://10.4.41.145/api/users/", "PUT", shopName.getText().toString(),
+                                new PutShop().execute("http://10.4.41.145/api/shops/1", "PUT", shopName.getText().toString(),
                                         shopEmail.getText().toString(), shopAddress.getText().toString());
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
-                                Fragment fragment = (Fragment) new UserProfileFragment();
+                                Fragment fragment = (Fragment) new ShopProfileFragment();
                                 transaction.replace(R.id.flContent, fragment);
                                 transaction.commit();
                             }
@@ -177,9 +177,9 @@ public class ShopEditProfileFragment extends Fragment {
             if(shop.getShopUrlImage() != null) shopImage.setImageBitmap(b_image_shop);
             else shopImage.setImageBitmap(null);
 
-            shopName.setText("Nombre de la tienda: " + shop.getShopName());
-            shopEmail.setText("Email: " + shop.getShopEmail());
-            shopAddress.setText("Direccion: " + shop.getShopAddress());
+            shopName.setText(shop.getShopName());
+            shopEmail.setText(shop.getShopEmail());
+            shopAddress.setText(shop.getShopAddress());
         }
     }
 
@@ -204,7 +204,7 @@ public class ShopEditProfileFragment extends Fragment {
             bodyParams.put("name", params[2]);
             bodyParams.put("email", params[3]);
             bodyParams.put("address", params[4]);
-            String url = params [0] + "1";
+            String url = params [0];
             session = SessionManager.getInstance();
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null && !response.equals("500") ) {
