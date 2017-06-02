@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -19,15 +20,16 @@ public class RewardsFilterDialogFragment extends DialogFragment {
 
     private int filterCheckedId, sorterCheckedId, directionsCheckedId;
     private List<String> categories;
+    private String categoryChecked;
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     interface RewardsFilterDialogListener {
 
-        void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId);
+        void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId, String category);
 
-        void onDialogNegativeClick(DialogFragment dialog, int filterId, int sorterId, int directionId);
+        void onDialogNegativeClick(DialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events
@@ -47,9 +49,8 @@ public class RewardsFilterDialogFragment extends DialogFragment {
         mListener = (RewardsFilterDialogListener) getTargetFragment();
         mBuilder.setView(inflate).setPositiveButton("Filtrar", (dialogLambda, which) -> mListener
                 .onDialogPositiveClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
-                        directionsCheckedId)).setNegativeButton(R.string.cancel, (dialogLambda, which) -> mListener
-                .onDialogNegativeClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
-                        directionsCheckedId));
+                        directionsCheckedId, categoryChecked)).setNegativeButton(R.string.cancel,
+                (dialogLambda, which) -> mListener.onDialogNegativeClick(RewardsFilterDialogFragment.this));
 
         // set the items to the spinner
         Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
@@ -57,6 +58,19 @@ public class RewardsFilterDialogFragment extends DialogFragment {
                 new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item,
                         categories);
         categoriesSpinner.setAdapter(arrayAdapter);
+        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                categoryChecked = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                categoryChecked = "";
+            }
+        });
 
 
         // listeners for the radio group of filters

@@ -152,22 +152,27 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     // Fragment.onAttach() callback, which it uses to call the following methods
     // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId) {
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
+                                      String category) {
 
         List<Reward> auxRewards = rewards;
+        Iterator<Reward> it = auxRewards.iterator();
 
         switch (filterId) {
             case R.id.radio_filter_canjeables:
                 int points = session.getPoints();
 
                 // remove the rewards that user can't exchange
-                Iterator<Reward> it = auxRewards.iterator();
                 while (it.hasNext()) {
                     if (it.next().getPoints() > points) it.remove();
                 }
 
                 break;
             case R.id.radio_filter_category:
+                // remove the rewards that aren't from the category
+                while (it.hasNext()) {
+                    if (!category.equals(it.next().getCategory())) it.remove();
+                }
                 break;
             default:
                 break;
@@ -201,7 +206,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog, int filterCheckedId, int sorterId, int directionId) {
+    public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
         dialog.getDialog().cancel();
     }
