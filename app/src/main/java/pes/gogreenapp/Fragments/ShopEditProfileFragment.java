@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class ShopEditProfileFragment extends Fragment {
     private EditText shopEmail;
     private EditText shopAddress;
     private Button saveEdit;
+    private Bitmap profileImageBitmap;
 
 
     /**
@@ -129,19 +131,6 @@ public class ShopEditProfileFragment extends Fragment {
     }
 
     private class GetInfoShop extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_shop;
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
 
 
         @Override
@@ -151,7 +140,6 @@ public class ShopEditProfileFragment extends Fragment {
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
 
-            URL imageUrl = null;
             try {
 
                 JSONObject jsonArray = new JSONObject(response);
@@ -159,14 +147,14 @@ public class ShopEditProfileFragment extends Fragment {
                 shop = new Shop(jsonArray.getString("image"), jsonArray.getString("name"),
                         jsonArray.getString("email"), jsonArray.getString("address"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_shop = this.getRemoteImage(imageUrl);
 
             return null;
         }
@@ -174,9 +162,7 @@ public class ShopEditProfileFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(shop.getShopUrlImage() != null) shopImage.setImageBitmap(b_image_shop);
-            else shopImage.setImageBitmap(null);
-
+            shopImage.setImageBitmap(profileImageBitmap);
             shopName.setText(shop.getShopName());
             shopEmail.setText(shop.getShopEmail());
             shopAddress.setText(shop.getShopAddress());

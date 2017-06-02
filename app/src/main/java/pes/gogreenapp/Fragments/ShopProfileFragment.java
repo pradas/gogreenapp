@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class ShopProfileFragment extends Fragment {
     private TextView shopEmail;
     private TextView shopAddress;
     private Button editProfile;
+    private Bitmap profileImageBitmap;
 
     /**
      * Required empty public constructor
@@ -113,20 +115,6 @@ public class ShopProfileFragment extends Fragment {
     }
 
     private class GetInfoShop extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_shop;
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -134,8 +122,6 @@ public class ShopProfileFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
-
-            URL imageUrl = null;
             try {
 
                 JSONObject jsonArray = new JSONObject(response);
@@ -143,14 +129,14 @@ public class ShopProfileFragment extends Fragment {
                 shop = new Shop(jsonArray.getString("image"), jsonArray.getString("name"),
                         jsonArray.getString("email"), jsonArray.getString("address"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_shop = this.getRemoteImage(imageUrl);
 
             return null;
         }
@@ -158,9 +144,7 @@ public class ShopProfileFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(shop.getShopUrlImage() != null) shopImage.setImageBitmap(b_image_shop);
-            else shopImage.setImageBitmap(null);
-
+            shopImage.setImageBitmap(profileImageBitmap);
             shopName.setText("Nombre de la tienda: " + shop.getShopName());
             shopEmail.setText("Email: " + shop.getShopEmail());
             shopAddress.setText("Direccion: " + shop.getShopAddress());

@@ -123,21 +123,6 @@ public class UserProfileInfoFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
 
         @Override
         protected Void doInBackground(String... urls) {
