@@ -155,7 +155,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
                                       String category) {
 
-        List<Reward> auxRewards = rewards;
+        List<Reward> auxRewards = new ArrayList<>(rewards);
         Iterator<Reward> it = auxRewards.iterator();
 
         switch (filterId) {
