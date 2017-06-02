@@ -2,13 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:id="@+id/linearLayout4">
+
+
+        <ImageButton
+            android:id="@+id/edit_profile_button"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_below="@+id/gobro_since"
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/user_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
+        app:srcCompat="@android:drawable/ic_menu_report_image"
+        android:layout_marginTop="92dp"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/user_name"
@@ -24,46 +50,61 @@
         android:layout_below="@+id/user_name"
         android:ems="10" />
 
-    <TextView
-        android:id="@+id/user_total_points"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_below="@+id/user_nickname"
-        android:ems="10" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout5">
 
-    <TextView
-        android:id="@+id/user_actual_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/user_total_points"
-        android:ems="10" />
+        <TextView
+            android:id="@+id/user_total_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_nickname"
+            android:ems="10" />
 
-    <TextView
-        android:id="@+id/gobro_since"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/user_actual_points"
-        android:ems="10" />
+        <TextView
+            android:id="@+id/user_actual_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_total_points"
+            android:ems="10" />
 
-    <Button
-        android:id="@+id/edit_profile_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/gobro_since"
-        android:text="Edit" />
-
-    <TextView
-        android:id="@+id/user_birthdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_profile_button"
-        android:ems="10" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_birthdate"
-        android:ems="10" />
+        android:ems="10"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="42dp" />
+
+
+    <TextView
+        android:id="@+id/gobro_since"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_below="@+id/user_email"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+
+
+    <TextView
+        android:id="@+id/user_birthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_below="@+id/gobro_since"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp" />
+
+
 
 </RelativeLayout>

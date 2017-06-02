@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,8 +35,6 @@ import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-
-import static pes.gogreenapp.R.id.user_image;
 
 /**
  * Created by Adrian on 24/05/2017.
@@ -104,7 +102,7 @@ public class UserProfileInfoFragment extends Fragment {
         userCreationDate = (TextView) getView().findViewById(R.id.gobro_since);
         userBirthDate = (TextView) getView().findViewById(R.id.user_birthdate);
         userEmail = (TextView) getView().findViewById(R.id.user_email);
-        Button editUser = (Button) getView().findViewById(R.id.edit_profile_button);
+        ImageButton editUser = (ImageButton) getView().findViewById(R.id.edit_profile_button);
 
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,8 +176,8 @@ public class UserProfileInfoFragment extends Fragment {
             if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
             else userImage.setImageBitmap(null);
 
-            userName.setText("Nombre real: " + user.getName());
-            userNickName.setText("Nombre de usuario: " + user.getUsername());
+            userName.setText("Nombre: " + user.getName());
+            userNickName.setText("Nickname: " + user.getUsername());
             userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
             userActualPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
