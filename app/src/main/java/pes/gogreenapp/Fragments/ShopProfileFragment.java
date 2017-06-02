@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +99,11 @@ public class ShopProfileFragment extends Fragment {
             editProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    Fragment fragment = (Fragment) new ShopEditProfileFragment();
+                    transaction.replace(R.id.flContent, fragment);
+                    transaction.commit();
                 }
             });
         }
