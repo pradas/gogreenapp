@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,27 +29,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Adapters.EventsListAdapter;
-import pes.gogreenapp.Objects.Event;
+import pes.gogreenapp.Adapters.OfertasListAdapter;
+import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-import static pes.gogreenapp.R.id.filtrarCategoriaEventos;
-import static pes.gogreenapp.R.id.filtrarTodosEventos;
-import static pes.gogreenapp.R.id.ordenarFechaEventos;
-import static pes.gogreenapp.R.id.ordenarPuntosEventos;
+import static pes.gogreenapp.R.id.ordenarFechaOfertas;
+import static pes.gogreenapp.R.id.ordenarPuntosOfertas;
 
 
 public class OfertasListFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    EventsListAdapter adapter;
+    OfertasListAdapter adapter;
     String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
-    private String TAG = "EventsList";
-    private List<Event> events = new ArrayList<>();
-    private List<String> categories = new ArrayList<>();
+    private String TAG = "OfertasList";
+    private List<Oferta> ofertas = new ArrayList<>();
     String categorySelected = "";
     private TextView warning;
     private SessionManager session;
@@ -78,109 +74,38 @@ public class OfertasListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.events_list_fragment, container, false);
+        return inflater.inflate(R.layout.ofertas_list_fragment, container, false);
     }
 
-    public void showFilterDialog(){
-        //Creamos una instancia del FilterDialog y la mostramos
-        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events_list_menu, menu);
-        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+        inflater.inflate(R.menu.ofertas_list_menu, menu);
 
-        //Listener for the filter menuIcon
-        filterButton.setOnMenuItemClickListener( v -> {
-            showFilterDialog();
-            return true;
-        });
         super.onCreateOptionsMenu(menu,inflater);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()) {
-            case ordenarFechaEventos:
+            case ordenarFechaOfertas:
                 ordenarFecha();
                 return true;
-            case ordenarPuntosEventos:
+            case ordenarPuntosOfertas:
                 ordenarPuntos();
-                return true;
-            case filtrarTodosEventos:
-                filtrarTodos();
-                return true;
-            case filtrarCategoriaEventos:
-                filtrarCategoria();
                 return true;
         }
         return false;
     }
 
-    private void filtrarCategoria() {
-        String pastCategory = categorySelected;
-        categorySelected = "Conciertos";
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-        int checkeds = 0;
-        mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]),
-                checkeds, (dialog, which) -> {
-                    categorySelected = categories.toArray(new String[categories.size()])[which];
-                }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
-            // User clicked OK button
-            List<Event> filteredEvents = filterEventsByCategories();
-            if (filteredEvents.size() == 0)
-                warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
-            else warning.setText("");
-            adapter = new EventsListAdapter(getContext(), filteredEvents);
-            recyclerView.setAdapter(adapter);
-        });
-        mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
-            categorySelected = pastCategory; // User cancelled the dialog
-        });
-        AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-    }
-
-    private List<Event> filterEventsByCategories() {
-        List<Event> rewardsFiltered = new ArrayList<>();
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getCategory().equals(categorySelected))
-                rewardsFiltered.add(events.get(i));
-        }
-        return rewardsFiltered;
-    }
-
-    private void filtrarTodos() {
-        categorySelected = "";
-        warning.setText("");
-        adapter = new EventsListAdapter(getContext(), events);
-        recyclerView.setAdapter(adapter);
-
-    }
 
     private void ordenarPuntos() {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
+                Collections.sort(ofertas, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
+                adapter = new OfertasListAdapter(getContext(), ofertas);
             pointsFilter = "ascendente";
         } else if (pointsFilter.equals("ascendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
+            Collections.sort(ofertas, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
+                adapter = new OfertasListAdapter(getContext(), ofertas);
             pointsFilter = "descendente";
         }
         recyclerView.setAdapter(adapter);
@@ -189,24 +114,12 @@ public class OfertasListFragment extends Fragment {
 
     private void ordenarFecha() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
+            Collections.sort(ofertas, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
+                adapter = new OfertasListAdapter(getContext(), ofertas);
             dateFilter = "ascendente";
         } else if (dateFilter.equals("ascendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
+                Collections.sort(ofertas, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
+                adapter = new OfertasListAdapter(getContext(), ofertas);
             dateFilter = "descendente";
         }
         recyclerView.setAdapter(adapter);
@@ -227,13 +140,12 @@ public class OfertasListFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_events);
-        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerEvents);
-        warning = (TextView) getView().findViewById(R.id.warningNoResultEvents);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertas);
+        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertas);
+        warning = (TextView) getView().findViewById(R.id.warningNoResultOfertas);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        new GetEvents().execute(url + "events");
-        new GetCategories().execute(url + "categories");
+        new GetOfertas().execute(url + "deals");
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
@@ -242,12 +154,12 @@ public class OfertasListFragment extends Fragment {
      */
     void refreshItems() {
         // Load items
-        events.clear();
+        ofertas.clear();
         warning.setText("");
         categorySelected = "";
         // Get items
-        new GetEvents().execute("http://10.4.41.145/api/events");
-        Log.d(TAG, "setting events");
+        new GetOfertas().execute("http://10.4.41.145/api/deals");
+        Log.d(TAG, "setting ofertas");
 
         // Load complete
         onItemsLoadComplete();
@@ -258,7 +170,7 @@ public class OfertasListFragment extends Fragment {
      */
     void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
-        adapter.setEvents(events);
+        adapter.setEvents(ofertas);
         adapter.notifyDataSetChanged();
 
         // Stop refresh animation
@@ -269,7 +181,7 @@ public class OfertasListFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET of all the Events.
      */
-    private class GetEvents extends AsyncTask<String, Void, Void> {
+    private class GetOfertas extends AsyncTask<String, Void, Void> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
@@ -282,36 +194,23 @@ public class OfertasListFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
+            Log.i(TAG, urls[0]);
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
-                    JSONArray jsonArray = aux.getJSONArray("events");
+                    JSONArray jsonArray = aux.getJSONArray("deals");
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String address = null;
-                        if (!jsonObject.isNull("adress")) address = jsonObject.getString("adress");
-                        String company = null;
-                        if (!jsonObject.isNull("company"))
-                            address = jsonObject.getString("company");
-                        String image = null;
-                        if (!jsonObject.isNull("image"))
-                            image = jsonObject.getString("image");
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
-                        Boolean favorite = false;
-                        if (jsonObject.get("favourite") == "true") favorite = true;
-                        events.add(
-                                new Event(jsonObject.getInt("id"),
-                                jsonObject.getString("title"),
+                        ofertas.add(
+                                new Oferta(
+                                        jsonObject.getInt("id"),
+                                jsonObject.getString("name"),
                                 jsonObject.getString("description"),
-                                jsonObject.getInt("points"),
-                                address,
-                                company,
-                                date,
-                                image,
-                                jsonObject.getString("category"),
-                                favorite)
+                                jsonObject.getInt("value"),
+                                date)
 
                         );
                     }
@@ -329,42 +228,8 @@ public class OfertasListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new EventsListAdapter(getContext(), events);
+            adapter = new OfertasListAdapter(getContext(), ofertas);
             recyclerView.setAdapter(adapter);
-        }
-    }
-
-
-    /**
-     * Asynchronous Task for the petition GET of all the Categories.
-     */
-    private class GetCategories extends AsyncTask<String, Void, Void> {
-
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param urls The parameters of the task.
-         */
-        @Override
-        protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
-            Log.i(TAG, "Response from url: " + response);
-            if (response != null) {
-                JSONObject aux;
-                try {
-                    aux = new JSONObject(response);
-                    JSONArray jsonArray = aux.getJSONArray("categories");
-                    for (int i = 0; i < jsonArray.length(); ++i) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        categories.add((String) jsonObject.get("name"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
         }
     }
 }

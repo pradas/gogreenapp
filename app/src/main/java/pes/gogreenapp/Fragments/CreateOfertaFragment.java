@@ -59,7 +59,7 @@ public class CreateOfertaFragment extends Fragment {
     private EditText DiscountText;
     private Calendar calendar;
     static private String TAG = "CreateOferta";
-    static private final String URLPetition = "http://10.4.41.145/api/shops/1/deals";
+    static private String URLPetition = "http://10.4.41.145/api/shops/";
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -122,7 +122,7 @@ public class CreateOfertaFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-
+        URLPetition = URLPetition + String.valueOf(session.getShopId()) + "/deals";
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateOferta);
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateOfertaButton);
