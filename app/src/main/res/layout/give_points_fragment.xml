@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#DCEDC8"
+    android:orientation="vertical"
+    android:id="@+id/layoutGivePoints">
 
     <Switch
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:id="@+id/switchModeItem"
-        android:textOn="@string/pointsSwitch"
-        android:textOff="@string/eventsSwitch"
-        android:showText="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true">
-
-    </Switch>
+        android:height="50dp"
+        android:showText="true"
+        android:textOff="@string/eventsSwitch"
+        android:textOn="@string/pointsSwitch"
+        android:thumb="@drawable/switchholoper_switch_inner_holo_light"
+        android:track="@drawable/switchholoper_switch_track_holo_light"
+        android:theme="@android:style/Theme.Holo.Light"></Switch>
 
     <ListView
+        android:id="@+id/listViewGivePoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewGivePoints"
-        android:layout_below="@+id/switchModeItem">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/switchModeItem"
+        android:layout_above="@+id/grantPointsToUsers">
 
     </ListView>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listViewGivePoints"
-        android:layout_centerHorizontal="true"
-        android:text="@string/anotherUser"
-        android:id="@+id/anotherUserToGive"/>
-
-    <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/grantPointsToUsers"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="@string/grantPoints"
-        android:id="@+id/grantPointsToUsers"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/buttonregisterloginshape"
+        android:text="@string/grantPoints"/>
 
 </RelativeLayout>
