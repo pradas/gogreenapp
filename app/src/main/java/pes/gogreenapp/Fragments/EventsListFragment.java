@@ -216,7 +216,7 @@ public class EventsListFragment extends Fragment {
     }
 
     /**
-     *  Sort by date the events
+     *  Sort by date the events.
      */
     private void SortDate() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
