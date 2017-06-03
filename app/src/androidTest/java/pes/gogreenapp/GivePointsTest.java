@@ -96,7 +96,7 @@ public class GivePointsTest {
      */
     @Test
     public void fragmentHasButtonAnotherUser() {
-        onView(withId(R.id.anotherUserToGive)).check(matches(isDisplayed()));
+        onView(withId(R.id.action_add_user)).check(matches(isDisplayed()));
     }
 
     /**
@@ -147,9 +147,7 @@ public class GivePointsTest {
      */
     @Test
     public void listItemPointsHasUserNameEditText() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.switchModeItem)).check(matches(isChecked()));
+        onView(withId(R.id.switchModeItem)).perform(click());
         onView(withId(R.id.listViewGivePoints)).check(matches(hasDescendant(withId(R.id.userNameToGiveByPoints))));
     }
 
@@ -158,9 +156,7 @@ public class GivePointsTest {
      */
     @Test
     public void listItemPointsHasUserNameEditTextWithHint() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.switchModeItem)).check(matches(isChecked()));
+        onView(withId(R.id.switchModeItem)).perform(click());
         onView(withId(R.id.listViewGivePoints)).check(matches(hasDescendant(withHint("Nombre de usuario"))));
     }
 
@@ -169,9 +165,7 @@ public class GivePointsTest {
      */
     @Test
     public void listItemPointsHasPointsEditText() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.switchModeItem)).check(matches(isChecked()));
+        onView(withId(R.id.switchModeItem)).perform(click());
         onView(withId(R.id.listViewGivePoints)).check(matches(hasDescendant(withId(R.id.pointsToGive))));
     }
 
@@ -180,9 +174,7 @@ public class GivePointsTest {
      */
     @Test
     public void listItemPointsHasPointsEditTextWithHint() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.switchModeItem)).check(matches(isChecked()));
+        onView(withId(R.id.switchModeItem)).perform(click());
         onView(withId(R.id.listViewGivePoints)).check(matches(hasDescendant(withHint("Puntos"))));
     }
 
@@ -191,57 +183,7 @@ public class GivePointsTest {
      */
     @Test
     public void anotherUserDisplaysAnotherItem() {
-        onView(withId(R.id.anotherUserToGive)).perform(click());
+        onView(withId(R.id.action_add_user)).perform(click());
         onView(withText("Usuario nº2")).check(matches(isDisplayed()));
     }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickGrantPointsDisplaysAlertDialogWithText() {
-        onView(withId(R.id.grantPointsToUsers)).perform(click());
-        onView(withText("¿Está seguro que desea entregar los puntos a esos usuarios?"))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickGrantPointsDisplaysAlertDialogWithGrantButton() {
-        onView(withId(R.id.grantPointsToUsers)).perform(click());
-        onView(withText("ENTREGAR PUNTOS")).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickGrantPointsDisplaysAlertDialogWithCancelButton() {
-        onView(withId(R.id.grantPointsToUsers)).perform(click());
-        onView(withText("CANCELAR")).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickGrantPointsAndAcceptDisplaysSameLayout() {
-        onView(withId(R.id.grantPointsToUsers)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.layoutGivePoints)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickGrantPointsAndCancelDisplaysSameLayout() {
-        onView(withId(R.id.grantPointsToUsers)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.layoutGivePoints)).check(matches(isDisplayed()));
-    }
-
-
 }

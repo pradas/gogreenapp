@@ -136,35 +136,21 @@ public class GivePointsFragment extends Fragment {
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.switchModeGive);
+
                 if (!isChecked) {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Eventos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
-                            listToGivePoints.setAdapter(adapterEvents);
-                        }
-                    });
+                    modeItems = "Eventos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
+                    listToGivePoints.setAdapter(adapterEvents);
                 }
                 else {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Puntos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
-                            listToGivePoints.setAdapter(adapterPoints);
-                        }
-                    });
+                    modeItems = "Puntos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
+                    listToGivePoints.setAdapter(adapterPoints);
                 }
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
             }
         });
 
