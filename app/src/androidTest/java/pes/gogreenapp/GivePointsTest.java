@@ -146,34 +146,6 @@ public class GivePointsTest {
      * Check if the xml have the switch button
      */
     @Test
-    public void clickSwitchDisplaysAlertDialogWithText() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withText("¿Está seguro que desea cambiar el modo de entregar puntos? Se perderán los datos introducidos"))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickSwitchDisplaysAlertDialogWithAcceptButton() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withText("ACEPTAR")).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void clickSwitchDisplaysAlertDialogWithCancelButton() {
-        onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
-        onView(withText("CANCELAR")).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
     public void listItemPointsHasUserNameEditText() {
         onView(withId(R.id.switchModeItem)).check(matches(isNotChecked())).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
