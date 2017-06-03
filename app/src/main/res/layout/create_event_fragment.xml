@@ -3,92 +3,71 @@
     android:id="@+id/ScrollViewCreateEvent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp"
     android:background="#DCEDC8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <EditText
             android:id="@+id/titleCreateEvent_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/TitleCreateEvent"
+            android:elevation="1dp"
             android:focusable="true"
             android:hint="@string/tituloCreateEvent"
-            android:textColorHighlight="#ff7eff15" />
-        <!--android:textColorHint="#000000"-->
+            android:theme="@style/campotextoregistrohard" />
 
         <EditText
             android:id="@+id/DescriptionCreateEvent_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionCreateEvent"
             android:focusable="true"
             android:hint="@string/description"
-            android:textColorHighlight="#ff7eff15" />
+            android:theme="@style/campotextoregistrohard" />
 
         <EditText
             android:id="@+id/PointsCreateEvent_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/PointsCreateEvent"
             android:hint="@string/points"
             android:inputType="number"
-            android:textColorHighlight="#ff7eff15" />
+            android:theme="@style/campotextoregistrohard" />
 
         <TextView
             android:id="@+id/CategoriesCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/PointsCreateEvent_edit_text"
+            android:paddingLeft="4dp"
             android:text="@string/categoria"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/CategoriesSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/CategoriesCreateEvent"
-            android:textColorHighlight="#ff7eff15" />
+            android:layout_height="30dp" />
 
         <EditText
             android:id="@+id/DirectionCreateEvent_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DirectionCreateEvent"
             android:hint="@string/direction"
-            android:textColorHighlight="#ff7eff15"
-             />
+            android:theme="@style/campotextoregistrohard"  />
 
         <EditText
             android:id="@+id/CompanyCreateEvent_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/CompanyCreateEvent"
             android:hint="@string/company"
-            android:textColorHighlight="#ff7eff15" />
+            android:theme="@style/campotextoregistrohard" />
 
 
         <LinearLayout
             android:id="@+id/lineDateCreateEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/DateTextCreateEvent"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -99,7 +78,8 @@
                 android:layout_weight="0.97"
                 android:ems="10"
                 android:hint="@string/fecha_evento"
-                android:inputType="date" />
+                android:inputType="date"
+                android:theme="@style/campotextoregistrohard" />
 
             <ImageButton
                 android:id="@+id/DateCreateEvent"
@@ -116,7 +96,6 @@
             android:id="@+id/TimeTextCreateEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lineDateCreateEvent"
             android:text="@string/hora_evento"
             android:textSize="20sp" />
 
@@ -124,15 +103,14 @@
         <LinearLayout
             android:id="@+id/linearLayoutHourCreateEvent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/TimeTextCreateEvent">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/HourCreateEvent_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textColorHighlight="#ff7eff15" />
+                android:theme="@style/campotextoregistrohard" />
 
             <TextView
                 android:id="@+id/TwoPointsCreateEvent"
@@ -146,22 +124,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textColorHighlight="#ff7eff15" />
+                android:theme="@style/campotextoregistrohard" />
 
-            <EditText
-                android:id="@+id/editTextTime"
-                android:layout_width="55dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="time"
-                android:maxLength="5" />
 
             <ImageButton
                 android:id="@+id/imageHourCreateEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@null"
                 android:contentDescription="@string/fecha_del_evento_description"
-                app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+                android:padding="10dp"
+                app:srcCompat="@android:drawable/ic_lock_idle_alarm"
+                android:tint="@android:color/darker_gray" />
         </LinearLayout>
 
         <TextView
@@ -174,20 +148,24 @@
 
         <LinearLayout
             android:id="@+id/LinearLayoutImageCreateEvent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ImageCreateEvent">
+            android:layout_below="@+id/ImageCreateEvent"
+            android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/ImageCreateEventButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:contentDescription="@string/imagen_del_evento"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                android:padding="10dp"
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:tint="@android:color/darker_gray" />
 
             <ImageView
                 android:id="@+id/ImageSelectedCreateEvent"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
 

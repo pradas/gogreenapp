@@ -204,25 +204,19 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
-        HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                        String text = "0" + HourText.getText().toString();
-                        HourText.setText(text);
-                    }
+        HourText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(HourText.getText().toString()) < 10) {
+                    String text = "0" + HourText.getText().toString();
+                    HourText.setText(text);
                 }
             }
         });
-        MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                        String text = "0" + MinText.getText().toString();
-                        MinText.setText(text);
-                    }
+        MinText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(MinText.getText().toString()) < 10) {
+                    String text = "0" + MinText.getText().toString();
+                    MinText.setText(text);
                 }
             }
         });
