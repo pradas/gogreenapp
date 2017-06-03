@@ -16,6 +16,9 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +49,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class CreateOfertaFragment extends Fragment {
+    //initialitions
     private static int RESULT_LOAD_IMG = 1;
     private SessionManager session;
     String imgDecodableString;
@@ -61,6 +65,11 @@ public class CreateOfertaFragment extends Fragment {
     static private String TAG = "CreateOferta";
     static private String URLPetition = "http://10.4.41.145/api/shops/";
 
+    /**
+     * Checks if the user accepts that the app to read external storage
+     *
+     * @return true if has permission or false if not
+     */
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -79,6 +88,11 @@ public class CreateOfertaFragment extends Fragment {
         }
     }
 
+    /**
+     * Convert Bitmap to byte[]
+     * @param bitmap    Image in bitmap format
+     * @return Image converted to bitmap
+     */
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
@@ -205,7 +219,7 @@ public class CreateOfertaFragment extends Fragment {
 
 
     /**
-     * Asynchronous Task for the petition POST to send a petition of register an User
+     * Asynchronous Task for the petition POST to send a petition to create a deal
      */
     private class PostOferta extends AsyncTask<String, Void, String> {
         @Override
@@ -214,16 +228,12 @@ public class CreateOfertaFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method,
-         *               params[2] is the title,
+         *               params[2] is the name,
          *               params[3] is the description
-         *               params[4] is the points
-         *               params[5] is the adress
-         *               params[6] is the company
-         *               params[7] is the date
-         *               params[8] is the time
-         *               params[9] is the image
-         *               params[10] is the category
-         * @return void when finished
+         *               params[4] is the value
+         *               params[5] is the date
+         *
+         * @return the result of the petition
          */
         protected String doInBackground(String... params) {
             HashMap<String, String> BodyParams = new HashMap<>();
@@ -239,11 +249,24 @@ public class CreateOfertaFragment extends Fragment {
         }
 
         @Override
+        /**
+         * Executed after doInBackground()
+         *
+         * @params s is the result of the petition
+         *
+         * @return void
+         */
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.contains("Event created successfully.")) {
+            } else if (s.contains("Deal created successfully.")) {
                 Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
+
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new OfertasListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
             }
@@ -251,6 +274,13 @@ public class CreateOfertaFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Get the result of the image selected
+     *
+     * @params  requestCode is 1
+     *          resultCode is -1
+     *          data is the image path
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {

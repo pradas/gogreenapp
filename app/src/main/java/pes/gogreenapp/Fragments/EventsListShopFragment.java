@@ -1,5 +1,6 @@
 package pes.gogreenapp.Fragments;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListShopFragment extends Fragment {
+    //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EventsListShopAdapter adapter;
@@ -80,6 +82,20 @@ public class EventsListShopFragment extends Fragment {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.events_list_shop_fragment, container, false);
     }
+
+    /**
+     * Initialize the contents of the Fragment host's standard options menu.  You
+     * should place your menu items in to <var>menu</var>.  For this method
+     * to be called, you must have first called {@link #setHasOptionsMenu}.  See
+     * {@link Activity#onCreateOptionsMenu(Menu) Activity.onCreateOptionsMenu}
+     * for more information.
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @see #setHasOptionsMenu
+     * @see #onPrepareOptionsMenu
+     * @see #onOptionsItemSelected
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.events_list_menu, menu);
@@ -89,16 +105,16 @@ public class EventsListShopFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case ordenarFechaEventos:
-                ordenarFecha();
+                sortDate();
                 return true;
             case ordenarPuntosEventos:
-                ordenarPuntos();
+                sortPoints();
                 return true;
             case filtrarTodosEventos:
-                filtrarTodos();
+                filterAll();
                 return true;
             case filtrarCategoriaEventos:
-                filtrarCategoria();
+                filterCategory();
                 return true;
         }
         return false;
@@ -129,7 +145,10 @@ public class EventsListShopFragment extends Fragment {
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
-    private void filtrarCategoria() {
+    /**
+     *  Shows a dialog with all the categories to select one
+     */
+    private void filterCategory() {
         String pastCategory = categorySelected;
         categorySelected = "Conciertos";
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -155,6 +174,10 @@ public class EventsListShopFragment extends Fragment {
 
     }
 
+    /**
+     * Filter all the events by the category categorySelected
+     * @return a list of events filtered
+     */
     private List<Event> filterEventsByCategories() {
         List<Event> rewardsFiltered = new ArrayList<>();
         for (int i = 0; i < events.size(); i++) {
@@ -164,7 +187,10 @@ public class EventsListShopFragment extends Fragment {
         return rewardsFiltered;
     }
 
-    private void filtrarTodos() {
+    /**
+     * Get all the events
+     */
+    private void filterAll() {
         categorySelected = "";
         warning.setText("");
         adapter = new EventsListShopAdapter(getContext(), events);
@@ -172,7 +198,10 @@ public class EventsListShopFragment extends Fragment {
 
     }
 
-    private void ordenarPuntos() {
+    /**
+     *  Sort by points the events
+     */
+    private void sortPoints() {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
@@ -198,7 +227,10 @@ public class EventsListShopFragment extends Fragment {
 
     }
 
-    private void ordenarFecha() {
+    /**
+     *  Sort by date the events
+     */
+    private void sortDate() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
@@ -310,7 +342,7 @@ public class EventsListShopFragment extends Fragment {
         }
 
         /**
-         * Creates the new Adapter and set the actual rewards by the result obtained.
+         * Creates the new Adapter and set the actual events by the result obtained.
          *
          * @param result of doInBackground()
          */
@@ -323,7 +355,7 @@ public class EventsListShopFragment extends Fragment {
 
 
     /**
-     * Asynchronous Task for the petition GET of all the Categories.
+     * Asynchronous Task for the petition GET of all the Events.
      */
     private class GetCategories extends AsyncTask<String, Void, Void> {
 

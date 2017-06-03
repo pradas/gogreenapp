@@ -1,5 +1,6 @@
 package pes.gogreenapp.Fragments;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListFragment extends Fragment {
+    //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EventsListAdapter adapter;
@@ -87,6 +89,19 @@ public class EventsListFragment extends Fragment {
         dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
     }
 
+    /**
+     * Initialize the contents of the Fragment host's standard options menu.  You
+     * should place your menu items in to <var>menu</var>.  For this method
+     * to be called, you must have first called {@link #setHasOptionsMenu}.  See
+     * {@link Activity#onCreateOptionsMenu(Menu) Activity.onCreateOptionsMenu}
+     * for more information.
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @see #setHasOptionsMenu
+     * @see #onPrepareOptionsMenu
+     * @see #onOptionsItemSelected
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.events_list_menu, menu);
@@ -103,22 +118,25 @@ public class EventsListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case ordenarFechaEventos:
-                ordenarFecha();
+                SortDate();
                 return true;
             case ordenarPuntosEventos:
-                ordenarPuntos();
+                SortPoints();
                 return true;
             case filtrarTodosEventos:
-                filtrarTodos();
+                filterAll();
                 return true;
             case filtrarCategoriaEventos:
-                filtrarCategoria();
+                filterCategory();
                 return true;
         }
         return false;
     }
 
-    private void filtrarCategoria() {
+    /**
+     *  Shows a dialog with all the categories to select one
+     */
+    private void filterCategory() {
         String pastCategory = categorySelected;
         categorySelected = "Conciertos";
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -144,6 +162,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
+    /**
+     * Filter all the events by the category categorySelected
+     * @return a list of events filtered
+     */
     private List<Event> filterEventsByCategories() {
         List<Event> rewardsFiltered = new ArrayList<>();
         for (int i = 0; i < events.size(); i++) {
@@ -153,7 +175,10 @@ public class EventsListFragment extends Fragment {
         return rewardsFiltered;
     }
 
-    private void filtrarTodos() {
+    /**
+     * Get all the events
+     */
+    private void filterAll() {
         categorySelected = "";
         warning.setText("");
         adapter = new EventsListAdapter(getContext(), events);
@@ -161,7 +186,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
-    private void ordenarPuntos() {
+    /**
+     *  Sort by points the events
+     */
+    private void SortPoints() {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
@@ -187,7 +215,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
-    private void ordenarFecha() {
+    /**
+     *  Sort by date the events
+     */
+    private void SortDate() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));

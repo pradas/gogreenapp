@@ -16,6 +16,9 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -471,6 +474,12 @@ public class EditEventFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
             } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Modificado perfectamente.", Toast.LENGTH_LONG).show();
+
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EventsListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido modificar.", Toast.LENGTH_LONG).show();
             }

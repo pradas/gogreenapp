@@ -3,6 +3,7 @@ package pes.gogreenapp.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.OfertaDetailedFragment;
+import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
@@ -79,21 +83,29 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
             discount = (TextView) itemView.findViewById(R.id.ofertaPoints);
             date = (TextView) itemView.findViewById(R.id.ofertaEndDate);
             fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButton);
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
-                    bundle.putString("parent", "list");
+
+                    //Sacar datos de la imagen seleccionada
+                    Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+                    byte[] b = baos.toByteArray();
+                    bundle.putByteArray("image",b);
+
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
-                    Fragment fragment = (Fragment) new EventDetailedFragment();
+                    Fragment fragment = (Fragment) new OfertaDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
                     transaction.commit();
                 }
-            });*/
+            });
         }
     }
 
@@ -138,14 +150,14 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
             holder.image.setImageBitmap(icon);
         }
 
-        if (ofertas.get(position).isFavorite()) {
+        /*if (ofertas.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
         }
-        else {
+        else {*/
             holder.fav.setImageResource(R.drawable.ic_fav_void);
             holder.fav.setTag("favorite");
-        }
+        //}
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {

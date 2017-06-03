@@ -13,6 +13,7 @@ public class Oferta {
     private Date date;
     private Boolean favorite;
     private byte[] image;
+    private String shop;
 
     public Oferta(Integer id, String title, String description, Integer points, Date date) {
         this.id = id;
@@ -72,5 +73,13 @@ public class Oferta {
     public boolean isFavorite() { return favorite; }
 
     public void setFavorite( boolean favorite) { this.favorite = favorite; }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
+    }
 }
 

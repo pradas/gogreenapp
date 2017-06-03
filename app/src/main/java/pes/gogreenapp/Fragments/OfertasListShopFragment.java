@@ -40,7 +40,7 @@ import static pes.gogreenapp.R.id.ordenarFechaOfertas;
 import static pes.gogreenapp.R.id.ordenarPuntosOfertas;
 
 
-public class OfertasListFragment extends Fragment {
+public class OfertasListShopFragment extends Fragment {
     //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -58,7 +58,7 @@ public class OfertasListFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public OfertasListFragment() {
+    public OfertasListShopFragment() {
     }
 
     /**
@@ -102,7 +102,7 @@ public class OfertasListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case ordenarFechaOfertas:
-                sortDate();
+                sortDeals();
                 return true;
             case ordenarPuntosOfertas:
                 sortPoints();
@@ -132,7 +132,7 @@ public class OfertasListFragment extends Fragment {
     /**
      *  Sort by date the deals
      */
-    private void sortDate() {
+    private void sortDeals() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             Collections.sort(ofertas, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
                 adapter = new OfertasListAdapter(getContext(), ofertas);
@@ -165,7 +165,7 @@ public class OfertasListFragment extends Fragment {
         warning = (TextView) getView().findViewById(R.id.warningNoResultOfertas);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        new GetOfertas().execute(url + "deals");
+        new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
@@ -199,7 +199,7 @@ public class OfertasListFragment extends Fragment {
     }
 
     /**
-     * Asynchronous Task for the petition GET the deal.
+     * Asynchronous Task for the petition GET of all the deals.
      */
     private class GetOfertas extends AsyncTask<String, Void, Void> {
 
