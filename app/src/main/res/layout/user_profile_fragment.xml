@@ -9,7 +9,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     tools:context="pes.gogreenapp.Fragments.UserProfileFragment"
-    android:id="@+id/user_profile"
+    android:id="@+id/user_profile_layout"
     android:background="@drawable/gradientbackground">
 
     <ScrollView
