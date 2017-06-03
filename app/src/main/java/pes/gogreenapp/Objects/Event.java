@@ -34,8 +34,13 @@ public class Event {
         if (image != null) {
             this.image = Base64.decode(image, 0);
         }
-
     }
+
+    public Event(String title, Integer points) {
+        this.title = title;
+        this.points = points;
+    }
+
     public String getTitle() {
         return title;
     }
