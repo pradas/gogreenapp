@@ -18,6 +18,10 @@
             android:id="@+id/favs_list_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
             android:title="Favoritos" />
+        <item
+            android:id="@+id/list_ofertas_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="@string/ofertas" />
     </group>
     <!-- This group represents the items of a role Manager and the Shopper -->
     <group
@@ -33,13 +37,17 @@
             android:icon="@mipmap/ic_view_list_black_24dp"
             android:title="@string/eventos" />
         <item
+            android:id="@+id/list_ofertas_shop_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="@string/ofertas" />
+        <item
             android:id="@+id/create_event_fragment"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="11"
             android:title="@string/create_event" />
         <item
             android:id="@+id/new_deal_fragment"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="12"
             android:title="@string/new_deal" />
         <item
@@ -59,7 +67,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/add_account"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/ic_add_black_24dp"
             android:orderInCategory="100"
             android:title="@string/add_account" />
     </group>

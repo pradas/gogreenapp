@@ -1,7 +1,11 @@
 package pes.gogreenapp.Fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +14,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +41,7 @@ import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.SessionManager;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Adrian on 17/04/2017.
@@ -48,7 +55,7 @@ public class RewardDetailedFragment extends Fragment {
     private String TAG = MainActivity.class.getSimpleName();
     private String url = "http://10.4.41.145/api/rewards/";
     private Reward reward;
-
+    private Bitmap bmp;
 
     /**
      * Required empty public constructor
@@ -73,7 +80,19 @@ public class RewardDetailedFragment extends Fragment {
         View view = inflater.inflate(R.layout.reward_detailed_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        byte[] b = getArguments().getByteArray("image");
+        //Crear imagen
+        bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     /**
@@ -94,8 +113,7 @@ public class RewardDetailedFragment extends Fragment {
         TextView advert;
         TextView instructions;
         ImageButton fav;
-        Button action;
-
+        ImageButton action;
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
@@ -111,20 +129,27 @@ public class RewardDetailedFragment extends Fragment {
         advert = (TextView) getView().findViewById(R.id.advertDetailReward);
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButton);
-        action = (Button) getView().findViewById(R.id.actionDetailReward);
-
-        if (getArguments().getString("parent").equals("list")) action.setText("CANJEAR");
-        else action.setText("UTILIZAR");
-        title.setText(reward.getTitle());
+        action = (ImageButton) getView().findViewById(R.id.actionDetailReward);
+        ImageView img = (ImageView) getView().findViewById(R.id.rewardBackgroundImageProfile);
+        img.setImageBitmap(bmp);
+        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
+        if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
+        else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_play_for_work_black_24dp,null));
+        //TODO Imagen Para rewards compradas
+            // action.setText("UTILIZAR");
+        title.setText(reward.getTitle() +" ("+reward.getPoints()+" pts)");
         description.setText(reward.getDescription());
         Date finalDate = reward.getEndDate();
-        endDate.setText("Promoción valida hasta el " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
-        web.setText("Consulta mas información en " + reward.getContactWeb());
-        advert.setText("Promoción válida hasta el " + reward.getEndDate() + " y no acumulable a otras ofertas," +
+
+        endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
+        web.setText("Más información en " + reward.getContactWeb());
+        advert.setText("Promoción válida hasta el " +  new SimpleDateFormat("dd/MM/yyyy").format(reward.getEndDate()) + " y no acumulable a otras ofertas," +
                 "cupones o promociones. Se prohíbe la venda de este vale. Solo se aceptará un vale por día y " +
                 "titular.");
         instructions.setText("Para poder utilizar este vale es necesario hacer click en canjear y " +
                 "que el propietario o empleado de la tienda escanee el código.");
+
+
 
         if (reward.isFavorite()) {
             fav.setTag("favoritefilled");
@@ -149,6 +174,23 @@ public class RewardDetailedFragment extends Fragment {
                     fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
+            }
+        });
+
+        imgback.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment;
+                if (getArguments().getString("parent").equals("list")) {
+                    fragment = (Fragment) new RewardsListFragment();
+                }else{
+                    fragment = (Fragment) new UserProfileFragment();
+                }
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+
             }
         });
 
@@ -232,7 +274,6 @@ public class RewardDetailedFragment extends Fragment {
             else Toast.makeText(getActivity(), "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
-
     private class PostReward extends AsyncTask<String, Void, String> {
 
         /**

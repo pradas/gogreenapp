@@ -146,7 +146,7 @@ public class NavigationDrawerTest {
     public void checkUserProfileAccess() {
 
         onView(withId(R.id.profile_image)).perform(click());
-        onView(withId(R.id.user_profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.user_profile_layout)).check(matches(isDisplayed()));
     }
 
     /**
@@ -184,7 +184,7 @@ public class NavigationDrawerTest {
     public void checkGivePointsAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.give_points_fragment));
-        onView(withId(R.id.give_points_fragment)).check(matches(isDisplayed()));
+        onView(withId(R.id.layoutGivePoints)).check(matches(isDisplayed()));
     }
 
     /**
@@ -203,7 +203,7 @@ public class NavigationDrawerTest {
     public void checkNewDealAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.new_deal_fragment));
-        onView(withId(R.id.new_deal_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.create_oferta_event)).check(matches(isDisplayed()));
     }
 
     /**

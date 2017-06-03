@@ -16,6 +16,9 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,7 +73,6 @@ public class EditEventFragment extends Fragment {
     private EditText DirectionText;
     private EditText HourText;
     private EditText MinText;
-    private EditText CompanyText;
     private Calendar calendar;
     private Integer id;
     private String FinalTime = null;
@@ -79,6 +81,7 @@ public class EditEventFragment extends Fragment {
     static private String TAG = "EditEvent";
     private Event event;
     private String url = "http://10.4.41.145/api/events/";
+    private String urlPut = "http://10.4.41.145/api/shops/";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -144,6 +147,8 @@ public class EditEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
+        urlPut = urlPut + String.valueOf(session.getShopId()) + "/events/" + String.valueOf(id);
+        Log.d(TAG, urlPut);
         new GetCategories().execute(URLcategories);
         try {
             new GetEvent().execute(url).get();
@@ -162,7 +167,6 @@ public class EditEventFragment extends Fragment {
         DirectionText = (EditText) getView().findViewById(R.id.DirectionEditEvent_edit_text);
         HourText = (EditText) getView().findViewById(R.id.HourEditEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinEditEvent_edit_text);
-        CompanyText = (EditText) getView().findViewById(R.id.CompanyEditEvent_edit_text);
         ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedEditEvent);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinnerEdit);
 
@@ -269,7 +273,6 @@ public class EditEventFragment extends Fragment {
                         DescriptionText.getText().toString(),
                         PointsText.getText().toString(),
                         DirectionText.getText().toString(),
-                        CompanyText.getText().toString(),
                         DateText.getText().toString(),
                         FinalTime,
                         imgString,
@@ -305,10 +308,18 @@ public class EditEventFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
-                    event = new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
-                            jsonObject.getString("description"), jsonObject.getInt("points"),
-                            address, company, df.parse(jsonObject.getString("date")), image,
-                            jsonObject.getString("category"), jsonObject.getBoolean("favourite"));
+                    Boolean favorite = false;
+                    if (jsonObject.get("favourite") == "true") favorite = true;
+                    event = new Event(jsonObject.getInt("id"),
+                            jsonObject.getString("title"),
+                            jsonObject.getString("description"),
+                            jsonObject.getInt("points"),
+                            address,
+                            company,
+                            df.parse(jsonObject.getString("date")),
+                            image,
+                            jsonObject.getString("category"),
+                            favorite);
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -322,7 +333,6 @@ public class EditEventFragment extends Fragment {
             DescriptionText.setText(event.getDescription());
             PointsText.setText(event.getPoints().toString());
             DirectionText.setText(event.getDirection());
-            CompanyText.setText(event.getCompany());
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             DateText.setText(sdf.format(event.getDate()));
             if (Integer.parseInt(event.getHour()) < 10){
@@ -434,11 +444,10 @@ public class EditEventFragment extends Fragment {
          *               params[3] is the description
          *               params[4] is the points
          *               params[5] is the adress
-         *               params[6] is the company
-         *               params[7] is the date
-         *               params[8] is the time
-         *               params[9] is the image
-         *               params[10] is the category
+         *               params[6] is the date
+         *               params[7] is the time
+         *               params[8] is the image
+         *               params[9] is the category
          * @return void when finished
          */
         protected String doInBackground(String... params) {
@@ -447,12 +456,11 @@ public class EditEventFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
             if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
-            BodyParams.put("date", params[7]);
-            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
+            BodyParams.put("date", params[6]);
+            if (params[7] != null && !params[7].equals(":")) BodyParams.put("time", params[7]);
             else BodyParams.put("time", "00:00");
-            if (params[9] != null) BodyParams.put("image", params[9]);
-            BodyParams.put("category", params[10]);
+            if (params[8] != null) BodyParams.put("image", params[8]);
+            BodyParams.put("category", params[9]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);
@@ -466,6 +474,12 @@ public class EditEventFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
             } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Modificado perfectamente.", Toast.LENGTH_LONG).show();
+
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EventsListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido modificar.", Toast.LENGTH_LONG).show();
             }

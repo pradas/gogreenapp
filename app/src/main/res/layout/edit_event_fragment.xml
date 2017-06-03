@@ -104,30 +104,11 @@
             android:textColorHint="#000000" />
 
         <TextView
-            android:id="@+id/CompanyEditEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DirectionEditEvent_edit_text"
-            android:text="@string/company"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/CompanyEditEvent_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/CompanyEditEvent"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
-
-        <TextView
             android:id="@+id/DateTextEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/CompanyEditEvent_edit_text"
+            android:layout_below="@+id/DirectionEditEvent_edit_text"
             android:text="@string/fecha_evento"
             android:textSize="20sp" />
 

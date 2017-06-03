@@ -40,6 +40,7 @@ public class SessionManager {
     private static final String KEY_TOKEN = "token";
     private static final String KEY_POINTS = "points";
     private static final String KEY_ROLE = "role";
+    private static final String KEY_SHOP_ID = "shop_id";
     private static final String SETTINGS_NAME = "default_settings";
 
     /**
@@ -218,5 +219,26 @@ public class SessionManager {
     public String getRole() {
 
         return pref.getString(KEY_ROLE, "");
+    }
+
+    /**
+     * Setter of the new value of shop id property
+     *
+     * @param shopId new value of shop id property
+     */
+    public void setShopId(Integer shopId) {
+
+        editor.putInt(KEY_SHOP_ID, shopId);
+        editor.commit();
+    }
+
+    /**
+     * Getter of the shop id property
+     *
+     * @return the shop id in String format
+     */
+    public int getShopId() {
+
+        return pref.getInt(KEY_SHOP_ID, -1);
     }
 }

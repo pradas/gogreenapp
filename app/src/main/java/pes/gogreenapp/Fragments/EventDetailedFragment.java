@@ -31,8 +31,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailedFragment extends Fragment {
-    private static int RESULT_LOAD_IMG = 1;
-    String imgDecodableString;
+    //initialitions
     private SessionManager session;
     private ImageView image;
     private TextView title;
@@ -134,10 +133,18 @@ public class EventDetailedFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
-                    event = new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
-                            jsonObject.getString("description"), jsonObject.getInt("points"),
-                            address, company, df.parse(jsonObject.getString("date")), image,
-                            jsonObject.getString("category"), jsonObject.getBoolean("favourite"));
+                    Boolean favorite = false;
+                    if (jsonObject.get("favourite") == "true") favorite = true;
+                    event = new Event(jsonObject.getInt("id"),
+                            jsonObject.getString("title"),
+                            jsonObject.getString("description"),
+                            jsonObject.getInt("points"),
+                            address,
+                            company,
+                            df.parse(jsonObject.getString("date")),
+                            image,
+                            jsonObject.getString("category"),
+                            favorite);
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

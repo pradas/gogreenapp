@@ -1,5 +1,6 @@
 package pes.gogreenapp.Fragments;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,9 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.EventsListAdapter;
-import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Event;
-import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -45,6 +44,7 @@ import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListFragment extends Fragment {
+    //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EventsListAdapter adapter;
@@ -82,31 +82,61 @@ public class EventsListFragment extends Fragment {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.events_list_fragment, container, false);
     }
+
+    public void showFilterDialog(){
+        //Creamos una instancia del FilterDialog y la mostramos
+        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
+    }
+
+    /**
+     * Initialize the contents of the Fragment host's standard options menu.  You
+     * should place your menu items in to <var>menu</var>.  For this method
+     * to be called, you must have first called {@link #setHasOptionsMenu}.  See
+     * {@link Activity#onCreateOptionsMenu(Menu) Activity.onCreateOptionsMenu}
+     * for more information.
+     *
+     * @param menu The options menu in which you place your items.
+     *
+     * @see #setHasOptionsMenu
+     * @see #onPrepareOptionsMenu
+     * @see #onOptionsItemSelected
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.events_list_menu, menu);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener( v -> {
+            showFilterDialog();
+            return true;
+        });
         super.onCreateOptionsMenu(menu,inflater);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()) {
             case ordenarFechaEventos:
-                ordenarFecha();
+                SortDate();
                 return true;
             case ordenarPuntosEventos:
-                ordenarPuntos();
+                SortPoints();
                 return true;
             case filtrarTodosEventos:
-                filtrarTodos();
+                filterAll();
                 return true;
             case filtrarCategoriaEventos:
-                filtrarCategoria();
+                filterCategory();
                 return true;
         }
         return false;
     }
 
-    private void filtrarCategoria() {
+    /**
+     *  Shows a dialog with all the categories to select one
+     */
+    private void filterCategory() {
         String pastCategory = categorySelected;
         categorySelected = "Conciertos";
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
@@ -132,6 +162,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
+    /**
+     * Filter all the events by the category categorySelected
+     * @return a list of events filtered
+     */
     private List<Event> filterEventsByCategories() {
         List<Event> rewardsFiltered = new ArrayList<>();
         for (int i = 0; i < events.size(); i++) {
@@ -141,7 +175,10 @@ public class EventsListFragment extends Fragment {
         return rewardsFiltered;
     }
 
-    private void filtrarTodos() {
+    /**
+     * Get all the events
+     */
+    private void filterAll() {
         categorySelected = "";
         warning.setText("");
         adapter = new EventsListAdapter(getContext(), events);
@@ -149,7 +186,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
-    private void ordenarPuntos() {
+    /**
+     *  Sort by points the events
+     */
+    private void SortPoints() {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
@@ -175,7 +215,10 @@ public class EventsListFragment extends Fragment {
 
     }
 
-    private void ordenarFecha() {
+    /**
+     *  Sort by date the events.
+     */
+    private void SortDate() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             if (categorySelected.equals("")) {
                 Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
@@ -287,13 +330,21 @@ public class EventsListFragment extends Fragment {
                             image = jsonObject.getString("image");
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        Boolean favorite = false;
+                        if (jsonObject.get("favourite") == "true") favorite = true;
                         events.add(
                                 new Event(jsonObject.getInt("id"),
                                 jsonObject.getString("title"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("points"),
-                                address, company, date, image, jsonObject.getString("category"),
-                                jsonObject.getBoolean("favourite")));
+                                address,
+                                company,
+                                date,
+                                image,
+                                jsonObject.getString("category"),
+                                favorite)
+
+                        );
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

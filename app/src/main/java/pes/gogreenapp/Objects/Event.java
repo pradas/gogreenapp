@@ -16,8 +16,8 @@ public class Event {
     private String hour;
     private String min;
     private String category;
-    private byte[] image;
     private Boolean favorite;
+    private byte[] image;
 
     public Event(String title, Integer points) {
         this.title = title;
@@ -35,10 +35,11 @@ public class Event {
         this.hour = String.valueOf(date.getHours());
         this.min = String.valueOf(date.getMinutes());
         this.category = category;
+        this.favorite = favorite;
         if (image != null) {
             this.image = Base64.decode(image, 0);
         }
-        this.favorite = favorite;
+
     }
 
     public String getTitle() {
@@ -125,12 +126,8 @@ public class Event {
         this.id = id;
     }
 
-    public Boolean isFavorite() {
-        return favorite;
-    }
+    public boolean isFavorite() { return favorite; }
 
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
-    }
+    public void setFavorite( boolean favorite) { this.favorite = favorite; }
 }
 

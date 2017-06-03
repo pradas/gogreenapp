@@ -9,7 +9,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     tools:context="pes.gogreenapp.Fragments.UserProfileFragment"
-    android:id="@+id/user_profile"
+    android:id="@+id/user_profile_layout"
     android:background="@drawable/gradientbackground">
 
     <ScrollView
@@ -42,11 +42,6 @@
             android:id="@+id/user_profile_c1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
-        <FrameLayout
-            android:id="@+id/user_profile_c2"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp" />
 
         <FrameLayout
             android:id="@+id/rewards_exchanged_fragment"

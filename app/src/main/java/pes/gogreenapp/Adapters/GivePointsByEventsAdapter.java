@@ -13,16 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
@@ -56,7 +48,8 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
                 eventsToSpinner.add(events.get(i).getTitle());
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                    android.R.layout.simple_spinner_dropdown_item, eventsToSpinner);
+                    R.layout.spinner_dropdown, eventsToSpinner);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerEvents.setAdapter(adapter);
         }
     }

@@ -152,8 +152,6 @@ public class ListRewardTest {
 
         onView(withId(R.id.rv))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.rv))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
         onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
                 .check(matches(withDrawable(R.drawable.ic_fav_void)));
     }

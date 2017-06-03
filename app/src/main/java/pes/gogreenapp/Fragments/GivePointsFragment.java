@@ -8,6 +8,9 @@ import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,7 +50,7 @@ public class GivePointsFragment extends Fragment {
     private List<String> users;
     private List<Event> events;
     private Switch mode;
-    private Button anotherUser, grantPoints;
+    private Button grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
     private GivePointsByPointsAdapter adapterPoints;
 
@@ -73,6 +76,7 @@ public class GivePointsFragment extends Fragment {
         users = new ArrayList<String>();
         events = new ArrayList<Event>();
         users.add("Usuario nº1");
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
@@ -124,7 +128,6 @@ public class GivePointsFragment extends Fragment {
 
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
-        anotherUser = (Button) getView().findViewById(R.id.anotherUserToGive);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
         adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
         listToGivePoints.setAdapter(adapterEvents);
@@ -133,48 +136,20 @@ public class GivePointsFragment extends Fragment {
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.switchModeGive);
-                if (!isChecked) {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Eventos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
-                            listToGivePoints.setAdapter(adapterEvents);
-                        }
-                    });
-                }
-                else {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Puntos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
-                            listToGivePoints.setAdapter(adapterPoints);
-                        }
-                    });
-                }
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
 
-        anotherUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (modeItems.equals("Eventos")) {
-                    users.add("Usuario nº" + (users.size() + 1));
-                    adapterEvents.notifyDataSetChanged();
+                if (!isChecked) {
+                    modeItems = "Eventos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
+                    listToGivePoints.setAdapter(adapterEvents);
                 }
                 else {
-                    users.add("Usuario nº" + (users.size() + 1));
-                    adapterPoints.notifyDataSetChanged();
+                    modeItems = "Puntos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
+                    listToGivePoints.setAdapter(adapterPoints);
                 }
             }
         });
@@ -215,6 +190,27 @@ public class GivePointsFragment extends Fragment {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_give_points, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_user:
+                users.add("Usuario nº" + (users.size() + 1));
+                if (modeItems.equals("Eventos"))
+                    adapterEvents.notifyDataSetChanged();
+                else
+                    adapterPoints.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**

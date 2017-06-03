@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,9 +22,11 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class HttpHandler {
+
     private static final String TAG = HttpHandler.class.getSimpleName();
 
     public HttpHandler() {
+
     }
 
     /**
@@ -31,10 +36,11 @@ public class HttpHandler {
      * @param method
      * @param bodyParameters
      * @param token
+     *
      * @return the response of the service called in String format.
      */
-    public String makeServiceCall(String reqUrl, String method,
-                                  HashMap<String, String> bodyParameters, String token) {
+    public String makeServiceCall(String reqUrl, String method, HashMap<String, String> bodyParameters, String token) {
+
         String response;
         String resCode = "300";
         try {
@@ -81,10 +87,12 @@ public class HttpHandler {
      * Convert the InputStream into String
      *
      * @param is InputStream from a previous service call
+     *
      * @return the InputStream transformed into a String format
      */
     @NonNull
     private String convertStreamToString(InputStream is) {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line;
@@ -111,6 +119,7 @@ public class HttpHandler {
      * @param bodyParameters parameters of the body request.
      */
     private void writeStream(OutputStream out, HashMap<String, String> bodyParameters) {
+
         String output;
         try {
             output = new ObjectMapper().writeValueAsString(bodyParameters);
@@ -120,4 +129,30 @@ public class HttpHandler {
             e.printStackTrace();
         }
     }
+
+
+    private static final String BASE_URL = "http://10.4.41.145/api/";
+
+    private static AsyncHttpClient client = new AsyncHttpClient();
+
+    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+
+        client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+
+        client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+
+        client.put(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    private static String getAbsoluteUrl(String relativeUrl) {
+
+        return BASE_URL + relativeUrl;
+    }
+
 }

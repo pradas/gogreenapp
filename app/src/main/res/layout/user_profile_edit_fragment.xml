@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layoutEditProfile"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/user_image_edit_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+    <EditText
+        android:id="@+id/user_name_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_image_edit_user"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/user_nickname_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_name_edit_user"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/user_total_points_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_nickname_edit_user"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/user_current_points_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_total_points_edit_user"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/gobro_since_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_current_points_edit_user"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/save_edit_profile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GUARDAR"
+        android:layout_below="@+id/gobro_since_edit_user" />
+
+    <TextView
+        android:id="@+id/birthdate_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/save_edit_profile_button"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/edit_birthdate_user_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/birthdate_edit_user"
+        android:ems="10"
+        android:text="edita date"/>
+
+    <EditText
+        android:id="@+id/user_email_edit_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_birthdate_user_button"
+        android:ems="10" />
+
+</RelativeLayout>
