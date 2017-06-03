@@ -31,8 +31,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailedFragment extends Fragment {
-    private static int RESULT_LOAD_IMG = 1;
-    String imgDecodableString;
+    //initialitions
     private SessionManager session;
     private ImageView image;
     private TextView title;

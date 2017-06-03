@@ -72,8 +72,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -101,8 +99,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -129,8 +125,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -156,8 +150,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.MinCreateEvent_edit_text))
@@ -182,8 +174,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -208,8 +198,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-19-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -235,8 +223,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.HourCreateEvent_edit_text))
                 .perform(clearText(), typeText("22"));
         onView(withId(R.id.MinCreateEvent_edit_text))
@@ -258,8 +244,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("Description"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -284,8 +268,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -310,8 +292,6 @@ public class CreateEventTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
-                .perform(clearText(), typeText("Green Peace"));
         onView(withId(R.id.editTextDateCreateEvent))
                 .perform(clearText(), typeText("22-09-2017"));
         onView(withId(R.id.HourCreateEvent_edit_text))
@@ -349,17 +329,6 @@ public class CreateEventTest {
         onView(withId(R.id.editTextDateCreateEvent))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.DateCreateEvent))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the the company is displayed
-     */
-    @Test
-    public void CheckCompanyIsDisplayed(){
-        onView(withId(R.id.CompanyCreateEvent))
-                .check(matches(isDisplayed()));
-        onView(withId(R.id.CompanyCreateEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
 

@@ -172,6 +172,7 @@ public class RewardsListFragment extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
+            Log.i(TAG, urls[0]);
             URL imageUrl = null;
             if (response != null) {
                 try {
