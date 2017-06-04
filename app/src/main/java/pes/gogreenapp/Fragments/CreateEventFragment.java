@@ -75,12 +75,10 @@ public class CreateEventFragment extends Fragment {
     private EditText HourText;
     private EditText MinText;
     private EditText CompanyText;
-    private EditText TextTime;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
     private String FinalTime = null;
     private Spinner categoriesSpinner;
-    private ImageButton imageTextTime;
     static private String TAG = "CreateEvent";
     static private final String URLPetition = "http://10.4.41.145/api/events";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
@@ -130,7 +128,6 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.create_event_fragment, container, false);
     }
 
@@ -161,21 +158,76 @@ public class CreateEventFragment extends Fragment {
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
-        imageTextTime = (ImageButton) getView().findViewById(R.id.imageHourCreateEvent);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
 
 
-        imageTextTime.setOnClickListener((v) -> {
-                calendar = calendar.getInstance();
-                TimePickerDialog time = new TimePickerDialog(getActivity(),
-                        (TimePicker view, int hourOfDay, int minute) -> {
-                            String sHourOfDay = String.format("%02d",hourOfDay);
-                            String sMinutes = String.format("%02d",minute);
-                            HourText.setText(sHourOfDay);
-                            MinText.setText(sMinutes);
-                        }, calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true);
-                time.show();
+        SendButton.setOnClickListener((View v) ->{
+            Boolean send = true;
+            if (TitleText.getText().toString().length() <= 0) {
+                TitleText.setError("Título necesario");
+                send = false;
+            }
+            if (DescriptionText.getText().toString().length() <= 0) {
+                DescriptionText.setError("Descripción necesaria");
+                send = false;
+            }
+            if (PointsText.getText().toString().length() <= 0) {
+                PointsText.setError("Puntos necesarios");
+                send = false;
+            }
+            if (DateText.getText().toString().length() <= 0) {
+                DateText.setError("Fecha necesaria");
+                send = false;
+            } else {
+                Date date = null;
+                String inputDate = DateText.getText().toString();
+                try {
+                    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    formatter.setLenient(false);
+                    date = formatter.parse(inputDate);
+                } catch (ParseException e) {
+                    DateText.setError("Fecha invalida (dd-mm-yyyy)");
+                    send = false;
+                }
+            }
+            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
+                MinText.setError("Minutos necesarios");
+                send = false;
+            }
+            if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
+                HourText.setError("Hora necesaria");
+            }
+            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
+                if (Integer.parseInt(HourText.getText().toString()) > 23) {
+                    HourText.setError("Hora incorrecta");
+                    send = false;
+                }
+                if (Integer.parseInt(MinText.getText().toString()) > 59) {
+                    MinText.setError("Minutos incorrectos");
+                    send = false;
+                }
+                FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
+            }
+            if (send) {
+                Log.d("CreateEvent", "se envia");
+                String imgString = null;
+                if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
+                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
+                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+                }
+                new PostEvent().execute(URLPetition, "POST",
+                        TitleText.getText().toString(),
+                        DescriptionText.getText().toString(),
+                        PointsText.getText().toString(),
+                        DirectionText.getText().toString(),
+                        CompanyText.getText().toString(),
+                        DateText.getText().toString(),
+                        FinalTime,
+                        imgString,
+                        String.valueOf(categoriesSpinner.getSelectedItem())
+                );
+            }
         });
-
         //events
         DateText.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -229,87 +281,6 @@ public class CreateEventFragment extends Fragment {
         });
 
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.create_event_list_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                Boolean send = true;
-                if (TitleText.getText().toString().length() <= 0) {
-                    TitleText.setError("Título necesario");
-                    send = false;
-                }
-                if (DescriptionText.getText().toString().length() <= 0) {
-                    DescriptionText.setError("Descripción necesaria");
-                    send = false;
-                }
-                if (PointsText.getText().toString().length() <= 0) {
-                    PointsText.setError("Puntos necesarios");
-                    send = false;
-                }
-                if (DateText.getText().toString().length() <= 0) {
-                    DateText.setError("Fecha necesaria");
-                    send = false;
-                } else {
-                    Date date = null;
-                    String inputDate = DateText.getText().toString();
-                    try {
-                        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                        formatter.setLenient(false);
-                        date = formatter.parse(inputDate);
-                    } catch (ParseException e) {
-                        DateText.setError("Fecha invalida (dd-mm-yyyy)");
-                        send = false;
-                    }
-                }
-                if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
-                    MinText.setError("Minutos necesarios");
-                    send = false;
-                }
-                if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
-                    HourText.setError("Hora necesaria");
-                }
-                if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
-                    if (Integer.parseInt(HourText.getText().toString()) > 23) {
-                        HourText.setError("Hora incorrecta");
-                        send = false;
-                    }
-                    if (Integer.parseInt(MinText.getText().toString()) > 59) {
-                        MinText.setError("Minutos incorrectos");
-                        send = false;
-                    }
-                    FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-                }
-                if (send) {
-                    Log.d("CreateEvent", "se envia");
-                    String imgString = null;
-                    if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
-                        imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
-                                .decodeFile(imgDecodableString)), Base64.NO_WRAP);
-                    }
-                    new PostEvent().execute(URLPetition, "POST",
-                            TitleText.getText().toString(),
-                            DescriptionText.getText().toString(),
-                            PointsText.getText().toString(),
-                            DirectionText.getText().toString(),
-                            CompanyText.getText().toString(),
-                            DateText.getText().toString(),
-                            FinalTime,
-                            imgString,
-                            String.valueOf(categoriesSpinner.getSelectedItem())
-                    );
-                }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     /**
      * Asynchronous Task for the petition POST to send a petition of register an User
