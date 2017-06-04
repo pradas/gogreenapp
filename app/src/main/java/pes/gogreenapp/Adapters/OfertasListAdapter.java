@@ -140,7 +140,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
         holder.discount.setText(String.valueOf(ofertas.get(position).getPoints()));
         Date d = ofertas.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy").format(d));
-       if (ofertas.get(position).getImage() != null) {
+        if (ofertas.get(position).getImage() != null) {
             byte[] decodedBytes = ofertas.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
@@ -155,8 +155,8 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
         }
         else {*/
-            holder.fav.setImageResource(R.drawable.ic_fav_void);
-            holder.fav.setTag("favorite");
+        holder.fav.setImageResource(R.drawable.ic_fav_void);
+        holder.fav.setTag("favorite");
         //}
 
         holder.fav.setOnClickListener(v -> {
