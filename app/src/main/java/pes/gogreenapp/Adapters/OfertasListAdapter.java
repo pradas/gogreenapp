@@ -150,14 +150,14 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
             holder.image.setImageBitmap(icon);
         }
 
-        /*if (ofertas.get(position).isFavorite()) {
+        if (ofertas.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
         }
-        else {*/
+        else {
             holder.fav.setImageResource(R.drawable.ic_fav_void);
             holder.fav.setTag("favorite");
-        //}
+        }
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {

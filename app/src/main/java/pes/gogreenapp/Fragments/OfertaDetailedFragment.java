@@ -240,7 +240,7 @@ public class OfertaDetailedFragment extends Fragment {
                             jsonObject.getString("name"),
                             jsonObject.getString("description"),
                             jsonObject.getInt("value"),
-                            date);
+                            date, jsonObject.getBoolean("favourite"));
                     oferta.setShop(jsonObject.getString("shop_name"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
