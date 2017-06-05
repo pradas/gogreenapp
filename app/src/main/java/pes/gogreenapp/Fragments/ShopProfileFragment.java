@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.OfertasListAdapter;
@@ -59,8 +61,9 @@ public class ShopProfileFragment extends Fragment {
     private Button editProfile;
     private Bitmap profileImageBitmap;
     private List<Oferta> deals = new ArrayList<>();
-    OfertasListAdapter adapter;
+
     RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
 
     /**
      * Required empty public constructor
@@ -98,14 +101,16 @@ public class ShopProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
 
-        /*
+
         shopImage = (ImageView) getView().findViewById(R.id.shop_image);
         shopName = (TextView) getView().findViewById(R.id.shop_name);
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
-        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);*/
+        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
         recyclerView = (RecyclerView) getView().findViewById(R.id.rvDealsShopProfile);
-        /*if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
             editProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -118,10 +123,11 @@ public class ShopProfileFragment extends Fragment {
                 }
             });
         }
-        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");*/
+        //new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
         new GetDeals().execute("http://10.4.41.145/api/shops/1/deals");
+
     }
-/*
+
     private class GetInfoShop extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -158,7 +164,7 @@ public class ShopProfileFragment extends Fragment {
             shopAddress.setText("Direccion: " + shop.getShopAddress());
         }
     }
-*/
+
     /**
      * Asynchronous Task for the petition GET the deal.
      */
@@ -209,7 +215,7 @@ public class ShopProfileFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new OfertasListAdapter(getContext(), deals);
+            OfertasListAdapter adapter = new OfertasListAdapter(getContext(), deals);
             recyclerView.setAdapter(adapter);
         }
     }
