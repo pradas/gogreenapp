@@ -124,8 +124,7 @@ public class OfertaDetailedFragment extends Fragment {
 
         fav.setTag("favorite");
         fav.setImageResource(R.drawable.ic_fav_void);
-        //TODO: favourites (falta que la api et retorni si es favorit o no)
-/*
+
         if (oferta.isFavorite()) {
             fav.setTag("favoritefilled");
             fav.setImageResource(R.drawable.ic_fav_filled);
@@ -151,7 +150,7 @@ public class OfertaDetailedFragment extends Fragment {
                 }
             }
         });
-*/
+
         imgback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +174,7 @@ public class OfertaDetailedFragment extends Fragment {
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("deals_id", params[3]);
+            bodyParams.put("deal_id", params[3]);
             String url = params[0] + params[2] + "/favourite-deals";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
