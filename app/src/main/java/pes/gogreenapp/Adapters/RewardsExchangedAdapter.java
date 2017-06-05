@@ -183,7 +183,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://10.4.41.145/api/users/" + userName + "/rewards/" + rewards.get(position).getId();
+                String url = "http://10.4.41.145/use-reward/" + rewards.get(position).getId();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
 

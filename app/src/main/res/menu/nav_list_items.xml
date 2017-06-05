@@ -13,6 +13,11 @@
             android:id="@+id/list_events_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
             android:title="@string/eventos" />
+
+        <item
+            android:id="@+id/favs_list_fragment"
+            android:icon="@mipmap/ic_view_list_black_24dp"
+            android:title="Favoritos" />
         <item
             android:id="@+id/list_ofertas_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"

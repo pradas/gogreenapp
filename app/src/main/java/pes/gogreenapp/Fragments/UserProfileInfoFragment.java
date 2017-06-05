@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,7 @@ public class UserProfileInfoFragment extends Fragment {
     private TextView userBirthDate;
     private TextView userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
-
+    private Bitmap profileImageBitmap;
     private User user;
 
 
@@ -122,22 +123,6 @@ public class UserProfileInfoFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -145,8 +130,6 @@ public class UserProfileInfoFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
-
-            URL imageUrl = null;
             try {
 
                 JSONObject jsonArray = new JSONObject(response);
@@ -160,23 +143,21 @@ public class UserProfileInfoFragment extends Fragment {
                         jsonArray.getInt("points"),
                         jsonArray.getString("created_at"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
-
             return null;
         }
 
 
         @Override
         protected void onPostExecute(Void result) {
-            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
-            else userImage.setImageBitmap(null);
+            userImage.setImageBitmap(profileImageBitmap);
 
             userName.setText("Nombre real: " + user.getName());
             userNickName.setText("Nombre de usuario: " + user.getUsername());

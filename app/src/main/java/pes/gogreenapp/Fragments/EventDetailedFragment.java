@@ -133,8 +133,6 @@ public class EventDetailedFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
-                    Boolean favorite = false;
-                    if (jsonObject.get("favourite") == "true") favorite = true;
                     event = new Event(jsonObject.getInt("id"),
                             jsonObject.getString("title"),
                             jsonObject.getString("description"),
@@ -144,7 +142,7 @@ public class EventDetailedFragment extends Fragment {
                             df.parse(jsonObject.getString("date")),
                             image,
                             jsonObject.getString("category"),
-                            favorite);
+                            jsonObject.getBoolean("favourite"));
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
