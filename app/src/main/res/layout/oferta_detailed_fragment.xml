@@ -14,17 +14,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:paddingTop="24dp"
         tools:ignore="MissingPrefix">
 
         <ImageView
             android:id="@+id/ofertaBackgroundImageProfile"
             android:layout_width="match_parent"
             android:layout_height="230dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:alpha="1.0"
             android:scaleType="centerCrop"
             android:tint="#88212121"
-            android:layout_alignParentEnd="true" />
+            android:contentDescription="@string/imagen_del_evento" />
 
         <ImageButton
             android:id="@+id/imageButtonBackOferta"
@@ -32,47 +34,49 @@
             android:layout_height="20dp"
             android:layout_alignStart="@+id/titleDetailReward"
             android:layout_alignTop="@+id/favoriteDetailButton"
+            android:layout_marginTop="5dp"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
             android:src="@mipmap/ic_back_white"
-            android:tag="favorite" />
+            android:tag="favorite"
+            android:contentDescription="@string/atras" />
 
         <TextView
             android:id="@+id/titleDetailOferta"
             fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/dateValidDetailReward"
-            android:layout_alignStart="@+id/dateValidDetailReward"
-            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/dateValidDetailOferta"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
             android:textColor="@color/colorWhite"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/dateValidDetailOferta"
             fontPath="fonts/Raleway-Regular.ttf"
-            android:layout_width="570px"
+            android:layout_width="570dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/ofertaBackgroundImageProfile"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="15dp"
             android:textColor="@color/colorWhite"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/favoriteDetailButtonOferta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
             android:src="@mipmap/favorite"
             android:tag="favorite"
-            android:tint="@color/colorWhite" />
+            android:tint="@color/colorWhite"
+            android:layout_alignTop="@+id/imageButtonBackOferta"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/añadir_a_favoritos" />
     </RelativeLayout>
 
 
@@ -89,7 +93,7 @@
             android:id="@+id/descriptionDetailOfertaImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:tint="@android:color/darker_gray"
@@ -100,11 +104,9 @@
             fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/titleDetailOferta"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -121,7 +123,7 @@
             android:id="@+id/instructionsDetailOfertaImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:tint="@android:color/darker_gray"
@@ -133,13 +135,16 @@
             fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/advertDetail"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ir_a_la_tienda"
+        android:id="@+id/buttonGoToShop"/>
 
 
 </LinearLayout>

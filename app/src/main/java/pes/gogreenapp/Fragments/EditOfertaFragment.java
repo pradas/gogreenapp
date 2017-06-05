@@ -70,8 +70,8 @@ public class EditOfertaFragment extends Fragment {
     private Integer id;
     private Oferta oferta;
     static private String TAG = "EditOferta";
-    static private String URLPetition = "http://10.4.41.145/api/deals/";
-    static private String URLPut = "http://10.4.41.145/api/shops/";
+    private String URLPetition = "http://10.4.41.145/api/";
+    private String URLPut = "http://10.4.41.145/api/shops/";
 
     /**
      * Checks if the user accepts that the app to read external storage
@@ -131,7 +131,7 @@ public class EditOfertaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id = getArguments().getInt("id");
-        URLPetition += id;
+        URLPetition =  URLPetition + "deals/" + String.valueOf(id);
         return inflater.inflate(R.layout.edit_oferta_fragment, container, false);
     }
 
@@ -281,12 +281,17 @@ public class EditOfertaFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            DateText.setText(sdf.format(oferta.getDate()));
+            if (oferta.getDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                DateText.setText(sdf.format(oferta.getDate()));
+            }
             TitleText.setText(oferta.getTitle());
             DescriptionText.setText(oferta.getDescription());
             DiscountText.setText(String.valueOf(oferta.getPoints()));
-
+            if (oferta.getImage() != null) {
+                byte[] decodedBytes = oferta.getImage();
+                ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
+            }
         }
     }
 

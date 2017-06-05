@@ -13,7 +13,8 @@ public class Oferta {
     private Date date;
     private Boolean favorite;
     private byte[] image;
-    private String shop;
+    private Integer shop;
+    private String shop_name;
 
     public Oferta(Integer id, String title, String description, Integer points, Date date, Boolean favorite, String image) {
         this.id = id;
@@ -25,6 +26,20 @@ public class Oferta {
         if (image != null) {
             this.image = Base64.decode(image, 0);
         }
+
+    }
+    public Oferta(Integer id, String title, String description, Integer points, Date date, Boolean favorite, String image, Integer shop, String shop_name) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.points = points;
+        this.date = date;
+        this.favorite = favorite;
+        if (image != null) {
+            this.image = Base64.decode(image, 0);
+        }
+        this.shop = shop;
+        this.shop_name = shop_name;
 
     }
     public String getTitle() {
@@ -78,13 +93,20 @@ public class Oferta {
 
     public void setFavorite( boolean favorite) { this.favorite = favorite; }
 
-    public String getShop() {
+    public Integer getShop() {
         return shop;
     }
 
-    public void setShop(String shop) {
+    public void setShop(Integer shop) {
         this.shop = shop;
     }
 
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
 }
 

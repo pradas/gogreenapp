@@ -126,12 +126,6 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 transaction.commit();
 
             });
-            DeleteButton.setOnClickListener(v -> {
-                Log.d(TAG, "Hola");
-                String url = "http://10.4.41.145/api/deals/" + String.valueOf(id);
-                new DeleteOferta().execute(url, "DELETE",
-                        session.getUsername());
-            });
         }
     }
 
@@ -196,6 +190,12 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 holder.fav.setTag("favorite");
             }
         });
+        holder.DeleteButton.setOnClickListener(v -> {
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(ofertas.get(position).getShop()) + "/deals/" + String.valueOf(holder.id);
+            Log.d(TAG, url);
+            new DeleteOferta().execute(url, "DELETE",
+                    session.getUsername());
+        });
     }
 
 
@@ -208,7 +208,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
-            if (response.equals("200")) return "Correct";
+            if (response.contains("Deal updated successfully.")) return "Correct";
             return "Error";
         }
 

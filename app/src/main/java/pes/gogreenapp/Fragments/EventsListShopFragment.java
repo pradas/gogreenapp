@@ -329,7 +329,8 @@ public class EventsListShopFragment extends Fragment {
                                 date,
                                 image,
                                 jsonObject.getString("category"),
-                                jsonObject.getBoolean("favourite"))
+                                jsonObject.getBoolean("favourite"),
+                                jsonObject.getInt("shop_id"))
                         );
                     }
                 } catch (JSONException | ParseException e) {

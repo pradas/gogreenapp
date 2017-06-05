@@ -224,6 +224,9 @@ public class OfertasListFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        String image = null;
+                        if (!jsonObject.isNull("image"))
+                            image = jsonObject.getString("image");
                         ofertas.add(
                                 new Oferta(
                                         jsonObject.getInt("id"),
@@ -231,7 +234,7 @@ public class OfertasListFragment extends Fragment {
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("value"),
                                 date, jsonObject.getBoolean("favourite"),
-                                jsonObject.getString("image"))
+                                image)
 
                         );
                     }

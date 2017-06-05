@@ -78,7 +78,7 @@ public class CreateEventFragment extends Fragment {
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    static private String URLPetition = "http://10.4.41.145/api/shops/";
+    private String URLPetition = "http://10.4.41.145/api/shops/";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     /**

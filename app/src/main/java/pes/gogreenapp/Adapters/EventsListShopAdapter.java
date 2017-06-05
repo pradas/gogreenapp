@@ -172,6 +172,12 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             transaction.replace(R.id.flContent, fragment);
             transaction.commit();
         });
+        holder.DeleteButton.setOnClickListener(v -> {
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(events.get(position).getIdShop()) + "/events/" + String.valueOf(holder.id);
+            Log.d(TAG, url);
+            new DeleteEvent().execute(url, "DELETE",
+                    session.getUsername());
+        });
 
     }
 
@@ -188,7 +194,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             bodyParams.put("event_id", params[3]);
             String url = params[0] + params[2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null) return "Correct";
+            if ("200".equals(response)) return "Correct";
             return "Error";
         }
 
@@ -209,7 +215,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
-            if (response.equals("200")) return "Correct";
+            if (response.contains("Event deleted successfully.")) return "Correct";
             return "Error";
         }
 
