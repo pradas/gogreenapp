@@ -83,10 +83,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
-        android:paddingBottom="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="30dp"
         android:text="Oferta"
         android:textColor="#000"
         android:textSize="18dp" />
