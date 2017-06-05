@@ -19,12 +19,12 @@
         <ImageView
             android:id="@+id/ofertaBackgroundImageProfile"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:alpha="1.0"
             android:scaleType="centerCrop"
-            android:tint="#88212121"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:tint="#88212121" />
 
         <ImageButton
             android:id="@+id/imageButtonBackOferta"
@@ -43,10 +43,11 @@
             fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="24dp"
             android:layout_above="@+id/dateValidDetailOferta"
             android:layout_alignStart="@+id/dateValidDetailOferta"
-            android:textColor="@color/colorWhite"
-            android:textSize="24dp" />
+            android:layout_alignEnd="@+id/favoriteDetailButtonOferta" />
 
         <TextView
             android:id="@+id/dateValidDetailOferta"
@@ -75,6 +76,20 @@
             android:tint="@color/colorWhite" />
     </RelativeLayout>
 
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:paddingBottom="40dp"
+        android:text="Oferta"
+        android:textColor="#000"
+        android:textSize="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
