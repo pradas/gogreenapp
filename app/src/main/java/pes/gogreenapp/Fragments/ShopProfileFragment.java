@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,17 +20,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Adapters.OfertasListAdapter;
+import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.Objects.Shop;
 import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
@@ -54,6 +58,9 @@ public class ShopProfileFragment extends Fragment {
     private TextView shopAddress;
     private Button editProfile;
     private Bitmap profileImageBitmap;
+    private List<Oferta> deals = new ArrayList<>();
+    OfertasListAdapter adapter;
+    RecyclerView recyclerView;
 
     /**
      * Required empty public constructor
@@ -91,12 +98,14 @@ public class ShopProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
 
+        /*
         shopImage = (ImageView) getView().findViewById(R.id.shop_image);
         shopName = (TextView) getView().findViewById(R.id.shop_name);
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
-        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
-        if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
+        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);*/
+        recyclerView = (RecyclerView) getView().findViewById(R.id.rvDealsShopProfile);
+        /*if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
             editProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,11 +118,10 @@ public class ShopProfileFragment extends Fragment {
                 }
             });
         }
-
-
-        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
+        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");*/
+        new GetDeals().execute("http://10.4.41.145/api/shops/1/deals");
     }
-
+/*
     private class GetInfoShop extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -148,6 +156,61 @@ public class ShopProfileFragment extends Fragment {
             shopName.setText("Nombre de la tienda: " + shop.getShopName());
             shopEmail.setText("Email: " + shop.getShopEmail());
             shopAddress.setText("Direccion: " + shop.getShopAddress());
+        }
+    }
+*/
+    /**
+     * Asynchronous Task for the petition GET the deal.
+     */
+    private class GetDeals   extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            Log.i(TAG, urls[0]);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("deals");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Date date = null;
+                        if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        deals.add(
+                                new Oferta(
+                                        jsonObject.getInt("id"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("description"),
+                                        jsonObject.getInt("value"),
+                                        date, jsonObject.getBoolean("favourite"))
+
+                        );
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Creates the new Adapter and set the actual deal by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            adapter = new OfertasListAdapter(getContext(), deals);
+            recyclerView.setAdapter(adapter);
         }
     }
 }

@@ -2,11 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDealsShopProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/warningNoResultDealsShopProfile"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <!--
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
+        android:id="@+id/scrollShopProfile"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
@@ -18,7 +44,7 @@
             <ImageView
                 android:id="@+id/shop_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 app:srcCompat="@android:drawable/ic_menu_report_image" />
 
             <TextView
@@ -51,6 +77,8 @@
                 android:text="EDITAR"/>
 
         </RelativeLayout>
-    </ScrollView>
+    </ScrollView> -->
+
+
 
 </RelativeLayout>
