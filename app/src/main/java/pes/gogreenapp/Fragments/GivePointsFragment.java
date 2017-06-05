@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,11 +24,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 
+import pes.gogreenapp.Adapters.EventsListShopAdapter;
 import pes.gogreenapp.Adapters.GivePointsByEventsAdapter;
 import pes.gogreenapp.Adapters.GivePointsByPointsAdapter;
 
@@ -53,6 +59,7 @@ public class GivePointsFragment extends Fragment {
     private Button grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
     private GivePointsByPointsAdapter adapterPoints;
+    private String TAG = "EventsList";
 
     public GivePointsFragment() {
     }
@@ -92,51 +99,19 @@ public class GivePointsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        JSONArray eventsHard = new JSONArray();
-
-        JSONObject event = new JSONObject();
-        JSONObject event2 = new JSONObject();
-        JSONObject event3 = new JSONObject();
-        JSONObject event4 = new JSONObject();
-        try {
-            event.put("title","Evento 1");
-            event.put("points",100);
-            event2.put("title","Evento 2");
-            event2.put("points",200);
-            event3.put("title","Evento 3");
-            event3.put("points",300);
-            event4.put("title","Evento 4");
-            event4.put("points",400);
-            eventsHard.put(event);
-            eventsHard.put(event2);
-            eventsHard.put(event3);
-            eventsHard.put(event4);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < eventsHard.length(); ++ i) {
-            try {
-                JSONObject jsonObject = eventsHard.getJSONObject(i);
-                events.add(new Event((String) jsonObject.get("title"), (Integer) jsonObject.get("points")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        new GetEvents().execute("http://10.4.41.145/api/shops/1/events");
+        session = SessionManager.getInstance();
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
-        adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
-        listToGivePoints.setAdapter(adapterEvents);
+
+
+
 
 
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (!isChecked) {
                     modeItems = "Eventos";
                     users.clear();
@@ -213,7 +188,55 @@ public class GivePointsFragment extends Fragment {
         }
     }
 
+
     /**
+     * Asynchronous Task for the petition GET of all the Events.
+     */
+    private class GetEvents extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            Log.d(TAG, urls[0]);
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("events");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        events.add(new Event(jsonObject.getString("title"), jsonObject.getInt("points"))
+                        );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Creates the new Adapter and set the actual events by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
+            listToGivePoints.setAdapter(adapterEvents);
+        }
+    }
+
+
+        /**
      * Asynchronous Task for the petition PUT of a User.
      */
     private class PutUser extends AsyncTask<String, Void, String> {
@@ -233,11 +256,11 @@ public class GivePointsFragment extends Fragment {
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("points", params[2]);
             String url = params [0] + params[3];
-            session = SessionManager.getInstance();
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null && !response.equals("500") ) {
+            if (response != null && !response.equals("500") && !response.equals("404")) {
                 return "Correct";
             }
+            else if (response.equals("404")) return "El usuario " + params[3] + " no existe";
             return "Error";
         }
 
@@ -249,10 +272,13 @@ public class GivePointsFragment extends Fragment {
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al conceder los puntos. Intentelo más tarde",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
+            }
+            else if (result.equalsIgnoreCase("Correct")){
+                Toast.makeText(getActivity(), "Puntos concedidos", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(getActivity(), "Puntos concedidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
             }
         }
     }
