@@ -1,17 +1,23 @@
 package pes.gogreenapp.Fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,7 +56,9 @@ import pes.gogreenapp.Utils.SessionManager;
 
 public class UserProfileEditFragment extends Fragment {
 
+    private static int RESULT_LOAD_IMG = 1;
     private User user;
+    String imgDecodableString;
     private Activity activity;
     private String TAG = MainActivity.class.getSimpleName();
     private SessionManager session;
@@ -59,11 +69,46 @@ public class UserProfileEditFragment extends Fragment {
     private TextView userCreationDate;
     private Button editBirthdate;
     private Button saveButton;
+    private ImageButton editPicture;
     private TextView userBirthDate;
     private TextView userCurrentPoints;
     private EditText userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static Integer mYear, mMonth, mDay;
+
+    /**
+     * Checks if the user accepts that the app to read external storage
+     *
+     * @return true if has permission or false if not
+     */
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG, "Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG, "Permission is revoked");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted");
+            return true;
+        }
+    }
+
+    /**
+     * Convert Bitmap to byte[]
+     * @param bitmap    Image in bitmap format
+     * @return Image converted to bitmap
+     */
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
 
     public UserProfileEditFragment() {
         // Required empty public constructor
@@ -92,8 +137,19 @@ public class UserProfileEditFragment extends Fragment {
         userBirthDate = (TextView) getView().findViewById(R.id.birthdate_edit_user);
         userCurrentPoints = (TextView) getView().findViewById(R.id.user_current_points_edit_user);
         userEmail = (EditText) getView().findViewById(R.id.user_email_edit_user);
+        editPicture = (ImageButton) getView().findViewById(R.id.imageEditUser);
 
         new GetInfoUser().execute("http://10.4.41.145/api/users/" + session.getUsername());
+
+        editPicture.setOnClickListener((View v) -> {
+            //check if has permission
+            if(isStoragePermissionGranted()) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Start the Intent
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +159,14 @@ public class UserProfileEditFragment extends Fragment {
                         setPositiveButton("MODIFICAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                String imgString = null;
+                                if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
+                                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
+                                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+                                }
+
+
+
                                 new PutUser().execute("http://10.4.41.145/api/users/", "PUT", userName.getText().toString(),
                                         userBirthDate.getText().toString(), userEmail.getText().toString());
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
