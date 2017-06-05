@@ -43,6 +43,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="50dp"
             android:textColor="#ffffffff" />
+
         <TextView
             android:id="@+id/eventCategory"
             fontPath="fonts/Raleway-Bold.ttf"
@@ -65,6 +66,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:textColor="#ffffffff"/>
+
         <TextView
             android:id="@+id/eventHour"
             fontPath="fonts/Raleway-Bold.ttf"
