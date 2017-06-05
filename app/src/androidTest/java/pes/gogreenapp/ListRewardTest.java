@@ -57,7 +57,6 @@ public class ListRewardTest {
      */
     @Test
     public void showsAllRewards() {
-
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
     }
 
@@ -66,7 +65,6 @@ public class ListRewardTest {
      */
     @Test
     public void rewardHasCorrectAttributes() {
-
         onView(withId(R.id.rv)).check(matches(hasDescendant(withId(R.id.rewardTitle))));
     }
 

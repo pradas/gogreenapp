@@ -150,14 +150,14 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
             holder.image.setImageBitmap(icon);
         }
 
-        /*if (ofertas.get(position).isFavorite()) {
+        if (ofertas.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
         }
-        else {*/
+        else {
             holder.fav.setImageResource(R.drawable.ic_fav_void);
             holder.fav.setTag("favorite");
-        //}
+        }
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
@@ -166,6 +166,8 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
+                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
@@ -175,7 +177,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
 
 
     /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for the petition POST of a Deal as a Favourite
      */
     private class PostFavorite extends AsyncTask<String, Void, String> {
 
@@ -183,7 +185,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("event_id", params[3]);
+            bodyParams.put("deal_id", params[3]);
             String url = params[0] + params [2] + "/favourite-deals";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
@@ -192,9 +194,32 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
 
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al añadir la oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
-            else Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+            else Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition DELETE of a Deal as a Favorite
+     */
+    private class DeleteFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params [2] + "/favourite-deals/" + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al eliminar la oferta de Favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Oferta eliminada de favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -230,7 +230,7 @@ public class OfertasListFragment extends Fragment {
                                 jsonObject.getString("name"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("value"),
-                                date)
+                                date, jsonObject.getBoolean("favourite"))
 
                         );
                     }
