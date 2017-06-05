@@ -189,11 +189,11 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                                     Toast.LENGTH_LONG).show();
                         }
                         else {
-                            new PostReward().execute("http://10.4.41.145/api/users/", "POST",
+                            new Exchange().execute("http://10.4.41.145/api/users/", "POST",
                                     session.getUsername(), holder.id.toString());
                             Integer points = session.getPoints();
                             points -= (Integer) rewards.get(position).getPoints();
-                            //no se como se hace el set
+                            session.setPoints(points);
                             FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                             FragmentTransaction transaction = manager.beginTransaction();
                             Fragment fragment = (Fragment) new RewardsListFragment();
@@ -217,7 +217,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
-    private class PostReward extends AsyncTask<String, Void, String> {
+    private class Exchange extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
