@@ -107,9 +107,11 @@ public class ShopProfileFragment extends Fragment {
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
         editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
-        recyclerView = (RecyclerView) getView().findViewById(R.id.rvDealsShopProfile);
+
+
+        /*recyclerView = (RecyclerView) getView().findViewById(R.id.rvDealsShopProfile);
         layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);*/
         if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
             editProfile.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +125,21 @@ public class ShopProfileFragment extends Fragment {
                 }
             });
         }
-        //new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
-        new GetDeals().execute("http://10.4.41.145/api/shops/1/deals");
+
+        OfertasListFragment listDeals = new OfertasListFragment();
+
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState == null) {
+
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+            transaction
+                    .add(R.id.dealsListShopProfile, listDeals)
+                    .commit();
+        }
+
+        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
+        //new GetDeals().execute("http://10.4.41.145/api/shops/1/deals");
 
     }
 
@@ -168,13 +183,15 @@ public class ShopProfileFragment extends Fragment {
     /**
      * Asynchronous Task for the petition GET the deal.
      */
-    private class GetDeals   extends AsyncTask<String, Void, Void> {
+
+    //private class GetDeals   extends AsyncTask<String, Void, Void> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
          * @param urls The parameters of the task.
          */
+        /*
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
@@ -213,10 +230,12 @@ public class ShopProfileFragment extends Fragment {
          *
          * @param result of doInBackground()
          */
+        /*
         @Override
         protected void onPostExecute(Void result) {
             OfertasListAdapter adapter = new OfertasListAdapter(getContext(), deals);
             recyclerView.setAdapter(adapter);
         }
-    }
+        */
+    //}
 }
