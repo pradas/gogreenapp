@@ -257,12 +257,16 @@ public class EditOfertaFragment extends Fragment {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = null;
                     if (!aux.isNull("date")) date = df.parse(aux.getString("date"));
+                    String image = null;
+                    if (!aux.isNull("image")) image = aux.getString("image");
                     oferta = new Oferta(
                             aux.getInt("id"),
                             aux.getString("name"),
                             aux.getString("description"),
                             aux.getInt("value"),
-                            date);
+                            date,
+                            aux.getBoolean("favourite"),
+                            image);
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
@@ -309,6 +313,7 @@ public class EditOfertaFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("value", params[4]);
             BodyParams.put("date", params[5]);
+            if (params[6] != null) BodyParams.put("image", params[6]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.d(TAG, "Response from url: " + result);

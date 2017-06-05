@@ -227,11 +227,13 @@ public class OfertasListShopFragment extends Fragment {
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
                         ofertas.add(
                                 new Oferta(
-                                        jsonObject.getInt("id"),
+                                jsonObject.getInt("id"),
                                 jsonObject.getString("name"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("value"),
-                                date, jsonObject.getBoolean("favourite"))
+                                date,
+                                jsonObject.getBoolean("favourite"),
+                                jsonObject.getString("image"))
 
                         );
                     }

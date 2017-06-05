@@ -239,7 +239,8 @@ public class OfertaDetailedFragment extends Fragment {
                             jsonObject.getString("name"),
                             jsonObject.getString("description"),
                             jsonObject.getInt("value"),
-                            date, jsonObject.getBoolean("favourite"));
+                            date, jsonObject.getBoolean("favourite"),
+                            jsonObject.getString("image"));
                     oferta.setShop(jsonObject.getString("shop_name"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

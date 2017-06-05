@@ -96,10 +96,13 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                     bundle.putInt("id", id);
 
                     //Sacar datos de la imagen seleccionada
-                    Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-                    byte[] b = baos.toByteArray();
+                    byte[] b = null;
+                    if (image != null) {
+                        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        b = baos.toByteArray();
+                    }
                     bundle.putByteArray("image",b);
 
 

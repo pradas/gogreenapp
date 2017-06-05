@@ -232,6 +232,7 @@ public class CreateOfertaFragment extends Fragment {
          *               params[3] is the description
          *               params[4] is the value
          *               params[5] is the date
+         *               params[6] is the image
          *
          * @return the result of the petition
          */
@@ -241,6 +242,7 @@ public class CreateOfertaFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("value", params[4]);
             BodyParams.put("date", params[5]);
+            if (params[6] != null) BodyParams.put("image", params[6]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);

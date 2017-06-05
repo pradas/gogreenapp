@@ -15,13 +15,16 @@ public class Oferta {
     private byte[] image;
     private String shop;
 
-    public Oferta(Integer id, String title, String description, Integer points, Date date, Boolean favorite) {
+    public Oferta(Integer id, String title, String description, Integer points, Date date, Boolean favorite, String image) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.points = points;
         this.date = date;
         this.favorite = favorite;
+        if (image != null) {
+            this.image = Base64.decode(image, 0);
+        }
 
     }
     public String getTitle() {
@@ -82,5 +85,6 @@ public class Oferta {
     public void setShop(String shop) {
         this.shop = shop;
     }
+
 }
 
