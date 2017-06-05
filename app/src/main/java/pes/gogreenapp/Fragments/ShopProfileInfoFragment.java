@@ -10,8 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,23 +19,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Adapters.OfertasListAdapter;
-import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.Objects.Shop;
-import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -46,7 +34,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * Created by Adrian on 02/06/2017.
  */
 
-public class ShopProfileFragment extends Fragment {
+public class ShopProfileInfoFragment extends Fragment {
 
     private SessionManager session;
     private static final String ROLE_MANAGER = "manager";
@@ -60,15 +48,11 @@ public class ShopProfileFragment extends Fragment {
     private TextView shopAddress;
     private Button editProfile;
     private Bitmap profileImageBitmap;
-    private List<Oferta> deals = new ArrayList<>();
-
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
 
     /**
      * Required empty public constructor
      */
-    public ShopProfileFragment () {
+    public ShopProfileInfoFragment() {
     }
 
     /**
@@ -84,7 +68,7 @@ public class ShopProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.shop_profile_fragment, container, false);
+        return inflater.inflate(R.layout.shop_profile_info_fragment, container, false);
     }
 
     /**
@@ -108,10 +92,6 @@ public class ShopProfileFragment extends Fragment {
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
         editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
 
-
-        /*recyclerView = (RecyclerView) getView().findViewById(R.id.rvDealsShopProfile);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);*/
         if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
             editProfile.setOnClickListener(new View.OnClickListener() {
@@ -125,21 +105,7 @@ public class ShopProfileFragment extends Fragment {
                 }
             });
         }
-
-        OfertasListFragment listDeals = new OfertasListFragment();
-
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null) {
-
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-            transaction
-                    .add(R.id.dealsListShopProfile, listDeals)
-                    .commit();
-        }
-
         new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
-        //new GetDeals().execute("http://10.4.41.145/api/shops/1/deals");
 
     }
 
@@ -170,7 +136,6 @@ public class ShopProfileFragment extends Fragment {
             return null;
         }
 
-
         @Override
         protected void onPostExecute(Void result) {
             shopImage.setImageBitmap(profileImageBitmap);
@@ -179,63 +144,4 @@ public class ShopProfileFragment extends Fragment {
             shopAddress.setText("Direccion: " + shop.getShopAddress());
         }
     }
-
-    /**
-     * Asynchronous Task for the petition GET the deal.
-     */
-
-    //private class GetDeals   extends AsyncTask<String, Void, Void> {
-
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param urls The parameters of the task.
-         */
-        /*
-        @Override
-        protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
-            Log.i(TAG, "Response from url: " + response);
-            Log.i(TAG, urls[0]);
-            if (response != null) {
-                try {
-                    JSONObject aux = new JSONObject(response);
-                    JSONArray jsonArray = aux.getJSONArray("deals");
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    for (int i = 0; i < jsonArray.length(); ++i) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Date date = null;
-                        if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
-                        deals.add(
-                                new Oferta(
-                                        jsonObject.getInt("id"),
-                                        jsonObject.getString("name"),
-                                        jsonObject.getString("description"),
-                                        jsonObject.getInt("value"),
-                                        date, jsonObject.getBoolean("favourite"))
-
-                        );
-                    }
-                } catch (JSONException | ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        /**
-         * Creates the new Adapter and set the actual deal by the result obtained.
-         *
-         * @param result of doInBackground()
-         */
-        /*
-        @Override
-        protected void onPostExecute(Void result) {
-            OfertasListAdapter adapter = new OfertasListAdapter(getContext(), deals);
-            recyclerView.setAdapter(adapter);
-        }
-        */
-    //}
 }

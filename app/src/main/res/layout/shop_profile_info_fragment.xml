@@ -10,13 +10,11 @@
         android:layout_weight="1"
         android:layout_width="fill_parent"
         android:id="@+id/scrollShopProfile"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/shop_image"
@@ -49,39 +47,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editProfileShopButton"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/shop_address"
                 android:text="EDITAR"/>
 
         </RelativeLayout>
     </ScrollView>
 
-    <FrameLayout
-        android:id="@+id/dealsListShopProfile"
-        android:layout_weight="2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-<!--
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvDealsShopProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/warningNoResultDealsShopProfile"
-            android:layout_centerInParent="true"/>
-
-    </RelativeLayout>-->
 </LinearLayout>

@@ -25,11 +25,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
@@ -111,7 +106,7 @@ public class ShopEditProfileFragment extends Fragment {
                                         shopEmail.getText().toString(), shopAddress.getText().toString());
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
-                                Fragment fragment = (Fragment) new ShopProfileFragment();
+                                Fragment fragment = (Fragment) new ShopProfileInfoFragment();
                                 transaction.replace(R.id.flContent, fragment);
                                 transaction.commit();
                             }
