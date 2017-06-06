@@ -30,6 +30,8 @@ import pes.gogreenapp.Utils.SessionManager;
  */
 public class EmployeeManagerFragment extends Fragment {
 
+    EmployeeListAdapter adapter;
+    ListView listView;
 
     public EmployeeManagerFragment() {
         // Required empty public constructor
@@ -60,6 +62,12 @@ public class EmployeeManagerFragment extends Fragment {
                         String employee = jsonObject.getString("username");
                         employees.add(employee);
                     }
+
+                    // create the adapter and instance the content of the list view
+                    adapter = new EmployeeListAdapter(employees, getActivity().getApplicationContext());
+                    listView = (ListView) getView().findViewById(R.id.list_employees);
+                    listView.setAdapter(adapter);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -72,10 +80,7 @@ public class EmployeeManagerFragment extends Fragment {
             }
         });
 
-        // create the adapter and instance the content of the list view
-        EmployeeListAdapter adapter = new EmployeeListAdapter(employees, getActivity().getApplicationContext());
-        ListView listView = (ListView) getView().findViewById(R.id.list_employees);
-        listView.setAdapter(adapter);
+
     }
 
 

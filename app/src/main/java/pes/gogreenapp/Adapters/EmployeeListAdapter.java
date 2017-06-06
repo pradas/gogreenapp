@@ -71,7 +71,7 @@ public class EmployeeListAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(employees.get(position));
 
         //Handle buttons and add onClickListeners
-        ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.list_item_delete_btn);
+        ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.button_delete_employee);
         deleteBtn.setOnClickListener(v -> {
             SessionManager instance = SessionManager.getInstance();
             AsyncHttpHandler.delete("shops/" + instance.getShopId() + "/employees/" + employees.get(position), null,

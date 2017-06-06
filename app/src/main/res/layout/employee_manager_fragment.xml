@@ -1,13 +1,62 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/employee_manager_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="pes.gogreenapp.Fragments.EmployeeManagerFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/employee_manager_view"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="pes.gogreenapp.Fragments.EmployeeManagerFragment">
 
-    <ListView
-        android:id="@+id/list_employees"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <ListView
+            android:id="@+id/list_employees"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_employee"/>
+
+        <EditText
+            android:id="@+id/edit_text_employee_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_employee_username"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/edit_text_employee_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_employee_email"
+            android:inputType="textEmailAddress"/>
+
+        <EditText
+            android:id="@+id/edit_text_employee_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password_employee"
+            android:inputType="textPassword"/>
+
+        <Button
+            android:id="@+id/button_add_employee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_add"/>
+
+    </LinearLayout>
+</LinearLayout>
