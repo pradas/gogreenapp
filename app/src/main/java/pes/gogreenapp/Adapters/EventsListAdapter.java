@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.EventsListShopFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -93,6 +96,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                     Fragment fragment = (Fragment) new EventDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
@@ -164,6 +168,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                 holder.fav.setTag("favorite");
             }
         });
+
     }
 
     /**

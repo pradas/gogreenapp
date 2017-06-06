@@ -87,6 +87,7 @@ public class GivePointsFragment extends Fragment {
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
 
+
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final

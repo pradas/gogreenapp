@@ -104,6 +104,12 @@ public class RewardsListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        rewards = new ArrayList<>();
+    }
+
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final

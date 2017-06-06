@@ -109,6 +109,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                     Fragment fragment = (Fragment) new RewardDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
@@ -198,6 +199,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                             FragmentTransaction transaction = manager.beginTransaction();
                             Fragment fragment = (Fragment) new RewardsListFragment();
                             transaction.replace(R.id.flContent, fragment);
+                            transaction.addToBackStack(null);
                             transaction.commit();
                         }
                     }
