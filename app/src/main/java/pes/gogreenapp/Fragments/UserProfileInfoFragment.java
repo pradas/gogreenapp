@@ -173,11 +173,9 @@ public class UserProfileInfoFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            /*
+
             if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
             else userImage.setImageResource(R.drawable.default_profile_image);
-            */
-            userImage.setImageResource(R.drawable.default_profile_image);
 
             userName.setText("Nombre: " + user.getName());
             userNickName.setText("Nickname: " + user.getUsername());
