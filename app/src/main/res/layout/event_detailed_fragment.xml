@@ -20,11 +20,11 @@
             android:id="@+id/imageEventDetailed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:alpha="1.0"
             android:scaleType="centerCrop"
-            android:tint="#88212121"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:tint="#88212121" />
 
         <ImageButton
             android:id="@+id/imageButtonBackReward"
@@ -32,6 +32,8 @@
             android:layout_height="20dp"
             android:layout_alignStart="@+id/titleDetailReward"
             android:layout_alignTop="@+id/eventFavoriteDetailButton"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
             android:src="@mipmap/ic_back_white"
@@ -42,10 +44,10 @@
             fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:textSize="24dp"
             android:layout_above="@+id/dateEventDetailed"
-            android:layout_alignStart="@+id/dateEventDetailed" />
+            android:layout_alignStart="@+id/dateEventDetailed"
+            android:textColor="@color/colorWhite"
+            android:textSize="24dp" />
 
         <TextView
             android:id="@+id/dateEventDetailed"
@@ -88,12 +90,56 @@
     </RelativeLayout>
 
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="30dp"
+        android:text="Evento"
+        android:textColor="#000"
+        android:textSize="18dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/consultWebDetailRewardImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:tint="@android:color/darker_gray"
+            app:srcCompat="@drawable/ic_location_on_white_24dp" />
+
+        <TextView
+            android:id="@+id/directionEventDetailed"
+            fontPath="fonts/Raleway-Regular.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/dateValidDetailReward"
+            android:layout_marginRight="10dp"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -153,132 +199,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/consultWebDetailRewardImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:tint="@android:color/darker_gray"
-            app:srcCompat="@drawable/ic_web_black_24dp" />
-
-        <TextView
-            android:id="@+id/consultWebDetailReward"
-            fontPath="fonts/Raleway-Regular.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/dateValidDetailReward"
-            android:layout_marginRight="10dp"
-            android:textColor="#000000"
-            android:textSize="15dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/advertDetailRewardImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:tint="@android:color/darker_gray"
-            app:srcCompat="@drawable/ic_warning_black_24dp" />
-
-        <TextView
-            android:id="@+id/advertDetailReward"
-            fontPath="fonts/Raleway-Regular.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/consultWebDetailReward"
-            android:layout_marginRight="10dp"
-            android:textColor="#000000"
-            android:textSize="15dp" />
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/pointsEventDetailed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/descriptionEventDetailed" />
-
-    <TextView
-        android:id="@+id/categoryEventDetailed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pointsEventDetailed" />
-
-    <TextView
-        android:id="@+id/companyEventDetailed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/directionEventDetailed" />
-
-    <TextView
-        android:id="@+id/directionEventDetailed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/categoryEventDetailed" />
-
 </LinearLayout>
-
-    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ScrollViewCreateEvent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/imageEventDetailed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/titleEventDetailed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/imageEventDetailed"/>
-            <TextView
-                android:id="@+id/descriptionEventDetailed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/titleEventDetailed" />
-
-
-
-            <TextView
-                android:id="@+id/dateEventDetailed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/companyEventDetailed" />
-
-        </RelativeLayout>
-
-    </ScrollView>
-    -->
