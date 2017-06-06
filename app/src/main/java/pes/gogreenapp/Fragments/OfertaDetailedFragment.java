@@ -161,8 +161,7 @@ public class OfertaDetailedFragment extends Fragment {
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment;
                 fragment = (Fragment) new OfertasListFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
 
             }
         });
@@ -174,8 +173,7 @@ public class OfertaDetailedFragment extends Fragment {
             FragmentTransaction transaction = manager.beginTransaction();
             Fragment fragment = (Fragment) new ShopProfileContainerFragment();
             fragment.setArguments(bundle);
-            transaction.replace(R.id.flContent, fragment);
-            transaction.commit();
+            transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
         });
     }
 

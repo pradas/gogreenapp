@@ -108,8 +108,7 @@ public class UserProfileEditFragment extends Fragment {
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new UserProfileFragment();
-                                transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();
+                                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
                             }
                         })
                         .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {

@@ -63,7 +63,7 @@ public class CreateOfertaFragment extends Fragment {
     private EditText DiscountText;
     private Calendar calendar;
     static private String TAG = "CreateOferta";
-    static private String URLPetition = "http://10.4.41.145/api/shops/";
+    private String URLPetition;
 
     /**
      * Checks if the user accepts that the app to read external storage
@@ -136,7 +136,7 @@ public class CreateOfertaFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        URLPetition = URLPetition + String.valueOf(session.getShopId()) + "/deals";
+        URLPetition =  "http://10.4.41.145/api/shops/" + String.valueOf(session.getShopId()) + "/deals";
         //elements
         DateButton = (ImageButton) getView().findViewById(R.id.DateCreateOferta);
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateOfertaButton);
@@ -205,7 +205,16 @@ public class CreateOfertaFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
+                else {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                            R.drawable.oferta);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    imgString= Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
 
+                    Log.i(TAG, "default event image bytecoded: " + imgString);
+                }
+                Log.d(TAG, URLPetition);
                 new PostOferta().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
@@ -262,15 +271,14 @@ public class CreateOfertaFragment extends Fragment {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
             } else if (s.contains("Deal created successfully.")) {
-                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_SHORT).show();
 
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new OfertasListShopFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             } else {
-                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_SHORT).show();
             }
         }
     }

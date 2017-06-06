@@ -96,6 +96,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                     Fragment fragment = (Fragment) new EventDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
