@@ -6,11 +6,14 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -49,6 +52,8 @@ import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Adry on 24/05/2017.
@@ -165,10 +170,8 @@ public class UserProfileEditFragment extends Fragment {
                                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                                 }
 
-
-
                                 new PutUser().execute("http://10.4.41.145/api/users/", "PUT", userName.getText().toString(),
-                                        userBirthDate.getText().toString(), userEmail.getText().toString());
+                                        userBirthDate.getText().toString(), userEmail.getText().toString(), imgString);
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new UserProfileFragment();
@@ -318,6 +321,7 @@ public class UserProfileEditFragment extends Fragment {
             bodyParams.put("name", params[2]);
             bodyParams.put("birth_date", params[3]);
             bodyParams.put("email", params[4]);
+            bodyParams.put("image", params[5]);
             String url = params [0] + session.getUsername();
             session = SessionManager.getInstance();
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
@@ -340,6 +344,42 @@ public class UserProfileEditFragment extends Fragment {
             else {
                 Toast.makeText(activity, "Perfil actualizado", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+
+    @Override
+    /**
+     * Get the result of the image selected
+     *
+     * @params  requestCode is 1
+     *          resultCode is -1
+     *          data is the image path
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                    && null != data) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                userImage.setImageBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString));
+                cursor.close();
+            } else {
+                Toast.makeText(getContext(), "No has escogido ninguna imagen",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Log.d("CreateEvent", e.toString());
+            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
