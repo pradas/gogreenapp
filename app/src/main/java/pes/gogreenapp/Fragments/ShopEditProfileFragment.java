@@ -169,7 +169,7 @@ public class ShopEditProfileFragment extends Fragment {
                                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                                 }
 
-                                new PutShop().execute("http://10.4.41.145/api/shops/1", "PUT", shopName.getText().toString(),
+                                new PutShop().execute("http://10.4.41.145/api/shops/" + session.getShopId(), "PUT", shopName.getText().toString(),
                                         shopEmail.getText().toString(), shopAddress.getText().toString(), imgString);
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
@@ -188,7 +188,7 @@ public class ShopEditProfileFragment extends Fragment {
             }
         });
 
-        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
+        new GetInfoShop().execute("http://10.4.41.145/api/shops/" + session.getShopId());
     }
 
     private class GetInfoShop extends AsyncTask<String, Void, Void> {

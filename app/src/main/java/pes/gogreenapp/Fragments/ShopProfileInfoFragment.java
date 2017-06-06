@@ -104,7 +104,7 @@ public class ShopProfileInfoFragment extends Fragment {
                 }
             });
         }
-        new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
+        new GetInfoShop().execute("http://10.4.41.145/api/shops/" + session.getShopId());
 
     }
 
