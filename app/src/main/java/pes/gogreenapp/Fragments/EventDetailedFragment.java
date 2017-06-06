@@ -6,18 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import pes.gogreenapp.Adapters.EventsListAdapter;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -49,7 +42,6 @@ public class EventDetailedFragment extends Fragment {
     private TextView company;
     private TextView date;
     private TextView time;
-    private ImageButton fav;
 
     private Integer id;
     static private String TAG = "EventDetailed";
@@ -81,8 +73,6 @@ public class EventDetailedFragment extends Fragment {
         View view = inflater.inflate(R.layout.event_detailed_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         return view;
     }
 
@@ -108,20 +98,6 @@ public class EventDetailedFragment extends Fragment {
         date = (TextView) getView().findViewById(R.id.dateEventDetailed);
         time = (TextView) getView().findViewById(R.id.hourEventDetailed);
         direction = (TextView) getView().findViewById(R.id.directionEventDetailed);
-        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
-        fav = (ImageButton) getView().findViewById(R.id.eventFavoriteDetailButton);
-
-        imgback.setOnClickListener(v -> {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-            FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            Fragment fragment;
-            fragment = (Fragment) new EventsListFragment();
-            transaction.replace(R.id.flContent, fragment);
-            transaction.commit();
-
-        });
-
         try {
             new GetEvent().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -176,39 +152,14 @@ public class EventDetailedFragment extends Fragment {
         }
         protected void onPostExecute(String result){
             //initialize
-            title.setText(event.getTitle() +" ("+event.getPoints().toString()+" pts)");
+            title.setText(event.getTitle());
             description.setText(event.getDescription());
             points.setText(event.getPoints().toString());
             category.setText(event.getCategory());
             direction.setText(event.getDirection());
             company.setText(event.getCompany());
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            date.setText("Fecha limite: "+sdf.format(event.getDate()));
-
-            if (event.isFavorite()) {
-                fav.setTag("favoritefilled");
-                fav.setImageResource(R.drawable.ic_fav_filled);
-            }
-            else {
-                fav.setImageResource(R.drawable.ic_fav_void);
-                fav.setTag("favorite");
-            }
-
-            fav.setOnClickListener(v -> {
-                if (fav.getTag().equals("favorite")) {
-                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUsername(), event.getId().toString());
-                    fav.setImageResource(R.drawable.ic_fav_filled);
-                    fav.setTag("favoritefilled");
-                } else {
-                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUsername(), event.getId().toString());
-                    fav.setImageResource(R.drawable.ic_fav_void);
-                    fav.setTag("favorite");
-                }
-            });
-
-
+            date.setText(sdf.format(event.getDate()));
             String hour = event.getHour();
             if (Integer.parseInt(event.getHour()) < 10){
                 hour = "0" + event.getHour();
@@ -222,45 +173,6 @@ public class EventDetailedFragment extends Fragment {
                 byte[] decodedBytes = event.getImage();
                 image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
             }
-        }
-    }
-    private class PostFavorite extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpHandler httpHandler = new HttpHandler();
-            HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("reward_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-rewards";
-            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null) return "Correct";
-            return "Error";
-        }
-
-        protected void onPostExecute(String result) {
-            if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            }
-            else Toast.makeText(getActivity(), "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
-        }
-    }
-    private class DeleteFavorite extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpHandler httpHandler = new HttpHandler();
-            HashMap<String, String> bodyParams = new HashMap<>();
-            String url = params[0] + params [2] + "/favourite-rewards/" + params[3];
-            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null) return "Correct";
-            return "Error";
-        }
-
-        protected void onPostExecute(String result) {
-            if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            }
-            else Toast.makeText(getActivity(), "Reward eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 }
