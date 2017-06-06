@@ -8,9 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,8 +84,58 @@ public class EmployeeManagerFragment extends Fragment {
             }
         });
 
+        // set the listener of add employee button
+        Button buttonAddEmployee = (Button) getView().findViewById(R.id.button_add_employee);
+        buttonAddEmployee.setOnClickListener(v -> {
+            boolean inputCorrect = true;
+            EditText editTextUsername = (EditText) getView().findViewById(R.id.edit_text_employee_username);
+            String username = editTextUsername.getText().toString();
+            EditText editTextEmail = (EditText) getView().findViewById(R.id.edit_text_employee_email);
+            String email = editTextEmail.getText().toString();
+            EditText editTextPassword = (EditText) getView().findViewById(R.id.edit_text_employee_password);
+            String password = editTextPassword.getText().toString();
 
+            // see if username input isn't empty
+            if (username.isEmpty()) {
+                inputCorrect = false;
+                editTextUsername.setError("username necesario");
+            }
+            if (email.isEmpty()) {
+                inputCorrect = false;
+                editTextEmail.setError("email necesario");
+            }
+            if (password.isEmpty()) {
+                inputCorrect = false;
+                editTextPassword.setError("contraeña necesaria");
+            }
+
+            // if all correct send the POST petition to the API
+            if (inputCorrect) {
+                // create the request params for the petition
+                RequestParams requestParams = new RequestParams();
+                requestParams.add("username", username);
+                requestParams.add("email", email);
+                requestParams.add("password", password);
+
+                AsyncHttpHandler.post("shops/" + instance.getShopId() + "/employees", requestParams,
+                        new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // Handle resulting parsed JSON response here
+                                if (statusCode == 201) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "empleado añadido",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String errorRaw,
+                                                  Throwable throwable) {
+                                // called when response HTTP status is "4XX"
+                                Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
+                            }
+                        });
+            }
+        });
     }
-
-
 }
