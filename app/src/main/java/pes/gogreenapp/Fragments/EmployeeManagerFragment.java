@@ -49,7 +49,7 @@ public class EmployeeManagerFragment extends Fragment {
         SessionManager instance = SessionManager.getInstance();
 
         List<String> employees = new ArrayList<>();
-        AsyncHttpHandler.get("shop/" + instance.getShopId() + "/employees", null, new JsonHttpResponseHandler() {
+        AsyncHttpHandler.get("shops/" + instance.getShopId() + "/employees", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // Handle resulting parsed JSON response here
@@ -66,9 +66,9 @@ public class EmployeeManagerFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+            public void onFailure(int statusCode, Header[] headers, String error, Throwable throwable) {
                 // called when response HTTP status is "4XX"
-                Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+                Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
             }
         });
 

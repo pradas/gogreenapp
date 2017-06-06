@@ -1,16 +1,26 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
+import android.widget.TextView;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.AsyncHttpHandler;
+import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * All right reserverd to GoBros Devevelopers team.
@@ -55,6 +65,28 @@ public class EmployeeListAdapter extends BaseAdapter implements ListAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.employee_manager_listview, parent, false);
         }
+
+        //Handle TextView and display string from your list
+        TextView listItemText = (TextView) view.findViewById(R.id.username_employee);
+        listItemText.setText(employees.get(position));
+
+        //Handle buttons and add onClickListeners
+        ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.list_item_delete_btn);
+        deleteBtn.setOnClickListener(v -> {
+            SessionManager instance = SessionManager.getInstance();
+            AsyncHttpHandler.delete("shops/" + instance.getShopId() + "/employees/" + employees.get(position), null,
+                    new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,
+                                              JSONObject response) {
+                            // called when response HTTP status is "4XX"
+                            Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+                        }
+                    });
+            employees.remove(position);
+            notifyDataSetChanged();
+        });
 
         return view;
     }
