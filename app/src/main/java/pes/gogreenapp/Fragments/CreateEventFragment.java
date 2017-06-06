@@ -3,6 +3,7 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,12 +17,12 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -58,7 +60,6 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class CreateEventFragment extends Fragment {
-    //initialitions
     private static int RESULT_LOAD_IMG = 1;
     private SessionManager session;
     String imgDecodableString;
@@ -73,6 +74,7 @@ public class CreateEventFragment extends Fragment {
     private EditText DirectionText;
     private EditText HourText;
     private EditText MinText;
+    private EditText CompanyText;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
     private String FinalTime = null;
@@ -87,6 +89,7 @@ public class CreateEventFragment extends Fragment {
      *
      * @return true if has permission or false if not
      */
+
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -105,11 +108,6 @@ public class CreateEventFragment extends Fragment {
         }
     }
 
-    /**
-     * Convert Bitmap to byte[]
-     * @param bitmap    Image in bitmap format
-     * @return Image converted to bitmap
-     */
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
@@ -152,7 +150,6 @@ public class CreateEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        URLPetition = URLPetition + String.valueOf(session.getShopId()) + "/events";
         new GetCategories().execute(URLcategories);
 
         //elements
@@ -160,61 +157,18 @@ public class CreateEventFragment extends Fragment {
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
         ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedCreateEvent);
         DateText = (EditText) getView().findViewById(R.id.editTextDateCreateEvent);
-        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
         PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
         DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
         HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
+        CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
 
-        //events
-        DateButton.setOnClickListener((View v) -> {
-            calendar = Calendar.getInstance();
-            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-                    (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
-                        String sDayOfMonth = String.format("%02d", dayOfMonth);
-                        String sMonthOfYear = String.format("%02d", monthOfYear + 1);
-                        DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
-                        DateText.clearFocus();
-                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
-            dpd.show();
-        });
-        HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                        String text = "0" + HourText.getText().toString();
-                        HourText.setText(text);
-                    }
-                }
-            }
-        });
-        MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                        String text = "0" + MinText.getText().toString();
-                        MinText.setText(text);
-                    }
-                }
-            }
-        });
-        PhotoButton.setOnClickListener((View v) -> {
-            //check if has permission
-            if(isStoragePermissionGranted()) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start the Intent
-                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-            }
-        });
-        SendButton.setOnClickListener(v -> {
-            //check all the conditions
+
+        SendButton.setOnClickListener((View v) ->{
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -249,7 +203,6 @@ public class CreateEventFragment extends Fragment {
             }
             if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
                 HourText.setError("Hora necesaria");
-
             }
             if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
                 if (Integer.parseInt(HourText.getText().toString()) > 23) {
@@ -261,9 +214,7 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
                 FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-
             }
-            //if all conditions are true, send
             if (send) {
                 Log.d("CreateEvent", "se envia");
                 String imgString = null;
@@ -271,12 +222,12 @@ public class CreateEventFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
-                Log.d(TAG, URLPetition);
                 new PostEvent().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
                         PointsText.getText().toString(),
                         DirectionText.getText().toString(),
+                        CompanyText.getText().toString(),
                         DateText.getText().toString(),
                         FinalTime,
                         imgString,
@@ -284,11 +235,62 @@ public class CreateEventFragment extends Fragment {
                 );
             }
         });
+        //events
+        DateText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                calendar = Calendar.getInstance();
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                        (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
+                            String sDayOfMonth = String.format("%02d", dayOfMonth);
+                            String sMonthOfYear = String.format("%02d", monthOfYear + 1);
+                            DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
+                            DateText.clearFocus();
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dpd.show();
+            }
+        });
+
+        DateButton.setOnClickListener((View v) -> {
+            calendar = Calendar.getInstance();
+            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                    (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
+                        String sDayOfMonth = String.format("%02d", dayOfMonth);
+                        String sMonthOfYear = String.format("%02d", monthOfYear + 1);
+                        DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
+                        DateText.clearFocus();
+                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
+            dpd.show();
+        });
+        HourText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(HourText.getText().toString()) < 10) {
+                    String text = "0" + HourText.getText().toString();
+                    HourText.setText(text);
+                }
+            }
+        });
+        MinText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(MinText.getText().toString()) < 10) {
+                    String text = "0" + MinText.getText().toString();
+                    MinText.setText(text);
+                }
+            }
+        });
+        PhotoButton.setOnClickListener((View v) -> {
+            isStoragePermissionGranted();
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            // Start the Intent
+            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+        });
+
     }
 
-
     /**
-     * Asynchronous Task for the petition POST to send a petition of create Event
+     * Asynchronous Task for the petition POST to send a petition of register an User
      */
     private class PostEvent extends AsyncTask<String, Void, String> {
         @Override
@@ -300,13 +302,13 @@ public class CreateEventFragment extends Fragment {
          *               params[2] is the title,
          *               params[3] is the description
          *               params[4] is the points
-         *               params[5] is the address
-         *               params[6] is the date
-         *               params[7] is the time
-         *               params[8] is the image
-         *               params[9] is the category
-         *
-         * @return the result of the petition
+         *               params[5] is the adress
+         *               params[6] is the company
+         *               params[7] is the date
+         *               params[8] is the time
+         *               params[9] is the image
+         *               params[10] is the category
+         * @return void when finished
          */
         protected String doInBackground(String... params) {
             HashMap<String, String> BodyParams = new HashMap<>();
@@ -314,11 +316,12 @@ public class CreateEventFragment extends Fragment {
             BodyParams.put("description", params[3]);
             BodyParams.put("points", params[4]);
             if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            BodyParams.put("date", params[6]);
-            if (params[7] != null && !params[7].equals(":")) BodyParams.put("time", params[7]);
+            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
+            BodyParams.put("date", params[7]);
+            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
             else BodyParams.put("time", "00:00");
-            if (params[8] != null) BodyParams.put("image", params[8]);
-            BodyParams.put("category", params[9]);
+            if (params[9] != null) BodyParams.put("image", params[9]);
+            BodyParams.put("category", params[10]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
             Log.i(TAG, "Response from url: " + result);
@@ -327,24 +330,11 @@ public class CreateEventFragment extends Fragment {
         }
 
         @Override
-        /**
-         * Executed after doInBackground()
-         *
-         * @params s is the result of the petition
-         *
-         * @return void
-         */
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
             } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
-
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment = (Fragment) new EventsListShopFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
             }
@@ -352,13 +342,6 @@ public class CreateEventFragment extends Fragment {
     }
 
     @Override
-    /**
-     * Get the result of the image selected
-     *
-     * @params  requestCode is 1
-     *          resultCode is -1
-     *          data is the image path
-     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
