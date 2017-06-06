@@ -5,17 +5,33 @@
     android:id="@+id/layoutEditProfile"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/user_image_edit_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
+    <LinearLayout
+        android:id="@+id/LinearLayoutImageEditUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/imageEditUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Imagen del usuario"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <ImageView
+            android:id="@+id/user_image_edit_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+    </LinearLayout>
+
+
 
     <EditText
         android:id="@+id/user_name_edit_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_image_edit_user"
+        android:layout_below="@+id/LinearLayoutImageEditUser"
         android:ems="10"
         android:inputType="textPersonName" />
 

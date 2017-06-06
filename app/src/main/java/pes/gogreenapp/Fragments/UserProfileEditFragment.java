@@ -1,17 +1,26 @@
 package pes.gogreenapp.Fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,13 +53,17 @@ import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Adry on 24/05/2017.
  */
 
 public class UserProfileEditFragment extends Fragment {
 
+    private static int RESULT_LOAD_IMG = 1;
     private User user;
+    String imgDecodableString;
     private Activity activity;
     private String TAG = MainActivity.class.getSimpleName();
     private SessionManager session;
@@ -59,11 +74,47 @@ public class UserProfileEditFragment extends Fragment {
     private TextView userCreationDate;
     private Button editBirthdate;
     private Button saveButton;
+    private ImageButton editPicture;
     private TextView userBirthDate;
     private TextView userCurrentPoints;
     private EditText userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static Integer mYear, mMonth, mDay;
+    private Bitmap profileImageBitmap;
+
+    /**
+     * Checks if the user accepts that the app to read external storage
+     *
+     * @return true if has permission or false if not
+     */
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG, "Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG, "Permission is revoked");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted");
+            return true;
+        }
+    }
+
+    /**
+     * Convert Bitmap to byte[]
+     * @param bitmap    Image in bitmap format
+     * @return Image converted to bitmap
+     */
+    public byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
+    }
 
     public UserProfileEditFragment() {
         // Required empty public constructor
@@ -92,8 +143,19 @@ public class UserProfileEditFragment extends Fragment {
         userBirthDate = (TextView) getView().findViewById(R.id.birthdate_edit_user);
         userCurrentPoints = (TextView) getView().findViewById(R.id.user_current_points_edit_user);
         userEmail = (EditText) getView().findViewById(R.id.user_email_edit_user);
+        editPicture = (ImageButton) getView().findViewById(R.id.imageEditUser);
 
         new GetInfoUser().execute("http://10.4.41.145/api/users/" + session.getUsername());
+
+        editPicture.setOnClickListener((View v) -> {
+            //check if has permission
+            if(isStoragePermissionGranted()) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // Start the Intent
+                startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +165,14 @@ public class UserProfileEditFragment extends Fragment {
                         setPositiveButton("MODIFICAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                String imgString = null;
+                                if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
+                                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
+                                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
+                                }
+
                                 new PutUser().execute("http://10.4.41.145/api/users/", "PUT", userName.getText().toString(),
-                                        userBirthDate.getText().toString(), userEmail.getText().toString());
+                                        userBirthDate.getText().toString(), userEmail.getText().toString(), imgString);
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new UserProfileFragment();
@@ -164,22 +232,6 @@ public class UserProfileEditFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -202,14 +254,14 @@ public class UserProfileEditFragment extends Fragment {
                         jsonArray.getInt("points"),
                         jsonArray.getString("created_at"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
 
             return null;
         }
@@ -217,8 +269,7 @@ public class UserProfileEditFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
-            else userImage.setImageBitmap(null);
+            userImage.setImageBitmap(profileImageBitmap);
 
             userName.setText(user.getName());
             userNickName.setText("Nickname: " + user.getUsername());
@@ -253,6 +304,7 @@ public class UserProfileEditFragment extends Fragment {
             bodyParams.put("name", params[2]);
             bodyParams.put("birth_date", params[3]);
             bodyParams.put("email", params[4]);
+            bodyParams.put("image", params[5]);
             String url = params [0] + session.getUsername();
             session = SessionManager.getInstance();
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
@@ -275,6 +327,42 @@ public class UserProfileEditFragment extends Fragment {
             else {
                 Toast.makeText(activity, "Perfil actualizado", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+
+    @Override
+    /**
+     * Get the result of the image selected
+     *
+     * @params  requestCode is 1
+     *          resultCode is -1
+     *          data is the image path
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                    && null != data) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                userImage.setImageBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString));
+                cursor.close();
+            } else {
+                Toast.makeText(getContext(), "No has escogido ninguna imagen",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Log.d("CreateEvent", e.toString());
+            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
