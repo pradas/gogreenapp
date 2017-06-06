@@ -22,16 +22,10 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Objects.Shop;
-import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -40,7 +34,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * Created by Adrian on 02/06/2017.
  */
 
-public class ShopProfileFragment extends Fragment {
+public class ShopProfileInfoFragment extends Fragment {
 
     private SessionManager session;
     private static final String ROLE_MANAGER = "manager";
@@ -58,7 +52,7 @@ public class ShopProfileFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public ShopProfileFragment () {
+    public ShopProfileInfoFragment() {
     }
 
     /**
@@ -74,7 +68,7 @@ public class ShopProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.shop_profile_fragment, container, false);
+        return inflater.inflate(R.layout.shop_profile_info_fragment, container, false);
     }
 
     /**
@@ -91,11 +85,13 @@ public class ShopProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
 
+
         shopImage = (ImageView) getView().findViewById(R.id.shop_image);
         shopName = (TextView) getView().findViewById(R.id.shop_name);
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
         editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
+
         if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
             editProfile.setOnClickListener(new View.OnClickListener() {
@@ -104,14 +100,12 @@ public class ShopProfileFragment extends Fragment {
                     FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
                     Fragment fragment = (Fragment) new ShopEditProfileFragment();
-                    transaction.replace(R.id.flContent, fragment);
-                    transaction.commit();
+                    transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
                 }
             });
         }
-
-
         new GetInfoShop().execute("http://10.4.41.145/api/shops/1");
+
     }
 
     private class GetInfoShop extends AsyncTask<String, Void, Void> {
@@ -140,7 +134,6 @@ public class ShopProfileFragment extends Fragment {
 
             return null;
         }
-
 
         @Override
         protected void onPostExecute(Void result) {

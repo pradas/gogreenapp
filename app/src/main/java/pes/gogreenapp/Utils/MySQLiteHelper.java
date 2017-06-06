@@ -19,19 +19,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static MySQLiteHelper instance;
     private static MySQLiteHelper testSavedInstance;
     private static String DATABASE_NAME = "gogreen.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     static final String TABLE_USERS = "users";
     static final String COLUMN_ID = "_id";
     static final String COLUMN_USERNAME = "username";
     static final String COLUMN_TOKEN = "token";
     static final String COLUMN_POINTS = "points";
     static final String COLUMN_ROLE = "role";
+    static final String COLUMN_SHOP = "shop";
 
     // Database creation sql statement
     private static final String DATABASE_CREATE =
             "create table " + TABLE_USERS + "( " + COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_USERNAME + " text unique, " + COLUMN_TOKEN + " text not null, " + COLUMN_POINTS +
-                    " integer not null, " + COLUMN_ROLE + " text not null " + ");";
+                    " integer not null, " + COLUMN_ROLE + " text not null, " + COLUMN_SHOP + " integer );";
 
     /**
      * Create a instance of MySQLiteHelper and create the database if not exist

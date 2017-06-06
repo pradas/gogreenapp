@@ -145,6 +145,12 @@ public class EventsListShopFragment extends Fragment {
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        events = new ArrayList<>();
+    }
+
     /**
      *  Shows a dialog with all the categories to select one
      */
@@ -329,7 +335,8 @@ public class EventsListShopFragment extends Fragment {
                                 date,
                                 image,
                                 jsonObject.getString("category"),
-                                jsonObject.getBoolean("favourite"))
+                                jsonObject.getBoolean("favourite"),
+                                jsonObject.getInt("shop_id"))
                         );
                     }
                 } catch (JSONException | ParseException e) {

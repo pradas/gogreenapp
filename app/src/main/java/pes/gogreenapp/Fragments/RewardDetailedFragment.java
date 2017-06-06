@@ -188,8 +188,7 @@ public class RewardDetailedFragment extends Fragment {
                 }else{
                     fragment = (Fragment) new UserProfileFragment();
                 }
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
 
             }
         });
@@ -218,8 +217,7 @@ public class RewardDetailedFragment extends Fragment {
                                 FragmentManager manager = ((FragmentActivity) getActivity()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new RewardsListFragment();
-                                transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();
+                                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
                             }
                         }
                     });
@@ -240,8 +238,7 @@ public class RewardDetailedFragment extends Fragment {
                     FragmentTransaction transaction = manager.beginTransaction();
                     Fragment fragment = (Fragment) new QRCodeFragment();
                     fragment.setArguments(bundle);
-                    transaction.replace(R.id.flContent, fragment);
-                    transaction.commit();
+                    transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
 
                 }
             }

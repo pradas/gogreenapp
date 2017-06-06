@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.OfertasListAdapter;
+import pes.gogreenapp.Adapters.OfertasListShopAdapter;
 import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -44,7 +45,7 @@ public class OfertasListShopFragment extends Fragment {
     //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    OfertasListAdapter adapter;
+    OfertasListShopAdapter adapter;
     String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
     private String TAG = "OfertasList";
@@ -76,7 +77,7 @@ public class OfertasListShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.ofertas_list_fragment, container, false);
+        return inflater.inflate(R.layout.ofertas_list_shop_fragment, container, false);
     }
 
     /**
@@ -118,11 +119,11 @@ public class OfertasListShopFragment extends Fragment {
     private void sortPoints() {
         if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
                 Collections.sort(ofertas, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
+                adapter = new OfertasListShopAdapter(getContext(), ofertas);
             pointsFilter = "ascendente";
         } else if (pointsFilter.equals("ascendente")) {
             Collections.sort(ofertas, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
+                adapter = new OfertasListShopAdapter(getContext(), ofertas);
             pointsFilter = "descendente";
         }
         recyclerView.setAdapter(adapter);
@@ -135,11 +136,11 @@ public class OfertasListShopFragment extends Fragment {
     private void sortDeals() {
         if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
             Collections.sort(ofertas, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
+                adapter = new OfertasListShopAdapter(getContext(), ofertas);
             dateFilter = "ascendente";
         } else if (dateFilter.equals("ascendente")) {
                 Collections.sort(ofertas, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
+                adapter = new OfertasListShopAdapter(getContext(), ofertas);
             dateFilter = "descendente";
         }
         recyclerView.setAdapter(adapter);
@@ -160,14 +161,21 @@ public class OfertasListShopFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertas);
-        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertas);
-        warning = (TextView) getView().findViewById(R.id.warningNoResultOfertas);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertasListShop);
+        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertasListShop);
+        warning = (TextView) getView().findViewById(R.id.warningNoResultOfertasListShop);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
+    }
+
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        ofertas = new ArrayList<>();
     }
     /**
      * On swipe, refresh all the items of the screen.
@@ -178,7 +186,7 @@ public class OfertasListShopFragment extends Fragment {
         warning.setText("");
         categorySelected = "";
         // Get items
-        new GetOfertas().execute("http://10.4.41.145/api/deals");
+        new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
         Log.d(TAG, "setting ofertas");
 
         // Load complete
@@ -224,13 +232,20 @@ public class OfertasListShopFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        String image = null;
+                        if (!jsonObject.isNull("image"))
+                            image = jsonObject.getString("image");
                         ofertas.add(
                                 new Oferta(
-                                        jsonObject.getInt("id"),
+                                jsonObject.getInt("id"),
                                 jsonObject.getString("name"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("value"),
-                                date, jsonObject.getBoolean("favourite"))
+                                date,
+                                jsonObject.getBoolean("favourite"),
+                                image,
+                                jsonObject.getInt("shop_id"),
+                                jsonObject.getString("shop"))
 
                         );
                     }
@@ -248,7 +263,7 @@ public class OfertasListShopFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
-            adapter = new OfertasListAdapter(getContext(), ofertas);
+            adapter = new OfertasListShopAdapter(getContext(), ofertas);
             recyclerView.setAdapter(adapter);
         }
     }

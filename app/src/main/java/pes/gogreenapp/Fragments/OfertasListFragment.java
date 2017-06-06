@@ -169,6 +169,13 @@ public class OfertasListFragment extends Fragment {
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        ofertas = new ArrayList<>();
+    }
+
     /**
      * On swipe, refresh all the items of the screen.
      */
@@ -224,13 +231,17 @@ public class OfertasListFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
+                        String image = null;
+                        if (!jsonObject.isNull("image"))
+                            image = jsonObject.getString("image");
                         ofertas.add(
                                 new Oferta(
                                         jsonObject.getInt("id"),
                                 jsonObject.getString("name"),
                                 jsonObject.getString("description"),
                                 jsonObject.getInt("value"),
-                                date, jsonObject.getBoolean("favourite"))
+                                date, jsonObject.getBoolean("favourite"),
+                                image)
 
                         );
                     }

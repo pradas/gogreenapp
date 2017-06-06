@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.EditOfertaFragment;
 import pes.gogreenapp.Fragments.OfertaDetailedFragment;
-import pes.gogreenapp.Fragments.RewardDetailedFragment;
-import pes.gogreenapp.Objects.Event;
+import pes.gogreenapp.Fragments.OfertasListShopFragment;
 import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 
-public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.ViewHolder> {
+public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShopAdapter.ViewHolder> {
     private List<Oferta> ofertas;
     private Context context;
     private SessionManager session;
@@ -47,7 +48,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
      * @param ofertas non-null List of the Rewards.
      * @param context non-null context of the application.
      */
-    public OfertasListAdapter(Context context, List<Oferta> ofertas) {
+    public OfertasListShopAdapter(Context context, List<Oferta> ofertas) {
         this.context = context;
         this.ofertas = ofertas;
         this.session = SessionManager.getInstance();
@@ -69,6 +70,8 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
         TextView discount;
         TextView date;
         ImageButton fav;
+        ImageButton edit;
+        ImageView DeleteButton;
         public Integer id;
 
         /**
@@ -78,11 +81,13 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
          */
         ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.ofertaImage);
-            title = (TextView) itemView.findViewById(R.id.ofertaTitle);
-            discount = (TextView) itemView.findViewById(R.id.ofertaPoints);
-            date = (TextView) itemView.findViewById(R.id.ofertaEndDate);
-            fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButton);
+            image = (ImageView) itemView.findViewById(R.id.ofertaImageShop);
+            title = (TextView) itemView.findViewById(R.id.ofertaTitleShop);
+            discount = (TextView) itemView.findViewById(R.id.ofertaPointsShop);
+            date = (TextView) itemView.findViewById(R.id.ofertaEndDateShop);
+            fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButtonShop);
+            DeleteButton = (ImageButton) itemView.findViewById(R.id.ofertaDeleteButtonShop);
+            edit = (ImageButton) itemView.findViewById(R.id.ofertaEditButtonShop);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,10 +96,13 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
                     bundle.putInt("id", id);
 
                     //Sacar datos de la imagen seleccionada
-                    Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-                    byte[] b = baos.toByteArray();
+                    byte[] b = null;
+                    if (image != null) {
+                        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        b = baos.toByteArray();
+                    }
                     bundle.putByteArray("image",b);
 
 
@@ -106,6 +114,19 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
+            });
+            edit.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EditOfertaFragment();
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             });
         }
     }
@@ -120,8 +141,8 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
      * @return A new ViewHolder that holds a View of the given view type.
      */
     @Override
-    public OfertasListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ofertas_list_cardview, parent, false);
+    public OfertasListShopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ofertas_list_shop_cardview, parent, false);
         return new ViewHolder(v);
     }
 
@@ -135,7 +156,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(final OfertasListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final OfertasListShopAdapter.ViewHolder holder, int position) {
         holder.id = ofertas.get(position).getId();
         holder.title.setText(ofertas.get(position).getTitle());
         holder.discount.setText(String.valueOf(ofertas.get(position).getPoints()));
@@ -171,9 +192,43 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
                 holder.fav.setTag("favorite");
             }
         });
+        holder.DeleteButton.setOnClickListener(v -> {
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(ofertas.get(position).getShop()) + "/deals/" + String.valueOf(holder.id);
+            Log.d(TAG, url);
+            new DeleteOferta().execute(url, "DELETE",
+                    session.getUsername());
+        });
     }
 
 
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteOferta extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
+            if (response.contains("Deal updated successfully.")) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new OfertasListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        }
+    }
 
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
