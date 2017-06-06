@@ -161,8 +161,7 @@ public class OfertaDetailedFragment extends Fragment {
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment;
                 fragment = (Fragment) new OfertasListFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
 
             }
         });
@@ -174,8 +173,7 @@ public class OfertaDetailedFragment extends Fragment {
             FragmentTransaction transaction = manager.beginTransaction();
             Fragment fragment = (Fragment) new ShopProfileContainerFragment();
             fragment.setArguments(bundle);
-            transaction.replace(R.id.flContent, fragment);
-            transaction.commit();
+            transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
         });
     }
 
@@ -199,7 +197,7 @@ public class OfertaDetailedFragment extends Fragment {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             } else
-                Toast.makeText(getActivity(), "Oferta añadida a favoritos con exito.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -220,9 +218,9 @@ public class OfertaDetailedFragment extends Fragment {
 
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error al eliminar la oferta de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             } else
-                Toast.makeText(getActivity(), "Reward eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Oferta eliminada de favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 

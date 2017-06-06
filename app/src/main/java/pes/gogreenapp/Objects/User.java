@@ -11,6 +11,7 @@ import java.util.Date;
 
 public class User {
 
+    private Integer shopId;
     private String username;
     private String name;
     private String email;
@@ -27,8 +28,8 @@ public class User {
     //Calendar cal = GregorianCalendar.getInstance();
     private DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    public User(String username, String name, String email, String birthDate, String userUrlImage,
-                Integer totalPoints, Integer currentPoints, String creationDate) {
+    public User(String username, String name, String email, String birthDate, String userUrlImage, Integer totalPoints,
+                Integer currentPoints, String creationDate) {
 
         this.username = username;
         this.name = name;
@@ -79,6 +80,7 @@ public class User {
         this.token = token;
         this.role = role;
         this.currentPoints = points;
+        this.shopId = shopId;
     }
 
     public String getUsername() {
@@ -169,5 +171,15 @@ public class User {
     public String getToken() {
 
         return token;
+    }
+
+    public Integer getShopId() {
+
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+
+        this.shopId = shopId;
     }
 }

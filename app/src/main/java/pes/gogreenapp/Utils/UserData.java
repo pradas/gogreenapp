@@ -34,8 +34,8 @@ public class UserData {
      *
      * @throws NullParametersException throws NullParametersException when any parameter desired is null
      */
-    public static void createUser(String username, String token, Integer points, String role, Context context)
-            throws NullParametersException {
+    public static void createUser(String username, String token, Integer points, String role, Integer shop,
+                                  Context context) throws NullParametersException {
 
         if (username == null || token == null || points == null || context == null) {
             throw new NullParametersException(
@@ -52,6 +52,7 @@ public class UserData {
         values.put(MySQLiteHelper.COLUMN_TOKEN, token);
         values.put(MySQLiteHelper.COLUMN_POINTS, points);
         values.put(MySQLiteHelper.COLUMN_ROLE, role);
+        values.put(MySQLiteHelper.COLUMN_SHOP, shop);
 
         // Actual insertion of the data using the values variable
         db.insert(MySQLiteHelper.TABLE_USERS, null, values);
@@ -195,8 +196,8 @@ public class UserData {
         // Creates a cursor to iterate the result of the query
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USERS,
                 new String[]{MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_TOKEN, MySQLiteHelper.COLUMN_ROLE,
-                        MySQLiteHelper.COLUMN_POINTS}, MySQLiteHelper.COLUMN_USERNAME + " = ?", new String[]{username},
-                null, null, null);
+                        MySQLiteHelper.COLUMN_POINTS, MySQLiteHelper.COLUMN_SHOP},
+                MySQLiteHelper.COLUMN_USERNAME + " = ?", new String[]{username}, null, null, null);
 
         // The cursor is empty
         if (cursor.getCount() == 0) {
@@ -206,6 +207,7 @@ public class UserData {
         // Creates the new User
         cursor.moveToFirst();
         User user = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3));
+        if (cursor.getColumnCount() == 5) user.setShopId(cursor.getInt(4));
 
         // close the cursor
         cursor.close();

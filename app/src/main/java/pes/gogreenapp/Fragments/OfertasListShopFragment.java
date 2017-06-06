@@ -170,6 +170,13 @@ public class OfertasListShopFragment extends Fragment {
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
+
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        ofertas = new ArrayList<>();
+    }
     /**
      * On swipe, refresh all the items of the screen.
      */

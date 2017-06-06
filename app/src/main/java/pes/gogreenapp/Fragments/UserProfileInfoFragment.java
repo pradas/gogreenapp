@@ -10,12 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,8 +36,6 @@ import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-import static pes.gogreenapp.R.id.user_image;
-
 /**
  * Created by Adrian on 24/05/2017.
  */
@@ -56,7 +53,7 @@ public class UserProfileInfoFragment extends Fragment {
     private TextView userBirthDate;
     private TextView userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
-    private Bitmap profileImageBitmap;
+
     private User user;
 
 
@@ -105,7 +102,7 @@ public class UserProfileInfoFragment extends Fragment {
         userCreationDate = (TextView) getView().findViewById(R.id.gobro_since);
         userBirthDate = (TextView) getView().findViewById(R.id.user_birthdate);
         userEmail = (TextView) getView().findViewById(R.id.user_email);
-        Button editUser = (Button) getView().findViewById(R.id.edit_profile_button);
+        ImageButton editUser = (ImageButton) getView().findViewById(R.id.edit_profile_button);
 
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,8 +110,7 @@ public class UserProfileInfoFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new UserProfileEditFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             }
         });
 
@@ -123,6 +119,22 @@ public class UserProfileInfoFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
+        Bitmap b_image_user;
+
+
+
+        private Bitmap getRemoteImage(final URL aURL) {
+            try {
+                final URLConnection conn = aURL.openConnection();
+                conn.connect();
+                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                final Bitmap bm = BitmapFactory.decodeStream(bis);
+                bis.close();
+                return bm;
+            } catch (IOException e) {}
+            return null;
+        }
+
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -130,6 +142,8 @@ public class UserProfileInfoFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
+
+            URL imageUrl = null;
             try {
 
                 JSONObject jsonArray = new JSONObject(response);
@@ -143,26 +157,29 @@ public class UserProfileInfoFragment extends Fragment {
                         jsonArray.getInt("points"),
                         jsonArray.getString("created_at"));
 
-                String image = jsonArray.getString("image");
+                imageUrl = new URL(jsonArray.getString("image"));
 
-                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
-                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
+
             return null;
         }
 
 
         @Override
         protected void onPostExecute(Void result) {
-            userImage.setImageBitmap(profileImageBitmap);
 
-            userName.setText("Nombre real: " + user.getName());
-            userNickName.setText("Nombre de usuario: " + user.getUsername());
-            userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
-            userActualPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
+            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
+            else userImage.setImageResource(R.drawable.default_profile_image);
+
+            userName.setText("Nombre: " + user.getName());
+            userNickName.setText("Nickname: " + user.getUsername());
+            userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
+            userActualPoints.setText(String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
             userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
             userEmail.setText("Email: " + user.getEmail());

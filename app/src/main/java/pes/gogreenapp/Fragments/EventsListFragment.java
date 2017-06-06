@@ -133,6 +133,12 @@ public class EventsListFragment extends Fragment {
         return false;
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        events = new ArrayList<>();
+    }
+
     /**
      *  Shows a dialog with all the categories to select one
      */

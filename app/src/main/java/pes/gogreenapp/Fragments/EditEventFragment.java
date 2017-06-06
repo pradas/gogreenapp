@@ -479,8 +479,7 @@ public class EditEventFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new EventsListShopFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido modificar.", Toast.LENGTH_LONG).show();
             }

@@ -80,15 +80,8 @@ public class CreateEventFragment extends Fragment {
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    private String URLPetition = "http://10.4.41.145/api/shops/";
+    static private final String URLPetition = "http://10.4.41.145/api/events";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
-
-
-    /**
-     * Checks if the user accepts that the app to read external storage
-     *
-     * @return true if has permission or false if not
-     */
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {

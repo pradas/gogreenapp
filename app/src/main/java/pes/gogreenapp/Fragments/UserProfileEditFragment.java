@@ -108,8 +108,7 @@ public class UserProfileEditFragment extends Fragment {
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new UserProfileFragment();
-                                transaction.replace(R.id.flContent, fragment);
-                                transaction.commit();
+                                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
                             }
                         })
                         .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -222,7 +221,7 @@ public class UserProfileEditFragment extends Fragment {
             else userImage.setImageBitmap(null);
 
             userName.setText(user.getName());
-            userNickName.setText("Nombre de usuario: " + user.getUsername());
+            userNickName.setText("Nickname: " + user.getUsername());
             userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
             userCurrentPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));

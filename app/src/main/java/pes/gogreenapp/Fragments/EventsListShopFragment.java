@@ -145,6 +145,12 @@ public class EventsListShopFragment extends Fragment {
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        events = new ArrayList<>();
+    }
+
     /**
      *  Shows a dialog with all the categories to select one
      */

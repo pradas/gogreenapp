@@ -20,9 +20,11 @@ import java.util.HashMap;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Exceptions.UserNotExistException;
+import pes.gogreenapp.Objects.User;
+import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.UserData;
 
 /**
@@ -98,8 +100,23 @@ public class LoginFragment extends Fragment {
                 send = false;
             }
             if (send) {
-                new PostLogin().execute("http://10.4.41.145/api/session", "POST", textName.getText().toString(),
-                        textPassword.getText().toString());
+
+                // check if you're trying to add existing user to SQLite
+                User user = null;
+                try {
+                    user = UserData.getUserByUsername(textName.getText().toString(),
+                            getActivity().getApplicationContext());
+                } catch (NullParametersException | UserNotExistException e) {
+                    e.printStackTrace();
+                }
+                if (user != null) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Ya has añadido esta cuenta",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // user doesn't exist so login
+                    new PostLogin().execute("http://10.4.41.145/api/session", "POST", textName.getText().toString(),
+                            textPassword.getText().toString());
+                }
             }
             // Staring MainActivity
         });
@@ -142,10 +159,11 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response.equals("401")){
+            if (response.equals("401")) {
                 return "Falla";
-            }
-            else{
+            } else if ("500".equals(response)) {
+                return "FallaServer";
+            } else {
                 try {
                     JSONObject aux = new JSONObject(response);
 
@@ -153,14 +171,20 @@ public class LoginFragment extends Fragment {
                     session = SessionManager.getInstance(getActivity().getApplicationContext());
                     session.putInfoLoginSession(params[2], aux.getString("role"), aux.getString("token"),
                             aux.getInt("points"));
-                    if ("manager".equals(aux.getString("role"))){
+                    if ("manager".equals(aux.getString("role"))) {
                         session.setShopId(aux.getInt("shop_id"));
                     }
 
                     // insert the User info into the SQLite
                     try {
+                        Integer shopId;
+                        if ("manager".equals(aux.getString("role"))) {
+                            shopId = aux.getInt("shop_id");
+                        } else {
+                            shopId = 0;
+                        }
                         UserData.createUser(params[2], aux.getString("token"), aux.getInt("points"),
-                                aux.getString("role"), getActivity().getApplicationContext());
+                                aux.getString("role"), shopId, getActivity().getApplicationContext());
                     } catch (NullParametersException e) {
                         System.out.println(e.getMessage());
                     }
@@ -170,7 +194,6 @@ public class LoginFragment extends Fragment {
                     getActivity().finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    return "FallaServer";
                 }
             }
             return "Correcte";
@@ -185,8 +208,7 @@ public class LoginFragment extends Fragment {
 
             if (result.equalsIgnoreCase("Falla")) {
                 Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
-            }
-            else if (result.equalsIgnoreCase("FallaServer")) {
+            } else if (result.equalsIgnoreCase("FallaServer")) {
                 Toast.makeText(getActivity(), "No esta disponible el servidor", Toast.LENGTH_LONG).show();
             }
         }

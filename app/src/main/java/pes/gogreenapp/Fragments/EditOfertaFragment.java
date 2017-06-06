@@ -74,7 +74,7 @@ public class EditOfertaFragment extends Fragment {
     private String URLPut = "http://10.4.41.145/api/shops/";
 
     /**
-     * Checks if the user accepts that the app to read external storage
+     * Checks if the user accepts that the app can read external storage
      *
      * @return true if has permission or false if not
      */
@@ -222,6 +222,15 @@ public class EditOfertaFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
+                else {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                            R.drawable.tienda);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    imgString= Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
+
+                    Log.i(TAG, "default event image bytecoded: " + imgString);
+                }
                 Log.d(TAG,URLPut);
                 new PutOferta().execute(URLPut, "PUT",
                         TitleText.getText().toString(),
@@ -343,8 +352,7 @@ public class EditOfertaFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new OfertasListShopFragment();
-                transaction.replace(R.id.flContent, fragment);
-                transaction.commit();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
             }

@@ -100,6 +100,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                     Fragment fragment = (Fragment) new EventDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
@@ -170,6 +171,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             Fragment fragment = (Fragment) new EditEventFragment();
             fragment.setArguments(bundle);
             transaction.replace(R.id.flContent, fragment);
+            transaction.addToBackStack(null);
             transaction.commit();
         });
         holder.DeleteButton.setOnClickListener(v -> {
@@ -229,6 +231,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new EventsListShopFragment();
                 transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         }
