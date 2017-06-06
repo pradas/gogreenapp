@@ -82,12 +82,16 @@
     <!-- Buttons Give Points -->
     <string name="anotherUser">+ Otro Usuario</string>
     <string name="grantPoints">Conceder Puntos</string>
-    <string name="ofertas">ofertas</string>
+    <string name="ofertas">Ofertas</string>
     <string name="TituloCreateOferta">Titulo</string>
     <string name="descuento">Descuento</string>
     <string name="fecha_de_la_oferta">Fecha de la oferta</string>
     <string name="crear_oferta">Crear Oferta</string>
     <string name="imagen_de_la_oferta">imagen de la oferta</string>
+    <string name="ir_a_la_tienda">IR A LA TIENDA</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="atras">Atras</string>
+    <string name="añadir_a_favoritos">Añadir a favoritos</string>
 
 
 </resources>

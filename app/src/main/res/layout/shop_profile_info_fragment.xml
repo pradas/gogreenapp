@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:id="@+id/scrollShopProfile"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/shop_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 app:srcCompat="@android:drawable/ic_menu_report_image" />
 
             <TextView
@@ -46,11 +47,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editProfileShopButton"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/shop_address"
                 android:text="EDITAR"/>
 
         </RelativeLayout>
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

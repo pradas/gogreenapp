@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -99,6 +100,7 @@ public class OfertaDetailedFragment extends Fragment {
         TextView endDate;
         TextView instructions;
         ImageButton fav;
+        Button shopBut;
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
@@ -112,6 +114,7 @@ public class OfertaDetailedFragment extends Fragment {
         endDate = (TextView) getView().findViewById(R.id.dateValidDetailOferta);
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailOferta);
         fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButtonOferta);
+        shopBut = (Button) getView().findViewById(R.id.buttonGoToShop);
         ImageView img = (ImageView) getView().findViewById(R.id.ofertaBackgroundImageProfile);
         img.setImageBitmap(bmp);
         ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackOferta);
@@ -120,7 +123,7 @@ public class OfertaDetailedFragment extends Fragment {
         Date finalDate = oferta.getDate();
 
         endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
-        instructions.setText("Oferta hecha por el comercio " + oferta.getShop() + ". Para usarla, ir al comercio y preguntar.");
+        instructions.setText("Oferta hecha por el comercio " + oferta.getShop_name() + ". Para usarla, ir al comercio y preguntar.");
 
         fav.setTag("favorite");
         fav.setImageResource(R.drawable.ic_fav_void);
@@ -162,6 +165,17 @@ public class OfertaDetailedFragment extends Fragment {
                 transaction.commit();
 
             }
+        });
+        shopBut.setOnClickListener(v -> {
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", oferta.getShop());
+            FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            Fragment fragment = (Fragment) new ShopProfileContainerFragment();
+            fragment.setArguments(bundle);
+            transaction.replace(R.id.flContent, fragment);
+            transaction.commit();
         });
     }
 
@@ -239,8 +253,10 @@ public class OfertaDetailedFragment extends Fragment {
                             jsonObject.getString("name"),
                             jsonObject.getString("description"),
                             jsonObject.getInt("value"),
-                            date, jsonObject.getBoolean("favourite"));
-                    oferta.setShop(jsonObject.getString("shop_name"));
+                            date, jsonObject.getBoolean("favourite"),
+                            jsonObject.getString("image"));
+                    oferta.setShop(jsonObject.getInt("shop_id"));
+                    oferta.setShop_name(jsonObject.getString("shop"));
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }

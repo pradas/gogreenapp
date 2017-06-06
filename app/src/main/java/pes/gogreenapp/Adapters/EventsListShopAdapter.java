@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.EventsListShopFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
@@ -65,6 +67,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
         TextView date;
         TextView hour;
         TextView category;
+        ImageView DeleteButton;
         ImageButton fav;
         ImageButton edit;
         public Integer id;
@@ -80,6 +83,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             title = (TextView) itemView.findViewById(R.id.eventTitleShop);
             points = (TextView) itemView.findViewById(R.id.eventPointsShop);
             category = (TextView) itemView.findViewById(R.id.eventCategoryShop);
+            DeleteButton = (ImageButton) itemView.findViewById(R.id.deleteEditButtonShop);
             date = (TextView) itemView.findViewById(R.id.eventEndDateShop);
             hour = (TextView) itemView.findViewById(R.id.eventHourShop);
             fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButtonShop);
@@ -98,6 +102,12 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                     transaction.replace(R.id.flContent, fragment);
                     transaction.commit();
                 }
+            });
+            DeleteButton.setOnClickListener(v -> {
+                Log.d(TAG, "Hola");
+                String url = "http://10.4.41.145/api/events/" + String.valueOf(id);
+                new DeleteEvent().execute(url, "DELETE",
+                        session.getUsername());
             });
         }
     }
@@ -162,6 +172,12 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             transaction.replace(R.id.flContent, fragment);
             transaction.commit();
         });
+        holder.DeleteButton.setOnClickListener(v -> {
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(events.get(position).getIdShop()) + "/events/" + String.valueOf(holder.id);
+            Log.d(TAG, url);
+            new DeleteEvent().execute(url, "DELETE",
+                    session.getUsername());
+        });
 
     }
 
@@ -178,7 +194,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             bodyParams.put("event_id", params[3]);
             String url = params[0] + params[2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null) return "Correct";
+            if ("200".equals(response)) return "Correct";
             return "Error";
         }
 
@@ -187,6 +203,34 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                 Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             } else
                 Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteEvent extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
+            if (response.contains("Event deleted successfully.")) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EventsListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+            }
         }
     }
 

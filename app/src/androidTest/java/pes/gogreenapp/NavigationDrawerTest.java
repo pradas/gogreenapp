@@ -174,7 +174,7 @@ public class NavigationDrawerTest {
     public void checkShopAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.shop_view_fragment));
-        onView(withId(R.id.shop_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.shop_view_fragment)).check(matches(isDisplayed()));
     }
 
     /**

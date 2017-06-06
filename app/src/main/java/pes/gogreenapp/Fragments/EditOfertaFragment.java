@@ -24,17 +24,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,12 +38,12 @@ import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -57,30 +53,25 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateEventFragment extends Fragment {
+public class EditOfertaFragment extends Fragment {
     //initialitions
     private static int RESULT_LOAD_IMG = 1;
     private SessionManager session;
     String imgDecodableString;
-    private ImageButton DateButton;
     private ImageView ImageSelected;
     private ImageButton PhotoButton;
+    private ImageButton DateButton;
     private EditText DateText;
     private Button SendButton;
     private EditText TitleText;
     private EditText DescriptionText;
-    private EditText PointsText;
-    private EditText DirectionText;
-    private EditText HourText;
-    private EditText MinText;
+    private EditText DiscountText;
     private Calendar calendar;
-    private List<String> categories = new ArrayList<String>();
-    private String FinalTime = null;
-    private Spinner categoriesSpinner;
-    static private String TAG = "CreateEvent";
-    private String URLPetition = "http://10.4.41.145/api/shops/";
-    static private final String URLcategories = "http://10.4.41.145/api/categories";
-
+    private Integer id;
+    private Oferta oferta;
+    static private String TAG = "EditOferta";
+    private String URLPetition = "http://10.4.41.145/api/";
+    private String URLPut = "http://10.4.41.145/api/shops/";
 
     /**
      * Checks if the user accepts that the app to read external storage
@@ -107,7 +98,8 @@ public class CreateEventFragment extends Fragment {
 
     /**
      * Convert Bitmap to byte[]
-     * @param bitmap    Image in bitmap format
+     *
+     * @param bitmap Image in bitmap format
      * @return Image converted to bitmap
      */
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
@@ -116,10 +108,11 @@ public class CreateEventFragment extends Fragment {
         return stream.toByteArray();
     }
 
+
     /**
      * Required empty public constructor
      */
-    public CreateEventFragment() {
+    public EditOfertaFragment() {
     }
 
     /**
@@ -137,7 +130,9 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.create_event_fragment, container, false);
+        id = getArguments().getInt("id");
+        URLPetition =  URLPetition + "deals/" + String.valueOf(id);
+        return inflater.inflate(R.layout.edit_oferta_fragment, container, false);
     }
 
     /**
@@ -152,22 +147,21 @@ public class CreateEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        URLPetition = URLPetition + String.valueOf(session.getShopId()) + "/events";
-        new GetCategories().execute(URLcategories);
-
+        URLPut = URLPut + String.valueOf(session.getShopId()) + "/deals/" + String.valueOf(id);
+        try {
+            new GetOferta().execute(URLPetition).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         //elements
-        DateButton = (ImageButton) getView().findViewById(R.id.DateCreateEvent);
-        PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
-        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedCreateEvent);
-        DateText = (EditText) getView().findViewById(R.id.editTextDateCreateEvent);
-        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
-        TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
-        DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
-        PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
-        DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
-        HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
-        MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
-        categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
+        DateButton = (ImageButton) getView().findViewById(R.id.DateEditOferta);
+        PhotoButton = (ImageButton) getView().findViewById(R.id.ImageEditOfertaButton);
+        ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedEditOferta);
+        DateText = (EditText) getView().findViewById(R.id.editTextDateEditOferta);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendEditOferta);
+        TitleText = (EditText) getView().findViewById(R.id.titleEditOferta_edit_text);
+        DescriptionText = (EditText) getView().findViewById(R.id.DescriptionEditOferta_edit_text);
+        DiscountText = (EditText) getView().findViewById(R.id.PointsEditOferta_edit_text);
 
         //events
         DateButton.setOnClickListener((View v) -> {
@@ -182,39 +176,17 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
-        HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                        String text = "0" + HourText.getText().toString();
-                        HourText.setText(text);
-                    }
-                }
-            }
-        });
-        MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                        String text = "0" + MinText.getText().toString();
-                        MinText.setText(text);
-                    }
-                }
-            }
-        });
         PhotoButton.setOnClickListener((View v) -> {
-            //check if has permission
-            if(isStoragePermissionGranted()) {
+            if (isStoragePermissionGranted()) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 // Start the Intent
                 startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
             }
         });
         SendButton.setOnClickListener(v -> {
-            //check all the conditions
+            Log.d(TAG, "button clicked");
+            //Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -224,8 +196,8 @@ public class CreateEventFragment extends Fragment {
                 DescriptionText.setError("Descripción necesaria");
                 send = false;
             }
-            if (PointsText.getText().toString().length() <= 0) {
-                PointsText.setError("Puntos necesarios");
+            if (DiscountText.getText().toString().length() <= 0) {
+                DiscountText.setError("Descuento necesario");
                 send = false;
             }
             if (DateText.getText().toString().length() <= 0) {
@@ -243,85 +215,113 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
             }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
-                MinText.setError("Minutos necesarios");
-                send = false;
-            }
-            if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
-                HourText.setError("Hora necesaria");
-
-            }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
-                if (Integer.parseInt(HourText.getText().toString()) > 23) {
-                    HourText.setError("Hora incorrecta");
-                    send = false;
-                }
-                if (Integer.parseInt(MinText.getText().toString()) > 59) {
-                    MinText.setError("Minutos incorrectos");
-                    send = false;
-                }
-                FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-
-            }
-            //if all conditions are true, send
             if (send) {
-                Log.d("CreateEvent", "se envia");
+                Log.d(TAG, "se envia");
                 String imgString = null;
                 if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
-                Log.d(TAG, URLPetition);
-                new PostEvent().execute(URLPetition, "POST",
+                Log.d(TAG,URLPut);
+                new PutOferta().execute(URLPut, "PUT",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
-                        PointsText.getText().toString(),
-                        DirectionText.getText().toString(),
+                        DiscountText.getText().toString(),
                         DateText.getText().toString(),
-                        FinalTime,
-                        imgString,
-                        String.valueOf(categoriesSpinner.getSelectedItem())
+                        imgString
                 );
             }
         });
     }
 
+    /**
+     * Asynchronous Task for the petition GET the deal.
+     */
+    private class GetOferta extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            Log.i(TAG, urls[0]);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    if (!aux.isNull("date")) date = df.parse(aux.getString("date"));
+                    String image = null;
+                    if (!aux.isNull("image")) image = aux.getString("image");
+                    oferta = new Oferta(
+                            aux.getInt("id"),
+                            aux.getString("name"),
+                            aux.getString("description"),
+                            aux.getInt("value"),
+                            date,
+                            aux.getBoolean("favourite"),
+                            image);
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Creates the new Adapter and set the actual deal by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            if (oferta.getDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                DateText.setText(sdf.format(oferta.getDate()));
+            }
+            TitleText.setText(oferta.getTitle());
+            DescriptionText.setText(oferta.getDescription());
+            DiscountText.setText(String.valueOf(oferta.getPoints()));
+            if (oferta.getImage() != null) {
+                byte[] decodedBytes = oferta.getImage();
+                ImageSelected.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
+            }
+        }
+    }
 
     /**
-     * Asynchronous Task for the petition POST to send a petition of create Event
+     * Asynchronous Task for the petition POST to send a petition to create a deal
      */
-    private class PostEvent extends AsyncTask<String, Void, String> {
+    private class PutOferta extends AsyncTask<String, Void, String> {
         @Override
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method,
-         *               params[2] is the title,
+         *               params[2] is the name,
          *               params[3] is the description
-         *               params[4] is the points
-         *               params[5] is the address
-         *               params[6] is the date
-         *               params[7] is the time
-         *               params[8] is the image
-         *               params[9] is the category
+         *               params[4] is the value
+         *               params[5] is the date
          *
          * @return the result of the petition
          */
         protected String doInBackground(String... params) {
             HashMap<String, String> BodyParams = new HashMap<>();
-            BodyParams.put("title", params[2]);
+            BodyParams.put("name", params[2]);
             BodyParams.put("description", params[3]);
-            BodyParams.put("points", params[4]);
-            if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            BodyParams.put("date", params[6]);
-            if (params[7] != null && !params[7].equals(":")) BodyParams.put("time", params[7]);
-            else BodyParams.put("time", "00:00");
-            if (params[8] != null) BodyParams.put("image", params[8]);
-            BodyParams.put("category", params[9]);
+            BodyParams.put("value", params[4]);
+            BodyParams.put("date", params[5]);
+            if (params[6] != null) BodyParams.put("image", params[6]);
             String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
                     session.getToken());
-            Log.i(TAG, "Response from url: " + result);
+            Log.d(TAG, "Response from url: " + result);
 
             return result;
         }
@@ -337,12 +337,12 @@ public class CreateEventFragment extends Fragment {
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.contains("Event created successfully.")) {
-                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
+            } else if (s.contains("Deal updated successfully.")) {
+                Toast.makeText(getActivity(), "Editado perfectamente.", Toast.LENGTH_LONG).show();
 
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment = (Fragment) new EventsListShopFragment();
+                Fragment fragment = (Fragment) new OfertasListShopFragment();
                 transaction.replace(R.id.flContent, fragment);
                 transaction.commit();
             } else {
@@ -355,7 +355,7 @@ public class CreateEventFragment extends Fragment {
     /**
      * Get the result of the image selected
      *
-     * @params  requestCode is 1
+     * @params requestCode is 1
      *          resultCode is -1
      *          data is the image path
      */
@@ -380,58 +380,11 @@ public class CreateEventFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Log.d("CreateEvent", e.toString());
+            Log.d(TAG, e.toString());
             Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
                     .show();
         }
     }
 
-
-    /**
-     * Asynchronous Task for the petition GET of all the Categories.
-     */
-    private class GetCategories extends AsyncTask<String, Void, String> {
-
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param urls The parameters of the task.
-         */
-        @Override
-        protected String doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
-            Log.i(TAG, "Response from url: " + response);
-            if (response != null) {
-                JSONObject aux;
-                try {
-                    aux = new JSONObject(response);
-                    JSONArray jsonArray = aux.getJSONArray("categories");
-                    for (int i = 0; i < jsonArray.length(); ++i) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        categories.add((String) jsonObject.get("name"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return "correcte";
-            }
-            return "falla";
-        }
-
-        /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
-         *
-         * @param result If is "Falla" makes the toast.
-         */
-        protected void onPostExecute(String result) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_spinner_item, categories);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            categoriesSpinner.setAdapter(dataAdapter);
-        }
-
-    }
 
 }

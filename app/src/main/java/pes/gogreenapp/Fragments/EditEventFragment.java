@@ -258,17 +258,18 @@ public class EditEventFragment extends Fragment {
                     send = false;
                 }
                 FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-                Log.d("CreateEvent", FinalTime);
+                Log.d(TAG, FinalTime);
             }
             if (send) {
-                Log.d("CreateEvent", "se envia");
+                Log.d(TAG, "se envia");
+                Log.d(TAG, urlPut);
                 String imgString = null;
                 if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
 
-                new PutEvent().execute(url, "PUT",
+                new PutEvent().execute(urlPut, "PUT",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
                         PointsText.getText().toString(),
@@ -378,7 +379,7 @@ public class EditEventFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Log.d("CreateEvent", e.toString());
+            Log.d(TAG, e.toString());
             Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
                     .show();
         }
@@ -472,7 +473,7 @@ public class EditEventFragment extends Fragment {
         protected void onPostExecute(String s) {
             if (s == null) {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.contains("Event created successfully.")) {
+            } else if (s.contains("Event edited successfully.")) {
                 Toast.makeText(getActivity(), "Modificado perfectamente.", Toast.LENGTH_LONG).show();
 
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();

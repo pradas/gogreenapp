@@ -3,6 +3,7 @@ package pes.gogreenapp.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,55 +20,58 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Fragments.EventDetailedFragment;
-import pes.gogreenapp.Fragments.EventsListShopFragment;
-import pes.gogreenapp.Objects.Event;
+import pes.gogreenapp.Fragments.EditEventFragment;
+import pes.gogreenapp.Fragments.EditOfertaFragment;
+import pes.gogreenapp.Fragments.OfertaDetailedFragment;
+import pes.gogreenapp.Fragments.OfertasListShopFragment;
+import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 
-public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.ViewHolder> {
-    private List<Event> events;
+public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShopAdapter.ViewHolder> {
+    private List<Oferta> ofertas;
     private Context context;
     private SessionManager session;
-    private String TAG = "EventsListAdapter";
+    private String TAG = "OfertasListAdapter";
 
     /**
      * Constructor that set the List of Rewards.
      *
-     * @param events non-null List of the Rewards.
+     * @param ofertas non-null List of the Rewards.
      * @param context non-null context of the application.
      */
-    public EventsListAdapter(Context context, List<Event> events) {
+    public OfertasListShopAdapter(Context context, List<Oferta> ofertas) {
         this.context = context;
-        this.events = events;
+        this.ofertas = ofertas;
         this.session = SessionManager.getInstance();
     }
 
     /**
      * Setter of the Rewards List.
      *
-     * @param events non-null List of the Rewards.
+     * @param ofertas non-null List of the Rewards.
      */
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setEvents(List<Oferta> ofertas) {
+        this.ofertas = ofertas;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
-        TextView points;
+        TextView description;
+        TextView discount;
         TextView date;
-        TextView hour;
-        TextView category;
         ImageButton fav;
+        ImageButton edit;
+        ImageView DeleteButton;
         public Integer id;
 
         /**
@@ -77,27 +81,50 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
          */
         ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.eventImage);
-            title = (TextView) itemView.findViewById(R.id.eventTitle);
-            points = (TextView) itemView.findViewById(R.id.eventPoints);
-            category = (TextView) itemView.findViewById(R.id.eventCategory);
-            date = (TextView) itemView.findViewById(R.id.eventEndDate);
-            hour = (TextView) itemView.findViewById(R.id.eventHour);
-            fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButton);
+            image = (ImageView) itemView.findViewById(R.id.ofertaImageShop);
+            title = (TextView) itemView.findViewById(R.id.ofertaTitleShop);
+            discount = (TextView) itemView.findViewById(R.id.ofertaPointsShop);
+            date = (TextView) itemView.findViewById(R.id.ofertaEndDateShop);
+            fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButtonShop);
+            DeleteButton = (ImageButton) itemView.findViewById(R.id.ofertaDeleteButtonShop);
+            edit = (ImageButton) itemView.findViewById(R.id.ofertaEditButtonShop);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
-                    bundle.putString("parent", "list");
+
+                    //Sacar datos de la imagen seleccionada
+                    byte[] b = null;
+                    if (image != null) {
+                        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        b = baos.toByteArray();
+                    }
+                    bundle.putByteArray("image",b);
+
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
-                    Fragment fragment = (Fragment) new EventDetailedFragment();
+                    Fragment fragment = (Fragment) new OfertaDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
                     transaction.commit();
                 }
+            });
+            edit.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
+
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EditOfertaFragment();
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+
             });
         }
     }
@@ -112,8 +139,8 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
      * @return A new ViewHolder that holds a View of the given view type.
      */
     @Override
-    public EventsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.events_list_cardview, parent, false);
+    public OfertasListShopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ofertas_list_shop_cardview, parent, false);
         return new ViewHolder(v);
     }
 
@@ -127,16 +154,14 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(final EventsListAdapter.ViewHolder holder, int position) {
-        holder.id = events.get(position).getId();
-        holder.title.setText(events.get(position).getTitle());
-        holder.category.setText(events.get(position).getCategory());
-        holder.points.setText(String.valueOf(events.get(position).getPoints()));
-        Date d = events.get(position).getDate();
+    public void onBindViewHolder(final OfertasListShopAdapter.ViewHolder holder, int position) {
+        holder.id = ofertas.get(position).getId();
+        holder.title.setText(ofertas.get(position).getTitle());
+        holder.discount.setText(String.valueOf(ofertas.get(position).getPoints()));
+        Date d = ofertas.get(position).getDate();
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy").format(d));
-        holder.hour.setText(new SimpleDateFormat("HH:mm").format(d));
-       if (events.get(position).getImage() != null) {
-            byte[] decodedBytes = events.get(position).getImage();
+        if (ofertas.get(position).getImage() != null) {
+            byte[] decodedBytes = ofertas.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
         else {
@@ -145,14 +170,14 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             holder.image.setImageBitmap(icon);
         }
 
-        if (events.get(position).isFavorite()) {
+        /*if (ofertas.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
         }
-        else {
-            holder.fav.setImageResource(R.drawable.ic_fav_void);
-            holder.fav.setTag("favorite");
-        }
+        else {*/
+        holder.fav.setImageResource(R.drawable.ic_fav_void);
+        holder.fav.setTag("favorite");
+        //}
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
@@ -161,13 +186,45 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
-                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
         });
+        holder.DeleteButton.setOnClickListener(v -> {
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(ofertas.get(position).getShop()) + "/deals/" + String.valueOf(holder.id);
+            Log.d(TAG, url);
+            new DeleteOferta().execute(url, "DELETE",
+                    session.getUsername());
+        });
+    }
 
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteOferta extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
+            if (response.contains("Deal updated successfully.")) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
+                FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new OfertasListShopFragment();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.commit();
+            }
+        }
     }
 
     /**
@@ -180,7 +237,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-events";
+            String url = params[0] + params [2] + "/favourite-deals";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
@@ -194,29 +251,6 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
         }
     }
 
-    /**
-     * Asynchronous Task for the petition GET of all the Rewards.
-     */
-    private class DeleteFavorite extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpHandler httpHandler = new HttpHandler();
-            HashMap<String, String> bodyParams = new HashMap<>();
-            String url = params[0] + params [2] + "/favourite-events/" + params[3];
-            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null) return "Correct";
-            return "Error";
-        }
-
-        protected void onPostExecute(String result) {
-            if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            }
-            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
-        }
-    }
-
 
     /**
      * Returns the total number of events in the data set held by the adapter.
@@ -225,6 +259,6 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
      */
     @Override
     public int getItemCount() {
-        return events.size();
+        return ofertas.size();
     }
 }
