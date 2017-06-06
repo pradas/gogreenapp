@@ -14,7 +14,7 @@
             android:id="@+id/imageEditUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/imagen_del_evento"
+            android:contentDescription="Imagen del usuario"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
 
         <ImageView

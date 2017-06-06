@@ -80,6 +80,7 @@ public class UserProfileEditFragment extends Fragment {
     private EditText userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static Integer mYear, mMonth, mDay;
+    private Bitmap profileImageBitmap;
 
     /**
      * Checks if the user accepts that the app to read external storage
@@ -232,22 +233,6 @@ public class UserProfileEditFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -270,14 +255,14 @@ public class UserProfileEditFragment extends Fragment {
                         jsonArray.getInt("points"),
                         jsonArray.getString("created_at"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
 
             return null;
         }
@@ -285,8 +270,7 @@ public class UserProfileEditFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
-            else userImage.setImageBitmap(null);
+            userImage.setImageBitmap(profileImageBitmap);
 
             userName.setText(user.getName());
             userNickName.setText("Nombre de usuario: " + user.getUsername());
