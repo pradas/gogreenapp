@@ -43,7 +43,7 @@
     <string name="titulo_del_evento">Título del evento</string>
     <string name="description">Descripción</string>
     <string name="descripci_n_del_evento">Descripción del evento</string>
-    <string name="points">Puntos:</string>
+    <string name="points">Puntos</string>
     <string name="direction">Dirección</string>
     <string name="direccion_del_evento">Dirección del evento</string>
     <string name="date">Fecha</string>
@@ -82,6 +82,12 @@
     <!-- Buttons Give Points -->
     <string name="anotherUser">+ Otro Usuario</string>
     <string name="grantPoints">Conceder Puntos</string>
+    <string name="ofertas">ofertas</string>
+    <string name="TituloCreateOferta">Titulo</string>
+    <string name="descuento">Descuento</string>
+    <string name="fecha_de_la_oferta">Fecha de la oferta</string>
+    <string name="crear_oferta">Crear Oferta</string>
+    <string name="imagen_de_la_oferta">imagen de la oferta</string>
 
 
 </resources>

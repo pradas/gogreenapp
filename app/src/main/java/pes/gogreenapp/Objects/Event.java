@@ -19,6 +19,11 @@ public class Event {
     private Boolean favorite;
     private byte[] image;
 
+    public Event(String title, Integer points) {
+        this.title = title;
+        this.points = points;
+    }
+
     public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category, Boolean favorite) {
         this.id = id;
         this.title = title;
@@ -36,6 +41,7 @@ public class Event {
         }
 
     }
+
     public String getTitle() {
         return title;
     }

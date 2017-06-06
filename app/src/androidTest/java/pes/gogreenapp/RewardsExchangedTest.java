@@ -59,74 +59,7 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rewardsExchangedFragment)).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if the card_view of the rewards_list_exchanged have title
-     */
-    @Test
-    public void CardViewHasTitle() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.rewardTitle))));
-    }
-
-    /**
-     * Check if the card_view of the rewards_list_exchanged have points
-     */
-    @Test
-    public void CardViewHasPoints() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.rewardPoints))));
-    }
-
-    /**
-     * Check if the card_view of the rewards_list_exchanged have category
-     */
-    @Test
-    public void CardViewHasCategory() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.rewardCategory))));
-
-    }
-
-    /**
-     * Check if the card_view of the rewards_list_exchanged have end date
-     */
-    @Test
-    public void CardViewHasEndDate() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.rewardEndDate))));
-    }
-
-    /**
-     * Check if the card_view of the rewards_list_exchanged have favorite button
-     */
-    @Test
-    public void CardViewHasFavoriteButton() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.favoriteButton))));
-    }
-
-    /**
-     * Check if the card_view of the rewards_list_exchanged have exchange button
-     */
-    @Test
-    public void CardViewHasExchangeButton() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withRecyclerView(R.id.rvExchanged).atPosition(0))
-                .check(matches(hasDescendant(withId(R.id.exchangeButton))));
-    }
-
-    /**
+   /**
      * Check if clicking in a card_view and clicking in the exchange button and clicking on the
      * exchange button of the card_view of the recycler view of the rewards exchanged display the
      * Rewards Detailed fragment

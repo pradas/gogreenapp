@@ -3,6 +3,7 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,6 +20,9 @@ import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -145,7 +150,6 @@ public class CreateEventFragment extends Fragment {
         PhotoButton = (ImageButton) getView().findViewById(R.id.ImageCreateEventButton);
         ImageSelected = (ImageView) getView().findViewById(R.id.ImageSelectedCreateEvent);
         DateText = (EditText) getView().findViewById(R.id.editTextDateCreateEvent);
-        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
         TitleText = (EditText) getView().findViewById(R.id.titleCreateEvent_edit_text);
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
         PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
@@ -154,51 +158,10 @@ public class CreateEventFragment extends Fragment {
         MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
+        SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
 
-        //events
-        DateButton.setOnClickListener((View v) -> {
-            calendar = Calendar.getInstance();
-            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
-                    (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
-                        String sDayOfMonth = String.format("%02d", dayOfMonth);
-                        String sMonthOfYear = String.format("%02d", monthOfYear + 1);
-                        DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
-                        DateText.clearFocus();
-                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
-            dpd.show();
-        });
-        HourText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                        String text = "0" + HourText.getText().toString();
-                        HourText.setText(text);
-                    }
-                }
-            }
-        });
-        MinText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                        String text = "0" + MinText.getText().toString();
-                        MinText.setText(text);
-                    }
-                }
-            }
-        });
-        PhotoButton.setOnClickListener((View v) -> {
-            isStoragePermissionGranted();
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            // Start the Intent
-            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-        });
-        SendButton.setOnClickListener(v -> {
-            //Toast.makeText(getActivity(), String.valueOf(categoriesSpinner.getSelectedItem()), Toast.LENGTH_LONG).show();
+
+        SendButton.setOnClickListener((View v) ->{
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -233,7 +196,6 @@ public class CreateEventFragment extends Fragment {
             }
             if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
                 HourText.setError("Hora necesaria");
-
             }
             if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
                 if (Integer.parseInt(HourText.getText().toString()) > 23) {
@@ -245,7 +207,6 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
                 FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
-
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
@@ -254,7 +215,6 @@ public class CreateEventFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
-
                 new PostEvent().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
                         DescriptionText.getText().toString(),
@@ -268,8 +228,59 @@ public class CreateEventFragment extends Fragment {
                 );
             }
         });
-    }
+        //events
+        DateText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                calendar = Calendar.getInstance();
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                        (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
+                            String sDayOfMonth = String.format("%02d", dayOfMonth);
+                            String sMonthOfYear = String.format("%02d", monthOfYear + 1);
+                            DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
+                            DateText.clearFocus();
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dpd.show();
+            }
+        });
 
+        DateButton.setOnClickListener((View v) -> {
+            calendar = Calendar.getInstance();
+            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                    (DatePicker view, int year, int monthOfYear, int dayOfMonth) -> {
+                        String sDayOfMonth = String.format("%02d", dayOfMonth);
+                        String sMonthOfYear = String.format("%02d", monthOfYear + 1);
+                        DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
+                        DateText.clearFocus();
+                    }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
+            dpd.show();
+        });
+        HourText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(HourText.getText().toString()) < 10) {
+                    String text = "0" + HourText.getText().toString();
+                    HourText.setText(text);
+                }
+            }
+        });
+        MinText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (Integer.parseInt(MinText.getText().toString()) < 10) {
+                    String text = "0" + MinText.getText().toString();
+                    MinText.setText(text);
+                }
+            }
+        });
+        PhotoButton.setOnClickListener((View v) -> {
+            isStoragePermissionGranted();
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            // Start the Intent
+            startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+        });
+
+    }
 
     /**
      * Asynchronous Task for the petition POST to send a petition of register an User

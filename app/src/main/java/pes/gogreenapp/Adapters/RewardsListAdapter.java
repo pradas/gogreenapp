@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.test.espresso.core.deps.guava.io.ByteArrayDataOutput;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,6 +95,14 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
                     bundle.putString("parent", "list");
+
+                    //Sacar datos de la imagen seleccionada
+                    Bitmap bitmap = ((BitmapDrawable) background.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+                    byte[] b = baos.toByteArray();
+                    bundle.putByteArray("image",b);
+
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();

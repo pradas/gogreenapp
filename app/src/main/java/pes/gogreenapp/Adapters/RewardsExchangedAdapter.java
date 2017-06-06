@@ -3,6 +3,7 @@ package pes.gogreenapp.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,6 +96,14 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
                     bundle.putString("parent", "exchangeds");
+
+
+                    Bitmap bitmap = ((BitmapDrawable) rewardImage.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+                    byte[] b = baos.toByteArray();
+                    bundle.putByteArray("image",b);
+
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
@@ -173,7 +183,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
         holder.use.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://10.4.41.145/api/users/" + userName + "/rewards/" + rewards.get(position).getId();
+                String url = "http://10.4.41.145/use-reward/" + rewards.get(position).getId();
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
 
