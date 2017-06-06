@@ -173,13 +173,16 @@ public class UserProfileInfoFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
+            /*
             if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
-            else userImage.setImageBitmap(null);
+            else userImage.setImageResource(R.drawable.default_profile_image);
+            */
+            userImage.setImageResource(R.drawable.default_profile_image);
 
             userName.setText("Nombre: " + user.getName());
             userNickName.setText("Nickname: " + user.getUsername());
-            userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
-            userActualPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
+            userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
+            userActualPoints.setText(String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
             userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
             userEmail.setText("Email: " + user.getEmail());

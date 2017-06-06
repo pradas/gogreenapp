@@ -2,77 +2,147 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:orientation="vertical"
-        android:weightSum="1"
-        android:id="@+id/linearLayout4">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentTop="true"
+    tools:ignore="MissingPrefix">
 
 
-        <ImageButton
-            android:id="@+id/edit_profile_button"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_below="@+id/gobro_since"
-            app:srcCompat="@android:drawable/ic_menu_edit"
-            android:background="@android:color/transparent" />
+    <ImageButton
+        android:id="@+id/edit_profile_button"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
-    </LinearLayout>
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_report_image"
-        android:layout_marginTop="92dp"
-        android:layout_below="@+id/linearLayout4"
-        android:layout_alignParentStart="true" />
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentEnd="false"
+        android:layout_below="@+id/edit_profile_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/zxing_possible_result_points"
+        android:backgroundTintMode="src_over"
+        android:clickable="true"
+        android:contentDescription="@string/profile_image_description"
+        android:src="@android:drawable/sym_def_app_icon" />
+
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/user_image"
-        android:ems="10" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:textAlignment="center"
+        fontPath="fonts/Raleway-Light.ttf"
+        android:textColor="#ffffffff"
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/user_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/user_name"
-        android:ems="10" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:textAlignment="center"
+        fontPath="fonts/OpenSans-Regular.ttf"
+        android:textColor="#ffffffff"
+        android:textSize="16sp"/>
 
-    <LinearLayout
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/linearLayout_Points"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_below="@+id/user_nickname"
+        android:clipToPadding="false"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout5">
+        android:layout_below="@+id/user_nickname"
+        android:gravity="center_horizontal|center"
+        android:layout_marginTop="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal"
+        android:background="@drawable/customborder">
 
-        <TextView
-            android:id="@+id/user_total_points"
-            android:layout_width="wrap_content"
+
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/linearLayout_totalPoints"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_nickname"
-            android:ems="10" />
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/user_actual_points"
-            android:layout_width="wrap_content"
+
+
+            <TextView
+                android:id="@+id/user_total_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textAlignment="center"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:textColor="#ffffffff"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/tpString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="Puntos Totales"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/user_total_points"
+                android:textColor="#cddc39"
+                android:textSize="16sp"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/linearLayout_actualPoints"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_total_points"
-            android:ems="10" />
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="40dp"
+            android:orientation="vertical">
 
+
+
+            <TextView
+                android:id="@+id/user_actual_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textAlignment="center"
+                fontPath="fonts/OpenSans-Bold.ttf"
+                android:textColor="#ffffffff"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/apString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="Puntos actuales"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/user_actual_points"
+                android:textColor="#cddc39"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -80,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_below="@+id/linearLayout5"
+        android:layout_below="@+id/linearLayout_Points"
         android:layout_alignParentStart="true"
         android:layout_marginTop="42dp" />
 
@@ -93,7 +163,6 @@
         android:layout_below="@+id/user_email"
         android:layout_alignParentStart="true"
         android:layout_marginTop="23dp" />
-
 
 
     <TextView
