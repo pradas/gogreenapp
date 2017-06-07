@@ -1,7 +1,6 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,10 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.R;
-import pes.gogreenapp.Utils.AsyncHttpHandler;
-import pes.gogreenapp.Utils.SessionManager;
 
 /**
  * All right reserverd to GoBros Devevelopers team.
@@ -73,19 +65,34 @@ public class EmployeeListAdapter extends BaseAdapter implements ListAdapter {
         //Handle buttons and add onClickListeners
         ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.button_delete_employee);
         deleteBtn.setOnClickListener(v -> {
-            SessionManager instance = SessionManager.getInstance();
-            AsyncHttpHandler.delete("shops/" + instance.getShopId() + "/employees/" + employees.get(position), null,
-                    new JsonHttpResponseHandler() {
+            /**AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,
-                                              JSONObject response) {
-                            // called when response HTTP status is "4XX"
-                            Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
-                        }
-                    });
-            employees.remove(position);
-            notifyDataSetChanged();
+             // Add the buttons
+             builder.setPositiveButton("OK", (dialog, id) -> {
+             // User clicked OK button
+             SessionManager instance = SessionManager.getInstance();
+             AsyncHttpHandler.delete("shops/" + instance.getShopId() + "/employees/" + employees.get(position), null,
+             new JsonHttpResponseHandler() {
+
+            @Override public void onFailure(int statusCode, Header[] headers, String xml, Throwable throwable) {
+            // called when response HTTP status is "4XX"
+            Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
+            }
+            });
+             employees.remove(position);
+             notifyDataSetChanged();
+             });
+             builder.setNegativeButton(R.string.cancel, (dialog, id) -> {
+             // User cancelled the dialog
+             dialog.cancel();
+             });
+
+             // Set other dialog properties
+             builder.setMessage("Estas seguro de eliminar de tu tienda al empleado?");
+
+             // Create the AlertDialog
+             AlertDialog dialog = builder.create();
+             dialog.show();*/
         });
 
         return view;

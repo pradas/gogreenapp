@@ -135,11 +135,13 @@ public class LoginFragment extends Fragment {
 
                 // check if you're trying to add existing user to SQLite
                 User user = null;
-                try {
-                    user = UserData.getUserByUsername(textName.getText().toString(),
-                            getActivity().getApplicationContext());
-                } catch (NullParametersException | UserNotExistException e) {
-                    e.printStackTrace();
+                if (calledForAddAccount) {
+                    try {
+                        user = UserData.getUserByUsername(textName.getText().toString(),
+                                getActivity().getApplicationContext());
+                    } catch (NullParametersException | UserNotExistException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (user != null) {
                     Toast.makeText(getActivity().getApplicationContext(), "Ya has añadido esta cuenta",
