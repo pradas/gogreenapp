@@ -4,19 +4,33 @@ package pes.gogreenapp.Fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
@@ -26,6 +40,7 @@ import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 import pes.gogreenapp.Utils.UserData;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +53,9 @@ public class LoginFragment extends Fragment {
     private EditText textName;
     private EditText textPassword;
     private Button buttonRegister;
+    private TextView forgotPassword;
+
+
 
     /**
      * Required empty public constructor
@@ -82,12 +100,26 @@ public class LoginFragment extends Fragment {
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
+        forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
 
         // Set the text to Añadir Cuenta if calledFromAddAccount is true and hide Register Button
         if (calledForAddAccount) {
             buttonLogin.setText(R.string.add_account);
             buttonRegister.setVisibility(View.INVISIBLE);
         }
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container_login, ForgottenPasswordFragment.class.newInstance()).commit();
+                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
@@ -103,11 +135,13 @@ public class LoginFragment extends Fragment {
 
                 // check if you're trying to add existing user to SQLite
                 User user = null;
-                try {
-                    user = UserData.getUserByUsername(textName.getText().toString(),
-                            getActivity().getApplicationContext());
-                } catch (NullParametersException | UserNotExistException e) {
-                    e.printStackTrace();
+                if (calledForAddAccount) {
+                    try {
+                        user = UserData.getUserByUsername(textName.getText().toString(),
+                                getActivity().getApplicationContext());
+                    } catch (NullParametersException | UserNotExistException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (user != null) {
                     Toast.makeText(getActivity().getApplicationContext(), "Ya has añadido esta cuenta",

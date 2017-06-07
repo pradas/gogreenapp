@@ -104,11 +104,6 @@ public class RewardsListFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        rewards = new ArrayList<>();
-    }
 
     /**
      * Called when the fragment's activity has been created and this
@@ -122,6 +117,7 @@ public class RewardsListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Rewards");
         session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
@@ -180,6 +176,7 @@ public class RewardsListFragment extends Fragment {
             Log.i(TAG, "Response from url: " + response);
             Log.i(TAG, urls[0]);
             URL imageUrl = null;
+            rewards.clear();
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);

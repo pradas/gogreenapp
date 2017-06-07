@@ -48,6 +48,7 @@ public class QRCodeFragment extends Fragment {
         View view = inflater.inflate(R.layout.code_qr, container, false);;
         String url = getArguments().getString("url");
         qrImage = (ImageView) view.findViewById(R.id.qrCode);
+        getActivity().setTitle("Código QR");
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {

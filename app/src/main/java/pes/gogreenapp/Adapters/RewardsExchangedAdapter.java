@@ -205,10 +205,19 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     }
 
     /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for the petition POST of a favorite to the reward
      */
     private class PostFavorite extends AsyncTask<String, Void, String> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward
+         * @return "Error" if not favourited or "Correct" if it is favourited
+         */
         @Override
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
@@ -220,6 +229,11 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             return "Error";
         }
 
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Error" or "Correct" makes the toast.
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
@@ -229,10 +243,19 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
     }
 
     /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for the petition DELETE of a favorite to the reward
      */
     private class DeleteFavorite extends AsyncTask<String, Void, String> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward
+         * @return "Error" if not favourited or "Correct" if it is favourited
+         */
         @Override
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
@@ -243,6 +266,11 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             return "Error";
         }
 
+        /**
+         * Called when doInBackground is finished, Toast an error if there is an error.
+         *
+         * @param result If is "Error" or "Correct" makes the toast.
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
