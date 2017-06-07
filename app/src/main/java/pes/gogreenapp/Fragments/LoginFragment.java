@@ -2,13 +2,14 @@ package pes.gogreenapp.Fragments;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,23 +20,12 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.mail.Address;
 import javax.mail.Authenticator;
-import javax.mail.Flags;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -65,9 +55,7 @@ public class LoginFragment extends Fragment {
     private Button buttonRegister;
     private TextView forgotPassword;
 
-    String mailAddress;
-    String password;
-    Session sessionMail;
+
 
     /**
      * Required empty public constructor
@@ -114,9 +102,6 @@ public class LoginFragment extends Fragment {
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
 
-        mailAddress = "gogreenfib@gmail.com";
-        password = "Password12FIB";
-
         // Set the text to Añadir Cuenta if calledFromAddAccount is true and hide Register Button
         if (calledForAddAccount) {
             buttonLogin.setText(R.string.add_account);
@@ -126,32 +111,10 @@ public class LoginFragment extends Fragment {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-                Properties properties = new Properties();
-                properties.put("mail.smtp.host", "smtp.googlemail.com");
-                properties.put("mail.smtp.socketFactory.port", "465");
-                properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-                properties.put("mail.smtp.auth", "true");
-                properties.put("mail.smtp.port", "465");
-
                 try {
-                    sessionMail = Session.getDefaultInstance(properties, new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(mailAddress,password);
-                        }
-                    });
-
-                    if (sessionMail != null) {
-                        Message message = new MimeMessage(sessionMail);
-                        message.setFrom(new InternetAddress(mailAddress));
-                        message.setSubject("[GOGREEN] Recupera tu contraseña");
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("a.borrego.mart@gmail.com"));  //A DONDE ENVIAR CORREO
-                        message.setContent("ESTE ES EL MENSAJE", "text/html; charset=utf-8");
-                        Transport.send(message);
-                    }
-                } catch (Exception e) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container_login, ForgottenPasswordFragment.class.newInstance()).commit();
+                } catch (java.lang.InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
 
