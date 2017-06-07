@@ -85,16 +85,6 @@ public class ExchangePointsTest {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if clicking in the exchange button of the Alert Dialog, the rewards_list is displayed
-     */
-    @Test
-    public void actionExchangeAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        onView(withId(R.id.actionDetailReward)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }
 
     /**
      * Check if clicking in the cancel button of the Alert Dialog, the RewardsDetailed is displayed
