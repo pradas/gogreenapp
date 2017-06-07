@@ -1,141 +1,139 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/edit_oferta_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp">
+    android:background="#DCEDC8"
+    android:orientation="vertical"
+    android:id="@+id/editOfertaMainLayout">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/TitleEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/TituloCreateOferta"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/titleEditOferta_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/TitleEditOferta"
-            android:focusable="true"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
-
-        <TextView
-            android:id="@+id/DescriptionEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/titleEditOferta_edit_text"
-            android:text="@string/description"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/DescriptionEditOferta_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionEditOferta"
-            android:focusable="true"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
-
-        <TextView
-            android:id="@+id/DiscountEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionEditOferta_edit_text"
-            android:text="@string/descuento"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/PointsEditOferta_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DiscountEditOferta"
-            android:inputType="number"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
-
-        <TextView
-            android:id="@+id/DateTextEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/PointsEditOferta_edit_text"
-            android:text="@string/fecha_evento"
-            android:textSize="20sp" />
-
+    <ScrollView
+        android:id="@+id/edit_oferta_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:id="@+id/lineDateEditOferta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DateTextEditOferta"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <ImageButton
-                android:id="@+id/DateEditOferta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/fecha_de_la_oferta"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp">
 
             <EditText
-                android:id="@+id/editTextDateEditOferta"
-                android:layout_width="0dp"
+                android:id="@+id/titleEditOferta_edit_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.97"
-                android:ems="10"
-                android:inputType="date" />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/ImageEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lineDateEditOferta"
-            android:text="@string/Imagen"
-            android:textSize="20sp" />
-        <LinearLayout
-            android:id="@+id/LinearLayoutImageEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ImageEditOferta">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/TitleEditOferta"
+                android:focusable="true"
+                android:hint="@string/TituloCreateOferta"
+                android:textColor="#212121"
+                android:textColorHint="#757575"
+                android:theme="@style/campotextoregistrohard" />
 
-            <ImageButton
-                android:id="@+id/ImageEditOfertaButton"
+            <EditText
+                android:id="@+id/DescriptionEditOferta_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/DescriptionEditOferta"
+                android:focusable="true"
+                android:hint="@string/description"
+                android:textColor="#212121"
+                android:textColorHint="#757575"
+                android:theme="@style/campotextoregistrohard"/>
+
+            <EditText
+                android:id="@+id/PointsEditOferta_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DiscountEditOferta"
+                android:hint="@string/descuento"
+                android:inputType="number"
+                android:textColor="#212121"
+                android:textColorHint="#757575"
+                android:theme="@style/campotextoregistrohard" />
+
+
+            <LinearLayout
+                android:id="@+id/lineDateEditOferta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DateTextEditOferta"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/editTextDateEditOferta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.97"
+                    android:ems="10"
+                    android:hint="@string/fecha_evento"
+                    android:inputType="date" />
+
+                <ImageButton
+                    android:id="@+id/DateEditOferta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:contentDescription="@string/fecha_de_la_oferta"
+                    android:padding="10dp"
+                    android:tint="@android:color/darker_gray"
+                    app:srcCompat="@mipmap/ic_date_range_white_24dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ImageEditOferta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/imagen_de_la_oferta"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                android:layout_below="@+id/lineDateEditOferta"
+                android:text="@string/Imagen"
+                android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/ImageSelectedEditOferta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/LinearLayoutImageEditOferta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ImageEditOferta"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/ImageEditOfertaButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:contentDescription="@string/imagen_de_la_oferta"
+                    android:padding="10dp"
+                    android:tint="@android:color/darker_gray"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <ImageView
+                    android:id="@+id/ImageSelectedEditOferta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonSendEditOferta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/LinearLayoutImageEditOferta"
-            android:text="@string/guardar" />
-    </RelativeLayout>
+    </ScrollView>
 
-</ScrollView>
+    <Button
+        android:id="@+id/buttonSendEditOferta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/buttonregisterloginshape"
+        android:text="@string/guardar"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/white" />
+</RelativeLayout>
