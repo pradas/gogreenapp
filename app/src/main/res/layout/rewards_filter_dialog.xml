@@ -14,7 +14,7 @@
         android:text="@string/filter_by"/>
 
     <RadioGroup
-        android:id="@+id/radio_filters_rewards"
+        android:id="@+id/radio_filters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/filter_by_text"
@@ -43,7 +43,7 @@
         android:id="@+id/categories_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radio_filters_rewards"
+        android:layout_below="@id/radio_filters"
         android:visibility="gone"/>
 
     <TextView

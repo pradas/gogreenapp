@@ -74,7 +74,7 @@ public class RewardsFilterDialogFragment extends DialogFragment {
 
 
         // listeners for the radio group of filters
-        RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters_rewards);
+        RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters);
         radioFilters.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.radio_filter_category:
