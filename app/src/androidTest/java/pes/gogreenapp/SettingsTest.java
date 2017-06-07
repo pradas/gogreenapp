@@ -32,7 +32,7 @@ public class SettingsTest {
     /**
      * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
      * a valid user logged. Due this, the setup do the Login with
-     * the username user and the password Password12
+     * the username manager and the password Password12
      */
     @Before
     public void setup() {
@@ -56,7 +56,7 @@ public class SettingsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the new pass EditText
      */
     @Test
     public void fragmentHasNewPassword() {
@@ -64,7 +64,7 @@ public class SettingsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the confirm pass EditText
      */
     @Test
     public void fragmentHasConfirmNewPass() {
@@ -72,7 +72,7 @@ public class SettingsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the button change
      */
     @Test
     public void fragmentHasButtonChange() {
@@ -80,7 +80,7 @@ public class SettingsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if clicking the button change with empty new pass display error
      */
     @Test
     public void errorEmptyPass() {
@@ -89,7 +89,16 @@ public class SettingsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if clicking the button change with empty confirm pass display error
+     */
+    @Test
+    public void errorEmptyConfirmPass() {
+        onView(withId(R.id.changePass)).perform(click());
+        onView(withId(R.id.confirmNewPass)).check(matches(withError("Es necesario confirmar la nueva contraseña")));
+    }
+
+    /**
+     * Check if typing different passwords display error
      */
     @Test
     public void passwordDontMatch() {

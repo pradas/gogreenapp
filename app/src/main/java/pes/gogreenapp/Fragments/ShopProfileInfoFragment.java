@@ -138,7 +138,8 @@ public class ShopProfileInfoFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            shopImage.setImageBitmap(profileImageBitmap);
+            if(profileImageBitmap == null) shopImage.setImageResource(R.drawable.tienda);
+            else shopImage.setImageBitmap(profileImageBitmap);
             shopName.setText("Nombre de la tienda: " + shop.getShopName());
             shopEmail.setText("Email: " + shop.getShopEmail());
             shopAddress.setText("Direccion: " + shop.getShopAddress());

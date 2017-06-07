@@ -127,6 +127,13 @@ public class EmployeeManagerFragment extends Fragment {
                                     Toast.makeText(getActivity().getApplicationContext(), "empleado añadido",
                                             Toast.LENGTH_SHORT).show();
                                 }
+
+                                employees.add(username);
+                                adapter.setEmployees(employees);
+                                adapter.notifyDataSetChanged();
+                                editTextEmail.setText("");
+                                editTextPassword.setText("");
+                                editTextUsername.setText("");
                             }
 
                             @Override

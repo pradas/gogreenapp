@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,24 +33,27 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Adapters.RewardsListAdapter;
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.AsyncHttpHandler;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-public class RewardsListFragment extends Fragment {
+public class RewardsListFragment extends Fragment implements RewardsFilterDialogFragment.RewardsFilterDialogListener {
 
-    public static String ARG_REWARDS_LIST_NUMBER = "rewards_list_number";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RewardsListAdapter adapter;
-    String categorySelected = "";
     String url = "http://10.4.41.145/api/";
     String urlStorage = "http://10.4.41.145/storage/";
     private SwipeRefreshLayout swipeContainer;
@@ -56,8 +61,6 @@ public class RewardsListFragment extends Fragment {
     private List<Reward> rewards = new ArrayList<>();
     private List<String> categories = new ArrayList<>();
     private SessionManager session;
-    private String userName;
-    private TextView warning;
 
     /**
      * Required empty public constructor
@@ -83,28 +86,6 @@ public class RewardsListFragment extends Fragment {
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
-    public void showFilterDialog() {
-        //Creamos una instancia del FilterDialog y la mostramos
-        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.menu_filters, menu);
-        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
-
-        //Listener for the filter menuIcon
-        filterButton.setOnMenuItemClickListener(v -> {
-            showFilterDialog();
-            return true;
-        });
-
-
-    }
-
-
     /**
      * Called when the fragment's activity has been created and this
      * fragment's view hierarchy instantiated.  It can be used to do final
@@ -126,9 +107,109 @@ public class RewardsListFragment extends Fragment {
         adapter = new RewardsListAdapter(getContext(), rewards);
         recyclerView.setAdapter(adapter);
         new GetRewards().execute(url + "rewards");
+        AsyncHttpHandler.get("categories", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // Handle resulting parsed JSON response here
+                JSONArray jsonArray;
+                try {
+                    jsonArray = response.getJSONArray("categories");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        categories.add(jsonArray.getJSONObject(i).getString("name"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                // called when response HTTP status is "4XX"
+                Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+            }
+        });
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_filters, menu);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener(v -> {
+            RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+            dialog.setCategories(categories);
+            dialog.setTargetFragment(this, 200);
+            dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
+            return true;
+        });
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
+                                      String category) {
+
+        List<Reward> auxRewards = new ArrayList<>(rewards);
+        Iterator<Reward> it = auxRewards.iterator();
+
+        switch (filterId) {
+            case R.id.radio_filter_canjeables:
+                int points = session.getPoints();
+
+                // remove the rewards that user can't exchange
+                while (it.hasNext()) {
+                    if (it.next().getPoints() > points) it.remove();
+                }
+
+                break;
+            case R.id.radio_filter_category:
+                // remove the rewards that aren't from the category
+                while (it.hasNext()) {
+                    if (!category.equals(it.next().getCategory())) it.remove();
+                }
+                break;
+            default:
+                break;
+        }
+
+        switch (sorterId) {
+            case R.id.radio_sorter_date:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r1.getEndDate().compareTo(r2.getEndDate()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r2.getEndDate().compareTo(r1.getEndDate()));
+                }
+                break;
+            case R.id.radio_sorter_points:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r1.getPoints().compareTo(r2.getPoints()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxRewards, (r1, r2) -> r2.getPoints().compareTo(r1.getPoints()));
+                }
+                break;
+            default:
+                break;
+        }
+
+        // change the rewards list info of the adapter
+        adapter.setRewards(auxRewards);
+        adapter.notifyDataSetChanged();
+
+        //close the dialog
+        dialog.getDialog().cancel();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+        dialog.getDialog().cancel();
     }
 
     /**
@@ -159,6 +240,7 @@ public class RewardsListFragment extends Fragment {
                 bis.close();
                 return bm;
             } catch (IOException e) {
+                e.printStackTrace();
             }
             return null;
         }
@@ -174,9 +256,7 @@ public class RewardsListFragment extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
-            Log.i(TAG, urls[0]);
-            URL imageUrl = null;
-            rewards.clear();
+            URL imageUrl;
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);
@@ -186,9 +266,9 @@ public class RewardsListFragment extends Fragment {
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         Date d = df.parse((String) jsonObject.get("end_date"));
                         Bitmap b_image_user = null;
-                        String imageStringLink = null;
+                        String imageStringLink;
                         imageStringLink = jsonObject.getString("image");
-                        if (imageStringLink != "null") {
+                        if (!Objects.equals(imageStringLink, "null")) {
                             imageUrl = new URL(urlStorage + imageStringLink);
                             b_image_user = this.getRemoteImage(imageUrl);
                         }

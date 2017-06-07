@@ -2,7 +2,6 @@ package pes.gogreenapp;
 
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -18,14 +17,13 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static pes.gogreenapp.Utils.EspressoTestsMatchers.withError;
+
 
 /**
- * Created by Adrian on 07/06/2017.
+ * Created by Usuario on 27/04/2017.
  */
 
-public class ForgottenPasswordTest {
+public class PrivateProfileTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
@@ -40,38 +38,52 @@ public class ForgottenPasswordTest {
         try {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
-            onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.log_out));
-            onView(withId(R.id.forgotPassword))
+            onView(withId(R.id.profile_image))
                     .perform(click());
+
         } catch (NoMatchingViewException e) {
-            onView(withId(R.id.forgotPassword))
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("user"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
                     .perform(click());
         }
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the user image is displayed
      */
     @Test
-    public void fragmentHasEditTextEmail() {
-        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(isDisplayed()));
+    public void checkImageIsShown(){
+        onView(withId(R.id.user_image))
+                .check(matches(isDisplayed()));
+    }
+
+
+    /**
+     * Check if the user name is displayed
+     */
+    @Test
+    public void checkUserNameIsShown(){
+        onView(withId(R.id.user_name))
+                .check(matches(isDisplayed()));
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the user nickname is displayed
      */
     @Test
-    public void fragmentHasButton() {
-        onView(withId(R.id.reSendPassword)).check(matches(isDisplayed()));
+    public void checkUserNicknameIsShown(){
+        onView(withId(R.id.user_nickname)).check(matches(isDisplayed()));
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the current points are displayed
      */
     @Test
-    public void errorEmptyEmail() {
-        onView(withId(R.id.reSendPassword)).perform(click());
-        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(withError("Correo necesario")));
+    public void checkUserCurrentPointsIsShown(){
+        onView(withId(R.id.user_actual_points))
+                .check(matches(isDisplayed()));
     }
 }

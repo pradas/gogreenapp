@@ -22,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:tint="@drawable/gradientbackground"
                 app:srcCompat="@android:drawable/ic_menu_report_image" />
 
 

@@ -33,7 +33,7 @@ public class ModifyShopProfileTest {
     /**
      * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
      * a valid user logged. Due this, the setup do the Login with
-     * the username user and the password Password12
+     * the username manager and the password Password12
      */
     @Before
     public void setup() {
@@ -67,7 +67,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the image
      */
     @Test
     public void fragmentHasImage() {
@@ -76,7 +76,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have name
      */
     @Test
     public void fragmentHasName() {
@@ -85,7 +85,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have email
      */
     @Test
     public void fragmentHasEmail() {
@@ -94,7 +94,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have address
      */
     @Test
     public void fragmentHasAddress() {
@@ -103,7 +103,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have save button
      */
     @Test
     public void fragmentHasSaveButton() {
@@ -112,7 +112,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if clicking in save displays alert dialog with text
      */
     @Test
     public void saveButtonDisplayAlertDialogWithText() {
@@ -122,7 +122,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if clicking in save displays alert dialog with modify button
      */
     @Test
     public void saveButtonDisplayAlertDialogWithModifyButton() {
@@ -132,7 +132,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if clicking in save displays alert dialog with cancel button
      */
     @Test
     public void saveButtonDisplayAlertDialogWithCancelButton() {
@@ -142,7 +142,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the edit of the name of the shop works
      */
     @Test
     public void acceptButtonOfAlertDialogDisplayShopInfoFragment() {
@@ -155,7 +155,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if edit the name of shop without confirm stays in the same fragment with the same changes
      */
     @Test
     public void cancelButtonOfAlertDialogDisplayTheSameInfo() {
@@ -168,7 +168,7 @@ public class ModifyShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if edit the name of shop without confirm stays in the same fragment
      */
     @Test
     public void cancelButtonOfAlertDialogDisplayShopInfoFragment() {

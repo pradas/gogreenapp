@@ -62,7 +62,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have tabs
      */
     @Test
     public void fragmentHasTabs() {
@@ -70,7 +70,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the list of rewards
      */
     @Test
     public void fragmentHasRewardsByDefault() {
@@ -78,7 +78,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if pressing tab Rewards displays the list of rewards
      */
     @Test
     public void fragmentHasRewards() {
@@ -87,7 +87,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if pressing tab Eventos displays the list of events
      */
     @Test
     public void fragmentHasEvents() {
@@ -96,7 +96,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if pressing tab Ofertas displays the list of deals
      */
     @Test
     public void fragmentHasDeals() {
@@ -104,7 +104,9 @@ public class ListFavsTest {
         onView(withId(R.id.rvDealsFavList)).check(matches(isDisplayed()));
     }
 
-
+    /**
+     * Check if pressing the favorite button displays the favorite icon void in the list of Rewards
+     */
     @Test
     public void FavButtonChangeToFavoriteEmptyInRewardsTab() {
         onView(withId(R.id.rvRewardsFavList))
@@ -115,7 +117,9 @@ public class ListFavsTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
     }
 
-
+    /**
+     * Check if pressing the favorite button two times displays the favorite icon filled in the list of Rewards
+     */
     @Test
     public void FavButtonChangeToFavoriteFilledInRewardsTab() {
         onView(withId(R.id.rvRewardsFavList))
@@ -126,7 +130,9 @@ public class ListFavsTest {
                 .check(matches(withDrawable(R.drawable.ic_fav_filled)));
     }
 
-
+    /**
+     * Check if pressing the favorite button displays the favorite icon void in the list of Events
+     */
     @Test
     public void FavButtonChangeToFavoriteEmptyInEventsTab() {
         onView(withText("EVENTOS")).perform(click());
@@ -138,7 +144,9 @@ public class ListFavsTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.eventFavoriteButton)));
     }
 
-
+    /**
+     * Check if pressing the favorite button two times displays the favorite icon filled in the list of Events
+     */
     @Test
     public void FavButtonChangeToFavoriteFilledInEventsTab() {
         onView(withText("EVENTOS")).perform(click());
@@ -150,7 +158,9 @@ public class ListFavsTest {
                 .check(matches(withDrawable(R.drawable.ic_fav_filled)));
     }
 
-
+    /**
+     * Check if pressing the favorite button displays the favorite icon void in the list of Deals
+     */
     @Test
     public void FavButtonChangeToFavoriteEmptyInDealsTab() {
         onView(withText("OFERTAS")).perform(click());
@@ -162,7 +172,9 @@ public class ListFavsTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.ofertaFavoriteButton)));
     }
 
-
+    /**
+     * Check if pressing the favorite button two times displays the favorite icon filled in the list of Deals
+     */
     @Test
     public void FavButtonChangeToFavoriteFilledInDealsTab() {
         onView(withText("OFERTAS")).perform(click());
@@ -175,7 +187,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if clicking in a card_view favorite button two times displays the favorite button
+     * Check if clicking in a card_view of rewards display the Reward Detailed
      */
     @Test
     public void clickOnRewardDisplayRewardDetailed() {
@@ -184,7 +196,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if clicking in a card_view favorite button two times displays the favorite button
+     * Check if clicking in a card_view of events display the Event Detailed
      */
     @Test
     public void clickOnEventDisplayEventDetailed() {
@@ -194,7 +206,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if clicking in a card_view favorite button two times displays the favorite button
+     * Check if clicking in a card_view of deals display the Deal Detailed
      */
     @Test
     public void clickOnDealDisplayDealDetailed() {
@@ -204,7 +216,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have title
+     * Check if a card_view of rewards have the image
      */
     @Test
     public void rewardHasImage() {
@@ -212,7 +224,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have title
+     * Check if a card_view of rewards have the title
      */
     @Test
     public void rewardHasTitle() {
@@ -220,7 +232,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have points
+     * Check if a card_view of rewards have the points
      */
     @Test
     public void rewardHasPoints() {
@@ -228,7 +240,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have category
+     * Check if a card_view of rewards have the category
      */
     @Test
     public void rewardHasCategory() {
@@ -236,7 +248,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have end_date
+     * Check if a card_view of rewards have the end date
      */
     @Test
     public void rewardHasEndDate() {
@@ -244,7 +256,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have favorite button
+     * Check if a card_view of rewards have the favorite button
      */
     @Test
     public void rewardHasFavoriteButton() {
@@ -252,7 +264,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the card_view of the rewards_list have exchange button
+     * Check if a card_view of rewards have the exchange button
      */
     @Test
     public void rewardHasExchangeButton() {
@@ -260,7 +272,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the image
      */
     @Test
     public void eventHasImage() {
@@ -269,7 +281,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the title
      */
     @Test
     public void eventHasTitle() {
@@ -278,7 +290,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the points
      */
     @Test
     public void eventHasPoints() {
@@ -287,7 +299,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the category
      */
     @Test
     public void eventHasCategory() {
@@ -296,7 +308,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the end date
      */
     @Test
     public void eventHasEndDate() {
@@ -305,7 +317,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the hour
      */
     @Test
     public void eventHasHour() {
@@ -314,7 +326,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of events have the favorite button
      */
     @Test
     public void eventHasFavoriteButton() {
@@ -323,7 +335,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of deals have the image
      */
     @Test
     public void dealHasImage() {
@@ -332,7 +344,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of deals have the title
      */
     @Test
     public void dealHasTitle() {
@@ -341,7 +353,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of deals have the points
      */
     @Test
     public void dealHasPoints() {
@@ -350,7 +362,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of deals have the end date
      */
     @Test
     public void dealHasEndDate() {
@@ -359,7 +371,7 @@ public class ListFavsTest {
     }
 
     /**
-     * Check if the rewards_list have a card view
+     * Check if a card_view of deals have the favorite button
      */
     @Test
     public void dealHasFavorite() {

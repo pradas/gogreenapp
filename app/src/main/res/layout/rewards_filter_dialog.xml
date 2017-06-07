@@ -1,92 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="MissingPrefix"
-    android:padding="30dp">
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:baselineAlignBottom="true"
-        app:srcCompat="@drawable/ic_close" />
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/dialog_filters_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="25dp"
+                tools:ignore="MissingPrefix">
 
     <TextView
-        android:id="@+id/editText"
-        fontPath="fonts/Raleway-light.tff"
+        android:id="@+id/filter_by_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Filtrar por"
-        android:textSize="24sp"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_toStartOf="@+id/imageButton"
-        android:layout_marginEnd="14dp" />
+        android:text="@string/filter_by"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
-        android:layout_below="@+id/imageButton"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout3">
-
-    <Button
-        android:id="@+id/showAllButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Todos"
-        android:textAllCaps="true" />
-
-    <Button
-        android:id="@+id/showCategoriesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/categories"
-        android:textAllCaps="true" />
-
-    <Button
-        android:id="@+id/showRedeemablesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/showAllButton"
-        android:text="Canjeables"
-        android:textAllCaps="true" />
-    </LinearLayout>
-
-    <Spinner
-        android:id="@+id/spinner"
+    <RadioGroup
+        android:id="@+id/radio_filters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout3"
-        android:layout_marginBottom="21dp" />
+        android:layout_below="@id/filter_by_text"
+        android:orientation="horizontal">
 
-    <LinearLayout
+        <RadioButton
+            android:id="@+id/radio_filter_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all"/>
+
+        <RadioButton
+            android:id="@+id/radio_filter_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/categories"/>
+
+        <RadioButton
+            android:id="@+id/radio_filter_canjeables"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/canjeables"/>
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/categories_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radio_filters"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/sorter_by_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:layout_below="@id/categories_spinner"
+        android:text="@string/order_by"/>
 
-        <Button
-            android:id="@+id/orderPointsButton"
+    <RadioGroup
+        android:id="@+id/radio_sorter_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sorter_by_text"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_sorter_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PUNTOS"
-            android:textAllCaps="true" />
+            android:text="@string/date"/>
 
-        <Button
-            android:id="@+id/orderDateButton"
+        <RadioButton
+            android:id="@+id/radio_sorter_points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FECHA ↓"
-            android:textAllCaps="true" />
-    </LinearLayout>
+            android:text="@string/points"/>
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/radio_sorter_directions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radio_sorter_rewards"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <RadioButton
+            android:id="@+id/radio_sorter_ascendent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ascendent"/>
+
+        <RadioButton
+            android:id="@+id/radio_sorter_descendent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/descendent"/>
+
+    </RadioGroup>
 
 </RelativeLayout>
