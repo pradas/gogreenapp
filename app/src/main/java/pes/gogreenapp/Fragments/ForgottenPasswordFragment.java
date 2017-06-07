@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +99,7 @@ public class ForgottenPasswordFragment extends Fragment {
                 }
 
                 if (send) {
-                    new GetInfoUser().execute("http://10.4.41.145/api/users/" + identifier.getText().toString());
+                    new GetEmail().execute("http://10.4.41.145/api/users/" + identifier.getText().toString());
                     if (!mailAddressToSend.equals(null)) {
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -147,7 +144,7 @@ public class ForgottenPasswordFragment extends Fragment {
 
     }
 
-    private class GetInfoUser extends AsyncTask<String, Void, Void> {
+    private class GetEmail extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... urls) {
