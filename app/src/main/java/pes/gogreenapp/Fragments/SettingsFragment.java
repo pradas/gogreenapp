@@ -23,7 +23,6 @@ import pes.gogreenapp.Utils.SessionManager;
  */
 public class SettingsFragment extends Fragment {
     private SessionManager session;
-    private EditText oldPass;
     private EditText newPass;
     private EditText confirmNewPass;
     private Button changePass;
@@ -67,7 +66,6 @@ public class SettingsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
 
-        oldPass = (EditText) getView().findViewById(R.id.lastPass);
         newPass = (EditText) getView().findViewById(R.id.newPass);
         confirmNewPass = (EditText) getView().findViewById(R.id.confirmNewPass);
         changePass = (Button) getView().findViewById(R.id.changePass);
@@ -77,10 +75,6 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 Boolean send = true;
 
-                if (oldPass.getText().toString().length() <= 0) {
-                    oldPass.setError("La contraseña antigua es necesaria");
-                    send = false;
-                }
                 if (newPass.getText().toString().length() <= 0) {
                     newPass.setError("La nueva contraseña es necesaria");
                     send = false;

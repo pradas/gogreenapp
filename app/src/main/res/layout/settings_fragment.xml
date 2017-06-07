@@ -21,24 +21,11 @@
         fontPath="fonts/Raleway-Light.ttf" />
 
     <EditText
-        android:id="@+id/lastPass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/changePassTitle"
-        android:focusable="true"
-        android:fontFamily="serif"
-        android:hint="Antigua contraseña"
-        android:textColor="@drawable/mainbuttontext"
-        android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
-
-    <EditText
         android:id="@+id/newPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/lastPass"
+        android:layout_below="@+id/changePassTitle"
         android:focusable="true"
         android:fontFamily="serif"
         android:hint="Nueva contraseña"
