@@ -4,26 +4,43 @@ package pes.gogreenapp.Fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.Exceptions.UserNotExistException;
+import pes.gogreenapp.Objects.User;
+import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.UserData;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +53,9 @@ public class LoginFragment extends Fragment {
     private EditText textName;
     private EditText textPassword;
     private Button buttonRegister;
+    private TextView forgotPassword;
+
+
 
     /**
      * Required empty public constructor
@@ -80,12 +100,26 @@ public class LoginFragment extends Fragment {
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
+        forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
 
         // Set the text to Añadir Cuenta if calledFromAddAccount is true and hide Register Button
         if (calledForAddAccount) {
             buttonLogin.setText(R.string.add_account);
             buttonRegister.setVisibility(View.INVISIBLE);
         }
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container_login, ForgottenPasswordFragment.class.newInstance()).commit();
+                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;
@@ -98,8 +132,25 @@ public class LoginFragment extends Fragment {
                 send = false;
             }
             if (send) {
-                new PostLogin().execute("http://10.4.41.145/api/session", "POST", textName.getText().toString(),
-                        textPassword.getText().toString());
+
+                // check if you're trying to add existing user to SQLite
+                User user = null;
+                if (calledForAddAccount) {
+                    try {
+                        user = UserData.getUserByUsername(textName.getText().toString(),
+                                getActivity().getApplicationContext());
+                    } catch (NullParametersException | UserNotExistException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (user != null) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Ya has añadido esta cuenta",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // user doesn't exist so login
+                    new PostLogin().execute("http://10.4.41.145/api/session", "POST", textName.getText().toString(),
+                            textPassword.getText().toString());
+                }
             }
             // Staring MainActivity
         });
@@ -142,10 +193,11 @@ public class LoginFragment extends Fragment {
             bodyParams.put("user", params[2]);
             bodyParams.put("password", params[3]);
             String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
-            if (response.equals("401")){
+            if (response.equals("401")) {
                 return "Falla";
-            }
-            else{
+            } else if ("500".equals(response)) {
+                return "FallaServer";
+            } else {
                 try {
                     JSONObject aux = new JSONObject(response);
 
@@ -153,11 +205,20 @@ public class LoginFragment extends Fragment {
                     session = SessionManager.getInstance(getActivity().getApplicationContext());
                     session.putInfoLoginSession(params[2], aux.getString("role"), aux.getString("token"),
                             aux.getInt("points"));
+                    if ("manager".equals(aux.getString("role"))) {
+                        session.setShopId(aux.getInt("shop_id"));
+                    }
 
                     // insert the User info into the SQLite
                     try {
+                        Integer shopId;
+                        if ("manager".equals(aux.getString("role"))) {
+                            shopId = aux.getInt("shop_id");
+                        } else {
+                            shopId = 0;
+                        }
                         UserData.createUser(params[2], aux.getString("token"), aux.getInt("points"),
-                                aux.getString("role"), getActivity().getApplicationContext());
+                                aux.getString("role"), shopId, getActivity().getApplicationContext());
                     } catch (NullParametersException e) {
                         System.out.println(e.getMessage());
                     }
@@ -167,7 +228,6 @@ public class LoginFragment extends Fragment {
                     getActivity().finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    return "FallaServer";
                 }
             }
             return "Correcte";
@@ -182,8 +242,7 @@ public class LoginFragment extends Fragment {
 
             if (result.equalsIgnoreCase("Falla")) {
                 Toast.makeText(getActivity(), "Nombre o password incorrecto", Toast.LENGTH_LONG).show();
-            }
-            else if (result.equalsIgnoreCase("FallaServer")) {
+            } else if (result.equalsIgnoreCase("FallaServer")) {
                 Toast.makeText(getActivity(), "No esta disponible el servidor", Toast.LENGTH_LONG).show();
             }
         }

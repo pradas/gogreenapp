@@ -1,13 +1,13 @@
 package pes.gogreenapp.Fragments;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,15 +24,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Activities.MainActivity;
+
+import pes.gogreenapp.Adapters.EventsListShopAdapter;
 import pes.gogreenapp.Adapters.GivePointsByEventsAdapter;
 import pes.gogreenapp.Adapters.GivePointsByPointsAdapter;
 
-import pes.gogreenapp.Objects.Events;
+import pes.gogreenapp.Objects.Event;
 
 
 import pes.gogreenapp.R;
@@ -49,11 +54,12 @@ public class GivePointsFragment extends Fragment {
     private String modeItems;
     private ListView listToGivePoints;
     private List<String> users;
-    private List<Events> events;
+    private List<Event> events;
     private Switch mode;
     private Button grantPoints;
     private GivePointsByEventsAdapter adapterEvents;
     private GivePointsByPointsAdapter adapterPoints;
+    private String TAG = "EventsList";
 
     public GivePointsFragment() {
     }
@@ -75,11 +81,12 @@ public class GivePointsFragment extends Fragment {
         // Inflate the layout for this fragment
         modeItems = "Eventos";
         users = new ArrayList<String>();
-        events = new ArrayList<Events>();
+        events = new ArrayList<Event>();
         users.add("Usuario nº1");
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.give_points_fragment, container, false);
     }
+
 
     /**
      * Called when the fragment's activity has been created and this
@@ -93,79 +100,30 @@ public class GivePointsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        JSONArray eventsHard = new JSONArray();
-
-        JSONObject event = new JSONObject();
-        JSONObject event2 = new JSONObject();
-        JSONObject event3 = new JSONObject();
-        JSONObject event4 = new JSONObject();
-        try {
-            event.put("title","Evento 1");
-            event.put("points",100);
-            event2.put("title","Evento 2");
-            event2.put("points",200);
-            event3.put("title","Evento 3");
-            event3.put("points",300);
-            event4.put("title","Evento 4");
-            event4.put("points",400);
-            eventsHard.put(event);
-            eventsHard.put(event2);
-            eventsHard.put(event3);
-            eventsHard.put(event4);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < eventsHard.length(); ++ i) {
-            try {
-                JSONObject jsonObject = eventsHard.getJSONObject(i);
-                events.add(new Events((String) jsonObject.get("title"), (Integer) jsonObject.get("points")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        getActivity().setTitle("Dar Puntos");
+        session = SessionManager.getInstance();
+        new GetEvents().execute("http://10.4.41.145/api/shops/" + session.getShopId() + "/events");
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
-        adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
-        listToGivePoints.setAdapter(adapterEvents);
-
 
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.switchModeGive);
                 if (!isChecked) {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Eventos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
-                            listToGivePoints.setAdapter(adapterEvents);
-                        }
-                    });
+                    modeItems = "Eventos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
+                    listToGivePoints.setAdapter(adapterEvents);
                 }
                 else {
-                    builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            modeItems = "Puntos";
-                            users.clear();
-                            users.add("Usuario nº1");
-                            adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
-                            listToGivePoints.setAdapter(adapterPoints);
-                        }
-                    });
+                    modeItems = "Puntos";
+                    users.clear();
+                    users.add("Usuario nº1");
+                    adapterPoints = new GivePointsByPointsAdapter(getContext(), users);
+                    listToGivePoints.setAdapter(adapterPoints);
                 }
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) { }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
             }
         });
 
@@ -178,7 +136,7 @@ public class GivePointsFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (modeItems.equals("Eventos")) {
                                     List<String> userNames = adapterEvents.getUserNames();
-                                    List<Events> eventsSpinneds = adapterEvents.getEvents();
+                                    List<Event> eventsSpinneds = adapterEvents.getEvents();
                                     for (int i = 0; i < userNames.size(); ++ i) {
                                         new PutUser().execute("http://10.4.41.145/api/users/", "PUT",
                                                 (String) String.valueOf(eventsSpinneds.get(i).getPoints()),
@@ -228,7 +186,55 @@ public class GivePointsFragment extends Fragment {
         }
     }
 
+
     /**
+     * Asynchronous Task for the petition GET of all the Events.
+     */
+    private class GetEvents extends AsyncTask<String, Void, Void> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls The parameters of the task.
+         */
+        @Override
+        protected Void doInBackground(String... urls) {
+            Log.d(TAG, urls[0]);
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
+                    session.getToken());
+            Log.i(TAG, "Response from url: " + response);
+            if (response != null) {
+                try {
+                    JSONObject aux = new JSONObject(response);
+                    JSONArray jsonArray = aux.getJSONArray("events");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        events.add(new Event(jsonObject.getString("title"), jsonObject.getInt("points"))
+                        );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Creates the new Adapter and set the actual events by the result obtained.
+         *
+         * @param result of doInBackground()
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            adapterEvents = new GivePointsByEventsAdapter(getContext(), users, events);
+            listToGivePoints.setAdapter(adapterEvents);
+        }
+    }
+
+
+        /**
      * Asynchronous Task for the petition PUT of a User.
      */
     private class PutUser extends AsyncTask<String, Void, String> {
@@ -238,9 +244,9 @@ public class GivePointsFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
-         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         *               params[2] is the number of points to add to the user
+         *               params[3] is the username of the user
+         * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
          */
         @Override
         protected String doInBackground(String... params) {
@@ -248,26 +254,29 @@ public class GivePointsFragment extends Fragment {
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("points", params[2]);
             String url = params [0] + params[3];
-            session = SessionManager.getInstance();
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if (response != null && !response.equals("500") ) {
+            if (response != null && !response.equals("500") && !response.equals("404")) {
                 return "Correct";
             }
+            else if (response.equals("404")) return "El usuario " + params[3] + " no existe";
             return "Error";
         }
 
         /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
+         * Called when doInBackground is finished.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result Makes a toast with the result
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al conceder los puntos. Intentelo más tarde",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
+            }
+            else if (result.equalsIgnoreCase("Correct")){
+                Toast.makeText(getActivity(), "Puntos concedidos", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(getActivity(), "Puntos concedidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
             }
         }
     }

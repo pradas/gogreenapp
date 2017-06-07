@@ -109,6 +109,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                     Fragment fragment = (Fragment) new RewardDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
@@ -189,15 +190,16 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                                     Toast.LENGTH_LONG).show();
                         }
                         else {
-                            new PostReward().execute("http://10.4.41.145/api/users/", "POST",
+                            new Exchange().execute("http://10.4.41.145/api/users/", "POST",
                                     session.getUsername(), holder.id.toString());
                             Integer points = session.getPoints();
                             points -= (Integer) rewards.get(position).getPoints();
-                            //no se como se hace el set
+                            session.setPoints(points);
                             FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                             FragmentTransaction transaction = manager.beginTransaction();
                             Fragment fragment = (Fragment) new RewardsListFragment();
                             transaction.replace(R.id.flContent, fragment);
+                            transaction.addToBackStack(null);
                             transaction.commit();
                         }
                     }
@@ -215,18 +217,18 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
     }
 
     /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for exchange the reward
      */
-    private class PostReward extends AsyncTask<String, Void, String> {
+    private class Exchange extends AsyncTask<String, Void, String> {
 
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
-         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward
+         * @return "Error" if not exchanged or "Correct" if it is exchanged
          */
         @Override
         protected String doInBackground(String... params) {
@@ -242,7 +244,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
         /**
          * Called when doInBackground is finished, Toast an error if there is an error.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result If is "Error" or "Correct" makes the toast.
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {

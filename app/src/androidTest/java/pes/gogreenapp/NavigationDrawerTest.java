@@ -174,7 +174,7 @@ public class NavigationDrawerTest {
     public void checkShopAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.shop_view_fragment));
-        onView(withId(R.id.shop_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.shop_view_fragment)).check(matches(isDisplayed()));
     }
 
     /**
@@ -203,7 +203,7 @@ public class NavigationDrawerTest {
     public void checkNewDealAccess() {
 
         onView(withId(R.id.nvView)).perform(navigateTo(R.id.new_deal_fragment));
-        onView(withId(R.id.new_deal_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.create_oferta_event)).check(matches(isDisplayed()));
     }
 
     /**

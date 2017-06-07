@@ -31,8 +31,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailedFragment extends Fragment {
-    private static int RESULT_LOAD_IMG = 1;
-    String imgDecodableString;
+    //initialitions
     private SessionManager session;
     private ImageView image;
     private TextView title;
@@ -99,6 +98,7 @@ public class EventDetailedFragment extends Fragment {
         date = (TextView) getView().findViewById(R.id.dateEventDetailed);
         time = (TextView) getView().findViewById(R.id.hourEventDetailed);
         direction = (TextView) getView().findViewById(R.id.directionEventDetailed);
+        getActivity().setTitle("Evento");
         try {
             new GetEvent().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -134,8 +134,6 @@ public class EventDetailedFragment extends Fragment {
                     if (!jsonObject.isNull("company")) company = jsonObject.getString("company");
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
-                    Boolean favorite = false;
-                    if (jsonObject.get("favourite") == "true") favorite = true;
                     event = new Event(jsonObject.getInt("id"),
                             jsonObject.getString("title"),
                             jsonObject.getString("description"),
@@ -145,7 +143,7 @@ public class EventDetailedFragment extends Fragment {
                             df.parse(jsonObject.getString("date")),
                             image,
                             jsonObject.getString("category"),
-                            favorite);
+                            jsonObject.getBoolean("favourite"));
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

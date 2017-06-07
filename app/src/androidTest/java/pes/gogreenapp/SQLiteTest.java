@@ -52,15 +52,15 @@ public class SQLiteTest {
         MySQLiteHelper.changeToTestDatabase(myActivityRule.getActivity().getApplicationContext());
 
         try {
-            UserData.createUser(username, "token", 0, "role", myActivityRule.getActivity().getApplicationContext());
+            UserData.createUser(username, "token", 0, "role",0, myActivityRule.getActivity().getApplicationContext());
 
             if (testName.getMethodName().equals("checkGetUsernames") ||
                     testName.getMethodName().equals("checkGetIds")) {
-                UserData.createUser(username + "X", "token", 0, "role",
+                UserData.createUser(username + "X", "token", 0, "role",0,
                         myActivityRule.getActivity().getApplicationContext());
-                UserData.createUser(username + "Y", "token", 0, "role",
+                UserData.createUser(username + "Y", "token", 0, "role",0,
                         myActivityRule.getActivity().getApplicationContext());
-                UserData.createUser(username + "Z", "token", 0, "role",
+                UserData.createUser(username + "Z", "token", 0, "role",0,
                         myActivityRule.getActivity().getApplicationContext());
             }
         } catch (NullParametersException e) {
@@ -200,7 +200,7 @@ public class SQLiteTest {
     @Test(expected = NullParametersException.class)
     public void nullParametersOnInsertData() throws NullParametersException {
 
-        UserData.createUser(null, null, null, null, null);
+        UserData.createUser(null, null, null, null, null, null);
     }
 
     /**

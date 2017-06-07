@@ -57,7 +57,6 @@ public class ListRewardTest {
      */
     @Test
     public void showsAllRewards() {
-
         onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
     }
 
@@ -66,7 +65,6 @@ public class ListRewardTest {
      */
     @Test
     public void rewardHasCorrectAttributes() {
-
         onView(withId(R.id.rv)).check(matches(hasDescendant(withId(R.id.rewardTitle))));
     }
 
@@ -134,29 +132,6 @@ public class ListRewardTest {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if clicking in a card_view favorite button displays the favorite button filled
-     */
-    @Test
-    public void FavButtonChangeToFavoriteFilled() {
-
-        onView(withId(R.id.rv))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.drawable.ic_fav_filled)));
-    }
-
-    /**
-     * Check if clicking in a card_view favorite button two times displays the favorite button
-     */
-    @Test
-    public void FavButtonChangeToFavoriteEmpty() {
-
-        onView(withId(R.id.rv))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withRecyclerView(R.id.rv).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.drawable.ic_fav_void)));
-    }
 
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
 

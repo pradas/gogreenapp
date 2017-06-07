@@ -82,6 +82,22 @@
     <!-- Buttons Give Points -->
     <string name="anotherUser">+ Otro Usuario</string>
     <string name="grantPoints">Conceder Puntos</string>
+    <string name="ofertas">Ofertas</string>
+    <string name="TituloCreateOferta">Titulo</string>
+    <string name="descuento">Descuento</string>
+    <string name="fecha_de_la_oferta">Fecha de la oferta</string>
+    <string name="crear_oferta">Crear Oferta</string>
+    <string name="imagen_de_la_oferta">imagen de la oferta</string>
+    <string name="ir_a_la_tienda">IR A LA TIENDA</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="atras">Atras</string>
+    <string name="añadir_a_favoritos">Añadir a favoritos</string>
+    <string name="description_delete_button_employee">Image button to delete the employee</string>
+    <string name="hint_employee_email">email del empleado</string>
+    <string name="hint_employee_username">username del empleado</string>
+    <string name="hint_password_employee">contraseña para el empleado</string>
+    <string name="button_add">Añadir</string>
+    <string name="add_employee">Añadir Empleado</string>
     <string name="button_for_close_the_dialog">Button for close the dialog</string>
     <string name="all">All</string>
     <string name="canjeables">Canjeables</string>

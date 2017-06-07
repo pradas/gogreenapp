@@ -22,6 +22,7 @@ import static android.R.id.list;
 
 public class AccountManagerAdapter extends BaseAdapter implements ListAdapter {
 
+
     private List<String> users = new ArrayList<String>();
     private Context context;
 

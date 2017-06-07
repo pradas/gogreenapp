@@ -13,18 +13,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import pes.gogreenapp.Objects.Events;
+import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 
 /**
@@ -36,7 +28,7 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     Context context;
     private List<String> users;
     private List<String> userNames;
-    private List<Events> events;
+    private List<Event> events;
     private List<Integer> eventsSelected;
 
 
@@ -46,6 +38,11 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
         EditText userNameTextByEvents;
         Spinner spinnerEvents;
 
+        /**
+         * Constructor of the View Holder that sets all the items.
+         *
+         * @param v valid View where to construct.
+         */
         ListViewHolder (View v) {
             userNumberByEvents = (TextView) v.findViewById(R.id.userNumberByEvents);
             userNameTextByEvents = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
@@ -63,7 +60,14 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     }
 
 
-    public GivePointsByEventsAdapter(Context context, List<String> users, List <Events> events) {
+    /**
+     * Constructor that set the List of Rewards.
+     *
+     * @param context non-null context of the application.
+     * @param users non-null list of number of users to give points
+     * @param events non-null list of events of the shop
+     */
+    public GivePointsByEventsAdapter(Context context, List<String> users, List <Event> events) {
         this.users = users;
         this.context = context;
         this.userNames = new ArrayList<String>();
@@ -84,6 +88,14 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) { return 0; }
 
+    /**
+     * Obtains the LayoutInflater from the given context and usse it to create a new ViewHolder.
+     *
+     * @param position   The item of the view
+     * @param convertView The new view
+     * @param parent All the items of the list
+     * @return A new view that holds all the methods of each item
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewHolder viewHolder = null;
@@ -130,10 +142,16 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * @return the list of users to give points
+     */
     public List <String> getUserNames () { return userNames; }
 
-    public List <Events> getEvents() {
-        List <Events> result = new ArrayList<Events>();
+    /**
+     * @return the list of events assisted by the users
+     */
+    public List <Event> getEvents() {
+        List <Event> result = new ArrayList<Event>();
         for (int i = 0; i < eventsSelected.size(); ++ i) {
             result.add(events.get(eventsSelected.get(i)));
         }

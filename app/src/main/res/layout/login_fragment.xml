@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/imageGoGreen"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="82dp"
             android:focusable="true"
             android:fontFamily="serif"
             android:hint="Nombre de usuario o email"
@@ -71,8 +71,19 @@
             android:background="@drawable/buttonregisterloginshape"
             android:text="login"
             android:textColor="@drawable/mainbuttontext"
+            android:layout_above="@+id/forgotPassword" />
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:text="¿Olvidó su contraseña?"
+            android:ems="10"
+            android:fontFamily="Roboto"
+            android:gravity="center"
+            android:textColor="@drawable/mainbuttontext"/>
 
 
     </RelativeLayout>

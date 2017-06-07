@@ -98,6 +98,7 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Rewards");
         session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);

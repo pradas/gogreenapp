@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Fragments.EventDetailedFragment;
+import pes.gogreenapp.Fragments.EventsListShopFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -93,6 +96,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                     Fragment fragment = (Fragment) new EventDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             });
@@ -158,13 +162,14 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
+                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
         });
+
     }
-
-
 
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
@@ -187,6 +192,29 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
                 Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
             else Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition GET of all the Rewards.
+     */
+    private class DeleteFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params [2] + "/favourite-events/" + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -60,6 +60,19 @@ public class AsyncHttpHandler {
     }
 
     /**
+     * Perform a DELETE petition to the API
+     *
+     * @param url             url + BASE_URL are the uri HTTP petition
+     * @param params          body params of the petition, it can be null in case of empty body
+     * @param responseHandler AsyncHttpResponseHandler to create a thread
+     */
+    public static void delete(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+
+        setToken();
+        client.delete(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    /**
      * Join the BASE_URL and relativeUrl
      *
      * @param relativeUrl url relative to the BASE_URL

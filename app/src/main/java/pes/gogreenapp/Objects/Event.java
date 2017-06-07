@@ -18,6 +18,12 @@ public class Event {
     private String category;
     private Boolean favorite;
     private byte[] image;
+    private Integer idShop;
+
+    public Event(String title, Integer points) {
+        this.title = title;
+        this.points = points;
+    }
 
     public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category, Boolean favorite) {
         this.id = id;
@@ -36,6 +42,25 @@ public class Event {
         }
 
     }
+    public Event(Integer id, String title, String description, Integer points, String direction,String company, Date date, String image, String category, Boolean favorite, Integer idShop) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.points = points;
+        this.direction = direction;
+        this.company = company;
+        this.date = date;
+        this.hour = String.valueOf(date.getHours());
+        this.min = String.valueOf(date.getMinutes());
+        this.category = category;
+        this.favorite = favorite;
+        if (image != null) {
+            this.image = Base64.decode(image, 0);
+        }
+        this.idShop = idShop;
+
+    }
+
     public String getTitle() {
         return title;
     }
@@ -123,5 +148,13 @@ public class Event {
     public boolean isFavorite() { return favorite; }
 
     public void setFavorite( boolean favorite) { this.favorite = favorite; }
+
+    public Integer getIdShop() {
+        return idShop;
+    }
+
+    public void setIdShop(Integer idShop) {
+        this.idShop = idShop;
+    }
 }
 
