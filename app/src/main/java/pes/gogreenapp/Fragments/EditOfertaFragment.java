@@ -70,7 +70,7 @@ public class EditOfertaFragment extends Fragment {
     private Integer id;
     private Oferta oferta;
     static private String TAG = "EditOferta";
-    private String URLPetition = "http://10.4.41.145/api/";
+    private String URLPetition = "";
     private String URLPut = "http://10.4.41.145/api/shops/";
 
     /**
@@ -131,7 +131,8 @@ public class EditOfertaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         id = getArguments().getInt("id");
-        URLPetition =  URLPetition + "deals/" + String.valueOf(id);
+        URLPetition =  "http://10.4.41.145/api/deals/" + String.valueOf(id);
+        getActivity().setTitle("Editar Oferta");
         return inflater.inflate(R.layout.edit_oferta_fragment, container, false);
     }
 

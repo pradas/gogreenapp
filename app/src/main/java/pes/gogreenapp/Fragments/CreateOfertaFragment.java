@@ -121,6 +121,7 @@ public class CreateOfertaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Nueva Oferta");
         return inflater.inflate(R.layout.create_oferta_fragment, container, false);
     }
 
