@@ -54,14 +54,6 @@ public class ForgottenPasswordTest {
      * Check if the xml have the switch button
      */
     @Test
-    public void fragmentHasEditTextUserName() {
-        onView(withId(R.id.username_edit_text_forgot_password)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
     public void fragmentHasEditTextEmail() {
         onView(withId(R.id.email_edit_text_forgot_password)).check(matches(isDisplayed()));
     }
@@ -72,15 +64,6 @@ public class ForgottenPasswordTest {
     @Test
     public void fragmentHasButton() {
         onView(withId(R.id.reSendPassword)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the xml have the switch button
-     */
-    @Test
-    public void errorEmptyUsername() {
-        onView(withId(R.id.reSendPassword)).perform(click());
-        onView(withId(R.id.username_edit_text_forgot_password)).check(matches(withError("Username necesario")));
     }
 
     /**
