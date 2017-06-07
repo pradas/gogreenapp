@@ -92,6 +92,12 @@
     <string name="favoritos">Favoritos</string>
     <string name="atras">Atras</string>
     <string name="añadir_a_favoritos">Añadir a favoritos</string>
+    <string name="description_delete_button_employee">Image button to delete the employee</string>
+    <string name="hint_employee_email">email del empleado</string>
+    <string name="hint_employee_username">username del empleado</string>
+    <string name="hint_password_employee">contraseña para el empleado</string>
+    <string name="button_add">Añadir</string>
+    <string name="add_employee">Añadir Empleado</string>
 
 
 </resources>

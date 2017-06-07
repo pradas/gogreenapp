@@ -1,8 +1,9 @@
-package pes.gogreenapp;
+package pes.gogreenapp.Utils;
 
 import android.app.Application;
 import android.content.Context;
 
+import pes.gogreenapp.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
