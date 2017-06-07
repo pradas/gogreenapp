@@ -175,7 +175,7 @@ public class ShopEditProfileFragment extends Fragment {
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
                                 Fragment fragment = (Fragment) new ShopProfileInfoFragment();
-                                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                                transaction.replace(R.id.shopProfile, fragment).addToBackStack( "tag" ).commit();
                             }
                         })
                         .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
