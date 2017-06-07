@@ -1,5 +1,6 @@
 package pes.gogreenapp.Fragments;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -27,7 +30,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -41,12 +43,16 @@ import static android.content.ContentValues.TAG;
 public class ForgottenPasswordFragment extends Fragment {
 
     private SessionManager session;
-    private EditText identifier;
+    private EditText userName;
+    private EditText email;
     private Button sendPassword;
     String mailAddressSender;
-    String mailAddressToSend;
     String password;
     Session sessionMail;
+    Boolean exists;
+    String textEmail;
+    Integer newPassword;
+    private Activity activity;
 
     /**
      * Required empty public constructor
@@ -66,6 +72,7 @@ public class ForgottenPasswordFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        exists = false;
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.forgotten_password_fragment, container, false);
     }
@@ -83,24 +90,39 @@ public class ForgottenPasswordFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
+        activity = getActivity();
 
-        identifier = (EditText) getView().findViewById(R.id.username_edit_text_forgot_password);
+        userName = (EditText) getView().findViewById(R.id.username_edit_text_forgot_password);
+        email = (EditText) getView().findViewById(R.id.email_edit_text_forgot_password);
         sendPassword = (Button) getView().findViewById(R.id.reSendPassword);
         mailAddressSender = "gogreenfib@gmail.com";
         password = "Password12FIB";
+        Random r = new Random();
+        newPassword = r.nextInt(100000 - 1) + 65;
+        textEmail = "Hola. Ha llegado una petición de cambiar contraseña desde la APP de GoGreen. " +
+                "Tu nueva contraseña es " + newPassword + ". Introducela para poder entrar y cambiala lo antes " +
+                "posible en el menú de Settings de la app.";
 
         sendPassword.setOnClickListener(new View.OnClickListener() {
             Boolean send = true;
             @Override
             public void onClick(View v) {
-                if (identifier.getText().toString().length() <= 0) {
-                    identifier.setError("Nombre necesario");
+                if (userName.getText().toString().length() <= 0) {
+                    userName.setError("Correo necesario");
+                    send = false;
+                }
+                if (email.getText().toString().length() <= 0) {
+                    email.setError("Correo necesario");
                     send = false;
                 }
 
                 if (send) {
-                    new GetEmail().execute("http://10.4.41.145/api/users/" + identifier.getText().toString());
-                    if (!mailAddressToSend.equals(null)) {
+                    try {
+                        new EmailExists().execute("http://10.4.41.145/api/validate-email", "POST", email.getText().toString()).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    if (exists) {
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                         StrictMode.setThreadPolicy(policy);
@@ -123,13 +145,16 @@ public class ForgottenPasswordFragment extends Fragment {
                                 Message message = new MimeMessage(sessionMail);
                                 message.setFrom(new InternetAddress(mailAddressSender));
                                 message.setSubject("[GOGREEN] Recupera tu contraseña");
-                                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailAddressToSend));
-                                message.setContent("ESTE ES EL MENSAJE", "text/html; charset=utf-8");
+                                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getText().toString()));
+                                message.setContent(textEmail, "text/html; charset=utf-8");
                                 Transport.send(message);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                        new PutUser().execute("http://10.4.41.145/api/users/",
+                                "PUT", (String) String.valueOf(newPassword), userName.getText().toString());
 
                         try {
                             getActivity().getSupportFragmentManager().beginTransaction()
@@ -143,29 +168,81 @@ public class ForgottenPasswordFragment extends Fragment {
         });
     }
 
-    private class GetEmail extends AsyncTask<String, Void, Void> {
+    private class EmailExists extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Void doInBackground(String... urls) {
-            HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
-                    session.getToken());
+        protected String doInBackground(String... params) {
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("email", params[2]);
+            String response = new HttpHandler().makeServiceCall(params[0], params[1], bodyParams,
+                    "");
             Log.i(TAG, "Response from url: " + response);
-            try {
-                JSONObject jsonArray = new JSONObject(response);
-                mailAddressToSend = jsonArray.getString("email");
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (response != "404" && response != "500" && (!response.equals(null))) {
+                return "Correct";
             }
-            return null;
+            return "Error";
         }
 
 
         @Override
-        protected void onPostExecute(Void result) {
-            if (mailAddressToSend.equals(null)) {
-                Toast.makeText(getActivity(), "Este usuario no existe",
-                        Toast.LENGTH_LONG).show();
+        protected void onPostExecute(String result) {
+            if (result.equals("Error")) {
+                email.setError("Este email no pertenece a ningun usuario");
+                exists = false;
+            }
+            else {
+                exists = true;
+            }
+        }
+    }
+
+    /**
+     * Asynchronous Task for the petition PUT of a User.
+     */
+    private class PutUser extends AsyncTask<String, Void, String> {
+
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the number of points to add to the user
+         *               params[3] is the username of the user
+         * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("password", params[2]);
+            String url = params[0] + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams,
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsImlzcyI6Imh0dHA6XC9cLzEwLjQuND" +
+                            "EuMTQ1XC9hcGlcL3Nlc3Npb24iLCJpYXQiOjE0OTY4NTQxNjIsImV4cCI6MTUwMTY5MjU2M" +
+                            "iwibmJmIjoxNDk2ODU0MTYyLCJqdGkiOiJ6T3pEZTRBVmJ6OTVOelptIn0.bsIhl4ych-iR" +
+                            "0oOxzGLQT2sL_wd2pljOqyKDvAZ6gEQ");
+            if (response != null && !response.equals("500") && !response.equals("404")) {
+                return "Correct";
+            }
+            else if (response.equals("404")) return "El usuario " + params[3] + " no existe";
+            return "Error";
+        }
+
+        /**
+         * Called when doInBackground is finished.
+         *
+         * @param result Makes a toast with the result
+         */
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(activity, "Error al enviar el email",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else if (result.equalsIgnoreCase("Correct")){
+                Toast.makeText(activity, "Email enviado", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
             }
         }
     }
