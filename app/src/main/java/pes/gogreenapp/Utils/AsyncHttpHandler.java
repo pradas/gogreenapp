@@ -69,7 +69,7 @@ public class AsyncHttpHandler {
     public static void delete(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
         setToken();
-        client.put(getAbsoluteUrl(url), params, responseHandler);
+        client.delete(getAbsoluteUrl(url), params, responseHandler);
     }
 
     /**
