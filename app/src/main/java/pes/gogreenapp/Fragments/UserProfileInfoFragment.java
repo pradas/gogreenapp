@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,6 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -53,7 +49,7 @@ public class UserProfileInfoFragment extends Fragment {
     private TextView userBirthDate;
     private TextView userEmail;
     DateFormat sourceFormat = new SimpleDateFormat("dd-MM-yyyy");
-
+    private Bitmap profileImageBitmap;
     private User user;
 
 
@@ -119,22 +115,6 @@ public class UserProfileInfoFragment extends Fragment {
     }
 
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
-        Bitmap b_image_user;
-
-
-
-        private Bitmap getRemoteImage(final URL aURL) {
-            try {
-                final URLConnection conn = aURL.openConnection();
-                conn.connect();
-                final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                final Bitmap bm = BitmapFactory.decodeStream(bis);
-                bis.close();
-                return bm;
-            } catch (IOException e) {}
-            return null;
-        }
-
 
         @Override
         protected Void doInBackground(String... urls) {
@@ -142,8 +122,6 @@ public class UserProfileInfoFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET" , new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
-
-            URL imageUrl = null;
             try {
 
                 JSONObject jsonArray = new JSONObject(response);
@@ -157,30 +135,27 @@ public class UserProfileInfoFragment extends Fragment {
                         jsonArray.getInt("points"),
                         jsonArray.getString("created_at"));
 
-                imageUrl = new URL(jsonArray.getString("image"));
+                String image = jsonArray.getString("image");
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                byte[] imageData = Base64.decode(image, Base64.DEFAULT);
+                profileImageBitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (imageUrl != null)b_image_user = this.getRemoteImage(imageUrl);
-
             return null;
         }
 
 
         @Override
         protected void onPostExecute(Void result) {
+            userImage.setImageBitmap(profileImageBitmap);
 
-            if(user.getUserUrlImage() != null) userImage.setImageBitmap(b_image_user);
-            else userImage.setImageResource(R.drawable.default_profile_image);
-
-            userName.setText("Nombre: " + user.getName());
-            userNickName.setText("Nickname: " + user.getUsername());
+            userName.setText(user.getName());
+            userNickName.setText("Username : " + user.getUsername());
             userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
             userActualPoints.setText(String.valueOf(user.getCurrentPoints()));
-            userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
+            userCreationDate.setText(sourceFormat.format(user.getCreationDate()));
             userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
             userEmail.setText("Email: " + user.getEmail());
 
