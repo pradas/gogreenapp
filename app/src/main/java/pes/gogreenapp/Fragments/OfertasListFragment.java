@@ -95,7 +95,7 @@ public class OfertasListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.ofertas_list_menu, menu);
-
+        getActivity().setTitle("Ofertas");
         super.onCreateOptionsMenu(menu,inflater);
     }
     @Override
@@ -170,12 +170,6 @@ public class OfertasListFragment extends Fragment {
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        ofertas = new ArrayList<>();
-    }
-
     /**
      * On swipe, refresh all the items of the screen.
      */
@@ -222,6 +216,7 @@ public class OfertasListFragment extends Fragment {
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
             Log.i(TAG, urls[0]);
+            ofertas.clear();
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);

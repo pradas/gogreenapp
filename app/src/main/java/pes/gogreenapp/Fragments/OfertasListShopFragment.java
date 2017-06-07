@@ -160,6 +160,7 @@ public class OfertasListShopFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Ofertas de tu tienda");
         session = SessionManager.getInstance();
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertasListShop);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertasListShop);
@@ -172,11 +173,6 @@ public class OfertasListShopFragment extends Fragment {
     }
 
 
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        ofertas = new ArrayList<>();
-    }
     /**
      * On swipe, refresh all the items of the screen.
      */
@@ -223,6 +219,7 @@ public class OfertasListShopFragment extends Fragment {
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
             Log.i(TAG, urls[0]);
+            ofertas.clear();
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);

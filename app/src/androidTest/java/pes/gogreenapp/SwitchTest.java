@@ -76,7 +76,7 @@ public class SwitchTest {
             String usernameUser = "user";
             if (testName.getMethodName().equals("checkUserSwitchToShopper")) {
                 //the test check the switch functionality user to shopper
-                UserData.createUser(usernameShopper, "token", 0, "shopper",
+                UserData.createUser(usernameShopper, "token", 0, "shopper", 0,
                         myActivityRule.getActivity().getApplicationContext());
                 idShopper = UserData.getUserIdByUsername(usernameShopper,
                         myActivityRule.getActivity().getApplicationContext());
@@ -85,7 +85,7 @@ public class SwitchTest {
                 onView(withId(R.id.username_edit_text)).perform(clearText(), typeText(usernameUser));
             } else if (testName.getMethodName().equals("checkUserSwitchToManager")) {
                 //the test check the switch functionality user to manager
-                UserData.createUser(usernameManager, "token", 0, "manager",
+                UserData.createUser(usernameManager, "token", 0, "manager", 0,
                         myActivityRule.getActivity().getApplicationContext());
                 idManager = UserData.getUserIdByUsername(usernameManager,
                         myActivityRule.getActivity().getApplicationContext());

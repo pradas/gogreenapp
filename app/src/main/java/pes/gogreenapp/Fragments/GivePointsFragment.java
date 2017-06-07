@@ -100,6 +100,7 @@ public class GivePointsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Dar Puntos");
         session = SessionManager.getInstance();
         new GetEvents().execute("http://10.4.41.145/api/shops/" + session.getShopId() + "/events");
         mode = (Switch) getView().findViewById(R.id.switchModeItem) ;

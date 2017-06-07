@@ -3,6 +3,7 @@ package pes.gogreenapp.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import pes.gogreenapp.Fragments.TabDealsFragment;
 import pes.gogreenapp.Fragments.TabEventsFragment;

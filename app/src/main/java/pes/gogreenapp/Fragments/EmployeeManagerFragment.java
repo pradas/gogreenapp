@@ -23,6 +23,7 @@ public class EmployeeManagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Gestor Empleados");
         return inflater.inflate(R.layout.employee_manager_fragment, container, false);
     }
 

@@ -74,6 +74,7 @@ public class OfertaDetailedFragment extends Fragment {
         byte[] b = getArguments().getByteArray("image");
         //Crear imagen
         bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+        getActivity().setTitle("Oferta");
 
         return view;
     }

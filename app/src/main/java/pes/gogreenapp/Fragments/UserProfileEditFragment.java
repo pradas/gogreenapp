@@ -137,6 +137,7 @@ public class UserProfileEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Editar Perfil");
         return inflater.inflate(R.layout.user_profile_edit_fragment, container, false);
     }
 

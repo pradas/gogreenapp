@@ -131,6 +131,7 @@ public class EditEventFragment extends Fragment {
         View view = inflater.inflate(R.layout.edit_event_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
+        getActivity().setTitle("Editar Evento");
         return view;
     }
 

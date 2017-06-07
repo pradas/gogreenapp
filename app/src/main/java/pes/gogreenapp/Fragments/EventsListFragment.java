@@ -80,6 +80,7 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        getActivity().setTitle("Eventos");
         return inflater.inflate(R.layout.events_list_fragment, container, false);
     }
 
@@ -131,12 +132,6 @@ public class EventsListFragment extends Fragment {
                 return true;
         }
         return false;
-    }
-
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        events = new ArrayList<>();
     }
 
     /**
@@ -318,6 +313,7 @@ public class EventsListFragment extends Fragment {
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
                     session.getToken());
+            events.clear();
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {

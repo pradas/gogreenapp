@@ -80,6 +80,7 @@ public class EventsListShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        getActivity().setTitle("Eventos de tu tienda");
         return inflater.inflate(R.layout.events_list_shop_fragment, container, false);
     }
 
@@ -143,12 +144,6 @@ public class EventsListShopFragment extends Fragment {
         new GetCategories().execute(url + "categories");
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
-    }
-
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        events = new ArrayList<>();
     }
 
     /**
@@ -308,6 +303,7 @@ public class EventsListShopFragment extends Fragment {
             String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
                     session.getToken());
             Log.i(TAG, "Response from url: " + response);
+            events.clear();
             if (response != null) {
                 try {
                     JSONObject aux = new JSONObject(response);

@@ -81,6 +81,7 @@ public class RewardDetailedFragment extends Fragment {
         id = getArguments().getInt("id");
         url += id;
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        getActivity().setTitle("Reward");
 
         byte[] b = getArguments().getByteArray("image");
         //Crear imagen

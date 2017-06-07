@@ -80,6 +80,7 @@ public class UserProfileInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Perfil");
         return inflater.inflate(R.layout.user_profile_info_fragment, container, false);
     }
 

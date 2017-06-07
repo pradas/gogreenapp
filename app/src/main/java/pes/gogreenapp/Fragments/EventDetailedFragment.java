@@ -98,6 +98,7 @@ public class EventDetailedFragment extends Fragment {
         date = (TextView) getView().findViewById(R.id.dateEventDetailed);
         time = (TextView) getView().findViewById(R.id.hourEventDetailed);
         direction = (TextView) getView().findViewById(R.id.directionEventDetailed);
+        getActivity().setTitle("Evento");
         try {
             new GetEvent().execute(url).get();
         } catch (InterruptedException | ExecutionException e) {
