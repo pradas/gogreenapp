@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -76,12 +77,18 @@ public class EmployeeListAdapter extends BaseAdapter implements ListAdapter {
             SessionManager instance = SessionManager.getInstance();
             AsyncHttpHandler.delete("shops/" + instance.getShopId() + "/employees/" + employees.get(position), null,
                     new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                            if (statusCode == 200) {
+                                Toast.makeText(context, "empleado eliminado", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
                         @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,
-                                              JSONObject response) {
+                        public void onFailure(int statusCode, Header[] headers, String xml, Throwable throwable) {
                             // called when response HTTP status is "4XX"
-                            Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+                            Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
                         }
                     });
             employees.remove(position);
@@ -89,5 +96,10 @@ public class EmployeeListAdapter extends BaseAdapter implements ListAdapter {
         });
 
         return view;
+    }
+
+    public void setEmployees(List<String> employees) {
+
+        this.employees = employees;
     }
 }
