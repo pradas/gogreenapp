@@ -32,6 +32,8 @@ public class Reward {
      * @param points   of the Reward.
      * @param endDate  of the Reward.
      * @param category of the Reward.
+     * @param favorite of the Reward.
+     * @param image of the Reward.
      */
     public Reward(Integer id, String title, Integer points, Date endDate, String category, Boolean favorite, Bitmap image) {
         this.id = id;
@@ -43,6 +45,21 @@ public class Reward {
         this.image = image;
     }
 
+    /**
+     * Constructor of the Reward Object.
+     *
+     * @param id       of the Reward.
+     * @param title    of the Reward.
+     * @param points   of the Reward.
+     * @param endDate  of the Reward.
+     * @param description of the Reward.
+     * @param info of the Reward.
+     * @param contactWeb of the Reward.
+     * @param contactInfo       of the Reward.
+     * @param exchangeLatitude    of the Reward.
+     * @param exchangeLenght   of the Reward.
+     * @param favorite  of the Reward.
+     */
     public Reward(Integer id, String title, Integer points, Date endDate, String description,
                   String info, String contactWeb, String contactInfo, Double exchangeLatitude,
                   Double exchangeLenght, Boolean favorite) {
@@ -148,58 +165,128 @@ public class Reward {
         this.exchangeDate = exchangeDate;
     }*/
 
+    /**
+     * Getter of the Reward description
+     *
+     * @return the Reward description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Setter of the Reward description
+     *
+     * @param description new description of the Reward.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Getter of the Reward info
+     *
+     * @return the Reward info
+     */
     public String getInfo() {
         return info;
     }
 
+    /**
+     * Setter of the Reward info
+     *
+     * @param info new info of the Reward.
+     */
     public void setInfo(String info) {
         this.info = info;
     }
 
+    /**
+     * Getter of the Reward contact-web
+     *
+     * @return the Reward contact-web
+     */
     public String getContactWeb() {
         return contactWeb;
     }
 
+    /**
+     * Setter of the Reward contactWeb
+     *
+     * @param contactWeb new contactWeb of the Reward.
+     */
     public void setContactWeb(String contactWeb) {
         this.contactWeb = contactWeb;
     }
 
+    /**
+     * Getter of the Reward contact info
+     *
+     * @return the Reward contact info
+     */
     public String getContactInfo() {
         return contactInfo;
     }
 
+    /**
+     * Setter of the Reward contactInfo
+     *
+     * @param contactInfo new contactInfo of the Reward.
+     */
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
     }
 
+    /**
+     * Getter of the Reward exchange latitude
+     *
+     * @return the Reward eschange latitude
+     */
     public Double getExchangeLatitude() {
         return exchangeLatitude;
     }
 
+    /**
+     * Setter of the Reward exchangeLatitude
+     *
+     * @param exchangeLatitude new exchangeLatitude of the Reward.
+     */
     public void setExchangeLatitude(Double exchangeLatitude) {
         this.exchangeLatitude = exchangeLatitude;
     }
 
+    /**
+     * Getter of the Reward exchange lenght
+     *
+     * @return the Reward exchange lenght
+     */
     public Double getExchangeLenght() {
         return exchangeLenght;
     }
 
+    /**
+     * Setter of the Reward exchangeLenght
+     *
+     * @param exchangeLenght new exchangeLenght of the Reward.
+     */
     public void setExchangeLenght(Double exchangeLenght) {
         this.exchangeLenght = exchangeLenght;
     }
 
+    /**
+     * Getter of the Reward favorite
+     *
+     * @return if the reward is favorite
+     */
     public boolean isFavorite() {
         return favorite;
     }
 
+    /**
+     * Setter of the Reward favorite
+     *
+     * @param favorite new state of the reward
+     */
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }

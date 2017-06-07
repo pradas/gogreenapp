@@ -247,13 +247,19 @@ public class RewardDetailedFragment extends Fragment {
     }
 
     /**
-     * Asynchronous Task for the petition POST of a Reward.
-     */
-    /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for the petition POST of a favorite to the reward
      */
     private class PostFavorite extends AsyncTask<String, Void, String> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward to post the favourite
+         * @return "Error" si no es un login correcte o "Correct" si ha funcionat
+         */
         @Override
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
@@ -265,6 +271,11 @@ public class RewardDetailedFragment extends Fragment {
             return "Error";
         }
 
+        /**
+         * Called when doInBackground is finished.
+         *
+         * @param result makes a toast with the result
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al añadir el Reward a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
@@ -272,6 +283,10 @@ public class RewardDetailedFragment extends Fragment {
             else Toast.makeText(getActivity(), "Reward añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
         }
     }
+
+    /**
+     * Asynchronous Task for the petition POST of a reward exchanged
+     */
     private class PostReward extends AsyncTask<String, Void, String> {
 
         /**
@@ -279,8 +294,8 @@ public class RewardDetailedFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the id of the reward to post
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward to exchange
          * @return "Error" si no es un login correcte o "Correct" si ha funcionat
          */
         @Override
@@ -296,9 +311,9 @@ public class RewardDetailedFragment extends Fragment {
         }
 
         /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
+         * Called when doInBackground is finished.
          *
-         * @param result If is "Error" makes the toast.
+         * @param result makes a toast with the result
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
@@ -308,10 +323,19 @@ public class RewardDetailedFragment extends Fragment {
     }
 
     /**
-     * Asynchronous Task for the petition GET of all the Rewards.
+     * Asynchronous Task for the petition DELETE of a favorite to the reward
      */
     private class DeleteFavorite extends AsyncTask<String, Void, String> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param params params[0] is the petition url,
+         *               params[1] is the method petition,
+         *               params[2] is the username of the user
+         *               params[3] is the id of the reward to delete the favorite
+         * @return "Error" si no es un login correcte o "Correct" si ha funcionat
+         */
         @Override
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
@@ -322,6 +346,11 @@ public class RewardDetailedFragment extends Fragment {
             return "Error";
         }
 
+        /**
+         * Called when doInBackground is finished.
+         *
+         * @param result makes a toast with the result
+         */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(getActivity(), "Error al eliminar el Reward de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();

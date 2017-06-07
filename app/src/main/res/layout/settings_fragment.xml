@@ -1,14 +1,61 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="pes.gogreenapp.Fragments.SettingsFragment"
+    android:id="@+id/settings"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pes.gogreenapp.Fragments.SettingsFragment"
-    android:id="@+id/settings">
+    android:paddingTop="30dp"
+    android:background="@drawable/gradientbackground">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/changePassTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:elevation="1dp"
+        android:fontFamily="serif"
+        android:text="Cambia la contraseña"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        fontPath="fonts/Raleway-Light.ttf" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/newPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/changePassTitle"
+        android:focusable="true"
+        android:fontFamily="serif"
+        android:hint="Nueva contraseña"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro" />
+
+    <EditText
+        android:id="@+id/confirmNewPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/newPass"
+        android:focusable="true"
+        android:fontFamily="serif"
+        android:hint="Confirma la nueva contraseña"
+        android:textColor="@drawable/mainbuttontext"
+        android:textColorHint="@drawable/mainbuttontext"
+        android:theme="@style/campotextoregistro" />
+
+    <Button
+        android:id="@+id/changePass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/confirmNewPass"
+        android:background="@drawable/buttonregisterloginshape"
+        android:text="CAMBIAR CONTRASEÑA"
+        android:textColor="@drawable/mainbuttontext" />
+
+
+
+
+</RelativeLayout>

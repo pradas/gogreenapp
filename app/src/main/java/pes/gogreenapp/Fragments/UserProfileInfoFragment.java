@@ -122,8 +122,16 @@ public class UserProfileInfoFragment extends Fragment {
 
     }
 
+    /**
+     * Asynchronous Task for the petition GET of a User.
+     */
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls urls[0] is the petition url,
+         */
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
@@ -154,7 +162,11 @@ public class UserProfileInfoFragment extends Fragment {
             return null;
         }
 
-
+        /**
+         * Called when doInBackground is finished.
+         *
+         * @param result set the values in all the edittext and textviews
+         */
         @Override
         protected void onPostExecute(Void result) {
             userImage.setImageBitmap(profileImageBitmap);
