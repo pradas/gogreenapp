@@ -160,7 +160,10 @@ public class OfertaDetailedFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment;
-                fragment = (Fragment) new OfertasListFragment();
+                if(session.getRole().equals("manager"))
+                    fragment = (Fragment) new OfertasListShopFragment();
+                else
+                    fragment = (Fragment) new OfertasListFragment();
                 transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
 
             }
