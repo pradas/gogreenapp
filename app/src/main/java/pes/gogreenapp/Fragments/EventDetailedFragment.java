@@ -111,7 +111,10 @@ public class EventDetailedFragment extends Fragment {
             FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             Fragment fragment;
-            fragment = (Fragment) new EventsListFragment();
+            if(session.getRole().equals("manager"))
+                fragment = (Fragment) new EventsListShopFragment();
+            else
+                fragment = (Fragment) new EventsListFragment();
             transaction.replace(R.id.flContent, fragment);
             transaction.commit();
 

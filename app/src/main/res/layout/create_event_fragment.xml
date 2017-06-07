@@ -9,7 +9,9 @@
         android:id="@+id/ScrollViewCreateEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/buttonSendCreateEvent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,6 +95,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:contentDescription="@string/fecha_del_evento_description"
+                    android:padding="10dp"
                     android:tint="@android:color/darker_gray"
                     app:srcCompat="@mipmap/ic_date_range_white_24dp" />
 
@@ -180,9 +183,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="10dp"
         android:textColor="@android:color/white"
         android:background="@drawable/buttonregisterloginshape"
         android:text="@string/guardar" />
