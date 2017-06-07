@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:paddingLeft="20dp"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
@@ -22,6 +23,7 @@
         android:layout_centerVertical="true"
         android:background="@null"
         android:contentDescription="@string/description_delete_button_employee"
+        android:paddingRight="20dp"
         android:src="@android:drawable/ic_delete"
         android:text="@string/delete" />
 
