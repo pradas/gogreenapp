@@ -98,6 +98,13 @@
     <string name="hint_password_employee">Contraseña para el empleado</string>
     <string name="button_add">Añadir</string>
     <string name="add_employee">Añadir Empleado</string>
+    <string name="button_for_close_the_dialog">Button for close the dialog</string>
+    <string name="all">All</string>
+    <string name="canjeables">Canjeables</string>
+    <string name="order_by">Ordernar por:</string>
+    <string name="filter_by">Filtrar por:</string>
+    <string name="ascendent">Ascendente</string>
+    <string name="descendent">Descendente</string>
 
 
 </resources>
