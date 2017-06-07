@@ -12,10 +12,13 @@ import org.junit.Test;
 import pes.gogreenapp.Activities.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static pes.gogreenapp.Utils.EspressoTestsMatchers.withError;
 
 /**
@@ -67,9 +70,17 @@ public class ForgottenPasswordTest {
      * Check if the xml have the switch button
      */
     @Test
-    public void errorEmptyForm() {
-        onView(withId(R.id.reSendPassword)).check(matches(isDisplayed()));
-        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(withError("Correo necesario")));
+    public void errorEmptyUsername() {
+        onView(withId(R.id.reSendPassword)).perform(click());
         onView(withId(R.id.username_edit_text_forgot_password)).check(matches(withError("Username necesario")));
+    }
+
+    /**
+     * Check if the xml have the switch button
+     */
+    @Test
+    public void errorEmptyEmail() {
+        onView(withId(R.id.reSendPassword)).perform(click());
+        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(withError("Correo necesario")));
     }
 }
