@@ -47,6 +47,9 @@ public class TabDealsFragment extends Fragment {
     private String TAG = "OfertasList";
     private List<Oferta> deals = new ArrayList<>();
 
+    /**
+     * Required empty public constructor
+     */
     public TabDealsFragment() {
         // Required empty public constructor
     }
@@ -69,6 +72,14 @@ public class TabDealsFragment extends Fragment {
         return inflater.inflate(R.layout.tab_deals_fragment, container, false);
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

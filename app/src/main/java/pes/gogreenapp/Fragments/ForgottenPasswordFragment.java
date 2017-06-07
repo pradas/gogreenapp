@@ -141,7 +141,6 @@ public class ForgottenPasswordFragment extends Fragment {
                 }
             }
         });
-
     }
 
     private class GetEmail extends AsyncTask<String, Void, Void> {

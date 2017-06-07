@@ -60,6 +60,9 @@ public class TabRewardsFragment extends Fragment {
     private String userName;
     private TextView warning;
 
+    /**
+     * Required empty public constructor
+     */
     public TabRewardsFragment() {
         // Required empty public constructor
     }

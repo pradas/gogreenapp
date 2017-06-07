@@ -115,9 +115,9 @@ public class SettingsFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
-         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         *               params[2] is the new password to set
+         *               params[3] is the username of the user to edit the password
+         * @return A string with the result
          */
         @Override
         protected String doInBackground(String... params) {
@@ -134,9 +134,9 @@ public class SettingsFragment extends Fragment {
         }
 
         /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
+         * Called when doInBackground is finished.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result makes a toast with the result
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {

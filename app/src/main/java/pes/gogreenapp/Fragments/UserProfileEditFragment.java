@@ -116,10 +116,23 @@ public class UserProfileEditFragment extends Fragment {
         return stream.toByteArray();
     }
 
+    /**
+     * Required empty public constructor
+     */
     public UserProfileEditFragment() {
-        // Required empty public constructor
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in
+     *                           the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI
+     *                           should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     *                           saved state as given here.
+     * @return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,6 +140,14 @@ public class UserProfileEditFragment extends Fragment {
         return inflater.inflate(R.layout.user_profile_edit_fragment, container, false);
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.activity = getActivity();
@@ -231,8 +252,16 @@ public class UserProfileEditFragment extends Fragment {
         });
     }
 
+    /**
+     * Asynchronous Task for the petition GET of a User.
+     */
     private class GetInfoUser extends AsyncTask<String, Void, Void> {
 
+        /**
+         * Execute Asynchronous Task calling the url passed by parameter 0.
+         *
+         * @param urls urls[0] is the petition url,
+         */
         @Override
         protected Void doInBackground(String... urls) {
             HttpHandler httpHandler = new HttpHandler();
@@ -267,6 +296,11 @@ public class UserProfileEditFragment extends Fragment {
         }
 
 
+        /**
+         * Called when doInBackground is finished.
+         *
+         * @param result set the values in all the edittext and textviews
+         */
         @Override
         protected void onPostExecute(Void result) {
             userImage.setImageBitmap(profileImageBitmap);
@@ -293,8 +327,10 @@ public class UserProfileEditFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
+         *               params[2] is the new name of the user
+         *               params[3] is the new birth-date of the user
+         *               params[4] is the new email of the user
+         *               params[5] is the new image of the user
          * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
          */
         @Override
@@ -315,9 +351,9 @@ public class UserProfileEditFragment extends Fragment {
         }
 
         /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
+         * Called when doInBackground is finished.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result makes a toast with the result
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {

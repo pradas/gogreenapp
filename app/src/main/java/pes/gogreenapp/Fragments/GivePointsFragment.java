@@ -106,10 +106,6 @@ public class GivePointsFragment extends Fragment {
         listToGivePoints = (ListView) getView().findViewById(R.id.listViewGivePoints);
         grantPoints = (Button) getView().findViewById(R.id.grantPointsToUsers);
 
-
-
-
-
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -247,9 +243,9 @@ public class GivePointsFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the username or email for identification in the login and
-         *               params[3] is the password to identification in the login
-         * @return "Falla" si no es un login correcte o "Correcte" si ha funcionat
+         *               params[2] is the number of points to add to the user
+         *               params[3] is the username of the user
+         * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
          */
         @Override
         protected String doInBackground(String... params) {
@@ -266,9 +262,9 @@ public class GivePointsFragment extends Fragment {
         }
 
         /**
-         * Called when doInBackground is finished, Toast an error if there is an error.
+         * Called when doInBackground is finished.
          *
-         * @param result If is "Falla" makes the toast.
+         * @param result Makes a toast with the result
          */
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {

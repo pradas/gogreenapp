@@ -40,6 +40,15 @@ public class FavsListFragment extends Fragment {
         return inflater.inflate(R.layout.favs_list_fragment, container, false);
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
