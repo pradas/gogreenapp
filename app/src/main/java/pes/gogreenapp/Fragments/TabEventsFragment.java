@@ -50,6 +50,9 @@ public class TabEventsFragment extends Fragment {
     private String TAG = MainActivity.class.getSimpleName();
     EventsListAdapter adapter;
 
+    /**
+     * Required empty public constructor
+     */
     public TabEventsFragment() {
         // Required empty public constructor
     }

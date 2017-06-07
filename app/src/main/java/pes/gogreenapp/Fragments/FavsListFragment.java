@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +41,25 @@ public class FavsListFragment extends Fragment {
         return inflater.inflate(R.layout.favs_list_fragment, container, false);
     }
 
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle("Favoritos");
 
         TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.tabLayoutFavsList);
-        tabLayout.addTab(tabLayout.newTab().setText("REWARDS"));
-        tabLayout.addTab(tabLayout.newTab().setText("EVENTOS"));
-        tabLayout.addTab(tabLayout.newTab().setText("OFERTAS"));
+        tabLayout.addTab(tabLayout.newTab().setText("Rewards"));
+        tabLayout.addTab(tabLayout.newTab().setText("Eventos"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ofertas"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) getView().findViewById(R.id.viewPagerFavsList);
@@ -60,6 +71,7 @@ public class FavsListFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                Log.d("favs", String.valueOf(tab.getPosition()));
             }
 
             @Override

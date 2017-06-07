@@ -128,6 +128,7 @@ public class CreateEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Crear evento");
         return inflater.inflate(R.layout.create_event_fragment, container, false);
     }
 
