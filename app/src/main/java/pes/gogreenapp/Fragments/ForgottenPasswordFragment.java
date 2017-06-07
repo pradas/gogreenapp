@@ -108,7 +108,7 @@ public class ForgottenPasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (userName.getText().toString().length() <= 0) {
-                    userName.setError("Correo necesario");
+                    userName.setError("Username necesario");
                     send = false;
                 }
                 if (email.getText().toString().length() <= 0) {
