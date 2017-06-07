@@ -38,6 +38,11 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
         EditText userNameTextByEvents;
         Spinner spinnerEvents;
 
+        /**
+         * Constructor of the View Holder that sets all the items.
+         *
+         * @param v valid View where to construct.
+         */
         ListViewHolder (View v) {
             userNumberByEvents = (TextView) v.findViewById(R.id.userNumberByEvents);
             userNameTextByEvents = (EditText) v.findViewById(R.id.userNameToGiveByEvents);
@@ -55,6 +60,13 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     }
 
 
+    /**
+     * Constructor that set the List of Rewards.
+     *
+     * @param context non-null context of the application.
+     * @param users non-null list of number of users to give points
+     * @param events non-null list of events of the shop
+     */
     public GivePointsByEventsAdapter(Context context, List<String> users, List <Event> events) {
         this.users = users;
         this.context = context;
@@ -76,6 +88,14 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) { return 0; }
 
+    /**
+     * Obtains the LayoutInflater from the given context and usse it to create a new ViewHolder.
+     *
+     * @param position   The item of the view
+     * @param convertView The new view
+     * @param parent All the items of the list
+     * @return A new view that holds all the methods of each item
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewHolder viewHolder = null;
@@ -122,8 +142,14 @@ public class GivePointsByEventsAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * @return the list of users to give points
+     */
     public List <String> getUserNames () { return userNames; }
 
+    /**
+     * @return the list of events assisted by the users
+     */
     public List <Event> getEvents() {
         List <Event> result = new ArrayList<Event>();
         for (int i = 0; i < eventsSelected.size(); ++ i) {
