@@ -13,14 +13,28 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
 
             <ImageView
                 android:id="@+id/shop_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+
+            <ImageView
+                android:id="@+id/shop_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="150dp"
+                android:tint="#FFFFFF"
+                app:srcCompat="@mipmap/ic_store_black_24dp" />
 
             <TextView
                 android:id="@+id/shop_name"
