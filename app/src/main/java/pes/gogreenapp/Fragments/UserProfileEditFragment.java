@@ -36,12 +36,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -272,9 +268,9 @@ public class UserProfileEditFragment extends Fragment {
             userImage.setImageBitmap(profileImageBitmap);
 
             userName.setText(user.getName());
-            userNickName.setText("Nickname: " + user.getUsername());
-            userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
-            userCurrentPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
+            userNickName.setText("Username : "  + user.getUsername());
+            userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
+            userCurrentPoints.setText(String.valueOf(user.getCurrentPoints()));
             userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
             userBirthDate.setText((String) sourceFormat.format(user.getBirthDate()));
             userEmail.setText(user.getEmail());
