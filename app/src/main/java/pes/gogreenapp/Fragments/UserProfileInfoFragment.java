@@ -106,7 +106,7 @@ public class UserProfileInfoFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new UserProfileEditFragment();
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                transaction.replace(R.id.user_profile_c1, fragment).addToBackStack( "tag" ).commit();
             }
         });
 
@@ -155,9 +155,9 @@ public class UserProfileInfoFragment extends Fragment {
             userNickName.setText("Username : " + user.getUsername());
             userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
             userActualPoints.setText(String.valueOf(user.getCurrentPoints()));
-            userCreationDate.setText(sourceFormat.format(user.getCreationDate()));
-            userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
-            userEmail.setText("Email: " + user.getEmail());
+            userCreationDate.setText("GoBro desde: " + sourceFormat.format(user.getCreationDate()));
+            userBirthDate.setText(sourceFormat.format(user.getBirthDate()));
+            userEmail.setText(user.getEmail());
 
         }
 
