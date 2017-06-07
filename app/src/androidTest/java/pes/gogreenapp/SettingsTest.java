@@ -18,14 +18,13 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static pes.gogreenapp.Utils.EspressoTestsMatchers.withError;
 
 /**
  * Created by Adrian on 07/06/2017.
  */
 
-public class ForgottenPasswordTest {
+public class SettingsTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(
             MainActivity.class);
@@ -41,12 +40,18 @@ public class ForgottenPasswordTest {
             onView(withId(R.id.drawer_layout))
                     .perform(DrawerActions.open());
             onView(withId(R.id.nvView))
-                    .perform(NavigationViewActions.navigateTo(R.id.log_out));
-            onView(withId(R.id.forgotPassword))
-                    .perform(click());
+                    .perform(NavigationViewActions.navigateTo(R.id.settings_fragment));
         } catch (NoMatchingViewException e) {
-            onView(withId(R.id.forgotPassword))
+            onView(withId(R.id.username_edit_text))
+                    .perform(clearText(), typeText("manager"));
+            onView(withId(R.id.password_user_text))
+                    .perform(clearText(), typeText("Password12"));
+            onView(withId(R.id.buttonLogin))
                     .perform(click());
+            onView(withId(R.id.drawer_layout))
+                    .perform(DrawerActions.open());
+            onView(withId(R.id.nvView))
+                    .perform(NavigationViewActions.navigateTo(R.id.settings_fragment));
         }
     }
 
@@ -54,41 +59,44 @@ public class ForgottenPasswordTest {
      * Check if the xml have the switch button
      */
     @Test
-    public void fragmentHasEditTextUserName() {
-        onView(withId(R.id.username_edit_text_forgot_password)).check(matches(isDisplayed()));
+    public void fragmentHasNewPassword() {
+        onView(withId(R.id.newPass)).check(matches(isDisplayed()));
     }
 
     /**
      * Check if the xml have the switch button
      */
     @Test
-    public void fragmentHasEditTextEmail() {
-        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(isDisplayed()));
+    public void fragmentHasConfirmNewPass() {
+        onView(withId(R.id.confirmNewPass)).check(matches(isDisplayed()));
     }
 
     /**
      * Check if the xml have the switch button
      */
     @Test
-    public void fragmentHasButton() {
-        onView(withId(R.id.reSendPassword)).check(matches(isDisplayed()));
+    public void fragmentHasButtonChange() {
+        onView(withId(R.id.changePass)).check(matches(isDisplayed()));
     }
 
     /**
      * Check if the xml have the switch button
      */
     @Test
-    public void errorEmptyUsername() {
-        onView(withId(R.id.reSendPassword)).perform(click());
-        onView(withId(R.id.username_edit_text_forgot_password)).check(matches(withError("Username necesario")));
+    public void errorEmptyPass() {
+        onView(withId(R.id.changePass)).perform(click());
+        onView(withId(R.id.newPass)).check(matches(withError("La nueva contraseña es necesaria")));
     }
 
     /**
      * Check if the xml have the switch button
      */
     @Test
-    public void errorEmptyEmail() {
-        onView(withId(R.id.reSendPassword)).perform(click());
-        onView(withId(R.id.email_edit_text_forgot_password)).check(matches(withError("Correo necesario")));
+    public void passwordDontMatch() {
+        onView(withId(R.id.newPass)).perform(clearText(),typeText("b"));
+        onView(withId(R.id.confirmNewPass)).perform(clearText(),typeText("a"));
+        onView(withId(R.id.changePass)).perform(click());
+        onView(withId(R.id.confirmNewPass)).check(matches(withError("Las contraseñas no coinciden")));
     }
+
 }
