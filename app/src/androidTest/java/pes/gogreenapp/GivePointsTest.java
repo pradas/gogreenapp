@@ -84,7 +84,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the list
      */
     @Test
     public void fragmentHasList() {
@@ -92,7 +92,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have button to show another user
      */
     @Test
     public void fragmentHasButtonAnotherUser() {
@@ -100,7 +100,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have button to grant points
      */
     @Test
     public void fragmentHasButtonGrantPoints() {
@@ -108,7 +108,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the switch button in events position by default
      */
     @Test
     public void switchEventsDefault() {
