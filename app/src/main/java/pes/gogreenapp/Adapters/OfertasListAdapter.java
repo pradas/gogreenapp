@@ -183,7 +183,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("event_id", params[3]);
+            bodyParams.put("deal_id", params[3]);
             String url = params[0] + params [2] + "/favourite-deals";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
