@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import java.util.List;
 
 import pes.gogreenapp.R;
 
-public class RewardsFilterDialogFragment extends DialogFragment {
+public class FilterDialogFragment extends DialogFragment {
 
     private int filterCheckedId, sorterCheckedId, directionsCheckedId;
     private List<String> categories;
@@ -25,7 +26,7 @@ public class RewardsFilterDialogFragment extends DialogFragment {
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    interface RewardsFilterDialogListener {
+    interface FilterDialogListener {
 
         void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId, String category);
 
@@ -33,7 +34,7 @@ public class RewardsFilterDialogFragment extends DialogFragment {
     }
 
     // Use this instance of the interface to deliver action events
-    RewardsFilterDialogListener mListener;
+    FilterDialogListener mListener;
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,16 +47,22 @@ public class RewardsFilterDialogFragment extends DialogFragment {
 
         // Setup the Alert Dialog builder
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        mListener = (RewardsFilterDialogListener) getTargetFragment();
+        Fragment targetFragment = getTargetFragment();
+        mListener = (FilterDialogListener) targetFragment;
         mBuilder.setView(inflate).setPositiveButton("Filtrar", (dialogLambda, which) -> mListener
-                .onDialogPositiveClick(RewardsFilterDialogFragment.this, filterCheckedId, sorterCheckedId,
-                        directionsCheckedId, categoryChecked)).setNegativeButton(R.string.cancel,
-                (dialogLambda, which) -> mListener.onDialogNegativeClick(RewardsFilterDialogFragment.this));
+                .onDialogPositiveClick(FilterDialogFragment.this, filterCheckedId, sorterCheckedId, directionsCheckedId,
+                        categoryChecked)).setNegativeButton(R.string.cancel,
+                (dialogLambda, which) -> mListener.onDialogNegativeClick(FilterDialogFragment.this));
+
+        // set visibility of the last radio
+        if ("pes.gogreenapp.Fragments.RewardsListFragment".equals(targetFragment.getClass().getName())) {
+            inflate.findViewById(R.id.radio_filter_canjeables).setVisibility(View.VISIBLE);
+        }
 
         // set the items to the spinner
         Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item,
+                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_dropdown_item,
                         categories);
         categoriesSpinner.setAdapter(arrayAdapter);
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
