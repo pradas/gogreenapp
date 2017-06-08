@@ -1,15 +1,14 @@
 package pes.gogreenapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 import pes.gogreenapp.Exceptions.NullParametersException;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.UserData;
-
-import static android.R.id.list;
 
 public class AccountManagerAdapter extends BaseAdapter implements ListAdapter {
 
@@ -73,6 +70,7 @@ public class AccountManagerAdapter extends BaseAdapter implements ListAdapter {
             }
             users.remove(position);
             notifyDataSetChanged();
+            Toast.makeText(context, "cuenta desvinculada", Toast.LENGTH_SHORT).show();
         });
 
         return view;
