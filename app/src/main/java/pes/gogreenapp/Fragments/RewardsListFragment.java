@@ -123,9 +123,9 @@ public class RewardsListFragment extends Fragment implements FilterDialogFragmen
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+            public void onFailure(int statusCode, Header[] headers, String xml, Throwable throwable) {
                 // called when response HTTP status is "4XX"
-                Log.e("API_ERROR", String.valueOf(statusCode) + " " + response.toString());
+                Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
             }
         });
 
@@ -218,8 +218,7 @@ public class RewardsListFragment extends Fragment implements FilterDialogFragmen
     void refreshItems() {
         // Load complete
         // Update the adapter and notify data set changed
-        adapter.setRewards(rewards);
-        adapter.notifyDataSetChanged();
+        new GetRewards().execute(url + "rewards");
 
         // Stop refresh animation
         swipeContainer.setRefreshing(false);

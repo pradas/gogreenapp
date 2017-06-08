@@ -26,8 +26,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import pes.gogreenapp.Adapters.EventsListAdapter;
@@ -162,15 +164,58 @@ public class EventsListFragment extends Fragment implements FilterDialogFragment
         //adapter.getItemCount();
     }
 
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
                                       String category) {
 
+        List<Event> auxEvents = new ArrayList<>(events);
+        Iterator<Event> it = auxEvents.iterator();
+
+        switch (filterId) {
+            case R.id.radio_filter_category:
+                // remove the rewards that aren't from the category
+                while (it.hasNext()) {
+                    if (!category.equals(it.next().getCategory())) it.remove();
+                }
+                break;
+            default:
+                break;
+        }
+
+        switch (sorterId) {
+            case R.id.radio_sorter_date:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r1.getDate().compareTo(r2.getDate()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r2.getDate().compareTo(r1.getDate()));
+                }
+                break;
+            case R.id.radio_sorter_points:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r1.getPoints().compareTo(r2.getPoints()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r2.getPoints().compareTo(r1.getPoints()));
+                }
+                break;
+            default:
+                break;
+        }
+
+        // change the rewards list info of the adapter
+        adapter.setEvents(auxEvents);
+        adapter.notifyDataSetChanged();
+
+        //close the dialog
+        dialog.getDialog().cancel();
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-
+        // User touched the dialog's negative button
+        dialog.getDialog().cancel();
     }
 
     /**

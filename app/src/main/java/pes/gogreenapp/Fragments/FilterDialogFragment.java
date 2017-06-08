@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,16 +47,22 @@ public class FilterDialogFragment extends DialogFragment {
 
         // Setup the Alert Dialog builder
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        mListener = (FilterDialogListener) getTargetFragment();
+        Fragment targetFragment = getTargetFragment();
+        mListener = (FilterDialogListener) targetFragment;
         mBuilder.setView(inflate).setPositiveButton("Filtrar", (dialogLambda, which) -> mListener
-                .onDialogPositiveClick(FilterDialogFragment.this, filterCheckedId, sorterCheckedId,
-                        directionsCheckedId, categoryChecked)).setNegativeButton(R.string.cancel,
+                .onDialogPositiveClick(FilterDialogFragment.this, filterCheckedId, sorterCheckedId, directionsCheckedId,
+                        categoryChecked)).setNegativeButton(R.string.cancel,
                 (dialogLambda, which) -> mListener.onDialogNegativeClick(FilterDialogFragment.this));
+
+        // set visibility of the last radio
+        if ("pes.gogreenapp.Fragments.RewardsListFragment".equals(targetFragment.getClass().getName())) {
+            inflate.findViewById(R.id.radio_filter_canjeables).setVisibility(View.VISIBLE);
+        }
 
         // set the items to the spinner
         Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.support_simple_spinner_dropdown_item,
+                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_dropdown_item,
                         categories);
         categoriesSpinner.setAdapter(arrayAdapter);
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
