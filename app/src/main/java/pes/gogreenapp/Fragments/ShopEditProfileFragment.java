@@ -138,12 +138,12 @@ public class ShopEditProfileFragment extends Fragment {
         session = SessionManager.getInstance();
         this.activity = getActivity();
 
-        shopImage = (ImageView) getView().findViewById(R.id.shop_image_edit_profile);
+        shopImage = (ImageView) getView().findViewById(R.id.shop_image);
         shopName = (EditText) getView().findViewById(R.id.shop_name_edit_profile);
         shopEmail = (EditText) getView().findViewById(R.id.shop_email_edit_profile);
         shopAddress = (EditText) getView().findViewById(R.id.shop_address_edit_profile);
         saveEdit = (Button) getView().findViewById(R.id.saveEditProfileButton);
-        editPicture = (ImageButton) getView().findViewById(R.id.imageEditShop);
+        editPicture = (ImageButton) getView().findViewById(R.id.shop_image_edit_profile);
 
         editPicture.setOnClickListener((View v) -> {
             //check if has permission
