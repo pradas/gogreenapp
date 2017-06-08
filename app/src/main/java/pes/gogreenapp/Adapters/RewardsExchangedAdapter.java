@@ -110,7 +110,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
                     Fragment fragment = (Fragment) new RewardDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
-                    transaction.addToBackStack(null);
+                    transaction.addToBackStack(RewardDetailedFragment.class.getName());
                     transaction.commit();
                 }
             });
@@ -193,7 +193,7 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
                 Fragment fragment = (Fragment) new QRCodeFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(QRCodeFragment.class.getName());
                 transaction.commit();
             }
         });

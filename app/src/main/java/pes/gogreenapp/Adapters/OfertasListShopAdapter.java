@@ -117,7 +117,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                     Fragment fragment = (Fragment) new OfertaDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
-                    transaction.addToBackStack(null);
+                    transaction.addToBackStack(OfertaDetailedFragment.class.getName());
                     transaction.commit();
                 }
             });
@@ -130,7 +130,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 Fragment fragment = (Fragment) new EditOfertaFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(EditOfertaFragment.class.getName());
                 transaction.commit();
 
             });
@@ -232,7 +232,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new OfertasListShopFragment();
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(OfertasListShopFragment.class.getName());
                 transaction.commit();
             }
         }

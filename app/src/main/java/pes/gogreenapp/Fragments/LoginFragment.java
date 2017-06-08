@@ -196,7 +196,7 @@ public class LoginFragment extends Fragment {
                     // insert the User info into the SQLite
                     try {
                         Integer shopId;
-                        if ("manager".equals(aux.getString("role"))) {
+                        if ("manager".equals(aux.getString("role")) || "shopper".equals(aux.getString("role"))) {
                             shopId = aux.getInt("shop_id");
                         } else {
                             shopId = 0;

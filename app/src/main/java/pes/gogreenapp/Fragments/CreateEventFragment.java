@@ -16,9 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +55,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class CreateEventFragment extends Fragment {
+
     private static int RESULT_LOAD_IMG = 1;
     private SessionManager session;
     String imgDecodableString;
@@ -81,15 +80,17 @@ public class CreateEventFragment extends Fragment {
     static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     public boolean isStoragePermissionGranted() {
+
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG, "Permission is granted");
                 return true;
             } else {
 
                 Log.v(TAG, "Permission is revoked");
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat
+                        .requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
@@ -99,6 +100,7 @@ public class CreateEventFragment extends Fragment {
     }
 
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
@@ -108,22 +110,21 @@ public class CreateEventFragment extends Fragment {
      * Required empty public constructor
      */
     public CreateEventFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle("Crear evento");
         return inflater.inflate(R.layout.create_event_fragment, container, false);
@@ -135,10 +136,10 @@ public class CreateEventFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         URLPetition = "http://10.4.41.145/api/shops/" + String.valueOf(session.getShopId()) + "/events";
@@ -160,7 +161,7 @@ public class CreateEventFragment extends Fragment {
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
 
 
-        SendButton.setOnClickListener((View v) ->{
+        SendButton.setOnClickListener((View v) -> {
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -211,30 +212,22 @@ public class CreateEventFragment extends Fragment {
                 Log.d("CreateEvent", "se envia");
                 String imgString = null;
                 if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
-                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
-                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
-                }
-                else {
-                    Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                            R.drawable.event);
+                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory.decodeFile(imgDecodableString)),
+                            Base64.NO_WRAP);
+                } else {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.event);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    imgString= Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
+                    imgString = Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
 
                     Log.i(TAG, "default event image bytecoded: " + imgString);
                 }
                 Log.d(TAG, URLPetition);
-                new PostEvent().execute(URLPetition, "POST",
-                        TitleText.getText().toString(),
-                        DescriptionText.getText().toString(),
-                        PointsText.getText().toString(),
-                        DirectionText.getText().toString(),
-                        CompanyText.getText().toString(),
-                        DateText.getText().toString(),
-                        FinalTime,
-                        imgString,
-                        String.valueOf(categoriesSpinner.getSelectedItem())
-                );
+                new PostEvent().execute(URLPetition, "POST", TitleText.getText().toString(),
+                        DescriptionText.getText().toString(), PointsText.getText().toString(),
+                        DirectionText.getText().toString(), CompanyText.getText().toString(),
+                        DateText.getText().toString(), FinalTime, imgString,
+                        String.valueOf(categoriesSpinner.getSelectedItem()));
             }
         });
         //events
@@ -247,7 +240,8 @@ public class CreateEventFragment extends Fragment {
                             String sMonthOfYear = String.format("%02d", monthOfYear + 1);
                             DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
                             DateText.clearFocus();
-                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
                 dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
                 dpd.show();
             }
@@ -283,8 +277,8 @@ public class CreateEventFragment extends Fragment {
         });
         PhotoButton.setOnClickListener((View v) -> {
             isStoragePermissionGranted();
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent galleryIntent =
+                    new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             // Start the Intent
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
@@ -295,6 +289,7 @@ public class CreateEventFragment extends Fragment {
      * Asynchronous Task for the petition POST to send a petition of register an User
      */
     private class PostEvent extends AsyncTask<String, Void, String> {
+
         @Override
         /**
          * Execute Asynchronous Task calling the url passed by parameter 0.
@@ -311,8 +306,8 @@ public class CreateEventFragment extends Fragment {
          *               params[9] is the image
          *               params[10] is the category
          * @return void when finished
-         */
-        protected String doInBackground(String... params) {
+         */ protected String doInBackground(String... params) {
+
             HashMap<String, String> BodyParams = new HashMap<>();
             BodyParams.put("title", params[2]);
             BodyParams.put("description", params[3]);
@@ -320,12 +315,14 @@ public class CreateEventFragment extends Fragment {
             if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
             if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
             BodyParams.put("date", params[7]);
-            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
-            else BodyParams.put("time", "00:00");
+            if (params[8] != null && !params[8].equals(":")) {
+                BodyParams.put("time", params[8]);
+            } else {
+                BodyParams.put("time", "00:00");
+            }
             if (params[9] != null) BodyParams.put("image", params[9]);
             BodyParams.put("category", params[10]);
-            String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
-                    session.getToken());
+            String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams, session.getToken());
             Log.i(TAG, "Response from url: " + result);
 
             return result;
@@ -333,14 +330,23 @@ public class CreateEventFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+
             if (s == null) {
-                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde",
+                        Toast.LENGTH_LONG).show();
             } else if (s.contains("Event created successfully.")) {
-                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment = (Fragment) new EventsListShopFragment();
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_SHORT).show();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                try {
+                    manager.beginTransaction()
+                            .replace(R.id.flContent, EventsListShopFragment.class.newInstance())
+                            .addToBackStack(EventsListShopFragment.class.getName())
+                            .commit();
+                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                manager.popBackStack();
+
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
             }
@@ -349,29 +355,26 @@ public class CreateEventFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         try {
             // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
+                Cursor cursor =
+                        getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
-                ImageSelected.setImageBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString));
+                ImageSelected.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
                 cursor.close();
             } else {
-                Toast.makeText(getContext(), "No has escogido ninguna imagen",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "No has escogido ninguna imagen", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             Log.d("CreateEvent", e.toString());
-            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -388,9 +391,9 @@ public class CreateEventFragment extends Fragment {
          */
         @Override
         protected String doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux;
@@ -415,8 +418,9 @@ public class CreateEventFragment extends Fragment {
          * @param result If is "Falla" makes the toast.
          */
         protected void onPostExecute(String result) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_spinner_item, categories);
+
+            ArrayAdapter<String> dataAdapter =
+                    new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categoriesSpinner.setAdapter(dataAdapter);
         }

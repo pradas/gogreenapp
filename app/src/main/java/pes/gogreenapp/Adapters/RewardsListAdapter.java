@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.test.espresso.core.deps.guava.io.ByteArrayDataOutput;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -109,7 +108,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                     Fragment fragment = (Fragment) new RewardDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
-                    transaction.addToBackStack(null);
+                    transaction.addToBackStack(RewardDetailedFragment.class.getName());
                     transaction.commit();
                 }
             });
@@ -199,7 +198,7 @@ public class RewardsListAdapter extends RecyclerView.Adapter<RewardsListAdapter.
                             FragmentTransaction transaction = manager.beginTransaction();
                             Fragment fragment = (Fragment) new RewardsListFragment();
                             transaction.replace(R.id.flContent, fragment);
-                            transaction.addToBackStack(null);
+                            transaction.addToBackStack(RewardsListFragment.class.getName());
                             transaction.commit();
                         }
                     }
