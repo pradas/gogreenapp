@@ -19,30 +19,32 @@ public class ShopProfileContainerFragment extends Fragment {
     private int idTienda;
 
     /**
-     *  Required empty public constructor
+     * Required empty public constructor
      */
-    public ShopProfileContainerFragment(){
+    public ShopProfileContainerFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         getActivity().setTitle("Tienda");
         Bundle arguments = getArguments();
-        if (arguments != null && arguments.containsKey("id"))
+        if (arguments != null && arguments.containsKey("id")) {
             idTienda = getArguments().getInt("id");
-        else idTienda = -1;
+        } else {
+            idTienda = -1;
+        }
 
 
         return inflater.inflate(R.layout.shop_profile_container_fragment, container, false);
@@ -54,8 +56,7 @@ public class ShopProfileContainerFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -65,16 +66,13 @@ public class ShopProfileContainerFragment extends Fragment {
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             ShopProfileInfoFragment uInfoFrag = new ShopProfileInfoFragment();
-            OfertasListFragment rExFrag = new OfertasListFragment();
+            OfertasListShopFragment rExFrag = new OfertasListShopFragment();
 
             Bundle bundle = new Bundle();
             bundle.putInt("id", idTienda);
             uInfoFrag.setArguments(bundle);
 
-            transaction
-                    .add(R.id.shopProfile, uInfoFrag)
-                    .add(R.id.dealsListShopFragment, rExFrag)
-                    .commit();
+            transaction.add(R.id.shopProfile, uInfoFrag).add(R.id.dealsListShopFragment, rExFrag).commit();
         }
     }
 
