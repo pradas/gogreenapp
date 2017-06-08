@@ -272,6 +272,15 @@ public class CreateEventFragment extends Fragment {
                     imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
                             .decodeFile(imgDecodableString)), Base64.NO_WRAP);
                 }
+                else {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                            R.drawable.event);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    imgString= Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
+
+                    Log.i(TAG, "default event image bytecoded: " + imgString);
+                }
                 Log.d(TAG, URLPetition);
                 new PostEvent().execute(URLPetition, "POST",
                         TitleText.getText().toString(),
