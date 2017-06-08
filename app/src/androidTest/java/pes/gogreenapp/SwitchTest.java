@@ -42,6 +42,7 @@ import static pes.gogreenapp.Utils.EspressoTestsMatchers.withDrawable;
 @RunWith(AndroidJUnit4.class)
 public class SwitchTest {
 
+
     private final String usernameShopper = "shoper";
     private final String usernameManager = "manager";
     private final String password = "Password12";
