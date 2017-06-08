@@ -33,7 +33,11 @@
                 android:id="@+id/dealsListShopFragment"
                 android:layout_width="fill_parent"
                 android:layout_weight="2"
-                android:layout_height="400dp" />
+                android:layout_height="400dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="30dp"
+                android:paddingTop="0dp"/>
 
         </LinearLayout>
 

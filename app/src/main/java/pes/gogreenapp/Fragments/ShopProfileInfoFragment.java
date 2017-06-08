@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +46,7 @@ public class ShopProfileInfoFragment extends Fragment {
     private TextView shopName;
     private TextView shopEmail;
     private TextView shopAddress;
-    private Button editProfile;
+    private ImageButton editProfile;
     private Bitmap profileImageBitmap;
 
     /**
@@ -91,7 +91,7 @@ public class ShopProfileInfoFragment extends Fragment {
         shopName = (TextView) getView().findViewById(R.id.shop_name);
         shopEmail = (TextView) getView().findViewById(R.id.shop_email);
         shopAddress = (TextView) getView().findViewById(R.id.shop_address);
-        editProfile = (Button) getView().findViewById(R.id.editProfileShopButton);
+        editProfile = (ImageButton) getView().findViewById(R.id.editProfileShopButton);
 
         if ((session.getRole().equals(ROLE_USER) )|| (session.getRole().equals(ROLE_SHOPPER))) editProfile.setVisibility(View.GONE);
         else {
@@ -140,8 +140,8 @@ public class ShopProfileInfoFragment extends Fragment {
         protected void onPostExecute(Void result) {
             if(profileImageBitmap == null) shopImage.setImageResource(R.drawable.tienda);
             else shopImage.setImageBitmap(profileImageBitmap);
-            shopName.setText("Nombre de la tienda: " + shop.getShopName());
-            shopEmail.setText("Email: " + shop.getShopEmail());
+            shopName.setText(shop.getShopName());
+            shopEmail.setText(shop.getShopEmail());
             shopAddress.setText("Direccion: " + shop.getShopAddress());
         }
     }
