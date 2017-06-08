@@ -1,276 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutEditProfile"
-    android:orientation="horizontal"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#8bc34a"
+    android:orientation="horizontal"
     tools:ignore="MissingPrefix">
 
 
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-    <ImageButton
-        android:id="@+id/imageEditUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Imagen del usuario"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:layout_marginTop="32dp"
-        android:layout_alignTop="@+id/user_image_edit_user"
-        android:layout_toStartOf="@+id/user_image_edit_user"
-        android:layout_marginEnd="12dp" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_image_edit_user"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentEnd="false"
-        android:layout_below="@+id/edit_profile_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/zxing_possible_result_points"
-        android:backgroundTintMode="src_over"
-        android:clickable="true"
-        android:contentDescription="@string/profile_image_description"
-        android:src="@android:drawable/sym_def_app_icon" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="30dp"
+            tools:ignore="MissingPrefix">
 
 
-    <EditText
-        android:id="@+id/user_name_edit_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        fontPath="fonts/Raleway-Light.ttf"
-        android:textColor="#ffffffff"
-        android:textSize="30sp"
-        android:layout_below="@+id/user_image_edit_user"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/user_nickname_edit_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/user_name_edit_user"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:textAlignment="center"
-        fontPath="fonts/OpenSans-Regular.ttf"
-        android:textColor="#ffffffff"
-        android:textSize="16sp" />
-
-
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/linearLayout_Points"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/user_nickname_edit_user"
-        android:gravity="center_horizontal|center"
-        android:layout_marginTop="40dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:orientation="horizontal"
-        android:background="@drawable/customborder">
-
-
-        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/linearLayout_totalPoints"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginRight="40dp"
-            android:orientation="vertical">
-
-
-
-            <TextView
-                android:id="@+id/user_total_points_edit_user"
+            <ImageButton
+                android:id="@+id/imageEditUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/user_name_edit_user"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/user_image_edit_user"
+                android:background="@android:color/transparent"
+                android:contentDescription="Imagen del usuario"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_image_edit_user"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentEnd="false"
+                android:layout_below="@+id/edit_profile_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/zxing_possible_result_points"
+                android:backgroundTintMode="src_over"
+                android:clickable="true"
+                android:contentDescription="@string/profile_image_description"
+                android:src="@android:drawable/sym_def_app_icon" />
+
+
+            <EditText
+                android:id="@+id/user_name_edit_user"
+                fontPath="fonts/Raleway-Light.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_image_edit_user"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:ems="10"
+                android:inputType="textPersonName"
                 android:textAlignment="center"
-                fontPath="fonts/OpenSans-Bold.ttf"
                 android:textColor="#ffffffff"
-                android:textSize="24sp"/>
+                android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/tpString"
+                android:id="@+id/user_nickname_edit_user"
+                fontPath="fonts/OpenSans-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:text="Puntos Totales"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/user_total_points_edit_user"
-                android:textColor="#cddc39"
-                android:textSize="16sp"
-                android:textAlignment="center" />
-
-        </LinearLayout>
-
-
-        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/linearLayout_actualPoints"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="40dp"
-            android:orientation="vertical">
-
-
-
-            <TextView
-                android:id="@+id/user_current_points_edit_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_name_edit_user"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:textAlignment="center"
-                fontPath="fonts/OpenSans-Bold.ttf"
                 android:textColor="#ffffffff"
-                android:textSize="24sp"/>
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/apString"
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linearLayout_Points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/user_nickname_edit_user"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/customborder"
+                android:clipToPadding="false"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+
+                <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/linearLayout_totalPoints"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginRight="40dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/user_total_points_edit_user"
+                        fontPath="fonts/OpenSans-Bold.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:textAlignment="center"
+                        android:textColor="#ffffffff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/tpString"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_total_points_edit_user"
+                        android:layout_marginTop="5dp"
+                        android:ems="10"
+                        android:text="Puntos Totales"
+                        android:textAlignment="center"
+                        android:textColor="#cddc39"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/linearLayout_actualPoints"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="40dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/user_current_points_edit_user"
+                        fontPath="fonts/OpenSans-Bold.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:textAlignment="center"
+                        android:textColor="#ffffffff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/apString"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_current_points_edit_user"
+                        android:layout_marginTop="5dp"
+                        android:ems="10"
+                        android:text="Puntos actuales"
+                        android:textAlignment="center"
+                        android:textColor="#cddc39"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linearLayout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout_Points"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="40dp"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/mailProfileIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/transparent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:tint="#FFFFFF"
+                    app:srcCompat="@drawable/mail_icon" />
+
+                <EditText
+                    android:id="@+id/user_email_edit_user"
+                    fontPath="fonts/OpenSans-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linearLayout_goBro_since"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout_email"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/gobroSinceIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:tint="#FFFFFF"
+
+                    app:srcCompat="@drawable/welcome" />
+
+                <TextView
+                    android:id="@+id/gobro_since_edit_user"
+                    fontPath="fonts/OpenSans-Regular.ttf"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="6dp"
+                    android:ems="10"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linearLayout_birthDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout_goBro_since"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/birthdateIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:tint="#FFFFFF"
+                    app:srcCompat="@drawable/birthday" />
+
+                <TextView
+                    android:id="@+id/birthdate_edit_user"
+                    fontPath="fonts/OpenSans-Regular.ttf"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:ems="10"
+                    android:textColor="#ffffffff"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/edit_birthdate_user_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="false"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="0dp"
+                    android:background="@drawable/buttonregisterloginshape"
+                    android:ems="10"
+                    android:text="editar fecha"
+                    android:textColor="@drawable/mainbuttontext" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/save_edit_profile_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:text="Puntos actuales"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/user_current_points_edit_user"
-                android:textColor="#cddc39"
-                android:textAlignment="center"
-                android:textSize="16sp"/>
+                android:layout_below="@+id/linearLayout_birthDate"
+                android:background="@drawable/buttonregisterloginshape"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentEnd="true"
+                android:text="GUARDAR"
+                android:textColor="@drawable/mainbuttontext" />
+        </RelativeLayout>
 
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/linearLayout_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/linearLayout_Points"
-        android:layout_centerVertical="true"
-        android:gravity="left"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/mailProfileIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:tint="#FFFFFF"
-            app:srcCompat="@drawable/mail_icon" />
-
-        <EditText
-            android:id="@+id/user_email_edit_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fontPath="fonts/OpenSans-Regular.ttf"
-            android:textColor="#ffffffff"
-            android:textSize="16sp"
-            android:ems="10" />
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/linearLayout_goBro_since"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout_email"
-        android:layout_marginTop="20dp"
-        android:layout_centerVertical="true"
-        android:gravity="left"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/gobroSinceIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:tint="#FFFFFF"
-
-            app:srcCompat="@drawable/welcome" />
-
-        <TextView
-            android:id="@+id/gobro_since_edit_user"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="6dp"
-            android:ems="10"
-            fontPath="fonts/OpenSans-Regular.ttf"
-            android:textColor="#ffffffff"
-            android:textSize="16sp"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/linearLayout_birthDate"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout_goBro_since"
-        android:layout_marginTop="20dp"
-        android:gravity="left"
-        android:layout_centerVertical="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/birthdateIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:tint="#FFFFFF"
-            app:srcCompat="@drawable/birthday" />
-
-        <TextView
-            android:id="@+id/birthdate_edit_user"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            fontPath="fonts/OpenSans-Regular.ttf"
-            android:textColor="#ffffffff"
-            android:textSize="16sp"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/edit_birthdate_user_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:ems="10"
-            android:text="editar fecha"/>
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/save_edit_profile_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GUARDAR"
-        android:layout_below="@+id/linearLayout_birthDate" />
-
-
-
-
+    </ScrollView>
 
 
 </RelativeLayout>
