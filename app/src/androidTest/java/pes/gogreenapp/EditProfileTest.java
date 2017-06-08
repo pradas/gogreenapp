@@ -165,15 +165,7 @@ public class EditProfileTest {
         onView(withText("CANCELAR"));
     }
 
-    /**
-     * Check if the user image is displayed
-     */
-    @Test
-    public void modifyButtonOfAlertDialogDisplaysInfoUser(){
-        onView(withId(R.id.save_edit_profile_button)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.user_profile_layout)).check(matches(isDisplayed()));
-    }
+
 
     /**
      * Check if the user image is displayed

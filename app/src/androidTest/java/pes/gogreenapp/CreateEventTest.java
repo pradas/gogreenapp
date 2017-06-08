@@ -274,8 +274,6 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDateIsDisplayed(){
-        onView(withId(R.id.DateTextCreateEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.editTextDateCreateEvent))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.DateCreateEvent))
@@ -287,8 +285,6 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDirectionIsDisplayed(){
-        onView(withId(R.id.DirectionCreateEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.DirectionCreateEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -298,8 +294,6 @@ public class CreateEventTest {
      */
     @Test
     public void CheckPointsAreDisplayed(){
-        onView(withId(R.id.PointsCreateEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.PointsCreateEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -309,8 +303,6 @@ public class CreateEventTest {
      */
     @Test
     public void CheckDescriptionIsDisplayed(){
-        onView(withId(R.id.DescriptionCreateEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.DescriptionCreateEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -320,8 +312,6 @@ public class CreateEventTest {
      */
     @Test
     public void CheckTitleIsDisplayed(){
-        onView(withId(R.id.TitleCreateEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.titleCreateEvent_edit_text))
                 .check(matches(isDisplayed()));
     }

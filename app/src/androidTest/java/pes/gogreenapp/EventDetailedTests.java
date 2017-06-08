@@ -54,15 +54,6 @@ public class EventDetailedTests {
     }
 
     /**
-     * Check if clicking in a card_view displays of RewardDetailedFragment
-     */
-    @Test
-    public void openEventDetailedCorrectInRewardsList() {
-
-        onView(withId(R.id.eventDetailedFragment)).check(matches(isDisplayed()));
-    }
-
-    /**
      * Check if clicking in a card_view displays the image
      */
     @Test
@@ -93,29 +84,7 @@ public class EventDetailedTests {
         onView(withId(R.id.directionEventDetailed)).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if clicking in a card_view displays the category
-     */
-    @Test
-    public void eventDetailedHasCategory() {
-        onView(withId(R.id.categoryEventDetailed)).check(matches(isDisplayed()));
-    }
 
-    /**
-     * Check if clicking in a card_view displays the points
-     */
-    @Test
-    public void eventDetailedHasPoints() {
-        onView(withId(R.id.pointsEventDetailed)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if clicking in a card_view displays the description
-     */
-    @Test
-    public void eventDetailedHasCompany() {
-        onView(withId(R.id.companyEventDetailed)).check(matches(isDisplayed()));
-    }
 
     /**
      * Check if clicking in a card_view displays the date

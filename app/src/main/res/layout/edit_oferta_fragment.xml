@@ -8,7 +8,7 @@
 
 
     <ScrollView
-        android:id="@+id/edit_oferta_event"
+        android:id="@+id/edit_oferta_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
