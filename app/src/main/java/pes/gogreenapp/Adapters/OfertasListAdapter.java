@@ -25,10 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Fragments.EventDetailedFragment;
 import pes.gogreenapp.Fragments.OfertaDetailedFragment;
-import pes.gogreenapp.Fragments.RewardDetailedFragment;
-import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -147,7 +144,7 @@ public class OfertasListAdapter extends RecyclerView.Adapter<OfertasListAdapter.
         }
         else {
             Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.event);
+                    R.drawable.oferta);
             holder.image.setImageBitmap(icon);
         }
 

@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.EditOfertaFragment;
 import pes.gogreenapp.Fragments.OfertaDetailedFragment;
 import pes.gogreenapp.Fragments.OfertasListShopFragment;
@@ -168,7 +167,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         }
         else {
             Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.event);
+                    R.drawable.oferta);
             holder.image.setImageBitmap(icon);
         }
 
