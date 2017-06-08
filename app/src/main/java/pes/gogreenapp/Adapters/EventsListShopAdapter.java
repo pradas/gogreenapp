@@ -26,7 +26,6 @@ import java.util.List;
 import pes.gogreenapp.Fragments.EditEventFragment;
 import pes.gogreenapp.Fragments.EventDetailedFragment;
 import pes.gogreenapp.Fragments.EventsListShopFragment;
-import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -34,6 +33,7 @@ import pes.gogreenapp.Utils.SessionManager;
 
 
 public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAdapter.ViewHolder> {
+
     private List<Event> events;
     private Context context;
     private SessionManager session;
@@ -46,6 +46,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
      * @param context non-null context of the application.
      */
     public EventsListShopAdapter(Context context, List<Event> events) {
+
         this.context = context;
         this.events = events;
         this.session = SessionManager.getInstance();
@@ -57,10 +58,12 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
      * @param events non-null List of the Rewards.
      */
     public void setEvents(List<Event> events) {
+
         this.events = events;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView image;
         TextView title;
         TextView points;
@@ -78,6 +81,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
          * @param itemView valid View where to construct.
          */
         ViewHolder(View itemView) {
+
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.eventImageShop);
             title = (TextView) itemView.findViewById(R.id.eventTitleShop);
@@ -87,10 +91,12 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             date = (TextView) itemView.findViewById(R.id.eventEndDateShop);
             hour = (TextView) itemView.findViewById(R.id.eventHourShop);
             fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButtonShop);
+            if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
             edit = (ImageButton) itemView.findViewById(R.id.eventEditButtonShop);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
                     bundle.putString("parent", "list");
@@ -107,8 +113,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             DeleteButton.setOnClickListener(v -> {
                 Log.d(TAG, "Hola");
                 String url = "http://10.4.41.145/api/events/" + String.valueOf(id);
-                new DeleteEvent().execute(url, "DELETE",
-                        session.getUsername());
+                new DeleteEvent().execute(url, "DELETE", session.getUsername());
             });
         }
     }
@@ -117,13 +122,14 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
     /**
      * Obtains the LayoutInflater from the given context and usse it to create a new ViewHolder.
      *
-     * @param parent   The ViewGroup into which the new View will be added after it is bound to
-     *                 an adapter position.
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an adapter position.
      * @param viewType The view type of the new View.
+     *
      * @return A new ViewHolder that holds a View of the given view type.
      */
     @Override
     public EventsListShopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.events_list_shop_cardview, parent, false);
         return new ViewHolder(v);
     }
@@ -133,12 +139,13 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
      * update the contents of the {@link ViewHolder#itemView} to reflect the item at the given
      * position.
      *
-     * @param holder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
+     * @param holder   The ViewHolder which should be updated to represent the contents of the item at the given
+     *                 position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
     public void onBindViewHolder(final EventsListShopAdapter.ViewHolder holder, int position) {
+
         holder.id = events.get(position).getId();
         holder.title.setText(events.get(position).getTitle());
         holder.category.setText(events.get(position).getCategory());
@@ -154,21 +161,20 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
         if (events.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
-        }
-        else {
+        } else {
             holder.fav.setImageResource(R.drawable.ic_fav_void);
             holder.fav.setTag("favorite");
         }
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
-                new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUsername(), holder.id.toString());
+                new PostFavorite()
+                        .execute("http://10.4.41.145/api/users/", "POST", session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
-                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                        session.getUsername(), holder.id.toString());
+                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE", session.getUsername(),
+                        holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
@@ -187,10 +193,11 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             transaction.commit();
         });
         holder.DeleteButton.setOnClickListener(v -> {
-            String url = "http://10.4.41.145/api/shops/" + String.valueOf(events.get(position).getIdShop()) + "/events/" + String.valueOf(holder.id);
+            String url =
+                    "http://10.4.41.145/api/shops/" + String.valueOf(events.get(position).getIdShop()) + "/events/" +
+                            String.valueOf(holder.id);
             Log.d(TAG, url);
-            new DeleteEvent().execute(url, "DELETE",
-                    session.getUsername());
+            new DeleteEvent().execute(url, "DELETE", session.getUsername());
         });
 
     }
@@ -203,20 +210,24 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-events";
+            String url = params[0] + params[2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -224,21 +235,26 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            String url = params[0] + params [2] + "/favourite-events/" + params[3];
+            String url = params[0] + params[2] + "/favourite-events/" + params[3];
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */
@@ -246,6 +262,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
             if (response.contains("Event deleted successfully.")) return "Correct";
@@ -253,10 +270,10 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
-            }
-            else{
+            } else {
                 Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -276,6 +293,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
      */
     @Override
     public int getItemCount() {
+
         return events.size();
     }
 }

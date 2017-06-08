@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import pes.gogreenapp.Adapters.EventsListAdapter;
 import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
@@ -38,6 +37,7 @@ import pes.gogreenapp.Utils.SessionManager;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailedFragment extends Fragment {
+
     //initialitions
     private SessionManager session;
     private ImageView image;
@@ -59,22 +59,21 @@ public class EventDetailedFragment extends Fragment {
      * Required empty public constructor
      */
     public EventDetailedFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.event_detailed_fragment, container, false);
         id = getArguments().getInt("id");
@@ -91,10 +90,10 @@ public class EventDetailedFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         image = (ImageView) getView().findViewById(R.id.imageEventDetailed);
@@ -106,15 +105,17 @@ public class EventDetailedFragment extends Fragment {
         instrucciones = (TextView) getView().findViewById(R.id.instructionsDetailReward);
         ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
         fav = (ImageButton) getView().findViewById(R.id.eventFavoriteDetailButton);
+        if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
         imgback.setOnClickListener(v -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();
             FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             Fragment fragment;
-            if(session.getRole().equals("manager"))
+            if (session.getRole().equals("manager")) {
                 fragment = (Fragment) new EventsListShopFragment();
-            else
+            } else {
                 fragment = (Fragment) new EventsListFragment();
+            }
             transaction.replace(R.id.flContent, fragment);
             transaction.commit();
 
@@ -141,14 +142,14 @@ public class EventDetailedFragment extends Fragment {
          */
         @Override
         protected String doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.i("AAAA",jsonObject.toString());
+                    Log.i("AAAA", jsonObject.toString());
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String address = null;
                     if (!jsonObject.isNull("adress")) address = jsonObject.getString("adress");
@@ -157,17 +158,10 @@ public class EventDetailedFragment extends Fragment {
                     String image = null;
                     if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
 
-                    event = new Event(jsonObject.getInt("id"),
-                            jsonObject.getString("title"),
-                            jsonObject.getString("description"),
-                            jsonObject.getInt("points"),
-                            address,
-                            company,
-                            df.parse(jsonObject.getString("date")),
-                            image,
-                            jsonObject.getString("category"),
-                            jsonObject.getBoolean("favourite"),
-                            jsonObject.getInt("shop_id"));
+                    event = new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
+                            jsonObject.getString("description"), jsonObject.getInt("points"), address, company,
+                            df.parse(jsonObject.getString("date")), image, jsonObject.getString("category"),
+                            jsonObject.getBoolean("favourite"), jsonObject.getInt("shop_id"));
 
                     Log.d(TAG, "event created");
                 } catch (JSONException | ParseException e) {
@@ -176,33 +170,34 @@ public class EventDetailedFragment extends Fragment {
             }
             return "correct";
         }
-        protected void onPostExecute(String result){
+
+        protected void onPostExecute(String result) {
             //initialize
-            title.setText(event.getTitle() +" ("+event.getPoints().toString()+" pts)");
+            title.setText(event.getTitle() + " (" + event.getPoints().toString() + " pts)");
             description.setText(event.getDescription());
             direction.setText(event.getDirection());
-            instrucciones.setText("Evento orgnanizado por "+event.getCompany()+"\nEl genero del evento es: "+event.getCategory());
+            instrucciones.setText("Evento orgnanizado por " + event.getCompany() + "\nEl genero del evento es: " +
+                    event.getCategory());
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            date.setText("Fecha del evento: "+sdf.format(event.getDate()));
+            date.setText("Fecha del evento: " + sdf.format(event.getDate()));
 
             if (event.isFavorite()) {
                 fav.setTag("favoritefilled");
                 fav.setImageResource(R.drawable.ic_fav_filled);
-            }
-            else {
+            } else {
                 fav.setImageResource(R.drawable.ic_fav_void);
                 fav.setTag("favorite");
             }
 
             fav.setOnClickListener(v -> {
                 if (fav.getTag().equals("favorite")) {
-                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUsername(), event.getId().toString());
+                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST", session.getUsername(),
+                            event.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_filled);
                     fav.setTag("favoritefilled");
                 } else {
-                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUsername(), event.getId().toString());
+                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE", session.getUsername(),
+                            event.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
@@ -210,7 +205,7 @@ public class EventDetailedFragment extends Fragment {
 
 
             String hour = event.getHour();
-            if (Integer.parseInt(event.getHour()) < 10){
+            if (Integer.parseInt(event.getHour()) < 10) {
                 hour = "0" + event.getHour();
             }
             String min = event.getMin();
@@ -219,62 +214,72 @@ public class EventDetailedFragment extends Fragment {
             }
             fav.setOnClickListener(v -> {
                 if (fav.getTag().equals("favorite")) {
-                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUsername(), event.getId().toString());
+                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST", session.getUsername(),
+                            event.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_filled);
                     fav.setTag("favoritefilled");
                 } else {
-                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUsername(), event.getId().toString());
+                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE", session.getUsername(),
+                            event.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
             });
 
-            time.setText(hour+":"+min);
+            time.setText(hour + ":" + min);
             if (event.getImage() != null) {
                 byte[] decodedBytes = event.getImage();
                 image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
             }
         }
     }
+
     private class PostFavorite extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-events";
+            String url = params[0] + params[2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al añadir el evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error al añadir el evento a favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Evento añadido a favoritos con exito.", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(getActivity(), "Evento añadido a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
+
     private class DeleteFavorite extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
-            String url = params[0] + params [2] + "/favourite-events/" + params[3];
+            String url = params[0] + params[2] + "/favourite-events/" + params[3];
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getActivity(), "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(getActivity(), "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 }
