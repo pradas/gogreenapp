@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -36,11 +35,6 @@ import pes.gogreenapp.Objects.Event;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-
-import static pes.gogreenapp.R.id.filtrarCategoriaEventos;
-import static pes.gogreenapp.R.id.filtrarTodosEventos;
-import static pes.gogreenapp.R.id.ordenarFechaEventos;
-import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
 
 public class EventsListShopFragment extends Fragment {
@@ -99,26 +93,8 @@ public class EventsListShopFragment extends Fragment {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events_list_menu, menu);
+        inflater.inflate(R.menu.menu_filters, menu);
         super.onCreateOptionsMenu(menu,inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()) {
-            case ordenarFechaEventos:
-                sortDate();
-                return true;
-            case ordenarPuntosEventos:
-                sortPoints();
-                return true;
-            case filtrarTodosEventos:
-                filterAll();
-                return true;
-            case filtrarCategoriaEventos:
-                filterCategory();
-                return true;
-        }
-        return false;
     }
 
     /**

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,9 +34,6 @@ import pes.gogreenapp.Objects.Oferta;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-
-import static pes.gogreenapp.R.id.ordenarFechaOfertas;
-import static pes.gogreenapp.R.id.ordenarPuntosOfertas;
 
 
 public class OfertasListFragment extends Fragment {
@@ -94,21 +90,9 @@ public class OfertasListFragment extends Fragment {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.ofertas_list_menu, menu);
+        inflater.inflate(R.menu.menu_filters, menu);
         getActivity().setTitle("Ofertas");
         super.onCreateOptionsMenu(menu,inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()) {
-            case ordenarFechaOfertas:
-                sortDate();
-                return true;
-            case ordenarPuntosOfertas:
-                sortPoints();
-                return true;
-        }
-        return false;
     }
 
 

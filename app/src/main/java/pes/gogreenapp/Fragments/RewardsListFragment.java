@@ -49,7 +49,7 @@ import pes.gogreenapp.Utils.AsyncHttpHandler;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-public class RewardsListFragment extends Fragment implements RewardsFilterDialogFragment.RewardsFilterDialogListener {
+public class RewardsListFragment extends Fragment implements FilterDialogFragment.FilterDialogListener {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -141,10 +141,10 @@ public class RewardsListFragment extends Fragment implements RewardsFilterDialog
 
         //Listener for the filter menuIcon
         filterButton.setOnMenuItemClickListener(v -> {
-            RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
+            FilterDialogFragment dialog = new FilterDialogFragment();
             dialog.setCategories(categories);
             dialog.setTargetFragment(this, 200);
-            dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
+            dialog.show(getFragmentManager(), "FilterDialogFragment");
             return true;
         });
     }

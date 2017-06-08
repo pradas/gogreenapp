@@ -4,12 +4,8 @@ package pes.gogreenapp.Fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import pes.gogreenapp.Activities.MainActivity;
 import pes.gogreenapp.Exceptions.NullParametersException;
@@ -47,15 +34,12 @@ import pes.gogreenapp.Utils.UserData;
  */
 public class LoginFragment extends Fragment {
 
-
     private final String EXTRA_BOOLEAN = "ADD_ACCOUNT";
     private SessionManager session;
     private EditText textName;
     private EditText textPassword;
     private Button buttonRegister;
     private TextView forgotPassword;
-
-
 
     /**
      * Required empty public constructor
@@ -205,7 +189,7 @@ public class LoginFragment extends Fragment {
                     session = SessionManager.getInstance(getActivity().getApplicationContext());
                     session.putInfoLoginSession(params[2], aux.getString("role"), aux.getString("token"),
                             aux.getInt("points"));
-                    if ("manager".equals(aux.getString("role"))) {
+                    if ("manager".equals(aux.getString("role")) || "shopper".equals(aux.getString("role"))) {
                         session.setShopId(aux.getInt("shop_id"));
                     }
 

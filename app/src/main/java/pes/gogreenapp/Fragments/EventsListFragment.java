@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,7 +26,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +36,9 @@ import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
-import static pes.gogreenapp.R.id.filtrarCategoriaEventos;
-import static pes.gogreenapp.R.id.filtrarTodosEventos;
-import static pes.gogreenapp.R.id.ordenarFechaEventos;
-import static pes.gogreenapp.R.id.ordenarPuntosEventos;
 
+public class EventsListFragment extends Fragment implements FilterDialogFragment.FilterDialogListener {
 
-public class EventsListFragment extends Fragment {
     //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -63,31 +58,25 @@ public class EventsListFragment extends Fragment {
      * Required empty public constructor
      */
     public EventsListFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         setHasOptionsMenu(true);
         getActivity().setTitle("Eventos");
         return inflater.inflate(R.layout.events_list_fragment, container, false);
-    }
-
-    public void showFilterDialog(){
-        //Creamos una instancia del FilterDialog y la mostramos
-        RewardsFilterDialogFragment dialog = new RewardsFilterDialogFragment();
-        dialog.show(getFragmentManager(), "RewardsFilterDialogFragment");
     }
 
     /**
@@ -105,144 +94,19 @@ public class EventsListFragment extends Fragment {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.events_list_menu, menu);
+
+        inflater.inflate(R.menu.menu_filters, menu);
         final MenuItem filterButton = menu.findItem(R.id.filter_icon);
 
         //Listener for the filter menuIcon
-        filterButton.setOnMenuItemClickListener( v -> {
-            showFilterDialog();
+        filterButton.setOnMenuItemClickListener(v -> {
+            FilterDialogFragment dialog = new FilterDialogFragment();
+            dialog.setCategories(categories);
+            dialog.setTargetFragment(this, 200);
+            dialog.show(getFragmentManager(), "FilterDialogFragment");
             return true;
         });
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()) {
-            case ordenarFechaEventos:
-                SortDate();
-                return true;
-            case ordenarPuntosEventos:
-                SortPoints();
-                return true;
-            case filtrarTodosEventos:
-                filterAll();
-                return true;
-            case filtrarCategoriaEventos:
-                filterCategory();
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     *  Shows a dialog with all the categories to select one
-     */
-    private void filterCategory() {
-        String pastCategory = categorySelected;
-        categorySelected = "Conciertos";
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        mBuilder.setTitle("SELECCIONA UNA CATEGORIA");
-        int checkeds = 0;
-        mBuilder.setSingleChoiceItems(categories.toArray(new String[categories.size()]),
-                checkeds, (dialog, which) -> {
-                    categorySelected = categories.toArray(new String[categories.size()])[which];
-                }).setPositiveButton("SELECCIONAR CATEGORIA", (dialog, id) -> {
-            // User clicked OK button
-            List<Event> filteredEvents = filterEventsByCategories();
-            if (filteredEvents.size() == 0)
-                warning.setText("NO HAY PROMOCIONES EN ESTA CATEGORIA");
-            else warning.setText("");
-            adapter = new EventsListAdapter(getContext(), filteredEvents);
-            recyclerView.setAdapter(adapter);
-        });
-        mBuilder.setNegativeButton("CANCELAR", (dialog, id) -> {
-            categorySelected = pastCategory; // User cancelled the dialog
-        });
-        AlertDialog dialog = mBuilder.create();
-        dialog.show();
-
-    }
-
-    /**
-     * Filter all the events by the category categorySelected
-     * @return a list of events filtered
-     */
-    private List<Event> filterEventsByCategories() {
-        List<Event> rewardsFiltered = new ArrayList<>();
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getCategory().equals(categorySelected))
-                rewardsFiltered.add(events.get(i));
-        }
-        return rewardsFiltered;
-    }
-
-    /**
-     * Get all the events
-     */
-    private void filterAll() {
-        categorySelected = "";
-        warning.setText("");
-        adapter = new EventsListAdapter(getContext(), events);
-        recyclerView.setAdapter(adapter);
-
-    }
-
-    /**
-     *  Sort by points the events
-     */
-    private void SortPoints() {
-        if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
-            pointsFilter = "ascendente";
-        } else if (pointsFilter.equals("ascendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
-            pointsFilter = "descendente";
-        }
-        recyclerView.setAdapter(adapter);
-
-    }
-
-    /**
-     *  Sort by date the events.
-     */
-    private void SortDate() {
-        if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
-            dateFilter = "ascendente";
-        } else if (dateFilter.equals("ascendente")) {
-            if (categorySelected.equals("")) {
-                Collections.sort(events, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), events);
-            } else {
-                List<Event> filteredEvents = filterEventsByCategories();
-                Collections.sort(filteredEvents, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new EventsListAdapter(getContext(), filteredEvents);
-            }
-            dateFilter = "descendente";
-        }
-        recyclerView.setAdapter(adapter);
-
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**
@@ -251,8 +115,7 @@ public class EventsListFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -269,6 +132,7 @@ public class EventsListFragment extends Fragment {
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
+
     /**
      * On swipe, refresh all the items of the screen.
      */
@@ -298,6 +162,17 @@ public class EventsListFragment extends Fragment {
         //adapter.getItemCount();
     }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
+                                      String category) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
+    }
+
     /**
      * Asynchronous Task for the petition GET of all the Events.
      */
@@ -310,9 +185,9 @@ public class EventsListFragment extends Fragment {
          */
         @Override
         protected Void doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             events.clear();
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
@@ -325,20 +200,14 @@ public class EventsListFragment extends Fragment {
                         String address = null;
                         if (!jsonObject.isNull("adress")) address = jsonObject.getString("adress");
                         String company = null;
-                        if (!jsonObject.isNull("company"))
-                            address = jsonObject.getString("company");
+                        if (!jsonObject.isNull("company")) address = jsonObject.getString("company");
                         String image = null;
-                        if (!jsonObject.isNull("image"))
-                            image = jsonObject.getString("image");
+                        if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
-                        events.add(
-                                new Event(jsonObject.getInt("id"),
-                                jsonObject.getString("title"),
-                                jsonObject.getString("description"),
-                                jsonObject.getInt("points"),
-                                address, company, date, image, jsonObject.getString("category"),
-                                jsonObject.getBoolean("favourite"))
+                        events.add(new Event(jsonObject.getInt("id"), jsonObject.getString("title"),
+                                jsonObject.getString("description"), jsonObject.getInt("points"), address, company,
+                                date, image, jsonObject.getString("category"), jsonObject.getBoolean("favourite"))
 
                         );
                     }
@@ -356,6 +225,7 @@ public class EventsListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
+
             adapter = new EventsListAdapter(getContext(), events);
             recyclerView.setAdapter(adapter);
         }
@@ -374,9 +244,9 @@ public class EventsListFragment extends Fragment {
          */
         @Override
         protected Void doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux;
