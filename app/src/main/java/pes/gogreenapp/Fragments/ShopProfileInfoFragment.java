@@ -48,6 +48,7 @@ public class ShopProfileInfoFragment extends Fragment {
     private TextView shopAddress;
     private Button editProfile;
     private Bitmap profileImageBitmap;
+    private Integer idTienda;
 
     /**
      * Required empty public constructor
@@ -69,6 +70,7 @@ public class ShopProfileInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle("Tienda");
+        idTienda = getArguments().getInt("id");
         return inflater.inflate(R.layout.shop_profile_info_fragment, container, false);
     }
 
@@ -105,7 +107,9 @@ public class ShopProfileInfoFragment extends Fragment {
                 }
             });
         }
-        new GetInfoShop().execute("http://10.4.41.145/api/shops/" + session.getShopId());
+
+        if (idTienda == -1) new GetInfoShop().execute("http://10.4.41.145/api/shops/" + session.getShopId());
+        else new GetInfoShop().execute("http://10.4.41.145/api/shops/" + idTienda);
 
     }
 

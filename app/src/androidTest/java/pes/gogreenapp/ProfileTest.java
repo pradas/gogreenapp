@@ -57,7 +57,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have image
      */
     @Test
     public void profileHasImage(){
@@ -67,7 +67,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have name
      */
     @Test
     public void profileHasName(){
@@ -77,7 +77,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have nickname
      */
     @Test
     public void profileHasNickName(){
@@ -87,7 +87,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have total points
      */
     @Test
     public void profileHasTotalPoints(){
@@ -97,7 +97,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have actual points
      */
     @Test
     public void profileHasActualPoints(){
@@ -106,7 +106,7 @@ public class ProfileTest {
                 .check(matches(isDisplayed()));
     }
     /**
-     * Check if the user image is displayed
+     * Check if the xml have edit button
      */
     @Test
     public void profileHasEditButton(){
@@ -116,7 +116,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have birth date
      */
     @Test
     public void profileHasBirthDate(){
@@ -126,7 +126,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the user image is displayed
+     * Check if the xml have email
      */
     @Test
     public void profileHasEmail(){
@@ -145,7 +145,7 @@ public class ProfileTest {
     }
 
     /**
-     * Check if the rewards exchanged is displayed
+     * Check if clicking the edit profile show the edit profile fragment
      */
     @Test
     public void pressButtonEditDisplaysEditFragment() {

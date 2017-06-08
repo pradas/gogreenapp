@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -29,7 +28,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -43,7 +41,6 @@ import static android.content.ContentValues.TAG;
 public class ForgottenPasswordFragment extends Fragment {
 
     private SessionManager session;
-    private EditText userName;
     private EditText email;
     private Button sendPassword;
     String mailAddressSender;
@@ -92,7 +89,6 @@ public class ForgottenPasswordFragment extends Fragment {
         session = SessionManager.getInstance();
         activity = getActivity();
 
-        userName = (EditText) getView().findViewById(R.id.username_edit_text_forgot_password);
         email = (EditText) getView().findViewById(R.id.email_edit_text_forgot_password);
         sendPassword = (Button) getView().findViewById(R.id.reSendPassword);
         mailAddressSender = "gogreenfib@gmail.com";
@@ -107,21 +103,16 @@ public class ForgottenPasswordFragment extends Fragment {
             Boolean send = true;
             @Override
             public void onClick(View v) {
-                if (userName.getText().toString().length() <= 0) {
-                    userName.setError("Username necesario");
-                    send = false;
-                }
                 if (email.getText().toString().length() <= 0) {
                     email.setError("Correo necesario");
                     send = false;
                 }
 
                 if (send) {
-                    try {
-                        new EmailExists().execute("http://10.4.41.145/api/validate-email", "POST", email.getText().toString()).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
+
+                    new PutUser().execute("http://10.4.41.145/api/reset-password",
+                            "PUT", (String) String.valueOf(newPassword), email.getText().toString());
+
                     if (exists) {
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -148,13 +139,11 @@ public class ForgottenPasswordFragment extends Fragment {
                                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getText().toString()));
                                 message.setContent(textEmail, "text/html; charset=utf-8");
                                 Transport.send(message);
+                                Toast.makeText(activity, "Email enviado", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        new PutUser().execute("http://10.4.41.145/api/users/",
-                                "PUT", (String) String.valueOf(newPassword), userName.getText().toString());
 
                         try {
                             getActivity().getSupportFragmentManager().beginTransaction()
@@ -168,34 +157,6 @@ public class ForgottenPasswordFragment extends Fragment {
         });
     }
 
-    private class EmailExists extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HashMap<String, String> bodyParams = new HashMap<>();
-            bodyParams.put("email", params[2]);
-            String response = new HttpHandler().makeServiceCall(params[0], params[1], bodyParams,
-                    "");
-            Log.i(TAG, "Response from url: " + response);
-            if (response != "404" && response != "500" && (!response.equals(null))) {
-                return "Correct";
-            }
-            return "Error";
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result.equals("Error")) {
-                email.setError("Este email no pertenece a ningun usuario");
-                exists = false;
-            }
-            else {
-                exists = true;
-            }
-        }
-    }
-
     /**
      * Asynchronous Task for the petition PUT of a User.
      */
@@ -206,26 +167,29 @@ public class ForgottenPasswordFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the number of points to add to the user
-         *               params[3] is the username of the user
+         *               params[2] is the new password for the user
+         *               params[3] is the email of the user to modify the password
          * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
          */
         @Override
         protected String doInBackground(String... params) {
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
+            bodyParams.put("email", params[3]);
             bodyParams.put("password", params[2]);
-            String url = params[0] + params[3];
-            String response = httpHandler.makeServiceCall(url, params[1], bodyParams,
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsImlzcyI6Imh0dHA6XC9cLzEwLjQuND" +
-                            "EuMTQ1XC9hcGlcL3Nlc3Npb24iLCJpYXQiOjE0OTY4NTQxNjIsImV4cCI6MTUwMTY5MjU2M" +
-                            "iwibmJmIjoxNDk2ODU0MTYyLCJqdGkiOiJ6T3pEZTRBVmJ6OTVOelptIn0.bsIhl4ych-iR" +
-                            "0oOxzGLQT2sL_wd2pljOqyKDvAZ6gEQ");
+            String response = httpHandler.makeServiceCall(params[0], params[1], bodyParams, "");
             if (response != null && !response.equals("500") && !response.equals("404")) {
+                exists = true;
                 return "Correct";
             }
-            else if (response.equals("404")) return "El usuario " + params[3] + " no existe";
-            return "Error";
+            else if (response.equals("404")) {
+                exists = false;
+                return "El usuario " + params[3] + " no existe";
+            }
+            else {
+                exists = false;
+                return "Error";
+            }
         }
 
         /**
@@ -238,10 +202,7 @@ public class ForgottenPasswordFragment extends Fragment {
                 Toast.makeText(activity, "Error al enviar el email",
                         Toast.LENGTH_SHORT).show();
             }
-            else if (result.equalsIgnoreCase("Correct")){
-                Toast.makeText(activity, "Email enviado", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            else if ((!result.equalsIgnoreCase("Correct")) && (!result.equalsIgnoreCase("Error"))){
                 Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
             }
         }

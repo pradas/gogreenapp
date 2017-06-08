@@ -42,7 +42,7 @@ public class GivePointsTest {
     /**
      * Before the tests the Navigation Drawer is open, if cant be open it is because there isn't
      * a valid user logged. Due this, the setup do the Login with
-     * the username user and the password Password12
+     * the username manager and the password Password12
      */
     @Before
     public void setup() {
@@ -84,7 +84,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the list
      */
     @Test
     public void fragmentHasList() {
@@ -92,7 +92,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have button to show another user
      */
     @Test
     public void fragmentHasButtonAnotherUser() {
@@ -100,7 +100,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have button to grant points
      */
     @Test
     public void fragmentHasButtonGrantPoints() {
@@ -108,7 +108,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have the switch button in events position by default
      */
     @Test
     public void switchEventsDefault() {
@@ -116,7 +116,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemEvents have username
      */
     @Test
     public void listEventsHasUserNameEditText() {
@@ -125,7 +125,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemEvents have username with hint Nombre de usuario
      */
     @Test
     public void listEventsHasUserNameEditTextWithHint() {
@@ -134,7 +134,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemEvents have spinner with the events
      */
     @Test
     public void listEventsSpinner() {
@@ -143,7 +143,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemPoints have EditText username
      */
     @Test
     public void listItemPointsHasUserNameEditText() {
@@ -152,7 +152,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemPoints have EditText username with hint Nombre de usuario
      */
     @Test
     public void listItemPointsHasUserNameEditTextWithHint() {
@@ -161,7 +161,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemPoints have EditText points
      */
     @Test
     public void listItemPointsHasPointsEditText() {
@@ -170,7 +170,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * ItemPoints have EditText points with hint Puntos
      */
     @Test
     public void listItemPointsHasPointsEditTextWithHint() {
@@ -179,7 +179,7 @@ public class GivePointsTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Another User button displays another user
      */
     @Test
     public void anotherUserDisplaysAnotherItem() {

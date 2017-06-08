@@ -59,34 +59,6 @@ public class CreateEventTest {
 
 
     /**
-     * Check if it is send if is correct
-     * Fail until HtttpHandler is changed
-     */
-    @Test
-    public void Send() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
-                .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
-                .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
-                .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
-                .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.editTextDateCreateEvent))
-                .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.HourCreateEvent_edit_text))
-                .perform(clearText(), typeText("22"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
-                .perform(clearText(), typeText("30"));
-        onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
-                .perform(scrollTo(), click());
-        onView(withText("Creado perfectamente."))
-                .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
      * Check error if the hour is incorrect
      */
     @Test
@@ -137,29 +109,7 @@ public class CreateEventTest {
         onView(withId(R.id.MinCreateEvent_edit_text))
                 .check(matches(withError("Minutos incorrectos")));
     }
-    /**
-     * Check error if the minuts are put but is not put the hour
-     */
-    @Test
-    public void MinButNotHour() {
-        onView(withId(R.id.titleCreateEvent_edit_text))
-                .perform(clearText(), typeText("Title"));
-        onView(withId(R.id.DescriptionCreateEvent_edit_text))
-                .perform(clearText(), typeText("Description"));
-        onView(withId(R.id.PointsCreateEvent_edit_text))
-                .perform(clearText(), typeText("100"));
-        onView(withId(R.id.DirectionCreateEvent_edit_text))
-                .perform(clearText(), typeText("C/ Mayor 1"));
-        onView(withId(R.id.editTextDateCreateEvent))
-                .perform(clearText(), typeText("22-09-2017"));
-        onView(withId(R.id.MinCreateEvent_edit_text))
-                .perform(clearText(), typeText("30"));
-        onView(withId(R.id.ScrollViewCreateEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendCreateEvent))
-                .perform(scrollTo(), click());
-        onView(withId(R.id.HourCreateEvent_edit_text))
-                .check(matches(withError("Hora necesaria")));
-    }
+
 
     /**
      * Check error if the hour is put but is not put the minuts

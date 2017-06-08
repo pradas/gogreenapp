@@ -71,7 +71,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have image
      */
     @Test
     public void fragmentHasImage() {
@@ -79,7 +79,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have name
      */
     @Test
     public void fragmentHasName() {
@@ -87,7 +87,7 @@ public class ShopProfileTest {
     }
 
     /**
-     *
+     * Check if the xml have email
      */
     @Test
     public void fragmentHasEmail() {
@@ -95,7 +95,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have address
      */
     @Test
     public void fragmentHasAddress() {
@@ -103,7 +103,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have deals
      */
     @Test
     public void fragmentHasDeals() {
@@ -111,7 +111,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml have edit button with the role manager
      */
     @Test
     public void fragmentHasEditButton() {
@@ -119,7 +119,7 @@ public class ShopProfileTest {
     }
 
     /**
-     * Check if the xml have the switch button
+     * Check if the xml don't have edit button with the role shoper and user
      */
     @Test
     public void fragmentHasntEditButtonAsEmployee() {
