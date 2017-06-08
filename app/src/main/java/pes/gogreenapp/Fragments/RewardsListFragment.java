@@ -218,6 +218,7 @@ public class RewardsListFragment extends Fragment implements FilterDialogFragmen
     void refreshItems() {
         // Load complete
         // Update the adapter and notify data set changed
+        rewards.clear();
         new GetRewards().execute(url + "rewards");
 
         // Stop refresh animation
