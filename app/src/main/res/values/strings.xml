@@ -106,5 +106,9 @@
     <string name="ascendent">Ascendente</string>
     <string name="descendent">Descendente</string>
 
+    <!-- Others -->
+    <string name="advert">ESTE QR ES SOLO VÁLIDO PARA UN USO. DESPUÉS DE ESCANEARLO DESAPARECERÁ DE
+        TUS REWARDS CANJEADAS Y NO PODRÁS VOLVER A USARLO.</string>
+
 
 </resources>
