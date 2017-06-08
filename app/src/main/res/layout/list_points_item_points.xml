@@ -19,7 +19,6 @@
         android:hint="@string/usernameHint"
         android:textColor="#212121"
         android:textColorHint="#757575"
-        android:theme="@style/campotextoregistrohard"
         android:layout_below="@+id/userNumberByPoints"
         android:layout_alignParentStart="true" />
 
@@ -30,7 +29,6 @@
         android:hint="@string/pointsHint"
         android:textColor="#212121"
         android:textColorHint="#757575"
-        android:theme="@style/campotextoregistrohard"
         android:layout_below="@+id/userNameToGiveByPoints"
         android:layout_alignParentStart="true" />
 
