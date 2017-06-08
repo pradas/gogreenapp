@@ -16,6 +16,8 @@ import pes.gogreenapp.R;
 
 public class ShopProfileContainerFragment extends Fragment {
 
+    private int idTienda;
+
     /**
      *  Required empty public constructor
      */
@@ -37,6 +39,12 @@ public class ShopProfileContainerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle("Tienda");
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey("id"))
+            idTienda = getArguments().getInt("id");
+        else idTienda = -1;
+
+
         return inflater.inflate(R.layout.shop_profile_container_fragment, container, false);
     }
 
@@ -59,6 +67,9 @@ public class ShopProfileContainerFragment extends Fragment {
             ShopProfileInfoFragment uInfoFrag = new ShopProfileInfoFragment();
             OfertasListFragment rExFrag = new OfertasListFragment();
 
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", idTienda);
+            uInfoFrag.setArguments(bundle);
 
             transaction
                     .add(R.id.shopProfile, uInfoFrag)
