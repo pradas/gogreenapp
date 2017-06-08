@@ -1,9 +1,11 @@
 package pes.gogreenapp.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -25,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import pes.gogreenapp.Fragments.FilterDialogFragment;
 import pes.gogreenapp.Fragments.QRCodeFragment;
 import pes.gogreenapp.Fragments.RewardDetailedFragment;
 import pes.gogreenapp.Objects.Reward;
@@ -185,9 +195,9 @@ public class RewardsExchangedAdapter extends RecyclerView.Adapter<RewardsExchang
             @Override
             public void onClick(View v) {
                 String url = "http://10.4.41.145/use-reward/" + rewards.get(position).getId();
+
                 Bundle bundle = new Bundle();
                 bundle.putString("url", url);
-
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new QRCodeFragment();
