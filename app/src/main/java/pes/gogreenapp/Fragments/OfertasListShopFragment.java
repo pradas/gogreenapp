@@ -113,6 +113,7 @@ public class OfertasListShopFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
+
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }

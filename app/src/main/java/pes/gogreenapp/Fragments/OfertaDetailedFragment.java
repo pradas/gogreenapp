@@ -1,7 +1,6 @@
 package pes.gogreenapp.Fragments;
 
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -38,6 +37,7 @@ import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 public class OfertaDetailedFragment extends Fragment {
+
     //initialitions
     private SessionManager session;
     private Integer id;
@@ -50,22 +50,22 @@ public class OfertaDetailedFragment extends Fragment {
      * Required empty public constructor
      */
     public OfertaDetailedFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.oferta_detailed_fragment, container, false);
         id = getArguments().getInt("id");
         url += id;
@@ -81,6 +81,7 @@ public class OfertaDetailedFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+
         super.onDestroyView();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
@@ -91,11 +92,11 @@ public class OfertaDetailedFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         TextView title;
         TextView description;
         TextView endDate;
@@ -115,6 +116,7 @@ public class OfertaDetailedFragment extends Fragment {
         endDate = (TextView) getView().findViewById(R.id.dateValidDetailOferta);
         instructions = (TextView) getView().findViewById(R.id.instructionsDetailOferta);
         fav = (ImageButton) getView().findViewById(R.id.favoriteDetailButtonOferta);
+        if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
         shopBut = (Button) getView().findViewById(R.id.buttonGoToShop);
         ImageView img = (ImageView) getView().findViewById(R.id.ofertaBackgroundImageProfile);
         img.setImageBitmap(bmp);
@@ -124,7 +126,8 @@ public class OfertaDetailedFragment extends Fragment {
         Date finalDate = oferta.getDate();
 
         endDate.setText("Fecha limite: " + new SimpleDateFormat("dd/MM/yyyy").format(finalDate));
-        instructions.setText("Oferta hecha por el comercio " + oferta.getShop_name() + ". Para usarla, ir al comercio y preguntar.");
+        instructions.setText(
+                "Oferta hecha por el comercio " + oferta.getShop_name() + ". Para usarla, ir al comercio y preguntar.");
 
         fav.setTag("favorite");
         fav.setImageResource(R.drawable.ic_fav_void);
@@ -132,8 +135,7 @@ public class OfertaDetailedFragment extends Fragment {
         if (oferta.isFavorite()) {
             fav.setTag("favoritefilled");
             fav.setImageResource(R.drawable.ic_fav_filled);
-        }
-        else {
+        } else {
             fav.setImageResource(R.drawable.ic_fav_void);
             fav.setTag("favorite");
         }
@@ -141,14 +143,15 @@ public class OfertaDetailedFragment extends Fragment {
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (fav.getTag().equals("favorite")) {
-                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                            session.getUsername(), oferta.getId().toString());
+                    new PostFavorite().execute("http://10.4.41.145/api/users/", "POST", session.getUsername(),
+                            oferta.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_filled);
                     fav.setTag("favoritefilled");
                 } else {
-                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
-                            session.getUsername(), oferta.getId().toString());
+                    new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE", session.getUsername(),
+                            oferta.getId().toString());
                     fav.setImageResource(R.drawable.ic_fav_void);
                     fav.setTag("favorite");
                 }
@@ -158,14 +161,16 @@ public class OfertaDetailedFragment extends Fragment {
         imgback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment;
-                if(session.getRole().equals("manager"))
+                if (session.getRole().equals("manager")) {
                     fragment = (Fragment) new OfertasListShopFragment();
-                else
+                } else {
                     fragment = (Fragment) new OfertasListFragment();
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                }
+                transaction.replace(R.id.flContent, fragment).addToBackStack("tag").commit();
 
             }
         });
@@ -177,7 +182,7 @@ public class OfertaDetailedFragment extends Fragment {
             FragmentTransaction transaction = manager.beginTransaction();
             Fragment fragment = (Fragment) new ShopProfileContainerFragment();
             fragment.setArguments(bundle);
-            transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+            transaction.replace(R.id.flContent, fragment).addToBackStack("tag").commit();
         });
     }
 
@@ -188,6 +193,7 @@ public class OfertaDetailedFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("deal_id", params[3]);
@@ -198,10 +204,13 @@ public class OfertaDetailedFragment extends Fragment {
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            } else
+                Toast.makeText(getActivity(), "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 Toast.makeText(getActivity(), "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -212,6 +221,7 @@ public class OfertaDetailedFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             String url = params[0] + params[2] + "/favourite-deals/" + params[3];
@@ -221,10 +231,13 @@ public class OfertaDetailedFragment extends Fragment {
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(getActivity(), "Error al eliminar la oferta de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            } else
+                Toast.makeText(getActivity(), "Error al eliminar la oferta de favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 Toast.makeText(getActivity(), "Oferta eliminada de favoritos con exito.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -240,9 +253,9 @@ public class OfertaDetailedFragment extends Fragment {
          */
         @Override
         protected Void doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 try {
@@ -250,13 +263,9 @@ public class OfertaDetailedFragment extends Fragment {
                     Date date = null;
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
-                    oferta = new Oferta(
-                            jsonObject.getInt("id"),
-                            jsonObject.getString("name"),
-                            jsonObject.getString("description"),
-                            jsonObject.getInt("value"),
-                            date, jsonObject.getBoolean("favourite"),
-                            jsonObject.getString("image"));
+                    oferta = new Oferta(jsonObject.getInt("id"), jsonObject.getString("name"),
+                            jsonObject.getString("description"), jsonObject.getInt("value"), date,
+                            jsonObject.getBoolean("favourite"), jsonObject.getString("image"));
                     oferta.setShop(jsonObject.getInt("shop_id"));
                     oferta.setShop_name(jsonObject.getString("shop"));
                 } catch (JSONException | ParseException e) {

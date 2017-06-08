@@ -36,6 +36,7 @@ import pes.gogreenapp.Utils.SessionManager;
 
 
 public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShopAdapter.ViewHolder> {
+
     private List<Oferta> ofertas;
     private Context context;
     private SessionManager session;
@@ -48,6 +49,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
      * @param context non-null context of the application.
      */
     public OfertasListShopAdapter(Context context, List<Oferta> ofertas) {
+
         this.context = context;
         this.ofertas = ofertas;
         this.session = SessionManager.getInstance();
@@ -59,10 +61,12 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
      * @param ofertas non-null List of the Rewards.
      */
     public void setEvents(List<Oferta> ofertas) {
+
         this.ofertas = ofertas;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView image;
         TextView title;
         TextView description;
@@ -79,18 +83,21 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
          * @param itemView valid View where to construct.
          */
         ViewHolder(View itemView) {
+
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.ofertaImageShop);
             title = (TextView) itemView.findViewById(R.id.ofertaTitleShop);
             discount = (TextView) itemView.findViewById(R.id.ofertaPointsShop);
             date = (TextView) itemView.findViewById(R.id.ofertaEndDateShop);
             fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButtonShop);
+            if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
             DeleteButton = (ImageButton) itemView.findViewById(R.id.ofertaDeleteButtonShop);
             edit = (ImageButton) itemView.findViewById(R.id.ofertaEditButtonShop);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", id);
 
@@ -102,7 +109,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                         b = baos.toByteArray();
                     }
-                    bundle.putByteArray("image",b);
+                    bundle.putByteArray("image", b);
 
 
                     FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
@@ -134,13 +141,14 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
     /**
      * Obtains the LayoutInflater from the given context and usse it to create a new ViewHolder.
      *
-     * @param parent   The ViewGroup into which the new View will be added after it is bound to
-     *                 an adapter position.
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an adapter position.
      * @param viewType The view type of the new View.
+     *
      * @return A new ViewHolder that holds a View of the given view type.
      */
     @Override
     public OfertasListShopAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ofertas_list_shop_cardview, parent, false);
         return new ViewHolder(v);
     }
@@ -150,12 +158,13 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
      * update the contents of the {@link ViewHolder#itemView} to reflect the item at the given
      * position.
      *
-     * @param holder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
+     * @param holder   The ViewHolder which should be updated to represent the contents of the item at the given
+     *                 position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
     public void onBindViewHolder(final OfertasListShopAdapter.ViewHolder holder, int position) {
+
         holder.id = ofertas.get(position).getId();
         holder.title.setText(ofertas.get(position).getTitle());
         holder.discount.setText(String.valueOf(ofertas.get(position).getPoints()));
@@ -164,40 +173,37 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         if (ofertas.get(position).getImage() != null) {
             byte[] decodedBytes = ofertas.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
-        }
-        else {
-            Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.oferta);
+        } else {
+            Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.oferta);
             holder.image.setImageBitmap(icon);
         }
 
         if (ofertas.get(position).isFavorite()) {
             holder.fav.setTag("favoritefilled");
             holder.fav.setImageResource(R.drawable.ic_fav_filled);
-        }
-        else {
+        } else {
             holder.fav.setImageResource(R.drawable.ic_fav_void);
             holder.fav.setTag("favorite");
         }
 
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
-                new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUsername(), holder.id.toString());
+                new PostFavorite()
+                        .execute("http://10.4.41.145/api/users/", "POST", session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
-                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "POST",
-                        session.getUsername(), holder.id.toString());
+                new DeleteFavorite()
+                        .execute("http://10.4.41.145/api/users/", "POST", session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
         });
         holder.DeleteButton.setOnClickListener(v -> {
-            String url = "http://10.4.41.145/api/shops/" + String.valueOf(ofertas.get(position).getShop()) + "/deals/" + String.valueOf(holder.id);
+            String url = "http://10.4.41.145/api/shops/" + String.valueOf(ofertas.get(position).getShop()) + "/deals/" +
+                    String.valueOf(holder.id);
             Log.d(TAG, url);
-            new DeleteOferta().execute(url, "DELETE",
-                    session.getUsername());
+            new DeleteOferta().execute(url, "DELETE", session.getUsername());
         });
     }
 
@@ -209,6 +215,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             String response = httpHandler.makeServiceCall(params[0], params[1], new HashMap<>(), session.getToken());
             if (response.contains("Deal updated successfully.")) return "Correct";
@@ -216,10 +223,10 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
-            }
-            else{
+            } else {
                 Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -238,26 +245,32 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params [2] + "/favourite-deals";
+            String url = params[0] + params[2] + "/favourite-deals";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
             if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
+
     private class DeleteFavorite extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
+
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             String url = params[0] + params[2] + "/favourite-deals/" + params[3];
@@ -267,10 +280,13 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         }
 
         protected void onPostExecute(String result) {
+
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al eliminar la oferta de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            } else
+                Toast.makeText(context, "Error al eliminar la oferta de favoritos. Intentalo de nuevo mas tarde",
+                        Toast.LENGTH_LONG).show();
+            } else {
                 Toast.makeText(context, "Oferta eliminada de favoritos con exito.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -282,6 +298,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
      */
     @Override
     public int getItemCount() {
+
         return ofertas.size();
     }
 }
