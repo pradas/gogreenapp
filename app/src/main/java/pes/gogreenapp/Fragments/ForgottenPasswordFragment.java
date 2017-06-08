@@ -167,8 +167,8 @@ public class ForgottenPasswordFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the number of points to add to the user
-         *               params[3] is the username of the user
+         *               params[2] is the new password for the user
+         *               params[3] is the email of the user to modify the password
          * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
          */
         @Override
