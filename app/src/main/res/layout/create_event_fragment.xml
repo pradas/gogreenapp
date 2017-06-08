@@ -25,24 +25,21 @@
                 android:layout_height="wrap_content"
                 android:elevation="1dp"
                 android:focusable="true"
-                android:hint="@string/tituloCreateEvent"
-                android:theme="@style/campotextoregistrohard" />
+                android:hint="@string/tituloCreateEvent"/>
 
             <EditText
                 android:id="@+id/DescriptionCreateEvent_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
-                android:hint="@string/description"
-                android:theme="@style/campotextoregistrohard" />
+                android:hint="@string/description" />
 
             <EditText
                 android:id="@+id/PointsCreateEvent_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/points"
-                android:inputType="number"
-                android:theme="@style/campotextoregistrohard" />
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/CategoriesCreateEvent"
@@ -61,15 +58,13 @@
                 android:id="@+id/DirectionCreateEvent_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/direction"
-                android:theme="@style/campotextoregistrohard" />
+                android:hint="@string/direction" />
 
             <EditText
                 android:id="@+id/CompanyCreateEvent_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/company"
-                android:theme="@style/campotextoregistrohard" />
+                android:hint="@string/company" />
 
 
             <LinearLayout
@@ -86,8 +81,7 @@
                     android:layout_weight="0.97"
                     android:ems="10"
                     android:hint="@string/fecha_evento"
-                    android:inputType="date"
-                    android:theme="@style/campotextoregistrohard" />
+                    android:inputType="date" />
 
                 <ImageButton
                     android:id="@+id/DateCreateEvent"
@@ -118,8 +112,7 @@
                     android:id="@+id/HourCreateEvent_edit_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:theme="@style/campotextoregistrohard" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/TwoPointsCreateEvent"
@@ -132,8 +125,7 @@
                     android:id="@+id/MinCreateEvent_edit_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:theme="@style/campotextoregistrohard" />
+                    android:inputType="number" />
 
 
             </LinearLayout>
