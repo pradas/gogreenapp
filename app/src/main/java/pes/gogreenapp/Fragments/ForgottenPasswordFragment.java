@@ -6,21 +6,18 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -28,11 +25,10 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Adrian on 07/06/2017.
@@ -90,6 +86,7 @@ public class ForgottenPasswordFragment extends Fragment {
         activity = getActivity();
 
         email = (EditText) getView().findViewById(R.id.email_edit_text_forgot_password);
+        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackOferta);
         sendPassword = (Button) getView().findViewById(R.id.reSendPassword);
         mailAddressSender = "gogreenfib@gmail.com";
         password = "Password12FIB";
@@ -98,6 +95,20 @@ public class ForgottenPasswordFragment extends Fragment {
         textEmail = "Hola. Ha llegado una petición de cambiar contraseña desde la APP de GoGreen. " +
                 "Tu nueva contraseña es " + newPassword + ". Introducela para poder entrar y cambiala lo antes " +
                 "posible en el menú de Settings de la app.";
+
+        imgback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container_login, LoginFragment.class.newInstance()).commit();
+                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         sendPassword.setOnClickListener(new View.OnClickListener() {
             Boolean send = true;
