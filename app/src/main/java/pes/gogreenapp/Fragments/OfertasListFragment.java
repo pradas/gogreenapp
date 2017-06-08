@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -36,7 +38,8 @@ import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
 
-public class OfertasListFragment extends Fragment {
+public class OfertasListFragment extends Fragment implements FilterDialogFragment.FilterDialogListener {
+
     //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -55,22 +58,22 @@ public class OfertasListFragment extends Fragment {
      * Required empty public constructor
      */
     public OfertasListFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.ofertas_list_fragment, container, false);
     }
@@ -90,44 +93,61 @@ public class OfertasListFragment extends Fragment {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
         inflater.inflate(R.menu.menu_filters, menu);
-        getActivity().setTitle("Ofertas");
-        super.onCreateOptionsMenu(menu,inflater);
+        final MenuItem filterButton = menu.findItem(R.id.filter_icon);
+
+        //Listener for the filter menuIcon
+        filterButton.setOnMenuItemClickListener(v -> {
+            FilterDialogFragment dialog = new FilterDialogFragment();
+            dialog.setTargetFragment(this, 200);
+            dialog.show(getFragmentManager(), "FilterDialogFragment");
+            return true;
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int filterId, int sorterId, int directionId,
+                                      String category) {
 
-    /**
-     *  Sort by points the deals
-     */
-    private void sortPoints() {
-        if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
-                Collections.sort(ofertas, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
-            pointsFilter = "ascendente";
-        } else if (pointsFilter.equals("ascendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
-            pointsFilter = "descendente";
+        List<Oferta> auxEvents = new ArrayList<>(ofertas);
+
+        switch (sorterId) {
+            case R.id.radio_sorter_date:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r1.getDate().compareTo(r2.getDate()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r2.getDate().compareTo(r1.getDate()));
+                }
+                break;
+            case R.id.radio_sorter_points:
+                if (directionId == R.id.radio_sorter_ascendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r1.getPoints().compareTo(r2.getPoints()));
+                } else if (directionId == R.id.radio_sorter_descendent) {
+                    Collections.sort(auxEvents, (r1, r2) -> r2.getPoints().compareTo(r1.getPoints()));
+                }
+                break;
+            default:
+                break;
         }
-        recyclerView.setAdapter(adapter);
 
+        // change the rewards list info of the adapter
+        adapter.setEvents(auxEvents);
+        adapter.notifyDataSetChanged();
+
+        //close the dialog
+        dialog.getDialog().cancel();
     }
 
-    /**
-     *  Sort by date the deals
-     */
-    private void sortDate() {
-        if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
-            dateFilter = "ascendente";
-        } else if (dateFilter.equals("ascendente")) {
-                Collections.sort(ofertas, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-                adapter = new OfertasListAdapter(getContext(), ofertas);
-            dateFilter = "descendente";
-        }
-        recyclerView.setAdapter(adapter);
-
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+        dialog.getDialog().cancel();
     }
 
     /**
@@ -136,8 +156,7 @@ public class OfertasListFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -195,9 +214,9 @@ public class OfertasListFragment extends Fragment {
          */
         @Override
         protected Void doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             Log.i(TAG, urls[0]);
             ofertas.clear();
@@ -211,16 +230,10 @@ public class OfertasListFragment extends Fragment {
                         Date date = null;
                         if (!jsonObject.isNull("date")) date = df.parse(jsonObject.getString("date"));
                         String image = null;
-                        if (!jsonObject.isNull("image"))
-                            image = jsonObject.getString("image");
-                        ofertas.add(
-                                new Oferta(
-                                        jsonObject.getInt("id"),
-                                jsonObject.getString("name"),
-                                jsonObject.getString("description"),
-                                jsonObject.getInt("value"),
-                                date, jsonObject.getBoolean("favourite"),
-                                image)
+                        if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
+                        ofertas.add(new Oferta(jsonObject.getInt("id"), jsonObject.getString("name"),
+                                jsonObject.getString("description"), jsonObject.getInt("value"), date,
+                                jsonObject.getBoolean("favourite"), image)
 
                         );
                     }
@@ -238,6 +251,7 @@ public class OfertasListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(Void result) {
+
             adapter = new OfertasListAdapter(getContext(), ofertas);
             recyclerView.setAdapter(adapter);
         }

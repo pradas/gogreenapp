@@ -59,41 +59,45 @@ public class FilterDialogFragment extends DialogFragment {
             inflate.findViewById(R.id.radio_filter_canjeables).setVisibility(View.VISIBLE);
         }
 
-        // set the items to the spinner
-        Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_dropdown_item,
-                        categories);
-        categoriesSpinner.setAdapter(arrayAdapter);
-        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if ("pes.gogreenapp.Fragments.OfertasListFragment".equals(targetFragment.getClass().getName())) {
+            inflate.findViewById(R.id.radio_filters).setVisibility(View.GONE);
+            inflate.findViewById(R.id.filter_by_text).setVisibility(View.GONE);
+        } else {
+            // set the items to the spinner
+            Spinner categoriesSpinner = (Spinner) inflate.findViewById(R.id.categories_spinner);
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.simple_spinner_dropdown_item,
+                            categories);
+            categoriesSpinner.setAdapter(arrayAdapter);
+            categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                categoryChecked = (String) parent.getItemAtPosition(position);
-            }
+                    categoryChecked = (String) parent.getItemAtPosition(position);
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-                categoryChecked = "";
-            }
-        });
+                    categoryChecked = "";
+                }
+            });
 
 
-        // listeners for the radio group of filters
-        RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters);
-        radioFilters.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.radio_filter_category:
-                    categoriesSpinner.setVisibility(View.VISIBLE);
-                    filterCheckedId = checkedId;
-                    break;
-                default:
-                    filterCheckedId = checkedId;
-                    break;
-            }
-        });
-
+            // listeners for the radio group of filters
+            RadioGroup radioFilters = (RadioGroup) inflate.findViewById(R.id.radio_filters);
+            radioFilters.setOnCheckedChangeListener((group, checkedId) -> {
+                switch (checkedId) {
+                    case R.id.radio_filter_category:
+                        categoriesSpinner.setVisibility(View.VISIBLE);
+                        filterCheckedId = checkedId;
+                        break;
+                    default:
+                        filterCheckedId = checkedId;
+                        break;
+                }
+            });
+        }
         RadioGroup radioSorters = (RadioGroup) inflate.findViewById(R.id.radio_sorter_rewards);
         RadioGroup radioSorterDirections = (RadioGroup) inflate.findViewById(R.id.radio_sorter_directions);
         radioSorters.setOnCheckedChangeListener((group, checkedId) -> {
