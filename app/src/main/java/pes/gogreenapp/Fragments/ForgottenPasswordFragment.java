@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -29,7 +28,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
@@ -169,8 +167,8 @@ public class ForgottenPasswordFragment extends Fragment {
          *
          * @param params params[0] is the petition url,
          *               params[1] is the method petition,
-         *               params[2] is the number of points to add to the user
-         *               params[3] is the username of the user
+         *               params[2] is the new password for the user
+         *               params[3] is the email of the user to modify the password
          * @return "Error" if the method fails, "Correct" if the method works, other if the user doesn't exixts
          */
         @Override

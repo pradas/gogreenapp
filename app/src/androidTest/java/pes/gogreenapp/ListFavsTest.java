@@ -1,11 +1,14 @@
 package pes.gogreenapp;
 
+import android.os.SystemClock;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,12 +18,19 @@ import pes.gogreenapp.Activities.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.endsWith;
 import static pes.gogreenapp.ListRewardTest.withRecyclerView;
 import static pes.gogreenapp.Utils.EspressoTestsMatchers.clickChildViewWithId;
 import static pes.gogreenapp.Utils.EspressoTestsMatchers.withDrawable;
@@ -82,7 +92,10 @@ public class ListFavsTest {
      */
     @Test
     public void fragmentHasRewards() {
-        onView(withText("REWARDS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Rewards"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvRewardsFavList)).check(matches(isDisplayed()));
     }
 
@@ -90,8 +103,11 @@ public class ListFavsTest {
      * Check if pressing tab Eventos displays the list of events
      */
     @Test
-    public void fragmentHasEvents() {
-        onView(withText("EVENTOS")).perform(click());
+    public void fragmentHasEvents() {//
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(isDisplayed()));
     }
 
@@ -99,8 +115,11 @@ public class ListFavsTest {
      * Check if pressing tab Ofertas displays the list of deals
      */
     @Test
-    public void fragmentHasDeals() {
-        onView(withText("OFERTAS")).perform(click());
+    public void fragmentHasDeals() {//
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(isDisplayed()));
     }
 
@@ -135,7 +154,10 @@ public class ListFavsTest {
      */
     @Test
     public void FavButtonChangeToFavoriteEmptyInEventsTab() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.eventFavoriteButton)));
         onView(withRecyclerView(R.id.rvEventsFavList).atPositionOnView(0, R.id.eventFavoriteButton))
@@ -149,7 +171,10 @@ public class ListFavsTest {
      */
     @Test
     public void FavButtonChangeToFavoriteFilledInEventsTab() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.eventFavoriteButton)));
         onView(withId(R.id.rvEventsFavList))
@@ -163,7 +188,10 @@ public class ListFavsTest {
      */
     @Test
     public void FavButtonChangeToFavoriteEmptyInDealsTab() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.ofertaFavoriteButton)));
         onView(withRecyclerView(R.id.rvDealsFavList).atPositionOnView(0, R.id.ofertaFavoriteButton))
@@ -177,7 +205,10 @@ public class ListFavsTest {
      */
     @Test
     public void FavButtonChangeToFavoriteFilledInDealsTab() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.ofertaFavoriteButton)));
         onView(withId(R.id.rvDealsFavList))
@@ -199,8 +230,11 @@ public class ListFavsTest {
      * Check if clicking in a card_view of events display the Event Detailed
      */
     @Test
-    public void clickOnEventDisplayEventDetailed() {
-        onView(withText("EVENTOS")).perform(click());
+    public void clickOnEventDisplayEventDetailed() {//
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.eventDetailedFragment)).check(matches(isDisplayed()));
     }
@@ -210,7 +244,10 @@ public class ListFavsTest {
      */
     @Test
     public void clickOnDealDisplayDealDetailed() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.ofertaDetailedFragment)).check(matches(isDisplayed()));
     }
@@ -276,7 +313,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasImage() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventImage))));
     }
 
@@ -285,7 +325,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasTitle() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventTitle))));
     }
 
@@ -294,7 +337,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasPoints() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventPoints))));
     }
 
@@ -303,7 +349,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasCategory() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventCategory))));
     }
 
@@ -312,7 +361,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasEndDate() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventEndDate))));
     }
 
@@ -321,7 +373,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasHour() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventHour))));
     }
 
@@ -330,7 +385,10 @@ public class ListFavsTest {
      */
     @Test
     public void eventHasFavoriteButton() {
-        onView(withText("EVENTOS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Eventos"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvEventsFavList)).check(matches(hasDescendant(withId(R.id.eventFavoriteButton))));
     }
 
@@ -339,7 +397,10 @@ public class ListFavsTest {
      */
     @Test
     public void dealHasImage() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(hasDescendant(withId(R.id.ofertaImage))));
     }
 
@@ -348,7 +409,10 @@ public class ListFavsTest {
      */
     @Test
     public void dealHasTitle() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(hasDescendant(withId(R.id.ofertaTitle))));
     }
 
@@ -356,8 +420,11 @@ public class ListFavsTest {
      * Check if a card_view of deals have the points
      */
     @Test
-    public void dealHasPoints() {
-        onView(withText("OFERTAS")).perform(click());
+    public void dealHasPoints() {//
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(hasDescendant(withId(R.id.ofertaPoints))));
     }
 
@@ -365,8 +432,11 @@ public class ListFavsTest {
      * Check if a card_view of deals have the end date
      */
     @Test
-    public void dealHasEndDate() {
-        onView(withText("OFERTAS")).perform(click());
+    public void dealHasEndDate() {//
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(hasDescendant(withId(R.id.ofertaEndDate))));
     }
 
@@ -375,7 +445,10 @@ public class ListFavsTest {
      */
     @Test
     public void dealHasFavorite() {
-        onView(withText("OFERTAS")).perform(click());
+        Matcher<View> matcher = allOf(withText("Ofertas"),
+                isDescendantOfA(withId(R.id.tabLayoutFavsList)));
+        onView(matcher).perform(click());
+        SystemClock.sleep(800);
         onView(withId(R.id.rvDealsFavList)).check(matches(hasDescendant(withId(R.id.ofertaFavoriteButton))));
     }
 

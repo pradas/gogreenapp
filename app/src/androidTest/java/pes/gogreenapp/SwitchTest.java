@@ -135,7 +135,6 @@ public class SwitchTest {
         onView(withId(R.id.header_username)).check(matches(withText(usernameShopper)));
 
     }
-
     /**
      * Check that ser can switch to manager correctly
      */

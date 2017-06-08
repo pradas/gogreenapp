@@ -142,15 +142,6 @@ public class EditProfileTest {
      * Check if the user image is displayed
      */
     @Test
-    public void profileHasEmail(){
-        onView(withId(R.id.user_email_edit_user))
-                .check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if the user image is displayed
-     */
-    @Test
     public void saveButtonDisplaysAlertDialogWithText(){
         onView(withId(R.id.save_edit_profile_button)).perform(click());
         onView(withText("¿Está seguro de que desea modificar su perfil?"));
