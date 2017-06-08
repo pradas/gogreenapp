@@ -43,7 +43,7 @@
             android:layout_below="@+id/imageGoGreen"
             android:layout_marginTop="82dp"
             android:focusable="true"
-            android:fontFamily="serif"
+            android:fontFamily="Roboto"
             android:hint="Nombre de usuario o email"
             android:textColor="@drawable/mainbuttontext"
             android:textColorHint="@drawable/mainbuttontext"

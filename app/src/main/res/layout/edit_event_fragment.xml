@@ -1,16 +1,23 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ScrollViewEditEvent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp">
+    android:background="#DCEDC8">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+<ScrollView
+    android:id="@+id/ScrollViewCreateEvent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:layout_above="@+id/buttonSendEditEvent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/TitleEditEvent"
@@ -21,87 +28,66 @@
 
         <EditText
             android:id="@+id/titleEditEvent_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/TitleEditEvent"
             android:focusable="true"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            android:theme="@style/campotextoregistrohard"/>
 
         <TextView
             android:id="@+id/DescriptionEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/titleEditEvent_edit_text"
             android:text="@string/description"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/DescriptionEditEvent_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionEditEvent"
             android:focusable="true"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            android:theme="@style/campotextoregistrohard" />
 
         <TextView
             android:id="@+id/PointsEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DescriptionEditEvent_edit_text"
             android:text="@string/points"
             android:textSize="20sp" />
 
         <EditText
             android:id="@+id/PointsEditEvent_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/PointsEditEvent"
             android:inputType="number"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            android:theme="@style/campotextoregistrohard"/>
 
         <TextView
             android:id="@+id/CategoriesEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/PointsEditEvent_edit_text"
             android:text="@string/categoria"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:theme="@style/campotextoregistrohard" />
+
         <Spinner
             android:id="@+id/CategoriesSpinnerEdit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/CategoriesEditEvent"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000"/>
+            android:theme="@style/campotextoregistrohard" />
 
         <TextView
             android:id="@+id/DirectionEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/CategoriesSpinnerEdit"
             android:text="@string/direction"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:theme="@style/campotextoregistrohard" />
 
         <EditText
             android:id="@+id/DirectionEditEvent_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/DirectionEditEvent"
-            android:textColorHighlight="#ff7eff15"
-            android:textColorHint="#000000" />
+            android:theme="@style/campotextoregistrohard" />
 
         <TextView
             android:id="@+id/DateTextEditEvent"
@@ -121,13 +107,6 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
-            <ImageButton
-                android:id="@+id/DateEditEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/fecha_del_evento_description"
-                app:srcCompat="@android:drawable/ic_menu_my_calendar" />
-
             <EditText
                 android:id="@+id/editTextDateEditEvent"
                 android:layout_width="0dp"
@@ -135,6 +114,16 @@
                 android:layout_weight="0.97"
                 android:ems="10"
                 android:inputType="date" />
+
+            <ImageButton
+                android:id="@+id/DateEditEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="@string/fecha_del_evento_description"
+                android:padding="10dp"
+                android:tint="@android:color/darker_gray"
+                app:srcCompat="@mipmap/ic_date_range_white_24dp" />
 
         </LinearLayout>
 
@@ -158,8 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textColorHighlight="#ff7eff15"
-                android:textColorHint="#000000" />
+                android:theme="@style/campotextoregistrohard" />
 
             <TextView
                 android:id="@+id/TwoPointsEditEvent"
@@ -173,43 +161,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:textColorHighlight="#ff7eff15"
-                android:textColorHint="#000000" />
+                android:theme="@style/campotextoregistrohard" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/ImageEditEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Imagen"
             android:layout_below="@+id/linearLayoutHourEditEvent"
+            android:text="@string/Imagen"
             android:textSize="20sp" />
-<LinearLayout
-    android:id="@+id/LinearLayoutImageEditEvent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/ImageEditEvent">
 
-    <ImageButton
-        android:id="@+id/ImageEditEventButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/imagen_del_evento"
-        app:srcCompat="@android:drawable/ic_menu_gallery"  />
-    <ImageView
-        android:id="@+id/ImageSelectedEditEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-</LinearLayout>
-        <Button
-            android:id="@+id/buttonSendEditEvent"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/LinearLayoutImageEditEvent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/LinearLayoutImageEditEvent"
-            android:text="@string/guardar" />
-    </RelativeLayout>
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/ImageEditEventButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/imagen_del_evento"
+                android:padding="10dp"
+                android:background="@null"
+                android:tint="@android:color/darker_gray"
+                app:srcCompat="@mipmap/ic_date_range_white_24dp"  />
+
+            <ImageView
+                android:id="@+id/ImageSelectedEditEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </ScrollView>
+
+    <Button
+        android:id="@+id/buttonSendEditEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/buttonregisterloginshape"
+        android:text="@string/guardar"
+        android:textColor="@android:color/white" />
+</RelativeLayout>

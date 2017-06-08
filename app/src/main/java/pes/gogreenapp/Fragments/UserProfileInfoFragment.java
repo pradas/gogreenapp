@@ -15,18 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -36,8 +31,6 @@ import pes.gogreenapp.Objects.User;
 import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-
-import static pes.gogreenapp.R.id.user_image;
 
 /**
  * Created by Adrian on 24/05/2017.
@@ -106,7 +99,7 @@ public class UserProfileInfoFragment extends Fragment {
         userCreationDate = (TextView) getView().findViewById(R.id.gobro_since);
         userBirthDate = (TextView) getView().findViewById(R.id.user_birthdate);
         userEmail = (TextView) getView().findViewById(R.id.user_email);
-        Button editUser = (Button) getView().findViewById(R.id.edit_profile_button);
+        ImageButton editUser = (ImageButton) getView().findViewById(R.id.edit_profile_button);
 
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +107,7 @@ public class UserProfileInfoFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new UserProfileEditFragment();
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                transaction.replace(R.id.user_profile_c1, fragment).addToBackStack( "tag" ).commit();
             }
         });
 
@@ -171,13 +164,13 @@ public class UserProfileInfoFragment extends Fragment {
         protected void onPostExecute(Void result) {
             userImage.setImageBitmap(profileImageBitmap);
 
-            userName.setText("Nombre real: " + user.getName());
-            userNickName.setText("Nombre de usuario: " + user.getUsername());
-            userTotalPoints.setText("Puntos totales: " + String.valueOf(user.getTotalPoints()));
-            userActualPoints.setText("Puntos actuales: " + String.valueOf(user.getCurrentPoints()));
-            userCreationDate.setText("GoBro desde: " + (String) sourceFormat.format(user.getCreationDate()));
-            userBirthDate.setText("Fecha de nacimiento: " + (String) sourceFormat.format(user.getBirthDate()));
-            userEmail.setText("Email: " + user.getEmail());
+            userName.setText(user.getName());
+            userNickName.setText("Username : " + user.getUsername());
+            userTotalPoints.setText(String.valueOf(user.getTotalPoints()));
+            userActualPoints.setText(String.valueOf(user.getCurrentPoints()));
+            userCreationDate.setText("GoBro desde: " + sourceFormat.format(user.getCreationDate()));
+            userBirthDate.setText(sourceFormat.format(user.getBirthDate()));
+            userEmail.setText(user.getEmail());
 
         }
 

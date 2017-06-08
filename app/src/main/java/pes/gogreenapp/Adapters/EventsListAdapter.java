@@ -189,9 +189,9 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
 
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
-            else Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+            else Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -214,7 +214,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Vi
             if (result.equalsIgnoreCase("Error")) {
                 Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
             }
-            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_LONG).show();
+            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 

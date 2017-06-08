@@ -5,7 +5,7 @@
     tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="30dp"
+    android:padding="30dp"
     android:background="@drawable/gradientbackground">
 
     <TextView
@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:elevation="1dp"
-        android:fontFamily="serif"
         android:text="Cambia la contraseña"
         android:gravity="center_horizontal"
-        android:textSize="20sp"
+        android:textSize="25sp"
+        android:layout_marginBottom="20dp"
         fontPath="fonts/Raleway-Light.ttf" />
 
     <EditText
@@ -27,11 +27,13 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/changePassTitle"
         android:focusable="true"
-        android:fontFamily="serif"
         android:hint="Nueva contraseña"
         android:textColor="@drawable/mainbuttontext"
         android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
+        android:theme="@style/campotextoregistro"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp"
+        fontPath="fonts/Raleway-Light.ttf"/>
 
     <EditText
         android:id="@+id/confirmNewPass"
@@ -40,11 +42,13 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/newPass"
         android:focusable="true"
-        android:fontFamily="serif"
         android:hint="Confirma la nueva contraseña"
         android:textColor="@drawable/mainbuttontext"
         android:textColorHint="@drawable/mainbuttontext"
-        android:theme="@style/campotextoregistro" />
+        android:theme="@style/campotextoregistro"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp"
+        fontPath="fonts/Raleway-Light.ttf"/>
 
     <Button
         android:id="@+id/changePass"
@@ -53,7 +57,9 @@
         android:layout_below="@+id/confirmNewPass"
         android:background="@drawable/buttonregisterloginshape"
         android:text="CAMBIAR CONTRASEÑA"
-        android:textColor="@drawable/mainbuttontext" />
+        android:textColor="@drawable/mainbuttontext"
+        android:textSize="16sp"
+        fontPath="fonts/Raleway-Light.ttf"/>
 
 
 

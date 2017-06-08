@@ -150,6 +150,16 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             byte[] decodedBytes = events.get(position).getImage();
             holder.image.setImageBitmap(BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length));
         }
+
+        if (events.get(position).isFavorite()) {
+            holder.fav.setTag("favoritefilled");
+            holder.fav.setImageResource(R.drawable.ic_fav_filled);
+        }
+        else {
+            holder.fav.setImageResource(R.drawable.ic_fav_void);
+            holder.fav.setTag("favorite");
+        }
+
         holder.fav.setOnClickListener(v -> {
             if (holder.fav.getTag().equals("favorite")) {
                 new PostFavorite().execute("http://10.4.41.145/api/users/", "POST",
@@ -157,6 +167,8 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                 holder.fav.setImageResource(R.drawable.ic_fav_filled);
                 holder.fav.setTag("favoritefilled");
             } else {
+                new DeleteFavorite().execute("http://10.4.41.145/api/users/", "DELETE",
+                        session.getUsername(), holder.id.toString());
                 holder.fav.setImageResource(R.drawable.ic_fav_void);
                 holder.fav.setTag("favorite");
             }
@@ -194,20 +206,39 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             HttpHandler httpHandler = new HttpHandler();
             HashMap<String, String> bodyParams = new HashMap<>();
             bodyParams.put("event_id", params[3]);
-            String url = params[0] + params[2] + "/favourite-events";
+            String url = params[0] + params [2] + "/favourite-events";
             String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
-            if ("200".equals(response)) return "Correct";
+            if (response != null) return "Correct";
             return "Error";
         }
 
         protected void onPostExecute(String result) {
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al añadir el Evento a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
-            } else
-                Toast.makeText(context, "Evento añadido a favoritos con exito.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al añadir la Oferta a favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Oferta añadida a favoritos con exito.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private class DeleteFavorite extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpHandler httpHandler = new HttpHandler();
+            HashMap<String, String> bodyParams = new HashMap<>();
+            String url = params[0] + params [2] + "/favourite-events/" + params[3];
+            String response = httpHandler.makeServiceCall(url, params[1], bodyParams, session.getToken());
+            if (response != null) return "Correct";
+            return "Error";
+        }
+
+        protected void onPostExecute(String result) {
+            if (result.equalsIgnoreCase("Error")) {
+                Toast.makeText(context, "Error al eliminar el evento de favoritos. Intentalo de nuevo mas tarde", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, "Evento eliminado de favoritos con exito.", Toast.LENGTH_SHORT).show();
+        }
+    }
     /**
      * Asynchronous Task for the petition GET of all the Rewards.
      */

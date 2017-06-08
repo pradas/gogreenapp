@@ -245,7 +245,7 @@ public class EventsListFragment extends Fragment implements FilterDialogFragment
                         String address = null;
                         if (!jsonObject.isNull("adress")) address = jsonObject.getString("adress");
                         String company = null;
-                        if (!jsonObject.isNull("company")) address = jsonObject.getString("company");
+                        if (!jsonObject.isNull("shop")) company = jsonObject.getString("shop");
                         String image = null;
                         if (!jsonObject.isNull("image")) image = jsonObject.getString("image");
                         Date date = null;
