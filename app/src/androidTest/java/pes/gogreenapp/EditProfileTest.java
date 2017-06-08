@@ -14,6 +14,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -63,6 +64,7 @@ public class EditProfileTest {
     @Test
     public void profileHasImage(){
         onView(withId(R.id.user_image_edit_user))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -81,6 +83,7 @@ public class EditProfileTest {
     @Test
     public void profileHasNickName(){
         onView(withId(R.id.user_nickname_edit_user))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -90,6 +93,7 @@ public class EditProfileTest {
     @Test
     public void profileHasTotalPoints(){
         onView(withId(R.id.user_total_points_edit_user))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -99,6 +103,7 @@ public class EditProfileTest {
     @Test
     public void profileHasActualPoints(){
         onView(withId(R.id.user_current_points_edit_user))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -108,6 +113,7 @@ public class EditProfileTest {
     @Test
     public void profileHasEditButton(){
         onView(withId(R.id.save_edit_profile_button))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -126,6 +132,7 @@ public class EditProfileTest {
     @Test
     public void profileHasBirthDate(){
         onView(withId(R.id.birthdate_edit_user))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -135,6 +142,7 @@ public class EditProfileTest {
     @Test
     public void profileHasBirthDateButton(){
         onView(withId(R.id.edit_birthdate_user_button))
+                .perform(scrollTo())
                 .check(matches(isDisplayed()));
     }
 
@@ -143,7 +151,9 @@ public class EditProfileTest {
      */
     @Test
     public void saveButtonDisplaysAlertDialogWithText(){
-        onView(withId(R.id.save_edit_profile_button)).perform(click());
+        onView(withId(R.id.save_edit_profile_button))
+                .perform(scrollTo())
+                .perform(click());
         onView(withText("¿Está seguro de que desea modificar su perfil?"));
     }
 
@@ -152,7 +162,9 @@ public class EditProfileTest {
      */
     @Test
     public void saveButtonDisplaysAlertDialogWithModifyButton(){
-        onView(withId(R.id.save_edit_profile_button)).perform(click());
+        onView(withId(R.id.save_edit_profile_button))
+                .perform(scrollTo())
+                .perform(click());
         onView(withText("MODIFICAR"));
     }
 
@@ -161,7 +173,9 @@ public class EditProfileTest {
      */
     @Test
     public void saveButtonDisplaysAlertDialogWithCancelButton(){
-        onView(withId(R.id.save_edit_profile_button)).perform(click());
+        onView(withId(R.id.save_edit_profile_button))
+                .perform(scrollTo())
+                .perform(click());
         onView(withText("CANCELAR"));
     }
 
@@ -172,8 +186,14 @@ public class EditProfileTest {
      */
     @Test
     public void cancelButtonOfAlertDialogDisplaysEditinfo(){
-        onView(withId(R.id.save_edit_profile_button)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.layoutEditProfile)).check(matches(isDisplayed()));
+        onView(withId(R.id.save_edit_profile_button))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(android.R.id.button2))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.layoutEditProfile))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 }

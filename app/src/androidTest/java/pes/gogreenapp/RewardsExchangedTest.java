@@ -72,18 +72,6 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rewardDetailedFragment)).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
-     * exchange button of the card_view of the recycler view of the rewards exchanged display the
-     * use button
-     */
-    @Test
-    public void RewardDetailedHasUseButton() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withText("UTILIZAR")).check(matches(isDisplayed()));
-    }
 
     /**
      * Check if clicking in a card_view and clicking in the exchange button and clicking on the
@@ -111,36 +99,6 @@ public class RewardsExchangedTest {
         onView(withId(R.id.rvExchanged)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.actionDetailReward)).perform(click());
         onView(withId(R.id.qrCode)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Check if clicking in a favorite button of the card_view of the recycler view of the rewards
-     * exchanged and clicking in the favorite button displays the favorite button filled
-     */
-    @Test
-    public void FavButtonChangeToFavoriteFilled() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withId(R.id.rvExchanged))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.drawable.ic_fav_filled)));
-    }
-
-    /**
-     * Check if clicking in a favorite button of the card_view of the recycler view of the rewards
-     * exchanged two times and clicking in the favorite button displays the favorite button normal
-     */
-    @Test
-    public void FavButtonChangeToFavoriteEmpty() {
-
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withId(R.id.rvExchanged))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withId(R.id.rvExchanged))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.favoriteButton)));
-        onView(withRecyclerView(R.id.rvExchanged).atPositionOnView(0, R.id.favoriteButton))
-                .check(matches(withDrawable(R.drawable.ic_fav_void)));
     }
 
     public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {

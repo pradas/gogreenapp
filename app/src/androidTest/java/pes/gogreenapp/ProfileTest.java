@@ -14,6 +14,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -120,7 +121,7 @@ public class ProfileTest {
      */
     @Test
     public void profileHasBirthDate(){
-        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeDown());
+        onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
         onView(withId(R.id.user_birthdate))
                 .check(matches(isDisplayed()));
     }
@@ -150,7 +151,9 @@ public class ProfileTest {
     @Test
     public void pressButtonEditDisplaysEditFragment() {
         onView(withId(R.id.scrollUserProfile)).perform(ViewActions.swipeUp());
-        onView(withId(R.id.edit_profile_button)).perform(click());
-        onView(withId(R.id.layoutEditProfile)).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_profile_button))
+                .perform(scrollTo()).perform(click());
+        onView(withId(R.id.layoutEditProfile))
+                .perform(scrollTo()).check(matches(isDisplayed()));
     }
 }

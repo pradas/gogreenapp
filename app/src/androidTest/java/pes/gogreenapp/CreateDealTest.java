@@ -69,7 +69,7 @@ public class CreateDealTest {
                 .perform(clearText(), typeText("22-19-2017"));
         onView(withId(R.id.create_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendCreateOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.editTextDateCreateOferta))
                 .check(matches(withError("Fecha invalida (dd-mm-yyyy)")));
     }
@@ -86,7 +86,7 @@ public class CreateDealTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.create_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendCreateOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.editTextDateCreateOferta))
                 .check(matches(withError("Fecha necesaria")));
     }
@@ -103,7 +103,7 @@ public class CreateDealTest {
                 .perform(clearText(), typeText("22-12-2017"));
         onView(withId(R.id.create_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendCreateOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.PointsCreateOferta_edit_text))
                 .check(matches(withError("Descuento necesario")));
     }
@@ -121,7 +121,7 @@ public class CreateDealTest {
                 .perform(clearText(), typeText("100"));
         onView(withId(R.id.create_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendCreateOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.DescriptionCreateOferta_edit_text))
                 .check(matches(withError("Descripción necesaria")));
     }
@@ -139,7 +139,7 @@ public class CreateDealTest {
                 .perform(clearText(), typeText("22-12-2017"));
         onView(withId(R.id.create_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendCreateOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.titleCreateOferta_edit_text))
                 .check(matches(withError("Título necesario")));
     }
@@ -150,8 +150,6 @@ public class CreateDealTest {
      */
     @Test
     public void CheckDateIsDisplayed(){
-        onView(withId(R.id.DateTextCreateOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.editTextDateCreateOferta))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.DateCreateOferta))
@@ -164,8 +162,6 @@ public class CreateDealTest {
      */
     @Test
     public void CheckPointsAreDisplayed(){
-        onView(withId(R.id.DiscountCreateOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.PointsCreateOferta_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -175,8 +171,6 @@ public class CreateDealTest {
      */
     @Test
     public void CheckDescriptionIsDisplayed(){
-        onView(withId(R.id.DescriptionCreateOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.DescriptionCreateOferta_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -186,8 +180,6 @@ public class CreateDealTest {
      */
     @Test
     public void CheckTitleIsDisplayed(){
-        onView(withId(R.id.TitleCreateOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.titleCreateOferta_edit_text))
                 .check(matches(isDisplayed()));
     }
