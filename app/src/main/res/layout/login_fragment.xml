@@ -64,6 +64,8 @@
             android:textColorHint="@drawable/mainbuttontext"
             android:theme="@style/campotextoregistro" />
 
+
+
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
@@ -71,7 +73,8 @@
             android:background="@drawable/buttonregisterloginshape"
             android:text="login"
             android:textColor="@drawable/mainbuttontext"
-            android:layout_above="@+id/forgotPassword" />
+            android:layout_above="@+id/forgotPassword"
+            android:layout_marginBottom="15dp"/>
 
         <TextView
             android:id="@+id/forgotPassword"
@@ -81,9 +84,12 @@
             android:layout_alignParentStart="true"
             android:text="¿Olvidó su contraseña?"
             android:ems="10"
-            android:fontFamily="Roboto"
+            android:textSize="20sp"
+            fontPath="fonts/Raleway-Regular.ttf"
             android:gravity="center"
-            android:textColor="@drawable/mainbuttontext"/>
+
+            android:textColor="#757575"/>
+
 
 
     </RelativeLayout>
