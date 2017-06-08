@@ -3,7 +3,6 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,15 +16,14 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,7 +31,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -80,7 +77,7 @@ public class CreateEventFragment extends Fragment {
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    static private final String URLPetition = "http://10.4.41.145/api/events";
+    private String URLPetition;
     static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     public boolean isStoragePermissionGranted() {
@@ -144,6 +141,7 @@ public class CreateEventFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
+        URLPetition = "http://10.4.41.145/api/shops/" + String.valueOf(session.getShopId()) + "/events";
         new GetCategories().execute(URLcategories);
 
         //elements
@@ -329,6 +327,10 @@ public class CreateEventFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
             } else if (s.contains("Event created successfully.")) {
                 Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new EventsListShopFragment();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             } else {
                 Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
             }
