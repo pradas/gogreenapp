@@ -24,7 +24,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,46 +90,7 @@ public class OfertasListShopFragment extends Fragment {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.menu_filters, menu);
-
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    /**
-     * Sort by points the deals
-     */
-    private void sortPoints() {
-
-        if (pointsFilter.equals("nada") || pointsFilter.equals("descendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s1.getPoints().compareTo(s2.getPoints()));
-            adapter = new OfertasListShopAdapter(getContext(), ofertas);
-            pointsFilter = "ascendente";
-        } else if (pointsFilter.equals("ascendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s2.getPoints().compareTo(s1.getPoints()));
-            adapter = new OfertasListShopAdapter(getContext(), ofertas);
-            pointsFilter = "descendente";
-        }
-        recyclerView.setAdapter(adapter);
-
-    }
-
-    /**
-     * Sort by date the deals
-     */
-    private void sortDeals() {
-
-        if (dateFilter.equals("nada") || dateFilter.equals("descendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
-            adapter = new OfertasListShopAdapter(getContext(), ofertas);
-            dateFilter = "ascendente";
-        } else if (dateFilter.equals("ascendente")) {
-            Collections.sort(ofertas, (s1, s2) -> s2.getDate().compareTo(s1.getDate()));
-            adapter = new OfertasListShopAdapter(getContext(), ofertas);
-            dateFilter = "descendente";
-        }
-        recyclerView.setAdapter(adapter);
-
     }
 
     /**
