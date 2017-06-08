@@ -103,7 +103,7 @@ public class ShopProfileInfoFragment extends Fragment {
                     FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
                     Fragment fragment = (Fragment) new ShopEditProfileFragment();
-                    transaction.replace(R.id.shopProfile, fragment).addToBackStack( "tag" ).commit();
+                    transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
                 }
             });
         }
@@ -127,7 +127,6 @@ public class ShopProfileInfoFragment extends Fragment {
 
                 shop = new Shop(jsonArray.getString("image"), jsonArray.getString("name"),
                         jsonArray.getString("email"), jsonArray.getString("address"));
-
                 String image = jsonArray.getString("image");
 
                 byte[] imageData = Base64.decode(image, Base64.DEFAULT);
