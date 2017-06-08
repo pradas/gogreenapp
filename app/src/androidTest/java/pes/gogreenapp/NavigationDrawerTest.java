@@ -27,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class NavigationDrawerTest {
 
     private final String usernameUser = "user";
-    private final String usernameShopper = "shoper";
+    private final String usernameShopper = "shopper2";
     private final String usernameManager = "manager";
     private final String password = "Password12";
 
