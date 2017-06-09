@@ -110,6 +110,10 @@
     <!-- Others -->
     <string name="advert">ESTE QR ES SOLO VÁLIDO PARA UN USO. DESPUÉS DE ESCANEARLO DESAPARECERÁ DE
         TUS REWARDS CANJEADAS Y NO PODRÁS VOLVER A USARLO.</string>
+    <string name="img_description_about_us">Logo de la aplicacion para el About Us</string>
+    <string name="version_about_us">Versión 1.1 (101.17)</string>
+    <string name="copyright_about_us">Copyright © 2017 GoGreen Develop.</string>
+    <string name="all_rights_reserved">Todos los derechos reservados</string>
 
 
 </resources>
