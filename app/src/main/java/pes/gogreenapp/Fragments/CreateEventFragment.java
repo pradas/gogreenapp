@@ -3,6 +3,7 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,9 +17,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +29,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +49,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.AsyncHttpHandler;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
@@ -57,12 +61,14 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class CreateEventFragment extends Fragment {
+
     private static int RESULT_LOAD_IMG = 1;
     private SessionManager session;
     String imgDecodableString;
     private ImageButton DateButton;
     private ImageView ImageSelected;
     private ImageButton PhotoButton;
+    private ImageButton HourButton;
     private EditText DateText;
     private Button SendButton;
     private EditText TitleText;
@@ -70,26 +76,26 @@ public class CreateEventFragment extends Fragment {
     private EditText PointsText;
     private EditText DirectionText;
     private EditText HourText;
-    private EditText MinText;
     private EditText CompanyText;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
-    private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    private String URLPetition;
     static private final String URLcategories = "http://10.4.41.145/api/categories";
+    private int hour, min;
 
     public boolean isStoragePermissionGranted() {
+
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG, "Permission is granted");
                 return true;
             } else {
 
                 Log.v(TAG, "Permission is revoked");
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                ActivityCompat
+                        .requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
@@ -99,6 +105,7 @@ public class CreateEventFragment extends Fragment {
     }
 
     public byte[] getBytesFromBitmap(Bitmap bitmap) {
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
@@ -108,22 +115,21 @@ public class CreateEventFragment extends Fragment {
      * Required empty public constructor
      */
     public CreateEventFragment() {
+
     }
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in
-     *                           the fragment.
-     * @param container          If non-null, this is the parent view that the fragment's UI
-     *                           should be attached to.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     *                           saved state as given here.
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given
+     *                           here.
+     *
      * @return the View for the fragment's UI, or null.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle("Crear evento");
         return inflater.inflate(R.layout.create_event_fragment, container, false);
@@ -135,13 +141,12 @@ public class CreateEventFragment extends Fragment {
      * initialization once these pieces are in place, such as retrieving
      * views or restoring state.
      *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
      */
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        URLPetition = "http://10.4.41.145/api/shops/" + String.valueOf(session.getShopId()) + "/events";
         new GetCategories().execute(URLcategories);
 
         //elements
@@ -153,14 +158,14 @@ public class CreateEventFragment extends Fragment {
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
         PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
         DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
-        HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
-        MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
+        HourText = (EditText) getView().findViewById(R.id.HourCreateEventEditText);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
+        HourButton = (ImageButton) getView().findViewById(R.id.HourCreateEventButton);
 
 
-        SendButton.setOnClickListener((View v) ->{
+        SendButton.setOnClickListener((View v) -> {
             Boolean send = true;
             if (TitleText.getText().toString().length() <= 0) {
                 TitleText.setError("Título necesario");
@@ -189,52 +194,73 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
             }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
-                MinText.setError("Minutos necesarios");
+
+            if (HourText.getText().toString().length() <= 0) {
+                HourText.setError("Hora necesaria");
                 send = false;
             }
-            if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
-                HourText.setError("Hora necesaria");
-            }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
-                if (Integer.parseInt(HourText.getText().toString()) > 23) {
+            else if (HourText.getText().toString().length() > 0) {
+                String hour = HourText.getText().toString();
+                String[] hourDivided = hour.split(":");
+
+                if ((Integer.parseInt(hourDivided[0]) < 0) || (Integer.parseInt(hourDivided[0]) >= 24)) {
                     HourText.setError("Hora incorrecta");
                     send = false;
                 }
-                if (Integer.parseInt(MinText.getText().toString()) > 59) {
-                    MinText.setError("Minutos incorrectos");
+                if ((Integer.parseInt(hourDivided[1]) < 0) || (Integer.parseInt(hourDivided[1]) >= 60)) {
+                    HourText.setError("Hora incorrecta");
                     send = false;
                 }
-                FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
                 String imgString = null;
                 if (imgDecodableString != null && !imgDecodableString.isEmpty()) {
-                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory
-                            .decodeFile(imgDecodableString)), Base64.NO_WRAP);
-                }
-                else {
-                    Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                            R.drawable.event);
+                    imgString = Base64.encodeToString(getBytesFromBitmap(BitmapFactory.decodeFile(imgDecodableString)),
+                            Base64.NO_WRAP);
+                } else {
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.event);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     icon.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    imgString= Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
+                    imgString = Base64.encodeToString(getBytesFromBitmap(icon), Base64.NO_WRAP);
 
                     Log.i(TAG, "default event image bytecoded: " + imgString);
                 }
-                Log.d(TAG, URLPetition);
-                new PostEvent().execute(URLPetition, "POST",
-                        TitleText.getText().toString(),
-                        DescriptionText.getText().toString(),
-                        PointsText.getText().toString(),
-                        DirectionText.getText().toString(),
-                        CompanyText.getText().toString(),
-                        DateText.getText().toString(),
-                        FinalTime,
-                        imgString,
-                        String.valueOf(categoriesSpinner.getSelectedItem())
-                );
+
+                RequestParams requestParams = new RequestParams();
+                requestParams.put("title", TitleText.getText());
+                requestParams.put("description", DescriptionText.getText());
+                requestParams.put("points", PointsText.getText());
+                requestParams.put("adress", DirectionText.getText());
+                requestParams.put("company", CompanyText.getText());
+                requestParams.put("date", DateText.getText());
+                requestParams.put("time", HourText.getText().toString());
+                requestParams.put("image", imgString);
+                requestParams.put("category", String.valueOf(categoriesSpinner.getSelectedItem()));
+                AsyncHttpHandler.post("shops/" + String.valueOf(session.getShopId()) + "/events", requestParams,
+                        new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // Handle resulting parsed JSON response here
+                                Toast.makeText(getActivity(), "evente creado", Toast.LENGTH_SHORT).show();
+                                try {
+                                    getActivity().getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.flContent, EventsListShopFragment.class.newInstance())
+                                            .addToBackStack(EventsListShopFragment.class.getName())
+                                            .commit();
+                                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String xml, Throwable throwable) {
+                                // called when response HTTP status is "4XX"
+                                Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
+                                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_SHORT).show();
+                            }
+                });
             }
         });
         //events
@@ -247,12 +273,12 @@ public class CreateEventFragment extends Fragment {
                             String sMonthOfYear = String.format("%02d", monthOfYear + 1);
                             DateText.setText(sDayOfMonth + "-" + sMonthOfYear + "-" + year);
                             DateText.clearFocus();
-                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
                 dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
                 dpd.show();
             }
         });
-
         DateButton.setOnClickListener((View v) -> {
             calendar = Calendar.getInstance();
             DatePickerDialog dpd = new DatePickerDialog(getActivity(),
@@ -265,113 +291,74 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
+
         HourText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                    String text = "0" + HourText.getText().toString();
-                    HourText.setText(text);
-                }
+            if (hasFocus) {
+                final Calendar c = Calendar.getInstance();
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                min = c.get(Calendar.MINUTE);
+
+                TimePickerDialog picker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute < 10) HourText.setText(hourOfDay + ":0" + minute);
+                        else HourText.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, min, true);
+                picker.show();
             }
         });
-        MinText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                    String text = "0" + MinText.getText().toString();
-                    MinText.setText(text);
-                }
+
+        HourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                min = c.get(Calendar.MINUTE);
+
+                TimePickerDialog picker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute < 10) HourText.setText(hourOfDay + ":0" + minute);
+                        else HourText.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, min, true);
+                picker.show();
             }
         });
+
         PhotoButton.setOnClickListener((View v) -> {
             isStoragePermissionGranted();
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent galleryIntent =
+                    new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             // Start the Intent
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
 
     }
 
-    /**
-     * Asynchronous Task for the petition POST to send a petition of register an User
-     */
-    private class PostEvent extends AsyncTask<String, Void, String> {
-        @Override
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param params params[0] is the petition url,
-         *               params[1] is the method,
-         *               params[2] is the title,
-         *               params[3] is the description
-         *               params[4] is the points
-         *               params[5] is the adress
-         *               params[6] is the company
-         *               params[7] is the date
-         *               params[8] is the time
-         *               params[9] is the image
-         *               params[10] is the category
-         * @return void when finished
-         */
-        protected String doInBackground(String... params) {
-            HashMap<String, String> BodyParams = new HashMap<>();
-            BodyParams.put("title", params[2]);
-            BodyParams.put("description", params[3]);
-            BodyParams.put("points", params[4]);
-            if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
-            BodyParams.put("date", params[7]);
-            if (params[8] != null && !params[8].equals(":")) BodyParams.put("time", params[8]);
-            else BodyParams.put("time", "00:00");
-            if (params[9] != null) BodyParams.put("image", params[9]);
-            BodyParams.put("category", params[10]);
-            String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams,
-                    session.getToken());
-            Log.i(TAG, "Response from url: " + result);
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (s == null) {
-                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde", Toast.LENGTH_LONG).show();
-            } else if (s.contains("Event created successfully.")) {
-                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_LONG).show();
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment = (Fragment) new EventsListShopFragment();
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
-            } else {
-                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         try {
             // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
+                Cursor cursor =
+                        getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
-                ImageSelected.setImageBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString));
+                ImageSelected.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
                 cursor.close();
             } else {
-                Toast.makeText(getContext(), "No has escogido ninguna imagen",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "No has escogido ninguna imagen", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             Log.d("CreateEvent", e.toString());
-            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(getContext(), "Error al escoger la imagen", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -388,9 +375,9 @@ public class CreateEventFragment extends Fragment {
          */
         @Override
         protected String doInBackground(String... urls) {
+
             HttpHandler httpHandler = new HttpHandler();
-            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(),
-                    session.getToken());
+            String response = httpHandler.makeServiceCall(urls[0], "GET", new HashMap<>(), session.getToken());
             Log.i(TAG, "Response from url: " + response);
             if (response != null) {
                 JSONObject aux;
@@ -415,8 +402,9 @@ public class CreateEventFragment extends Fragment {
          * @param result If is "Falla" makes the toast.
          */
         protected void onPostExecute(String result) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_spinner_item, categories);
+
+            ArrayAdapter<String> dataAdapter =
+                    new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, categories);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categoriesSpinner.setAdapter(dataAdapter);
         }

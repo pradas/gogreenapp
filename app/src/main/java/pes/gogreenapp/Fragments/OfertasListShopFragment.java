@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +41,9 @@ public class OfertasListShopFragment extends Fragment {
     //initialitions
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    private static final String ROLE_MANAGER = "manager";
+    private static final String ROLE_SHOPPER = "shopper";
+    private static final String ROLE_USER = "user";
     OfertasListShopAdapter adapter;
     String url = "http://10.4.41.145/api/";
     private SwipeRefreshLayout swipeContainer;
@@ -50,6 +54,7 @@ public class OfertasListShopFragment extends Fragment {
     private SessionManager session;
     private String pointsFilter = "nada";
     private String dateFilter = "nada";
+    private Integer idTienda;
 
     /**
      * Required empty public constructor
@@ -72,6 +77,15 @@ public class OfertasListShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
+        if (!((AppCompatActivity) getActivity()).getSupportActionBar().isShowing())
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey("id")) {
+            idTienda = getArguments().getInt("id");
+        } else {
+            idTienda = -1;
+        }
         return inflater.inflate(R.layout.ofertas_list_shop_fragment, container, false);
     }
 
@@ -105,19 +119,27 @@ public class OfertasListShopFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle("Ofertas de tu tienda");
         session = SessionManager.getInstance();
+        if (session.getRole().equals(ROLE_USER)) getActivity().setTitle("Tienda");
+        else getActivity().setTitle("Ofertas de tu tienda");
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertasListShop);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertasListShop);
         warning = (TextView) getView().findViewById(R.id.warningNoResultOfertasListShop);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
+        if (session.getRole().equals(ROLE_USER)) new GetOfertas().execute(url + "shops/" + idTienda + "/deals");
+        else new GetOfertas().execute(url + "shops/" + String.valueOf(session.getShopId()) + "/deals");
 
         // Refresh items
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        setHasOptionsMenu(false);
+    }
 
     /**
      * On swipe, refresh all the items of the screen.

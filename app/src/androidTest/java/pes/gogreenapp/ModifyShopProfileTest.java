@@ -14,6 +14,7 @@ import pes.gogreenapp.Activities.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -71,8 +72,12 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void fragmentHasImage() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.shop_image_edit_profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.shop_image_edit_profile))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -80,8 +85,12 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void fragmentHasName() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.shop_name_edit_profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.shop_name_edit_profile))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -89,8 +98,11 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void fragmentHasEmail() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.shop_email_edit_profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.shop_email_edit_profile))
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -98,8 +110,11 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void fragmentHasAddress() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.shop_address_edit_profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.shop_address_edit_profile))
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -107,8 +122,12 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void fragmentHasSaveButton() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.saveEditProfileButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -116,8 +135,12 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void saveButtonDisplayAlertDialogWithText() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .perform(click());
         onView(withText("¿Está seguro de que desea modificar su perfil?")).check(matches(isDisplayed()));
     }
 
@@ -126,8 +149,12 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void saveButtonDisplayAlertDialogWithModifyButton() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .perform(click());
         onView(withText("MODIFICAR")).check(matches(isDisplayed()));
     }
 
@@ -136,35 +163,38 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void saveButtonDisplayAlertDialogWithCancelButton() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
-        onView(withText("CANCELAR")).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withText("CANCELAR"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if the edit of the name of the shop works
-     */
-    @Test
-    public void acceptButtonOfAlertDialogDisplayShopInfoFragment() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.shop_name_edit_profile))
-                .perform(clearText(), typeText("Tienda Oficial"));
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withText("Nombre de la tienda: Tienda Oficial")).check(matches(isDisplayed()));
-    }
+
 
     /**
      * Check if edit the name of shop without confirm stays in the same fragment with the same changes
      */
     @Test
     public void cancelButtonOfAlertDialogDisplayTheSameInfo() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
         onView(withId(R.id.shop_name_edit_profile))
                 .perform(clearText(), typeText("Tienda Oficial"));
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withText("Tienda Oficial")).check(matches(isDisplayed()));
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(android.R.id.button2))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withText("Tienda Oficial"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()));
     }
 
     /**
@@ -172,10 +202,17 @@ public class ModifyShopProfileTest {
      */
     @Test
     public void cancelButtonOfAlertDialogDisplayShopInfoFragment() {
-        onView(withId(R.id.editProfileShopButton)).perform(click());
-        onView(withId(R.id.saveEditProfileButton)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.shopEditProfileFragment)).check(matches(isDisplayed()));
+        onView(withId(R.id.editProfileShopButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.saveEditProfileButton))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(android.R.id.button2))
+                .perform(scrollTo())
+                .perform(click());
+        onView(withId(R.id.shopEditProfileFragment))
+                .check(matches(isDisplayed()));
     }
 
 }

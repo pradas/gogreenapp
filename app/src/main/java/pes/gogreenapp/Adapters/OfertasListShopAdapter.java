@@ -92,7 +92,9 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
             fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButtonShop);
             if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
             DeleteButton = (ImageButton) itemView.findViewById(R.id.ofertaDeleteButtonShop);
+            if ("shopper".equals(session.getRole())) DeleteButton.setVisibility(View.GONE);
             edit = (ImageButton) itemView.findViewById(R.id.ofertaEditButtonShop);
+            if ("shopper".equals(session.getRole())) DeleteButton.setVisibility(View.GONE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,7 +119,7 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                     Fragment fragment = (Fragment) new OfertaDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
-                    transaction.addToBackStack(null);
+                    transaction.addToBackStack(OfertaDetailedFragment.class.getName());
                     transaction.commit();
                 }
             });
@@ -130,7 +132,6 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 Fragment fragment = (Fragment) new EditOfertaFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
                 transaction.commit();
 
             });
@@ -225,14 +226,14 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         protected void onPostExecute(String result) {
 
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al borrar la oferta.", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Oferta borrada con exito.", Toast.LENGTH_LONG).show();
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new OfertasListShopFragment();
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(OfertasListShopFragment.class.getName());
                 transaction.commit();
             }
         }

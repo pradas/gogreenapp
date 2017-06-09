@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -75,6 +76,8 @@ public class OfertasListFragment extends Fragment implements FilterDialogFragmen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
+        if (!((AppCompatActivity) getActivity()).getSupportActionBar().isShowing())
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         return inflater.inflate(R.layout.ofertas_list_fragment, container, false);
     }
 

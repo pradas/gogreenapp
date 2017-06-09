@@ -71,6 +71,7 @@ public class ShopProfileContainerFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putInt("id", idTienda);
             uInfoFrag.setArguments(bundle);
+            rExFrag.setArguments(bundle);
 
             transaction.add(R.id.shopProfile, uInfoFrag).add(R.id.dealsListShopFragment, rExFrag).commit();
         }

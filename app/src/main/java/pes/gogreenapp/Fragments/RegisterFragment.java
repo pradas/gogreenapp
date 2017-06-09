@@ -139,7 +139,6 @@ public class RegisterFragment extends Fragment {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.container_login, LoginFragment.class.newInstance())
-                        .addToBackStack( "tag" )
                         .commit();
             } catch (java.lang.InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();

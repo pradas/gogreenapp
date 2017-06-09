@@ -85,6 +85,7 @@
     <string name="ofertas">Ofertas</string>
     <string name="TituloCreateOferta">Titulo</string>
     <string name="descuento">Descuento</string>
+    <string name="hora_del_evento_description">Hora de la oferta</string>
     <string name="fecha_de_la_oferta">Fecha de la oferta</string>
     <string name="crear_oferta">Crear Oferta</string>
     <string name="imagen_de_la_oferta">imagen de la oferta</string>
@@ -105,6 +106,10 @@
     <string name="filter_by">Filtrar por:</string>
     <string name="ascendent">Ascendente</string>
     <string name="descendent">Descendente</string>
+
+    <!-- Others -->
+    <string name="advert">ESTE QR ES SOLO VÁLIDO PARA UN USO. DESPUÉS DE ESCANEARLO DESAPARECERÁ DE
+        TUS REWARDS CANJEADAS Y NO PODRÁS VOLVER A USARLO.</string>
 
 
 </resources>

@@ -88,11 +88,13 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             points = (TextView) itemView.findViewById(R.id.eventPointsShop);
             category = (TextView) itemView.findViewById(R.id.eventCategoryShop);
             DeleteButton = (ImageButton) itemView.findViewById(R.id.deleteEditButtonShop);
+            if ("shopper".equals(session.getRole())) DeleteButton.setVisibility(View.GONE);
             date = (TextView) itemView.findViewById(R.id.eventEndDateShop);
             hour = (TextView) itemView.findViewById(R.id.eventHourShop);
             fav = (ImageButton) itemView.findViewById(R.id.eventFavoriteButtonShop);
             if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
             edit = (ImageButton) itemView.findViewById(R.id.eventEditButtonShop);
+            if ("shopper".equals(session.getRole())) edit.setVisibility(View.GONE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,7 +108,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                     Fragment fragment = (Fragment) new EventDetailedFragment();
                     fragment.setArguments(bundle);
                     transaction.replace(R.id.flContent, fragment);
-                    transaction.addToBackStack(null);
+                    transaction.addToBackStack(EventDetailedFragment.class.getName());
                     transaction.commit();
                 }
             });
@@ -189,7 +191,6 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             Fragment fragment = (Fragment) new EditEventFragment();
             fragment.setArguments(bundle);
             transaction.replace(R.id.flContent, fragment);
-            transaction.addToBackStack(null);
             transaction.commit();
         });
         holder.DeleteButton.setOnClickListener(v -> {
@@ -279,7 +280,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new EventsListShopFragment();
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(EventsListShopAdapter.class.getName());
                 transaction.commit();
             }
         }

@@ -6,9 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,7 +76,6 @@ public class EventDetailedFragment extends Fragment {
         id = getArguments().getInt("id");
         url += id;
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         return view;
     }
 
@@ -103,23 +99,8 @@ public class EventDetailedFragment extends Fragment {
         time = (TextView) getView().findViewById(R.id.hourEventDetailed);
         direction = (TextView) getView().findViewById(R.id.directionEventDetailed);
         instrucciones = (TextView) getView().findViewById(R.id.instructionsDetailReward);
-        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
         fav = (ImageButton) getView().findViewById(R.id.eventFavoriteDetailButton);
         if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
-        imgback.setOnClickListener(v -> {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-            FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            Fragment fragment;
-            if (session.getRole().equals("manager")) {
-                fragment = (Fragment) new EventsListShopFragment();
-            } else {
-                fragment = (Fragment) new EventsListFragment();
-            }
-            transaction.replace(R.id.flContent, fragment);
-            transaction.commit();
-
-        });
 
         try {
             new GetEvent().execute(url).get();

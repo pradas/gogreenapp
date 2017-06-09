@@ -177,17 +177,6 @@ public class RewardDetailedTests {
         onView(withText("CANCELAR")).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check if clicking in a card_view and clicking in the exchange button and clicking on the
-     * exchange button of the Alert Dialog display the rewards_list fragment
-     */
-    @Test
-    public void actionExchangeAlertDialog() {
-        onView(withId(R.id.rv)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        onView(withId(R.id.actionDetailReward)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-        onView(withId(R.id.rewards_list)).check(matches(isDisplayed()));
-    }
 
     /**
      * Check if clicking in a card_view and clicking in the exchange button and clicking on the
