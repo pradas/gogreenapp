@@ -86,6 +86,7 @@ public class RewardsListFragment extends Fragment implements FilterDialogFragmen
         setHasOptionsMenu(true);
         if (!((AppCompatActivity) getActivity()).getSupportActionBar().isShowing())
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        rewards.clear();
         return inflater.inflate(R.layout.rewards_list_fragment, container, false);
     }
 
