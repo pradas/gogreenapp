@@ -191,6 +191,7 @@ public class EventsListShopAdapter extends RecyclerView.Adapter<EventsListShopAd
             Fragment fragment = (Fragment) new EditEventFragment();
             fragment.setArguments(bundle);
             transaction.replace(R.id.flContent, fragment);
+            transaction.addToBackStack(EditEventFragment.class.getName());
             transaction.commit();
         });
         holder.DeleteButton.setOnClickListener(v -> {
