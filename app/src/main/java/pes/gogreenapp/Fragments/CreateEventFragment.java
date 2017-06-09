@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +29,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +47,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.AsyncHttpHandler;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
 
@@ -76,7 +80,6 @@ public class CreateEventFragment extends Fragment {
     private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
-    private String URLPetition;
     static private final String URLcategories = "http://10.4.41.145/api/categories";
 
     public boolean isStoragePermissionGranted() {
@@ -142,7 +145,6 @@ public class CreateEventFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
-        URLPetition = "http://10.4.41.145/api/shops/" + String.valueOf(session.getShopId()) + "/events";
         new GetCategories().execute(URLcategories);
 
         //elements
@@ -222,12 +224,41 @@ public class CreateEventFragment extends Fragment {
 
                     Log.i(TAG, "default event image bytecoded: " + imgString);
                 }
-                Log.d(TAG, URLPetition);
-                new PostEvent().execute(URLPetition, "POST", TitleText.getText().toString(),
-                        DescriptionText.getText().toString(), PointsText.getText().toString(),
-                        DirectionText.getText().toString(), CompanyText.getText().toString(),
-                        DateText.getText().toString(), FinalTime, imgString,
-                        String.valueOf(categoriesSpinner.getSelectedItem()));
+
+                RequestParams requestParams = new RequestParams();
+                requestParams.put("title", TitleText.getText());
+                requestParams.put("description", DescriptionText.getText());
+                requestParams.put("points", PointsText.getText());
+                requestParams.put("adress", DirectionText.getText());
+                requestParams.put("company", CompanyText.getText());
+                requestParams.put("date", DateText.getText());
+                requestParams.put("time", FinalTime);
+                requestParams.put("image", imgString);
+                requestParams.put("category", String.valueOf(categoriesSpinner.getSelectedItem()));
+                AsyncHttpHandler.post("shops/" + String.valueOf(session.getShopId()) + "/events", requestParams,
+                        new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                // Handle resulting parsed JSON response here
+                                Toast.makeText(getActivity(), "evente creado", Toast.LENGTH_SHORT).show();
+                                try {
+                                    getActivity().getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.flContent, EventsListShopFragment.class.newInstance())
+                                            .addToBackStack(EventsListShopFragment.class.getName())
+                                            .commit();
+                                } catch (java.lang.InstantiationException | IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String xml, Throwable throwable) {
+                                // called when response HTTP status is "4XX"
+                                Log.e("API_ERROR", String.valueOf(statusCode) + " " + throwable.getMessage());
+                                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_SHORT).show();
+                            }
+                });
             }
         });
         //events
@@ -283,74 +314,6 @@ public class CreateEventFragment extends Fragment {
             startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
         });
 
-    }
-
-    /**
-     * Asynchronous Task for the petition POST to send a petition of register an User
-     */
-    private class PostEvent extends AsyncTask<String, Void, String> {
-
-        @Override
-        /**
-         * Execute Asynchronous Task calling the url passed by parameter 0.
-         *
-         * @param params params[0] is the petition url,
-         *               params[1] is the method,
-         *               params[2] is the title,
-         *               params[3] is the description
-         *               params[4] is the points
-         *               params[5] is the adress
-         *               params[6] is the company
-         *               params[7] is the date
-         *               params[8] is the time
-         *               params[9] is the image
-         *               params[10] is the category
-         * @return void when finished
-         */ protected String doInBackground(String... params) {
-
-            HashMap<String, String> BodyParams = new HashMap<>();
-            BodyParams.put("title", params[2]);
-            BodyParams.put("description", params[3]);
-            BodyParams.put("points", params[4]);
-            if (params[5] != null && !params[5].isEmpty()) BodyParams.put("adress", params[5]);
-            if (params[6] != null && !params[6].isEmpty()) BodyParams.put("company", params[6]);
-            BodyParams.put("date", params[7]);
-            if (params[8] != null && !params[8].equals(":")) {
-                BodyParams.put("time", params[8]);
-            } else {
-                BodyParams.put("time", "00:00");
-            }
-            if (params[9] != null) BodyParams.put("image", params[9]);
-            BodyParams.put("category", params[10]);
-            String result = new HttpHandler().makeServiceCall(params[0], params[1], BodyParams, session.getToken());
-            Log.i(TAG, "Response from url: " + result);
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            if (s == null) {
-                Toast.makeText(getActivity(), "Error, no se ha podido conectar, intentelo de nuevo más tarde",
-                        Toast.LENGTH_LONG).show();
-            } else if (s.contains("Event created successfully.")) {
-                Toast.makeText(getActivity(), "Creado perfectamente.", Toast.LENGTH_SHORT).show();
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                try {
-                    manager.beginTransaction()
-                            .replace(R.id.flContent, EventsListShopFragment.class.newInstance())
-                            .addToBackStack(EventsListShopFragment.class.getName())
-                            .commit();
-                } catch (java.lang.InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                manager.popBackStack();
-
-            } else {
-                Toast.makeText(getActivity(), "No se ha podido crear.", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     @Override
