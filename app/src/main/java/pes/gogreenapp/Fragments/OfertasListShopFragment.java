@@ -122,6 +122,12 @@ public class OfertasListShopFragment extends Fragment {
     }
 
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        setHasOptionsMenu(false);
+    }
+
     /**
      * On swipe, refresh all the items of the screen.
      */
