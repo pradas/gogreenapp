@@ -4,8 +4,10 @@
                 android:id="@+id/dialog_filters_rewards"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#DCEDC8"
                 android:padding="25dp"
-                tools:ignore="MissingPrefix">
+                tools:ignore="MissingPrefix"
+    >
 
     <TextView
         android:id="@+id/filter_by_text"
