@@ -132,7 +132,6 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
                 Fragment fragment = (Fragment) new EditOfertaFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.flContent, fragment);
-                transaction.addToBackStack(EditOfertaFragment.class.getName());
                 transaction.commit();
 
             });
