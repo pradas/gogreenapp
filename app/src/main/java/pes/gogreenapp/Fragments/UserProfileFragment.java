@@ -7,9 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import pes.gogreenapp.R;
-
+import pes.gogreenapp.Utils.SessionManager;
 
 
 /**
@@ -61,11 +62,16 @@ public class UserProfileFragment extends Fragment {
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             UserProfileInfoFragment uInfoFrag = new UserProfileInfoFragment();
+            SessionManager instance = SessionManager.getInstance();
 
-            transaction
-                    .add(R.id.user_profile_c1, uInfoFrag)
-                    .add(R.id.rewards_exchanged_fragment, rExFrag)
-                    .commit();
+            transaction.add(R.id.user_profile_c1, uInfoFrag);
+            if ("user".equals(instance.getRole())) {
+                transaction.add(R.id.rewards_exchanged_fragment, rExFrag);
+            } else {
+                FrameLayout frameLayout = (FrameLayout) getView().findViewById(R.id.rewards_exchanged_fragment);
+                frameLayout.setVisibility(View.GONE);
+            }
+            transaction.commit();
         }
     }
 }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -100,6 +101,10 @@ public class UserProfileInfoFragment extends Fragment {
         userBirthDate = (TextView) getView().findViewById(R.id.user_birthdate);
         userEmail = (TextView) getView().findViewById(R.id.user_email);
         ImageButton editUser = (ImageButton) getView().findViewById(R.id.edit_profile_button);
+        TextView textView = (TextView) getView().findViewById(R.id.exchangedRewards);
+        if (!("user".equals(session.getRole()))) textView.setVisibility(View.GONE);
+        LinearLayout pointsLinear = (LinearLayout) getView().findViewById(R.id.linearLayout_Points);
+        if (!("user").equals(session.getRole())) pointsLinear.setVisibility(View.GONE);
 
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +112,8 @@ public class UserProfileInfoFragment extends Fragment {
                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new UserProfileEditFragment();
-                transaction.replace(R.id.flContent, fragment).commit();
+                transaction.replace(R.id.flContent, fragment);
+                transaction.addToBackStack(UserProfileEditFragment.class.getName()).commit();
             }
         });
 

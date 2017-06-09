@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -162,6 +163,8 @@ public class UserProfileEditFragment extends Fragment {
         userCurrentPoints = (TextView) getView().findViewById(R.id.user_current_points_edit_user);
         userEmail = (EditText) getView().findViewById(R.id.user_email_edit_user);
         editPicture = (ImageButton) getView().findViewById(R.id.imageEditUser);
+        LinearLayout pointsLinear = (LinearLayout) getView().findViewById(R.id.linearLayout_Points);
+        if (!("user").equals(session.getRole())) pointsLinear.setVisibility(View.GONE);
 
         new GetInfoUser().execute("http://10.4.41.145/api/users/" + session.getUsername());
 
