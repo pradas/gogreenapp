@@ -5,10 +5,12 @@
     tools:context="pes.gogreenapp.Fragments.AboutUsFragment"
     android:id="@+id/about_us">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="
+        Somos un grupo de estudiantes de la FIB.\n
+        Esta aplicación es un proyecto de la asignatura PES. \n
+        Si os gusta, no duden en contactar con nosotros." />
 
 </FrameLayout>
