@@ -172,10 +172,7 @@ public class ShopEditProfileFragment extends Fragment {
 
                                 new PutShop().execute("http://10.4.41.145/api/shops/" + session.getShopId(), "PUT", shopName.getText().toString(),
                                         shopEmail.getText().toString(), shopAddress.getText().toString(), imgString);
-                                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                                FragmentTransaction transaction = manager.beginTransaction();
-                                Fragment fragment = (Fragment) new ShopProfileContainerFragment();
-                                transaction.replace(R.id.shopProfile, fragment).addToBackStack( "tag" ).commit();
+
                             }
                         })
                         .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -274,6 +271,10 @@ public class ShopEditProfileFragment extends Fragment {
             }
             else {
                 Toast.makeText(activity, "Perfil actualizado", Toast.LENGTH_LONG).show();
+                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                Fragment fragment = (Fragment) new ShopProfileContainerFragment();
+                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
             }
         }
     }
