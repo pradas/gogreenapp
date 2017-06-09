@@ -26,17 +26,6 @@
             android:tint="#88212121"
             android:layout_alignParentEnd="true" />
 
-        <ImageButton
-            android:id="@+id/imageButtonBackReward"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_alignStart="@+id/titleDetailReward"
-            android:layout_alignTop="@+id/favoriteDetailButton"
-            android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:src="@mipmap/ic_back_white"
-            android:tag="favorite" />
-
         <TextView
             android:id="@+id/titleDetailReward"
             fontPath="fonts/Raleway-Regular.ttf"

@@ -129,7 +129,6 @@ public class RewardDetailedFragment extends Fragment {
         action = (ImageButton) getView().findViewById(R.id.actionDetailReward);
         ImageView img = (ImageView) getView().findViewById(R.id.rewardBackgroundImageProfile);
         img.setImageBitmap(bmp);
-        ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackReward);
         if (getArguments().getString("parent").equals("list")) action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_cart,null));
         else action.setImageDrawable((Drawable) getResources().getDrawable(R.drawable.ic_play_for_work_black_24dp,null));
         //TODO Imagen Para rewards compradas

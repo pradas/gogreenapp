@@ -14,7 +14,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:paddingTop="24dp"
         tools:ignore="MissingPrefix">
 
         <ImageView
@@ -26,18 +25,6 @@
             android:alpha="1.0"
             android:scaleType="centerCrop"
             android:tint="#88212121"/>
-
-        <ImageButton
-            android:id="@+id/imageButtonBackReward"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_alignStart="@+id/titleEventDetailed"
-            android:layout_alignTop="@+id/eventFavoriteDetailButton"
-            android:layout_marginTop="6dp"
-            android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:src="@mipmap/ic_back_white"
-            android:tag="favorite"/>
 
         <TextView
             android:id="@+id/titleEventDetailed"
