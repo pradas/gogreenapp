@@ -1,7 +1,6 @@
 package pes.gogreenapp.Fragments;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,12 +34,10 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import pes.gogreenapp.Activities.MainActivity;
-import pes.gogreenapp.Utils.HttpHandler;
-
 import pes.gogreenapp.Objects.Reward;
 import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Adrian on 17/04/2017.
@@ -178,22 +174,6 @@ public class RewardDetailedFragment extends Fragment {
             }
         });
 
-        imgback.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment;
-                if (getArguments().getString("parent").equals("list")) {
-                    fragment = (Fragment) new RewardsListFragment();
-                }else{
-                    fragment = (Fragment) new UserProfileFragment();
-                }
-                transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
-
-            }
-        });
-
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,7 +219,8 @@ public class RewardDetailedFragment extends Fragment {
                     FragmentTransaction transaction = manager.beginTransaction();
                     Fragment fragment = (Fragment) new QRCodeFragment();
                     fragment.setArguments(bundle);
-                    transaction.replace(R.id.flContent, fragment).addToBackStack( "tag" ).commit();
+                    transaction.replace(R.id.flContent, fragment).addToBackStack(QRCodeFragment.class.getName())
+                            .commit();
 
                 }
             }

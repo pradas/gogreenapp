@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -77,7 +78,8 @@ public class EventsListFragment extends Fragment implements FilterDialogFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
-        getActivity().setTitle("Eventos");
+        if (!((AppCompatActivity) getActivity()).getSupportActionBar().isShowing())
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         return inflater.inflate(R.layout.events_list_fragment, container, false);
     }
 

@@ -158,22 +158,6 @@ public class OfertaDetailedFragment extends Fragment {
             }
         });
 
-        imgback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                Fragment fragment;
-                if (session.getRole().equals("manager")) {
-                    fragment = (Fragment) new OfertasListShopFragment();
-                } else {
-                    fragment = (Fragment) new OfertasListFragment();
-                }
-                transaction.replace(R.id.flContent, fragment).addToBackStack("tag").commit();
-
-            }
-        });
         shopBut.setOnClickListener(v -> {
 
             Bundle bundle = new Bundle();
