@@ -121,7 +121,6 @@ public class OfertasListShopFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         session = SessionManager.getInstance();
         if (session.getRole().equals(ROLE_USER)) getActivity().setTitle("Tienda");
-        else getActivity().setTitle("Ofertas de tu tienda");
         recyclerView = (RecyclerView) getView().findViewById(R.id.rv_ofertasListShop);
         swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainerOfertasListShop);
         warning = (TextView) getView().findViewById(R.id.warningNoResultOfertasListShop);

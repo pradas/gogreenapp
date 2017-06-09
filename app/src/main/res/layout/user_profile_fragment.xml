@@ -46,7 +46,6 @@
         <FrameLayout
             android:id="@+id/rewards_exchanged_fragment"
             android:layout_width="fill_parent"
-            android:layout_weight="2"
             android:layout_height="400dp" />
 
 

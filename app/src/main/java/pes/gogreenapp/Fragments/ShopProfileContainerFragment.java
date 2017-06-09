@@ -45,7 +45,7 @@ public class ShopProfileContainerFragment extends Fragment {
         } else {
             idTienda = -1;
         }
-
+        getActivity().setTitle("Tienda");
 
         return inflater.inflate(R.layout.shop_profile_container_fragment, container, false);
     }
