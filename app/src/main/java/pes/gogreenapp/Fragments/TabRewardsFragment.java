@@ -115,19 +115,10 @@ public class TabRewardsFragment extends Fragment {
     void refreshItems() {
         // Load items
         rewards.clear();
-        warning.setText("");
         // Get items
-        new GetRewards().execute(url + "/users/" + session.getUsername() + "/favourite-rewards");
+        new GetRewards().execute(url + "users/" + session.getUsername() + "/favourite-rewards");
 
         // Load complete
-        onItemsLoadComplete();
-    }
-
-    /**
-     * When the refresh is complete, set again the Adapter.
-     */
-    void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
         adapter.setRewards(rewards);
         adapter.notifyDataSetChanged();
 
