@@ -1,20 +1,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingPrefix"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="30dp"
-    android:background="@drawable/gradientbackground">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradientbackground"
+                android:paddingTop="30dp"
+                tools:ignore="MissingPrefix">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:id="@+id/relativeLayout2">
+        android:paddingRight="20dp">
+
+        <ImageButton
+            android:id="@+id/back_arrow_add_Account_to_main_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            app:srcCompat="@mipmap/ic_back_white"/>
+
         <TextView
             android:id="@+id/TitleLogIn"
+            fontPath="fonts/Raleway-Light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -23,17 +35,16 @@
             android:elevation="1dp"
             android:fontFamily="monospace"
             android:text="GoGreen"
-            android:textSize="30sp"
-            fontPath="fonts/Raleway-Light.ttf" />
+            android:textSize="30sp"/>
 
         <ImageView
             android:id="@+id/imageGoGreen"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_marginTop="31dp"
             android:layout_below="@+id/TitleLogIn"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="31dp"
+            android:src="@mipmap/ic_launcher_round"/>
 
         <EditText
             android:id="@+id/username_edit_text"
@@ -47,7 +58,7 @@
             android:hint="Nombre de usuario o email"
             android:textColor="@drawable/mainbuttontext"
             android:textColorHint="@drawable/mainbuttontext"
-            android:theme="@style/campotextoregistro" />
+            android:theme="@style/campotextoregistro"/>
 
         <EditText
             android:id="@+id/password_user_text"
@@ -62,34 +73,32 @@
             android:inputType="textPassword"
             android:textColor="@drawable/mainbuttontext"
             android:textColorHint="@drawable/mainbuttontext"
-            android:theme="@style/campotextoregistro" />
-
+            android:theme="@style/campotextoregistro"/>
 
 
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/forgotPassword"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/buttonregisterloginshape"
             android:text="login"
-            android:textColor="@drawable/mainbuttontext"
-            android:layout_above="@+id/forgotPassword"
-            android:layout_marginBottom="15dp"/>
+            android:textColor="@drawable/mainbuttontext"/>
 
         <TextView
             android:id="@+id/forgotPassword"
+            fontPath="fonts/Raleway-Regular.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:text="¿Olvidó su contraseña?"
             android:ems="10"
-            android:textSize="20sp"
-            fontPath="fonts/Raleway-Regular.ttf"
             android:gravity="center"
+            android:text="¿Olvidó su contraseña?"
+            android:textColor="#757575"
 
-            android:textColor="#757575"/>
-
+            android:textSize="20sp"/>
 
 
     </RelativeLayout>
@@ -98,11 +107,11 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:text="Sign Up"
-        android:textColor="@drawable/mainbuttontext"
         android:layout_alignBaseline="@+id/relativeLayout2"
         android:layout_alignBottom="@+id/relativeLayout2"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:text="Sign Up"
+        android:textColor="@drawable/mainbuttontext"/>
 
 </RelativeLayout>

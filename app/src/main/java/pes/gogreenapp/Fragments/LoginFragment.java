@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,6 +86,20 @@ public class LoginFragment extends Fragment {
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
+        ImageButton buttonBack = (ImageButton) getView().findViewById(R.id.back_arrow_add_Account_to_main_activity);
+        buttonBack.setOnClickListener((click) -> {
+            // user is not logged in redirect him to Login Activity
+            Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+
+            // Closing all the Activities
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            // Add new Flag to start new Activity
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            // Staring LoginActivity Activity
+            getActivity().getApplicationContext().startActivity(i);
+        });
 
         // Set the text to Añadir Cuenta if calledFromAddAccount is true and hide Register Button
         if (calledForAddAccount) {
