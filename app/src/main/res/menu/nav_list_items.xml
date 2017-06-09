@@ -16,10 +16,12 @@
         <item
             android:id="@+id/list_events_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
+            android:orderInCategory="2"
             android:title="@string/eventos" />
         <item
             android:id="@+id/list_ofertas_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
+            android:orderInCategory="3"
             android:title="@string/ofertas" />
     </group>
     <!-- This group represents the items of a role Manager and the Shopper -->
@@ -34,30 +36,32 @@
         <item
             android:id="@+id/give_points_fragment"
             android:icon="@mipmap/ic_fiber_smart_record_black_24dp"
-            android:orderInCategory="13"
+            android:orderInCategory="11"
             android:title="@string/give_points" />
         <item
             android:id="@+id/create_event_fragment"
             android:icon="@drawable/ic_add_black_24dp"
-            android:orderInCategory="11"
+            android:orderInCategory="12"
             android:title="@string/create_event" />
         <item
             android:id="@+id/list_events_shop_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
+            android:orderInCategory="13"
             android:title="@string/eventos" />
         <item
             android:id="@+id/new_deal_fragment"
             android:icon="@drawable/ic_add_black_24dp"
-            android:orderInCategory="12"
+            android:orderInCategory="14"
             android:title="@string/new_deal" />
         <item
             android:id="@+id/list_ofertas_shop_fragment"
             android:icon="@mipmap/ic_view_list_black_24dp"
+            android:orderInCategory="15"
             android:title="@string/ofertas" />
         <item
             android:id="@+id/employee_manager_fragment"
             android:icon="@mipmap/ic_account_box_black_24dp"
-            android:orderInCategory="14"
+            android:orderInCategory="16"
             android:title="@string/employee_manager" />
     </group>
     <!-- This group represents the items of the Switch functionality -->
