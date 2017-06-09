@@ -62,33 +62,6 @@ public class EditEventTest {
 
 
 
-    /**
-     * Check error if the hour is incorrect
-     */
-    @Test
-    public void IncorrectHour() {
-        onView(withId(R.id.HourEditEvent_edit_text))
-                .perform(clearText(), typeText("25"));
-        onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
-        onView(withId(R.id.HourEditEvent_edit_text))
-                .check(matches(withError("Hora incorrecta")));
-    }
-
-    /**
-     * Check error if the minuts are incorrect
-     */
-    @Test
-    public void IncorrectMin() {
-        onView(withId(R.id.MinEditEvent_edit_text))
-                .perform(clearText(), typeText("70"));
-        onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
-        onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
-        onView(withId(R.id.MinEditEvent_edit_text))
-                .check(matches(withError("Minutos incorrectos")));
-    }
 
 
     /**
@@ -100,7 +73,7 @@ public class EditEventTest {
                 .perform(clearText());
         onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.MinEditEvent_edit_text))
                 .check(matches(withError("Minutos necesarios")));
     }
@@ -114,7 +87,7 @@ public class EditEventTest {
                 .perform(clearText());
         onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.editTextDateEditEvent))
                 .check(matches(withError("Fecha necesaria")));
     }
@@ -127,7 +100,7 @@ public class EditEventTest {
                 .perform(clearText());
         onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.PointsEditEvent_edit_text))
                 .check(matches(withError("Puntos necesarios")));
     }
@@ -141,7 +114,7 @@ public class EditEventTest {
                 .perform(clearText());
         onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .check(matches(withError("Descripción necesaria")));
     }
@@ -155,7 +128,7 @@ public class EditEventTest {
                 .perform(clearText());
         onView(withId(R.id.ScrollViewEditEvent)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditEvent))
-                .perform(scrollTo(),click());
+                .perform(click());
         onView(withId(R.id.titleEditEvent_edit_text))
                 .check(matches(withError("Título necesario")));
     }
@@ -166,8 +139,6 @@ public class EditEventTest {
      */
     @Test
     public void CheckTimeIsDisplayed(){
-        onView(withId(R.id.TimeTextEditEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.HourEditEvent_edit_text))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.MinEditEvent_edit_text))
@@ -214,8 +185,6 @@ public class EditEventTest {
      */
     @Test
     public void CheckDescriptionIsDisplayed(){
-        onView(withId(R.id.DescriptionEditEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.DescriptionEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -225,8 +194,6 @@ public class EditEventTest {
      */
     @Test
     public void CheckTitleIsDisplayed(){
-        onView(withId(R.id.TitleEditEvent))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.titleEditEvent_edit_text))
                 .check(matches(isDisplayed()));
     }

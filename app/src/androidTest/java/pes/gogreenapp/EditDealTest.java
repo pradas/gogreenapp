@@ -66,7 +66,7 @@ public class EditDealTest {
                 .perform(clearText(), typeText("22-19-2017"));
         onView(withId(R.id.edit_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.editTextDateEditOferta))
                 .check(matches(withError("Fecha invalida (dd-mm-yyyy)")));
     }
@@ -79,7 +79,7 @@ public class EditDealTest {
                 .perform(clearText());
         onView(withId(R.id.edit_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.editTextDateEditOferta))
                 .check(matches(withError("Fecha necesaria")));
     }
@@ -94,7 +94,7 @@ public class EditDealTest {
                 .perform(clearText());
         onView(withId(R.id.edit_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.DescriptionEditOferta_edit_text))
                 .check(matches(withError("Descripción necesaria")));
     }
@@ -108,7 +108,7 @@ public class EditDealTest {
                 .perform(clearText());
         onView(withId(R.id.edit_oferta_sv)).perform(swipeUp());
         onView(withId(R.id.buttonSendEditOferta))
-                .perform(scrollTo(), click());
+                .perform(click());
         onView(withId(R.id.titleEditOferta_edit_text))
                 .check(matches(withError("Título necesario")));
     }
@@ -119,11 +119,7 @@ public class EditDealTest {
      */
     @Test
     public void CheckDateIsDisplayed(){
-        onView(withId(R.id.DateTextEditOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.editTextDateEditOferta))
-                .check(matches(isDisplayed()));
-        onView(withId(R.id.DateEditOferta))
                 .check(matches(isDisplayed()));
     }
 
@@ -133,8 +129,6 @@ public class EditDealTest {
      */
     @Test
     public void CheckDescriptionIsDisplayed(){
-        onView(withId(R.id.DescriptionEditOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.DescriptionEditOferta_edit_text))
                 .check(matches(isDisplayed()));
     }
@@ -144,8 +138,6 @@ public class EditDealTest {
      */
     @Test
     public void CheckTitleIsDisplayed(){
-        onView(withId(R.id.TitleEditOferta))
-                .check(matches(isDisplayed()));
         onView(withId(R.id.titleEditOferta_edit_text))
                 .check(matches(isDisplayed()));
     }

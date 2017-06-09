@@ -49,7 +49,7 @@ public class LoginTest {
     @Test
     public void CorrectLogin() {
 
-        onView(withId(R.id.username_edit_text)).perform(clearText(), typeText("user"));
+        onView(withId(R.id.username_edit_text)).perform(clearText(), typeText("manager"));
         onView(withId(R.id.password_user_text)).perform(clearText(), typeText("Password12"));
         onView(withId(R.id.buttonLogin)).perform(click());
         onView(withId(R.id.drawer_layout)).check(matches(isDisplayed()));

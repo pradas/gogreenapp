@@ -145,7 +145,6 @@ public class SwitchTest {
         onView(withId(R.id.nvView)).perform(navigateTo(idManager));
         onView(withId(R.id.header_username)).check(matches(withText(usernameManager)));
 
-
     }
 
     /**
