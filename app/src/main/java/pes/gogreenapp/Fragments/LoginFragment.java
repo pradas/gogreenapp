@@ -86,7 +86,8 @@ public class LoginFragment extends Fragment {
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
         forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
-        ImageButton buttonBack = (ImageButton) getView().findViewById(R.id.back_arrow_add_Account_to_main_activity);
+        ImageButton buttonBack = (ImageButton) getView().findViewById(R.id.back_arrow_add_account_to_main_activity);
+        if (calledForAddAccount) buttonBack.setVisibility(View.VISIBLE);
         buttonBack.setOnClickListener((click) -> {
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);

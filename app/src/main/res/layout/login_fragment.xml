@@ -16,13 +16,14 @@
         android:paddingRight="20dp">
 
         <ImageButton
-            android:id="@+id/back_arrow_add_Account_to_main_activity"
+            android:id="@+id/back_arrow_add_account_to_main_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@null"
-            app:srcCompat="@mipmap/ic_back_white"/>
+            app:srcCompat="@mipmap/ic_back_white"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/TitleLogIn"
@@ -110,6 +111,7 @@
         android:layout_alignBaseline="@+id/relativeLayout2"
         android:layout_alignBottom="@+id/relativeLayout2"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         android:background="@null"
         android:text="Sign Up"
         android:textColor="@drawable/mainbuttontext"/>
