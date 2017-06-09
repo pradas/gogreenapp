@@ -79,7 +79,6 @@ public class CreateEventFragment extends Fragment {
     private EditText CompanyText;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
-    private String FinalTime = null;
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
@@ -235,7 +234,7 @@ public class CreateEventFragment extends Fragment {
                 requestParams.put("adress", DirectionText.getText());
                 requestParams.put("company", CompanyText.getText());
                 requestParams.put("date", DateText.getText());
-                requestParams.put("time", FinalTime);
+                requestParams.put("time", HourText.getText().toString());
                 requestParams.put("image", imgString);
                 requestParams.put("category", String.valueOf(categoriesSpinner.getSelectedItem()));
                 AsyncHttpHandler.post("shops/" + String.valueOf(session.getShopId()) + "/events", requestParams,
