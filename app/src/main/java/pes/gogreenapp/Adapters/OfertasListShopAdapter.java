@@ -226,9 +226,9 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
         protected void onPostExecute(String result) {
 
             if (result.equalsIgnoreCase("Error")) {
-                Toast.makeText(context, "Error al borrar el Evento.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error al borrar la oferta.", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(context, "Evento borrado con exito.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Oferta borrada con exito.", Toast.LENGTH_LONG).show();
                 FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 Fragment fragment = (Fragment) new OfertasListShopFragment();
