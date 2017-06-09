@@ -3,6 +3,7 @@ package pes.gogreenapp.Fragments;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -66,6 +68,7 @@ public class CreateEventFragment extends Fragment {
     private ImageButton DateButton;
     private ImageView ImageSelected;
     private ImageButton PhotoButton;
+    private ImageButton HourButton;
     private EditText DateText;
     private Button SendButton;
     private EditText TitleText;
@@ -73,7 +76,6 @@ public class CreateEventFragment extends Fragment {
     private EditText PointsText;
     private EditText DirectionText;
     private EditText HourText;
-    private EditText MinText;
     private EditText CompanyText;
     private Calendar calendar;
     private List<String> categories = new ArrayList<String>();
@@ -81,6 +83,7 @@ public class CreateEventFragment extends Fragment {
     private Spinner categoriesSpinner;
     static private String TAG = "CreateEvent";
     static private final String URLcategories = "http://10.4.41.145/api/categories";
+    private int hour, min;
 
     public boolean isStoragePermissionGranted() {
 
@@ -156,11 +159,11 @@ public class CreateEventFragment extends Fragment {
         DescriptionText = (EditText) getView().findViewById(R.id.DescriptionCreateEvent_edit_text);
         PointsText = (EditText) getView().findViewById(R.id.PointsCreateEvent_edit_text);
         DirectionText = (EditText) getView().findViewById(R.id.DirectionCreateEvent_edit_text);
-        HourText = (EditText) getView().findViewById(R.id.HourCreateEvent_edit_text);
-        MinText = (EditText) getView().findViewById(R.id.MinCreateEvent_edit_text);
+        HourText = (EditText) getView().findViewById(R.id.HourCreateEventEditText);
         CompanyText = (EditText) getView().findViewById(R.id.CompanyCreateEvent_edit_text);
         categoriesSpinner = (Spinner) getView().findViewById(R.id.CategoriesSpinner);
         SendButton = (Button) getView().findViewById(R.id.buttonSendCreateEvent);
+        HourButton = (ImageButton) getView().findViewById(R.id.HourCreateEventButton);
 
 
         SendButton.setOnClickListener((View v) -> {
@@ -192,23 +195,23 @@ public class CreateEventFragment extends Fragment {
                     send = false;
                 }
             }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() <= 0) {
-                MinText.setError("Minutos necesarios");
+
+            if (HourText.getText().toString().length() <= 0) {
+                HourText.setError("Hora necesaria");
                 send = false;
             }
-            if (HourText.getText().toString().length() <= 0 && MinText.getText().toString().length() > 0) {
-                HourText.setError("Hora necesaria");
-            }
-            if (HourText.getText().toString().length() > 0 && MinText.getText().toString().length() > 0) {
-                if (Integer.parseInt(HourText.getText().toString()) > 23) {
+            else if (HourText.getText().toString().length() > 0) {
+                String hour = HourText.getText().toString();
+                String[] hourDivided = hour.split(":");
+
+                if ((Integer.parseInt(hourDivided[0]) < 0) || (Integer.parseInt(hourDivided[0]) >= 24)) {
                     HourText.setError("Hora incorrecta");
                     send = false;
                 }
-                if (Integer.parseInt(MinText.getText().toString()) > 59) {
-                    MinText.setError("Minutos incorrectos");
+                if ((Integer.parseInt(hourDivided[1]) < 0) || (Integer.parseInt(hourDivided[1]) >= 60)) {
+                    HourText.setError("Hora incorrecta");
                     send = false;
                 }
-                FinalTime = HourText.getText().toString() + ":" + MinText.getText().toString();
             }
             if (send) {
                 Log.d("CreateEvent", "se envia");
@@ -277,7 +280,6 @@ public class CreateEventFragment extends Fragment {
                 dpd.show();
             }
         });
-
         DateButton.setOnClickListener((View v) -> {
             calendar = Calendar.getInstance();
             DatePickerDialog dpd = new DatePickerDialog(getActivity(),
@@ -290,22 +292,42 @@ public class CreateEventFragment extends Fragment {
             dpd.getDatePicker().setMinDate(calendar.getTimeInMillis());
             dpd.show();
         });
+
         HourText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                if (Integer.parseInt(HourText.getText().toString()) < 10) {
-                    String text = "0" + HourText.getText().toString();
-                    HourText.setText(text);
-                }
+            if (hasFocus) {
+                final Calendar c = Calendar.getInstance();
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                min = c.get(Calendar.MINUTE);
+
+                TimePickerDialog picker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute < 10) HourText.setText(hourOfDay + ":0" + minute);
+                        else HourText.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, min, true);
+                picker.show();
             }
         });
-        MinText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                if (Integer.parseInt(MinText.getText().toString()) < 10) {
-                    String text = "0" + MinText.getText().toString();
-                    MinText.setText(text);
-                }
+
+        HourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                min = c.get(Calendar.MINUTE);
+
+                TimePickerDialog picker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (minute < 10) HourText.setText(hourOfDay + ":0" + minute);
+                        else HourText.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, min, true);
+                picker.show();
             }
         });
+
         PhotoButton.setOnClickListener((View v) -> {
             isStoragePermissionGranted();
             Intent galleryIntent =
