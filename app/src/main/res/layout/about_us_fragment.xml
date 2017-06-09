@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         android:paddingTop="200dp"
         android:text="Somos GoGreen Development.\n Esta aplicación forma parte del proyecto BcnGreen que impulsa el Ayuntamiento de Barcelona el año 2017. Este proyecto pretende mejorar la calidad de vida de los ciudadanos fomentando actividades verdes dentro de la ciudad. \n Cualquier problema o duda pueden contactar con nosotros a través del mail gogreen@bcn.cat o llamando al número de teléfono 931318975."
-        android:textColor="black"
         />
 
 
