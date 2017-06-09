@@ -102,31 +102,27 @@
                 android:text="@string/hora_evento"
                 android:textSize="20sp" />
 
-
             <LinearLayout
-                android:id="@+id/linearLayoutHourCreateEvent"
+                android:id="@+id/lineHourCreateEvent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/HourCreateEvent_edit_text"
+                    android:id="@+id/HourCreateEventEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="number" />
 
-                <TextView
-                    android:id="@+id/TwoPointsCreateEvent"
+                <ImageButton
+                    android:id="@+id/HourCreateEventButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/TwoPoints"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/MinCreateEvent_edit_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:contentDescription="@string/hora_del_evento_description"
+                    android:padding="10dp"
+                    android:tint="@android:color/darker_gray"
+                    app:srcCompat="@drawable/ic_av_timer_black_24dp" />
 
             </LinearLayout>
 
