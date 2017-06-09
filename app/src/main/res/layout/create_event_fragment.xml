@@ -129,7 +129,7 @@
                     android:contentDescription="@string/hora_del_evento_description"
                     android:padding="10dp"
                     android:tint="@android:color/darker_gray"
-                    app:srcCompat="@mipmap/ic_date_range_white_24dp" />
+                    app:srcCompat="@drawable/ic_av_timer_black_24dp" />
 
             </LinearLayout>
 
