@@ -123,6 +123,12 @@ public class EventsListShopFragment extends Fragment {
         swipeContainer.setOnRefreshListener(this::refreshItems);
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        setHasOptionsMenu(false);
+    }
+
     /**
      * On swipe, refresh all the items of the screen.
      */

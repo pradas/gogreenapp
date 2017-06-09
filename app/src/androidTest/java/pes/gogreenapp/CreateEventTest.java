@@ -60,7 +60,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the hour is incorrect
-     */
+     *//*
     @Test
     public void IncorrectHour() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -86,7 +86,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the minuts are incorrect
-     */
+     *//*
     @Test
     public void IncorrectMin() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -113,7 +113,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the hour is put but is not put the minuts
-     */
+     *//*
     @Test
     public void HourButNotMin() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -137,7 +137,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the date is not good formated
-     */
+     *//*
     @Test
     public void IncorrectDate() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -162,7 +162,7 @@ public class CreateEventTest {
     }
     /**
      * Check error if the date is not put
-     */
+     *//*
     @Test
     public void NoDate() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -185,7 +185,7 @@ public class CreateEventTest {
     }
     /**
      * Check error if the points are not put
-     */
+     *//*
     @Test
     public void NoPoints() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -209,7 +209,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the description is not put
-     */
+     *//*
     @Test
     public void NoDescription() {
         onView(withId(R.id.titleCreateEvent_edit_text))
@@ -233,7 +233,7 @@ public class CreateEventTest {
 
     /**
      * Check error if the title is not put
-     */
+     *//*
     @Test
     public void NoTitle() {
         onView(withId(R.id.DescriptionCreateEvent_edit_text))
@@ -258,7 +258,7 @@ public class CreateEventTest {
 
     /**
      * Check if the the time is displayed
-     */
+     *//*
     @Test
     public void CheckTimeIsDisplayed(){
         onView(withId(R.id.TimeTextCreateEvent))
