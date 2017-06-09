@@ -174,7 +174,7 @@ public class ShopEditProfileFragment extends Fragment {
                                         shopEmail.getText().toString(), shopAddress.getText().toString(), imgString);
                                 FragmentManager manager = ((FragmentActivity) getContext()).getSupportFragmentManager();
                                 FragmentTransaction transaction = manager.beginTransaction();
-                                Fragment fragment = (Fragment) new ShopProfileInfoFragment();
+                                Fragment fragment = (Fragment) new ShopProfileContainerFragment();
                                 transaction.replace(R.id.shopProfile, fragment).addToBackStack( "tag" ).commit();
                             }
                         })
