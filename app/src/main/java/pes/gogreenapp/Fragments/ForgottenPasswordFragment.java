@@ -87,7 +87,6 @@ public class ForgottenPasswordFragment extends Fragment {
 
         email = (EditText) getView().findViewById(R.id.email_edit_text_forgot_password);
         ImageView imgback = (ImageView) getView().findViewById(R.id.imageButtonBackOferta);
-        sendPassword = (Button) getView().findViewById(R.id.reSendPassword);
         mailAddressSender = "gogreenfib@gmail.com";
         password = "Password12FIB";
         Random r = new Random();

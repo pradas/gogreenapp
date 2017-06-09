@@ -30,9 +30,11 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import pes.gogreenapp.Activities.MainActivity;
+import pes.gogreenapp.Exceptions.NullParametersException;
+import pes.gogreenapp.R;
 import pes.gogreenapp.Utils.HttpHandler;
 import pes.gogreenapp.Utils.SessionManager;
-import pes.gogreenapp.R;
+import pes.gogreenapp.Utils.UserData;
 
 /**
  * Created by Jorge Alvarez on 07/04/17.
@@ -295,10 +297,12 @@ public class RegisterFragment extends Fragment {
                     session = SessionManager.getInstance();
                     session.putInfoLoginSession(params[2], aux.get("role").toString(),
                             aux.get("token").toString(), aux.getInt("points"));
+                    UserData.createUser(params[2], aux.getString("token"), aux.getInt("points"),
+                            aux.getString("role"), 0, getActivity().getApplicationContext());
                     Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
-                } catch (JSONException e) {
+                } catch (JSONException | NullParametersException e) {
                     e.printStackTrace();
                 }
             } else {

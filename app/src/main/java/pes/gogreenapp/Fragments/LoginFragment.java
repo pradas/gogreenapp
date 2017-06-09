@@ -85,7 +85,6 @@ public class LoginFragment extends Fragment {
         textName = (EditText) getView().findViewById(R.id.username_edit_text);
         textPassword = (EditText) getView().findViewById(R.id.password_user_text);
         buttonRegister = (Button) getView().findViewById(R.id.buttonRegister);
-        forgotPassword = (TextView) getView().findViewById(R.id.forgotPassword);
         ImageButton buttonBack = (ImageButton) getView().findViewById(R.id.back_arrow_add_account_to_main_activity);
         if (calledForAddAccount) buttonBack.setVisibility(View.VISIBLE);
         buttonBack.setOnClickListener((click) -> {
@@ -107,19 +106,6 @@ public class LoginFragment extends Fragment {
             buttonLogin.setText(R.string.add_account);
             buttonRegister.setVisibility(View.INVISIBLE);
         }
-
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container_login, ForgottenPasswordFragment.class.newInstance()).commit();
-                } catch (java.lang.InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
 
         buttonLogin.setOnClickListener(v -> {
             Boolean send = true;

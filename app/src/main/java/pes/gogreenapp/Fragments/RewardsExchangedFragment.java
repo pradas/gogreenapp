@@ -76,6 +76,7 @@ public class RewardsExchangedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rewards.clear();
         getActivity().setTitle("Rewards");
         return inflater.inflate(R.layout.rewards_exchanged_fragment, container, false);
     }
