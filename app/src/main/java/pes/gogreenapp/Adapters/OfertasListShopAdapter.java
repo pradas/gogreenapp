@@ -92,7 +92,9 @@ public class OfertasListShopAdapter extends RecyclerView.Adapter<OfertasListShop
             fav = (ImageButton) itemView.findViewById(R.id.ofertaFavoriteButtonShop);
             if (!("user".equals(session.getRole()))) fav.setVisibility(View.GONE);
             DeleteButton = (ImageButton) itemView.findViewById(R.id.ofertaDeleteButtonShop);
+            if ("shopper".equals(session.getRole())) DeleteButton.setVisibility(View.GONE);
             edit = (ImageButton) itemView.findViewById(R.id.ofertaEditButtonShop);
+            if ("shopper".equals(session.getRole())) DeleteButton.setVisibility(View.GONE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
